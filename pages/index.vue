@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { CommonCurrency } from '~/types/common'
+import { ITransactionData, TransactionStatus, TransactionType } from '~/types/dashboard'
+
 definePageMeta({
   layout: 'home',
 })
@@ -21,6 +24,58 @@ const cardBalance = ref({
   topup: 0,
   withdraw: 0,
 })
+
+const recentTransactions = computed<ITransactionData[]>(() => [
+  {
+    type: TransactionType.TOPUP,
+    transactionId: 'T124513143726134',
+    amount: 1000,
+    currency: CommonCurrency.USD,
+    card: null, // USDT top-up, no card used
+    status: TransactionStatus.SUCCESS,
+  },
+  {
+    type: TransactionType.PAYMENT,
+    transactionId: 'S124513143726134',
+    amount: -1000,
+    currency: CommonCurrency.USD,
+    card: {
+      cardName: 'Nguyen Hong Ngoc',
+      cardNumber: 'xxxx xxxx xxxx 1232',
+    },
+    status: TransactionStatus.PROCESSING,
+  },
+  {
+    type: TransactionType.WITHDRAW,
+    transactionId: 'T124513143726134',
+    amount: 1000,
+    currency: CommonCurrency.USD,
+    card: null, // USDT withdraw, no card used
+    status: TransactionStatus.FAILED,
+  },
+  {
+    type: TransactionType.PAYMENT,
+    transactionId: 'T124513143726134',
+    amount: -1000,
+    currency: CommonCurrency.USD,
+    card: {
+      cardName: 'Nguyen Hong Ngoc',
+      cardNumber: 'xxxx xxxx xxxx 1232',
+    },
+    status: TransactionStatus.PROCESSING,
+  },
+  {
+    type: TransactionType.TOPUP,
+    transactionId: 'T124513143726134',
+    amount: 1000,
+    currency: CommonCurrency.USD,
+    card: {
+      cardName: 'Nguyen Hong Ngoc',
+      cardNumber: 'xxxx xxxx xxxx 1232',
+    },
+    status: TransactionStatus.SUCCESS,
+  },
+])
 </script>
 <template>
   <div class="py-3 flex flex-row gap-3">
@@ -39,7 +94,7 @@ const cardBalance = ref({
     <div class="flex flex-col gap-3 w-[45%]">
       <!-- Wealify Balance -->
       <div
-        class="bg-[#1C1D23] rounded-[12px] flex flex-row pl-7 pr-12 pt-4 pb-6 justify-between items-center bg-[url(~/assets/img/wealify-pattern.svg)] bg-no-repeat bg-right"
+        class="bg-[#1C1D23] rounded-[12px] flex flex-row pl-7 pr-12 pt-4 pb-6 justify-between gap-12 items-center bg-[url(~/assets/img/wealify-pattern.svg)] bg-no-repeat bg-right"
       >
         <div class="flex flex-col z-10">
           <span class="text-[#A5A8B8] text-sm font-medium leading-5">
@@ -136,7 +191,10 @@ const cardBalance = ref({
 
     <!-- Chart -->
     <div class="w-[45%] flex justify-end items-end">
-      <img class="max-w-[540px] w-full" src="~/assets/img/dashboard/chart.svg" alt="" />
+      <img class="w-full max-h-[350px]" src="~/assets/img/dashboard/chart.svg" alt="" />
     </div>
   </div>
+
+  <!-- Recent transactions -->
+  <div></div>
 </template>
