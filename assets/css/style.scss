@@ -1,0 +1,206 @@
+body {
+  font-family: Manrope, sans-serif;
+  color: #1c1d23;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 20px;
+  &::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  &::-webkit-scrollbar:horizontal {
+    height: 4px;
+  }
+  // &::-webkit-scrollbar-thumb {
+  //   background: #CDA981;
+  // }
+  &::-webkit-scrollbar-track {
+    background: #f0f0f0;
+  }
+}
+
+@function vw($target) {
+  $vw-context: (1920 * 0.01) * 1px;
+  @return ($target / $vw-context) * 1vw;
+}
+@function vw1($target) {
+  $vw-context: (1440 * 0.01) * 1px;
+  @return ($target / $vw-context) * 1vw;
+}
+
+@font-face {
+  font-family: Manrope;
+  src: url('~/assets/fonts/Manrope.ttf');
+}
+
+.dot::after {
+  content: '';
+  width: 20px;
+  height: 20px;
+  background: #efd4bb;
+  display: block;
+  margin-bottom: 7px;
+  @media (max-width: 768px) {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+html,
+body {
+  scroll-behavior: smooth;
+}
+
+nav {
+  margin-left: 46px;
+  .hover\:before\:bg-gray-50:hover::before {
+    background: none;
+  }
+}
+nav ul {
+  gap: 44px;
+  display: flex;
+  a {
+    padding: 0;
+  }
+}
+
+.social a:hover,
+.social button:hover {
+  filter: saturate(2.1);
+}
+
+a,
+button {
+  transition: 0.25s;
+}
+
+.round-effect-1 {
+  animation: rotate 1.5s infinite linear;
+}
+.round-effect-4 {
+  animation: rotate2 1.5s infinite linear;
+}
+.round-effect-2 {
+  animation: rotate 1.5s infinite linear;
+}
+.round-effect-3 {
+  animation: rotate2 1.5s infinite linear;
+}
+
+@keyframes flash {
+  0% {
+    -webkit-filter: saturate(1);
+    filter: saturate(1);
+  }
+  50% {
+    -webkit-filter: saturate(2.1);
+    filter: saturate(2.1);
+  }
+  100% {
+    -webkit-filter: saturate(1);
+    filter: saturate(1);
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rotate2 {
+  0% {
+    transform: rotate(360deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@media (max-width: 1536px) {
+}
+@media (max-width: 1024px) {
+  nav {
+    margin-left: 20px;
+  }
+  nav ul {
+    gap: 14px;
+  }
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: #cda981;
+  transition: background-color 5000s ease-in-out 0s;
+  box-shadow: inset 0 0 20px 20px #0d1012;
+  color: #cda981;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+.ui-focus-visible\:ring-primary-500:focus {
+  --tw-ring-color: transparent !important;
+}
+.swiper-button-next,
+.swiper-button-prev {
+  color: #cda981;
+  z-index: 100;
+}
+
+.swiper-button-next {
+  &::after {
+    font-size: 30px;
+  }
+}
+
+.swiper-button-prev {
+  &::after {
+    font-size: 30px;
+  }
+}
+
+*:focus-visible {
+  outline: none !important;
+}
+
+*:focus {
+  outline: none !important;
+}
+
+.i-copy {
+  background: url('../img/icons/copy.svg') no-repeat;
+}
+.i-copied {
+  background: url('../img/icons/copied.svg') no-repeat;
+}
+
+.text-common {
+  color: #1c1d23;
+}
+
+.text-pale {
+  color: #7a7d89;
+}
+
+.bg-tab-hover {
+  color: #F0F2F5;
+}
