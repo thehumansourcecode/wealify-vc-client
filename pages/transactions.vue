@@ -10,4 +10,5 @@ onMounted(() => {
   commonStore.setActiveTab(PanelTab.TRANSACTIONS)
 })
 </script>
+
 <template>Transactions</template>
