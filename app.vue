@@ -6,7 +6,6 @@ const metadata = {
   icons: ['https://cs2agent.com/favicon.ico'],
 }
 
-
 useHead({
   link: [
     {
@@ -49,5 +48,6 @@ useSeoMeta({
       </template>
     </UNotifications>
     <UModals />
+    <USlideovers />
   </div>
 </template>

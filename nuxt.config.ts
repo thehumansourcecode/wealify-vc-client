@@ -11,12 +11,6 @@ export default defineNuxtConfig({
     },
     public: {
       baseUrl: process.env.BASE_URL,
-      landingBaseUrl: process.env.LANDING_BASE_URL,
-      telegramBaseUrl: process.env.TELEGRAM_BASE_URL,
-      twitterBaseUrl: process.env.TWITTER_BASE_URL,
-      projectDocsBaseUrl: process.env.DOCS_BASE_URL,
-      redirectBuyUrl: process.env.REDIRECT_BUY_URL,
-      dAppsBaseUrl: process.env.DAPPS_BASE_URL,
     },
   },
 
@@ -65,17 +59,6 @@ export default defineNuxtConfig({
       'red',
       'orange',
       'green',
-      'customYellow',
-      'customOrange',
-      'customBlend',
-      'customSilver',
-      'customGold',
-      'customMG',
-      'customDMG',
-      'customLE',
-      'customSMFC',
-      'customGE',
-      'customActivePagination',
     ],
   },
 
@@ -100,7 +83,11 @@ export default defineNuxtConfig({
       pathPrefix: false,
     },
     {
-      path: '~/components/modal',
+      path: '~/components/modals',
+      pathPrefix: false,
+    },
+    {
+      path: '~/components/slideovers',
       pathPrefix: false,
     },
   ],
@@ -109,7 +96,7 @@ export default defineNuxtConfig({
     enabled: true,
   },
 
-  // Change to CS2Agent
+  // Change to Wealify
   app: {
     head: {
       meta: [
@@ -119,61 +106,61 @@ export default defineNuxtConfig({
         {
           hid: 'description',
           name: 'description',
-          content: 'CS2Agent - The best place to get your favourite skins for cheap.',
+          content: 'Wealify',
         },
         { name: 'robots', content: 'index, follow' },
-        { name: 'author', content: 'CS2Agent' },
-        { property: 'og:site_name', content: 'CS2Agent' },
-        { property: 'og:title', content: 'CS2Agent - The best place to get your favourite skins for cheap.' },
+        { name: 'author', content: 'Wealify' },
+        { property: 'og:site_name', content: 'Wealify' },
+        { property: 'og:title', content: 'Wealify' },
         {
           property: 'og:description',
-          content: 'CS2Agent - The best place to get your favourite skins for cheap.',
+          content: 'Wealify',
         },
         { property: 'og:type', content: 'website' },
-        { property: 'og:url', content: 'https://cs2agent.com' },
+        { property: 'og:url', content: 'https://Wealify.com' },
         { property: 'og:image', content: '/favicon.ico' },
         { name: 'twitter:card', content: 'summary_large_image' },
         {
           name: 'twitter:title',
-          content: 'CS2Agent',
+          content: 'Wealify',
         },
         {
           name: 'twitter:description',
-          content: 'CS2Agent - The best place to get your favourite skins for cheap.',
+          content: 'Wealify',
         },
-        { name: 'twitter:site', content: 'https://cs2agent.com' },
+        { name: 'twitter:site', content: 'https://Wealify.com' },
         {
           name: 'twitter:image',
-          content: 'https://cs2agent.com/social-card.png',
+          content: 'https://Wealify.com/social-card.png',
         },
         {
           name: 'twitter:image:src',
-          content: 'https://cs2agent.com/social-card.png',
+          content: 'https://Wealify.com/social-card.png',
         },
         {
           name: 'keywords',
-          content: 'CS2Agent, CS2Agent.com, CS2Agent skins, CS2Agent skins for cheap',
+          content: 'Wealify',
         },
         { hid: 'og-type', property: 'og:type', content: 'website' },
         {
           hid: 'og-title',
           property: 'og:title',
-          content: 'CS2Agent',
+          content: 'Wealify',
         },
         {
           hid: 'og-desc',
           property: 'og:description',
-          content: 'CS2Agent - The best place to get your favourite skins for cheap.',
+          content: 'Wealify',
         },
         {
           hid: 'og-image',
           property: 'og:image',
-          content: 'https://cs2agent.com/social-card.png',
+          content: 'https://Wealify.com/social-card.png',
         },
         {
           hid: 'og-url',
           property: 'og:url',
-          content: 'https://cs2agent.com/social-card.png',
+          content: 'https://Wealify.com/social-card.png',
         },
         { hid: 't-type', name: 'twitter:card', content: 'summary_large_image' },
       ],
@@ -182,9 +169,9 @@ export default defineNuxtConfig({
           rel: 'stylesheet',
           href: 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap',
         },
-        { rel: 'canonical', href: 'https://cs2agent.com' },
-        { rel: 'alternate', hreflang: 'en', href: 'https://cs2agent.com' },
-        { rel: 'alternate', hreflang: 'x-default', href: 'https://cs2agent.com' },
+        { rel: 'canonical', href: 'https://Wealify.com' },
+        { rel: 'alternate', hreflang: 'en', href: 'https://Wealify.com' },
+        { rel: 'alternate', hreflang: 'x-default', href: 'https://Wealify.com' },
       ],
     },
   },
@@ -195,8 +182,8 @@ export default defineNuxtConfig({
   },
 
   site: {
-    url: 'https://cs2agent.com',
-    name: 'Best place to buy skins',
+    url: 'https://www.wealify.com',
+    name: '',
   },
 
   schemaOrg: {

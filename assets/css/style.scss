@@ -4,19 +4,21 @@ body {
   font-style: normal;
   font-weight: 600;
   line-height: 20px;
-  &::-webkit-scrollbar {
-    width: 4px;
-    height: 4px;
-  }
-  &::-webkit-scrollbar:horizontal {
-    height: 4px;
-  }
-  // &::-webkit-scrollbar-thumb {
-  //   background: #CDA981;
-  // }
-  &::-webkit-scrollbar-track {
-    background: #f0f0f0;
-  }
+}
+
+.i-copy {
+  background: url('../img/icons/copy.svg') no-repeat;
+}
+.i-copied {
+  background: url('../img/icons/copied.svg') no-repeat;
+}
+
+.i-selected {
+  background: url('../img/icons/selected.svg') no-repeat;
+}
+
+.i-dropdown {
+  background: url('../img/icons/dropdown.svg') no-repeat;
 }
 
 @function vw($target) {
@@ -186,13 +188,6 @@ input[type='number'] {
   outline: none !important;
 }
 
-.i-copy {
-  background: url('../img/icons/copy.svg') no-repeat;
-}
-.i-copied {
-  background: url('../img/icons/copied.svg') no-repeat;
-}
-
 .text-common {
   color: #1c1d23;
 }
@@ -202,5 +197,61 @@ input[type='number'] {
 }
 
 .bg-tab-hover {
-  color: #F0F2F5;
+  color: #f0f2f5;
+}
+
+.text-sm-500-20 {
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.text-sm-600-20 {
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.text-sm-700-20 {
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 20px;
+}
+
+.text-xs-500-20 {
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.text-xs-600-20 {
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.text-md-700-24 {
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+.text-2xl-600-32 {
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 32px;
+}
+
+.text-32-700-44 {
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 44px;
 }

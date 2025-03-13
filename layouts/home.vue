@@ -24,27 +24,25 @@ const selectedLanguage = ref(languageOptions.value[0])
 </script>
 
 <template>
-  <div class="flex flex-row">
+  <div class="flex flex-row h-[100vh]">
     <LeftPanel />
-    <div class="flex flex-col w-full ml-[40px] mr-[60px]">
+    <div class="flex flex-col w-full max-h-[100vh]">
       <Header />
       <slot />
     </div>
   </div>
   <Modals />
+  <Slideovers />
 </template>
 
 <style lang="scss">
-.profile-scrollable {
-  height: calc(100vh - 126px);
-  &::-webkit-scrollbar {
-    width: 4px;
-  }
-  &::-webkit-scrollbar-thumb {
-    background: #cda981;
-  }
-  &::-webkit-scrollbar-track {
-    background: #261608;
-  }
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-thumb {
+  background: #888888;
+}
+::-webkit-scrollbar-track {
+  background: #f0f0f0;
 }
 </style>

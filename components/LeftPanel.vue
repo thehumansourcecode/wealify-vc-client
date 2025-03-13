@@ -24,42 +24,42 @@ const links = computed(() => [
     label: t(`common.title.${PanelTab.DASHBOARD}`),
     to: '/',
     active: activeTab.value === PanelTab.DASHBOARD,
-    icon: activeTab.value === PanelTab.DASHBOARD ? '/icons/dashboard-active.svg' : '/icons/dashboard.svg',
+    icon: activeTab.value === PanelTab.DASHBOARD ? '/icons/dashboard/dashboard-active.svg' : '/icons/dashboard/dashboard.svg',
   },
   {
     value: PanelTab.CARD_LIST,
     label: t(`common.title.${PanelTab.CARD_LIST}`),
     to: '/cards',
     active: activeTab.value === PanelTab.CARD_LIST,
-    icon: activeTab.value === PanelTab.CARD_LIST ? '/icons/cards-active.svg' : '/icons/cards.svg',
+    icon: activeTab.value === PanelTab.CARD_LIST ? '/icons/dashboard/cards-active.svg' : '/icons/dashboard/cards.svg',
   },
   {
     value: PanelTab.TRANSACTIONS,
     label: t(`common.title.${PanelTab.TRANSACTIONS}`),
     to: '/transactions',
     active: activeTab.value === PanelTab.TRANSACTIONS,
-    icon: activeTab.value === PanelTab.TRANSACTIONS ? '/icons/transactions-active.svg' : '/icons/transactions.svg',
+    icon: activeTab.value === PanelTab.TRANSACTIONS ? '/icons/dashboard/transactions-active.svg' : '/icons/dashboard/transactions.svg',
   },
   {
     value: PanelTab.SETTINGS,
     label: t(`common.title.${PanelTab.SETTINGS}`),
     to: '/settings',
     active: activeTab.value === PanelTab.SETTINGS,
-    icon: activeTab.value === PanelTab.SETTINGS ? '/icons/settings-active.svg' : '/icons/settings.svg',
+    icon: activeTab.value === PanelTab.SETTINGS ? '/icons/dashboard/settings-active.svg' : '/icons/dashboard/settings.svg',
   },
   {
     value: PanelTab.HELP,
     label: t(`common.title.${PanelTab.HELP}`),
     to: '/help',
     active: activeTab.value === PanelTab.HELP,
-    icon: activeTab.value === PanelTab.HELP ? '/icons/help-active.svg' : '/icons/help.svg',
+    icon: activeTab.value === PanelTab.HELP ? '/icons/dashboard/help-active.svg' : '/icons/dashboard/help.svg',
   },
   {
     value: PanelTab.CONTACT_SUPPORT,
     label: t(`common.title.${PanelTab.CONTACT_SUPPORT}`),
     to: '/support',
     active: activeTab.value === PanelTab.CONTACT_SUPPORT,
-    icon: activeTab.value === PanelTab.CONTACT_SUPPORT ? '/icons/support-active.svg' : '/icons/support.svg',
+    icon: activeTab.value === PanelTab.CONTACT_SUPPORT ? '/icons/dashboard/support-active.svg' : '/icons/dashboard/support.svg',
   },
 ])
 
@@ -73,7 +73,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="px-4 w-[24%] max-w-[480px]">
+  <div class="px-4 w-[24%] max-w-[480px] min-w-[250px]">
     <div class="pt-5 pb-8">
       <ULink to="/"><img src="~/assets/img/logo/logo.svg" alt="" /></ULink>
     </div>

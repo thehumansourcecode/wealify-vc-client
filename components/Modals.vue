@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-const authStore = useAuthStore()
+const dashboardStore = useDashboardStore()
+const isOpenTopupModal = computed(() => dashboardStore.isOpenTopupModal)
 </script>
 
 <template>
-  <div></div>
+  <TopupModal v-if="isOpenTopupModal" v-model="isOpenTopupModal" />
 </template>

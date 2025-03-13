@@ -12,7 +12,7 @@ const activeTab = computed(() => commonStore.activeTab)
 </script>
 
 <template>
-  <div class="py-4 flex flex-row w-full justify-between items-center">
+  <div class="py-4 flex flex-row w-full justify-between items-center pl-10 pr-[60px] flex-none">
     <div class="text-[20px] leading-8">{{ t(`common.title.${activeTab}`) }}</div>
     <div class="flex flex-row items-center">
       <div class="mr-4">EN</div>
