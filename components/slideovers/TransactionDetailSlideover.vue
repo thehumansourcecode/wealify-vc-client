@@ -15,6 +15,18 @@ function onClosePrevented() {
   dashboardStore.toggleTransactionDetailSlideover(false)
 }
 
+const copyIndex = ref(0)
+
+function copyTransactionId() {
+  copy(transactionDetail.value.id)
+  copyIndex.value = 0
+}
+
+function copyTransactionAddress(){
+  copy(transactionDetail.value.address)
+  copyIndex.value = 1
+}
+
 function getStatusColor(status: TransactionStatus) {
   if (status === TransactionStatus.FAILED) {
     return '#ED2C38'
@@ -152,8 +164,8 @@ function createNewTopup() {
               </div>
               <img
                 class="cursor-pointer"
-                @click="copy(transactionDetail.id)"
-                :src="copied ? `/icons/common/copied-bordered.svg` : `/icons/common/copy-bordered.svg`"
+                @click="copyTransactionId()"
+                :src="copied && !copyIndex ? `/icons/common/copied-bordered.svg` : `/icons/common/copy-bordered.svg`"
                 alt=""
               />
             </div>
@@ -195,8 +207,8 @@ function createNewTopup() {
               </div>
               <img
                 class="cursor-pointer"
-                @click="copy(transactionDetail.address)"
-                :src="copied ? `/icons/common/copied-bordered.svg` : `/icons/common/copy-bordered.svg`"
+                @click="copyTransactionAddress()"
+                :src="copied && copyIndex ? `/icons/common/copied-bordered.svg` : `/icons/common/copy-bordered.svg`"
                 alt=""
               />
             </div>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { formatMoney } from '~/common/functions'
 import { useDashboardStore } from '~/stores/dashboard'
-import { CommonCurrency } from '~/types/common'
+import { CommonCurrency, PanelTab } from '~/types/common'
 import { type ITransactionData, TransactionMethod, TransactionStatus, TransactionType } from '~/types/dashboard'
 
 definePageMeta({
@@ -16,6 +16,12 @@ const isShowBalance = ref(true)
 function toggleBalance() {
   isShowBalance.value = !isShowBalance.value
 }
+
+const commonStore = useCommonStore()
+
+onMounted(() => {
+  commonStore.setActiveTab(PanelTab.DASHBOARD)
+})
 
 const isShowTransactionDetail = ref(false)
 
@@ -159,7 +165,6 @@ function onClickWithdraw() {
 async function onClickViewDetail() {
   // await call API
   dashboardStore.toggleTransactionDetailSlideover(true)
-
 }
 </script>
 <template>
@@ -287,11 +292,13 @@ async function onClickViewDetail() {
         <span class="text-[#1C1D23] text-[18px] font-semibold leading-7">
           {{ t('dashboard.transactions.title') }}
         </span>
-        <UButton
-          class="flex items-center justify-center rounded-[110px] bg-[#F0F2F5] hover:bg-[#E1E3E6] text-black text-sm-600-20 px-4 py-2"
-        >
-          {{ t('dashboard.transactions.viewAll') }}
-        </UButton>
+        <ULink to="/transactions">
+          <UButton
+            class="flex items-center justify-center rounded-[110px] bg-[#F0F2F5] hover:bg-[#E1E3E6] text-black text-sm-600-20 px-4 py-2"
+          >
+            {{ t('dashboard.transactions.viewAll') }}
+          </UButton>
+        </ULink>
       </div>
       <!-- Table -->
       <UTable
@@ -396,7 +403,7 @@ async function onClickViewDetail() {
     background: #888888;
   }
   &::-webkit-scrollbar-track {
-    background: #F0F0F0;
+    background: #f0f0f0;
   }
 }
 </style>
