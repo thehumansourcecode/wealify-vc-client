@@ -235,6 +235,7 @@ async function onClickViewDetail() {
               <img width="40" src="~/assets/img/dashboard/withdraw.svg" alt="" />
               <span class="text-xs text-[#FFF] leading-5">
                 {{ t('dashboard.balance.wealify.withdraw') }}
+                
               </span>
             </div>
           </div>
