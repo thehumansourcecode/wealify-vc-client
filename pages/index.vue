@@ -23,8 +23,6 @@ onMounted(() => {
   commonStore.setActiveTab(PanelTab.DASHBOARD)
 })
 
-const isShowTransactionDetail = ref(false)
-
 const wealifyBalance = ref({
   balance: 0,
   moneyIn: 0,
@@ -176,7 +174,7 @@ async function onClickViewDetail() {
       <img
         class="cursor-pointer hover:opacity-90"
         @click="toggleBalance()"
-        src="~/assets/img/dashboard/toggle-balance.svg"
+        :src="isShowBalance ? '/icons/dashboard/toggle-balance-disabled.svg' : '/icons/dashboard/toggle-balance.svg'"
         alt=""
       />
     </div>
@@ -192,7 +190,7 @@ async function onClickViewDetail() {
               {{ t('dashboard.balance.wealify.balance') }}
             </span>
             <div class="text-[18px] font-bold leading-7 mt-1">
-              <span class="text-[#FFF]">{{ wealifyBalance.balance }}</span>
+              <span class="text-[#FFF]">{{ isShowBalance ? wealifyBalance.balance : '*' }}</span>
               <span class="pl-1 text-[#7A7D89]">USD</span>
             </div>
             <div class="pt-4 flex flex-col w-[220px] gap-2">
@@ -205,7 +203,9 @@ async function onClickViewDetail() {
                 </div>
                 <div class="flex flex-row gap-[2px] items-center">
                   <img src="~/assets/img/dashboard/green-arrow.svg" alt="" />
-                  <span class="text-[#FFF] text-xs font-semibold leading-5"> +{{ wealifyBalance.moneyIn }} USD </span>
+                  <span class="text-[#FFF] text-xs font-semibold leading-5">
+                    +{{ isShowBalance ? wealifyBalance.moneyIn : '*' }} USD
+                  </span>
                 </div>
               </div>
               <div class="flex flex-row justify-between w-full">
@@ -217,7 +217,9 @@ async function onClickViewDetail() {
                 </div>
                 <div class="flex flex-row gap-[2px] items-center">
                   <img src="~/assets/img/dashboard/red-arrow.svg" alt="" />
-                  <span class="text-[#FFF] text-xs font-semibold leading-5"> -{{ wealifyBalance.moneyOut }} USD </span>
+                  <span class="text-[#FFF] text-xs font-semibold leading-5">
+                    -{{ isShowBalance ? wealifyBalance.moneyOut : '*' }} USD
+                  </span>
                 </div>
               </div>
             </div>
@@ -247,7 +249,7 @@ async function onClickViewDetail() {
               {{ t('dashboard.balance.card.balance') }}
             </span>
             <div class="text-[18px] font-bold leading-7 mt-1">
-              <span class="">{{ cardBalance.balance }}</span>
+              <span class="">{{ isShowBalance ? cardBalance.balance : '*' }}</span>
               <span class="pl-1 text-[#7A7D89]">USD</span>
             </div>
             <div class="pt-4 flex flex-col w-[220px] gap-2">
@@ -260,7 +262,9 @@ async function onClickViewDetail() {
                 </div>
                 <div class="flex flex-row gap-[2px] items-center">
                   <img src="~/assets/img/dashboard/green-arrow.svg" alt="" />
-                  <span class="text-xs font-semibold leading-5"> +{{ cardBalance.topup }} USD </span>
+                  <span class="text-xs font-semibold leading-5">
+                    +{{ isShowBalance ? cardBalance.topup : '*' }} USD
+                  </span>
                 </div>
               </div>
               <div class="flex flex-row justify-between w-full">
@@ -272,7 +276,9 @@ async function onClickViewDetail() {
                 </div>
                 <div class="flex flex-row gap-[2px] items-center">
                   <img src="~/assets/img/dashboard/red-arrow.svg" alt="" />
-                  <span class="text-xs font-semibold leading-5"> -{{ cardBalance.withdraw }} USD </span>
+                  <span class="text-xs font-semibold leading-5">
+                    -{{ isShowBalance ? cardBalance.withdraw : '*' }} USD
+                  </span>
                 </div>
               </div>
             </div>
