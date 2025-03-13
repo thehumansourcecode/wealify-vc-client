@@ -126,23 +126,6 @@ export interface IItemGeneralDetailResponse {
   }[]
 }
 
-export interface IItemGiftPriceData {
-  commodityId: number
-  commodityPriceRmb: number
-  commodityPriceUsd: number
-  commodityConversionPriceRmb: number
-  commodityConversionPriceUsd: number
-  cs2AgentFeeRmb: number
-  cs2AgentFeeUsd: number
-  tierDiscountRmb?: number
-  tierDiscountUsd?: number
-  depositAmountRmb?: number
-  depositAmountUsd?: number
-  partnershipDiscountRmb?: number
-  partnershipDiscountUsd?: number
-  finalAmountRmb?: number
-  finalAmountUsd?: number
-}
 
 export interface ISteamUserData {
   personaName: string

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 const metadata = {
-  name: 'CS2Agent',
-  description: 'CS2Agent',
-  url: 'https://cs2agent.com',
-  icons: ['https://cs2agent.com/favicon.ico'],
+  name: 'Wealify',
+  description: 'Wealify',
+  url: 'https://vc.wealify.com',
+  icons: ['https://wealify.com/favicon.ico'],
 }
 
 useHead({
