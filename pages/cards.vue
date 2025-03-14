@@ -89,6 +89,10 @@ function onClickTopup() {
   console.log('click topup')
 }
 
+function clearSelected(){
+  selectedCards.value = []
+}
+
 const totalSelectedAmount = computed(() => {
   const cardListAmount = selectedCards.value.map((selectedCard: ICardData) => selectedCard.balance)
   return cardListAmount.reduce((a: number, b: number) => a + b, 0)
@@ -128,6 +132,7 @@ const totalSelectedAmount = computed(() => {
     </div>
     <!-- Cards selected -->
     <div v-else class="flex flex-row justify-between items-start">
+      <!-- Buttons -->
       <div class="flex flex-col gap-[10px] flex-1">
         <div class="flex flex-row gap-[10px]">
           <UButton
@@ -176,7 +181,8 @@ const totalSelectedAmount = computed(() => {
           </div>
         </div>
       </div>
-      <img class="cursor-pointer hover:opacity-70" src="~/assets/img/common/close.svg" alt="" />
+      <!-- Close -->
+      <img @click="clearSelected" class="cursor-pointer hover:opacity-70" src="~/assets/img/common/close.svg" alt="" />
     </div>
     <div class="rounded-[12px] flex flex-col border border-[#D7D9E5] mb-8 overflow-x-auto w-full">
       <!-- Table -->
