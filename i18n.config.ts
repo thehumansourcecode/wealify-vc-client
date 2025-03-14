@@ -9,12 +9,7 @@ export default defineI18nConfig(() => ({
   legacy: false,
   locale: CommonLanguage.EN,
   defaultLocale: CommonLanguage.EN,
-  detectBrowserLanguage: {
-    useCookie: false, // Disable browser language detection
-    cookieKey: 'i18n_redirected',
-    alwaysRedirect: false,
-    fallbackLocale: CommonLanguage.EN,
-  },
+  detectBrowserLanguage: false,
   messages: {
     en: {
       dashboard: dashboardEn,

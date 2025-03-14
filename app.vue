@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { clippingParents } from './node_modules/@popperjs/core/lib/enums'
+import { CommonLanguage } from './types/common'
+
+const { locale, setLocale } = useI18n()
 const metadata = {
   name: 'Wealify',
   description: 'Wealify',
@@ -27,6 +31,19 @@ useSeoMeta({
   ogImage: `${metadata.url}/social-card.png`,
   twitterImage: `${metadata.url}/social-card.png`,
   twitterCard: 'summary_large_image',
+})
+
+// Load locale from localStorage if available
+const savedLocale = localStorage.getItem('user-locale')
+if (savedLocale) {
+  setLocale(savedLocale)
+} else {
+  setLocale(CommonLanguage.EN) // Default to English if nothing is stored
+}
+
+// Watch for locale changes and save to localStorage
+watch(locale, newLocale => {
+  localStorage.setItem('user-locale', newLocale)
 })
 </script>
 

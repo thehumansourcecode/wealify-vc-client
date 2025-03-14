@@ -14,14 +14,18 @@ export default defineNuxtConfig({
     },
   },
 
+  router: {
+    middleware: ['i18n'],
+  },
+
   modules: [
+    '@nuxtjs/i18n',
     '@pinia/nuxt',
     '@nuxt/ui',
     '@nuxtjs/fontaine',
     '@nuxtjs/google-fonts',
     '@vueuse/nuxt',
     'nuxt-aos',
-    '@nuxtjs/i18n',
     '@nuxtjs/seo',
     '@nuxtjs/robots',
     '@nuxtjs/sitemap',
@@ -54,12 +58,7 @@ export default defineNuxtConfig({
   },
 
   ui: {
-    safelistColors: [
-      'primary',
-      'red',
-      'orange',
-      'green',
-    ],
+    safelistColors: ['primary', 'red', 'orange', 'green'],
   },
 
   aos: {
@@ -191,9 +190,7 @@ export default defineNuxtConfig({
   },
 
   sitemap: {
-    sources: [
-      '/api/__sitemap__/urls',
-    ]
+    sources: ['/api/__sitemap__/urls'],
   },
 
   compatibilityDate: '2024-08-11',
