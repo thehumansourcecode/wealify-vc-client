@@ -9,4 +9,7 @@ export default {
     [PanelTab.HELP]: 'Help',
     [PanelTab.CONTACT_SUPPORT]: 'Contact support',
   },
+  toast: {
+    copy: 'Copied to clipboard!'
+  }
 }

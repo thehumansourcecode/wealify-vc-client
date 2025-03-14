@@ -2,15 +2,23 @@ export default defineAppConfig({
   ui: {
     notifications: {
       wrapper: 'fixed flex flex-col justify-start z-[55]',
-      position: 'bottom-0 end-0',
+      position: 'top-0 end-0',
     },
     notification: {
-      background: 'bg-[#3d2612]',
-      title: 'clash-medium text-sm text-[#CDA981]',
-      ring: '',
+      wrapper: ' pointer-events-auto w-full',
+      background: 'bg-[#1C1D23]',
+      rounded: 'rounded-[10px]',
+      container: 'relative overflow-hidden',
+      title: 'text-[#FFFFFF] text-sm leading-5 font-medium manrope w-[max-content] max-w-[330px]',
+      inner: 'w-0 flex-0 self-center',
+      padding: 'p-5',
+      gap: 'gap-[18px]',
       progress: {
         base: 'absolute bottom-0 end-0 start-0',
-        background: 'bg-[#CDA981]'
+        background: 'bg-[#F0F2F5]'
+      },
+      default: {
+        
       },
       
     },

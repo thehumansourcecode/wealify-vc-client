@@ -327,8 +327,8 @@ async function onClickViewDetail() {
           },
           thead: 'bg-[#FFEEE9]',
           emptyState: {
-            label: 'text-md text-center text-yellow clash-medium',
-            icon: 'text-yellow ',
+            label: 'text-md text-center',
+            icon: '',
           },
         }"
         class="table-wrapper grow"

@@ -46,7 +46,11 @@ setLocale(CommonLanguage.EN)
       <NuxtPage />
     </NuxtLayout>
 
-    <UNotifications>
+    <UNotifications
+      :ui="{
+        width: 'w-full sm:w-full sm:max-w-[500px]',
+      }"
+    >
       <template #title="{ title }">
         <span v-html="title" />
       </template>

@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { TransactionCryptocurrency, TransactionNetwork } from '~/types/dashboard'
 const { copy, copied } = useClipboard()
+const toast = useToast()
 
 const commonStore = useCommonStore()
+const dashboardStore = useDashboardStore()
 
 const { t } = useI18n()
-
-const dashboardStore = useDashboardStore()
 
 const topupAddress = computed(() => '0xb2f28c019362a57285424e39ab795d8c82afbfb6')
 
@@ -44,6 +44,16 @@ const currencyOptions = ref([
 ])
 
 const selectedCurrencyOption = ref(currencyOptions.value[0])
+
+function handleCopy(value: string) {
+  copy(value)
+  toast.clear()
+  toast.add({
+    title: t('common.toast.copy'),
+    avatar: { src: '/icons/common/toast-success.svg' },
+    timeout: 5000,
+  })
+}
 </script>
 
 <template>
@@ -183,14 +193,14 @@ const selectedCurrencyOption = ref(currencyOptions.value[0])
           <div class="relative">
             <img
               class="cursor-pointer"
-              @click="copy(topupAddress)"
+              @click="handleCopy(topupAddress)"
               :src="copied ? `/icons/common/copied.svg` : `/icons/common/copy.svg`"
               alt=""
             />
           </div>
         </div>
         <div class="text-xs-500-20 text-[#7A7D89] mt-4 w-[400px]">{{ t(`dashboard.modals.topup.note`) }}</div>
-        <div class="text-md-600-20 text-[#FF5524] mt-4">{{ t(`dashboard.modals.topup.fee`, { fee: '1' }) }}</div>
+        <div class="text-md-600-20 text-[#FF5524] mt-4">{{ t(`dashboard.modals.topup.fee`, { fee: '0' }) }}</div>
       </div>
       <img src="~/assets/img/dashboard/topup-qr.svg" alt="" />
     </div>
