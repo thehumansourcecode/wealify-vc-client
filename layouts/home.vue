@@ -26,7 +26,7 @@ const selectedLanguage = ref(languageOptions.value[0])
 <template>
   <div class="flex flex-row h-[100vh]">
     <LeftPanel />
-    <div class="flex flex-col w-full max-h-[100vh]">
+    <div class="flex flex-col w-full max-h-[100vh] overflow-x-hidden">
       <Header />
       <slot />
     </div>

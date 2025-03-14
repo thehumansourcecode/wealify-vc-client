@@ -3,21 +3,27 @@ definePageMeta({
   layout: 'home',
 })
 import { formatDDMMYYYY, formatMoney } from '~/common/functions'
-import { CardStatus } from '~/types/cards'
+import { CardStatus, type ICardData } from '~/types/cards'
 
 const { t } = useI18n()
 const dayjs = useDayjs()
 
 const cardStore = useCardStore()
 const cardList = computed(() => cardStore.cardList)
-const selected = ref([])
+const selectedCards = ref([])
 
 const page = ref(1)
-const pageCount = 10
+
+const pageCountOptions = ref([10, 30, 50])
+const pageCount = ref(pageCountOptions.value[0])
 
 const rows = computed(() => {
-  return cardList.value.slice((page.value - 1) * pageCount, page.value * pageCount)
+  return cardList.value.slice((page.value - 1) * pageCount.value, page.value * pageCount.value)
 })
+
+function isCardSelected(card: ICardData) {
+  return selectedCards.value.some((selectedCard: ICardData) => selectedCard.createdAt === card.createdAt)
+}
 
 const cardTableColumns = [
   {
@@ -84,7 +90,7 @@ function onClickTopup() {
 }
 </script>
 <template>
-  <div class="flex flex-col overflow-y-auto overflow-x-hidden pl-10 pr-[60px] flex-1 gap-6">
+  <div class="flex flex-col overflow-y-auto pl-10 pr-[60px] flex-1 gap-6">
     <div class="flex flex-row justify-between items-start gap-[200px]">
       <div class="flex flex-col gap-[10px] flex-1">
         <BaseInput
@@ -95,7 +101,8 @@ function onClickTopup() {
           :placeholder="$t('cards.filter.placeholder.search')"
           autocomplete="off"
         />
-        <div>456</div>
+        <div v-if="!selectedCards?.length">456</div>
+        <div v-else>890</div>
       </div>
       <div class="flex flex-row gap-[10px]">
         <UButton
@@ -115,11 +122,11 @@ function onClickTopup() {
       </div>
     </div>
 
-    <div class="rounded-[12px] flex flex-col border border-[#D7D9E5] mb-8 overflow-hidden">
+    <div class="rounded-[12px] flex flex-col border border-[#D7D9E5] mb-8 overflow-x-auto w-full">
       <!-- Table -->
       <UTable
         selectable
-        v-model="selected"
+        v-model="selectedCards"
         v-if="cardList?.length"
         :rows="rows"
         :columns="cardTableColumns"
@@ -194,8 +201,8 @@ function onClickTopup() {
         </template>
         <template #status-data="{ row }">
           <div
-            class="flex flex-row gap-[6px] w-[100px] items-center justify-center mx-auto px-3 py-[2px] bg-[#F0F2F5] rounded-[110px]"
-            :style="{ color: getStatusColor(row?.status) }"
+            class="flex flex-row gap-[6px] w-[100px] items-center justify-center mx-auto px-3 py-[2px] rounded-[110px]"
+            :style="{ color: getStatusColor(row?.status), background: isCardSelected(row) ? 'white' : '#F0F2F5' }"
           >
             <div class="text-12-500-20">
               {{ t(`cards.list.status.${row.status}`) }}
@@ -203,8 +210,9 @@ function onClickTopup() {
             <div class="w-[6px] h-[6px] rounded-[1px]" :style="{ background: getStatusColor(row?.status) }"></div>
           </div>
         </template>
-        <template #action-data="{}">
+        <template #action-data="{ row }">
           <UButton
+            v-if="row.status === CardStatus.ACTIVE"
             @click="onClickTopup"
             class="flex items-center py-[6px] px-4 bg-[#1C1D23] hover:bg-[#3D3E34] rounded-[6px] mx-auto"
           >
@@ -219,7 +227,21 @@ function onClickTopup() {
         <img src="~/assets/img/dashboard/no-transaction.svg" alt="" />
         <div class="text-14-500-20 text-[#A5A8B8]">{{ t('card.list.empty') }}</div>
       </div>
-      <div class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700">
+      <div
+        v-if="cardList?.length > pageCount"
+        class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700 gap-10 items-center"
+      >
+        <USelectMenu v-model="pageCount" :options="pageCountOptions">
+          <template #option="{ option }">
+            <div class="text-12-500-20">{{ t(`cards.list.pagination.limit`, { limit: option }) }}</div>
+          </template>
+          <div class="border border-[#D7D9E5] rounded-[90px] py-[10px] pl-5 pr-4 flex flex-row gap-8">
+            <div class="text-14-500-20 text-[#1C1D23]">
+              {{ t(`cards.list.pagination.limit`, { limit: pageCount }) }}
+            </div>
+            <img src="assets/img/icons/dropdown.svg" alt="" />
+          </div>
+        </USelectMenu>
         <UPagination
           size="md"
           :max="6"
@@ -272,4 +294,15 @@ function onClickTopup() {
   </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-thumb {
+  background: #888888;
+}
+::-webkit-scrollbar-track {
+  background: #f0f0f0;
+}
+</style>
