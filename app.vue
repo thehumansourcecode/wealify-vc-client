@@ -2,6 +2,8 @@
 import { clippingParents } from './node_modules/@popperjs/core/lib/enums'
 import { CommonLanguage } from './types/common'
 
+const { locale, setLocale } = useI18n()
+
 const metadata = {
   name: 'Wealify',
   description: 'Wealify',
@@ -32,6 +34,8 @@ useSeoMeta({
   twitterCard: 'summary_large_image',
 })
 
+console.log(locale.value)
+setLocale(CommonLanguage.EN)
 </script>
 
 <template>

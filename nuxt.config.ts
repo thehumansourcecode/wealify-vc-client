@@ -1,5 +1,4 @@
 import { CommonLanguage } from './types/common'
-import i18nConfig from './i18n.config'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -12,10 +11,6 @@ export default defineNuxtConfig({
     public: {
       baseUrl: process.env.BASE_URL,
     },
-  },
-
-  router: {
-    middleware: ['i18n'],
   },
 
   modules: [
@@ -39,6 +34,7 @@ export default defineNuxtConfig({
     defaultLocale: CommonLanguage.EN, // default locale of your project for Nuxt pages and routings,
     lazy: true,
     skipSettingLocaleOnNavigate: true,
+    detectBrowserLanguage: false
   },
 
   veeValidate: {

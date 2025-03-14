@@ -9,7 +9,7 @@ export default defineI18nConfig(() => ({
   legacy: false,
   locale: CommonLanguage.EN,
   defaultLocale: CommonLanguage.EN,
-  detectBrowserLanguage: false,
+  detectBrowserLanguage: true,
   messages: {
     en: {
       dashboard: dashboardEn,
