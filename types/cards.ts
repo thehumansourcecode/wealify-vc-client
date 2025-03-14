@@ -23,7 +23,7 @@ export interface ICardData {
   cardName: string
   cardNumber: string
   cardType: CardType
-  cardCategory: CardCategory
+  cardCategory: CardCategory | string
   balance: number
   totalTopup: number
   totalSpend: number

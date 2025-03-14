@@ -3,13 +3,14 @@ definePageMeta({
   layout: 'home',
 })
 import { formatDDMMYYYY, formatMoney } from '~/common/functions'
+import { CardStatus } from '~/types/cards'
 
 const { t } = useI18n()
 const dayjs = useDayjs()
 
 const cardStore = useCardStore()
 const cardList = computed(() => cardStore.cardList)
-const selected = ref([cardList.value[1]])
+const selected = ref([])
 
 const page = ref(1)
 const pageCount = 10
@@ -22,7 +23,7 @@ const cardTableColumns = [
   {
     key: 'card',
     label: t('cards.list.header.card'),
-    class: 'mr-5 w-[218px]',
+    class: 'mr-5 w-[max-content]',
   },
   {
     key: 'type',
@@ -32,7 +33,7 @@ const cardTableColumns = [
   {
     key: 'category',
     label: t('cards.list.header.category'),
-    class: 'mr-5 text-center',
+    class: 'mr-5 text-center max-w-[180px]',
   },
   {
     key: 'balance',
@@ -55,18 +56,35 @@ const cardTableColumns = [
     class: 'text-center mr-5 w-[150px]',
   },
   {
+    key: 'status',
+    label: t('cards.list.header.status'),
+    class: 'text-center mr-5 w-[100px]',
+  },
+  {
     key: 'action',
     label: t('cards.list.header.action'),
-    class: 'text-center',
+    class: 'text-center w-[120px]',
   },
 ]
+
+function getStatusColor(status: CardStatus) {
+  if (status === CardStatus.CANCEL) {
+    return '#ED2C38'
+  }
+  if (status === CardStatus.ACTIVE) {
+    return '#2EA518'
+  }
+  if (status === CardStatus.FREEZE) {
+    return '#7A7D89'
+  }
+}
 
 function onClickTopup() {
   console.log('click topup')
 }
 </script>
 <template>
-  <div class="flex flex-col overflow-y-auto pl-10 pr-[60px] flex-1 gap-6">
+  <div class="flex flex-col overflow-y-auto overflow-x-hidden pl-10 pr-[60px] flex-1 gap-6">
     <div class="flex flex-row justify-between items-start gap-[200px]">
       <div class="flex flex-col gap-[10px] flex-1">
         <BaseInput
@@ -111,10 +129,14 @@ function onClickTopup() {
               color: '[#000000]',
             },
           },
+
           divide: 'divide-y divide-[#D7D9E5]/0',
           tbody: 'divide-y divide-[#D7D9E5]',
           td: {
-            padding: 'px-5 py-4',
+            padding: 'px-3 py-4',
+          },
+          checkbox: {
+            padding: 'px-2 ps-4',
           },
           tr: {
             base: '',
@@ -122,7 +144,7 @@ function onClickTopup() {
             selected: 'bg-[#F0F2F5]',
           },
           th: {
-            padding: 'px-5 py-4',
+            padding: 'px-3 py-4',
           },
           thead: 'bg-[#FFEEE9]',
           emptyState: {
@@ -133,7 +155,7 @@ function onClickTopup() {
         class="table-wrapper grow"
       >
         <template #card-data="{ row }">
-          <div class="flex flex-row items-center gap-[14px] w-[218px]">
+          <div class="flex flex-row items-center gap-[14px] w-[200px]">
             <img src="/icons/dashboard/mastercard.svg" alt="" />
             <div class="flex flex-col gap-1">
               <span class="text-14-600-20 text-[#1C1D23]">{{ row?.cardName }}</span>
@@ -149,7 +171,7 @@ function onClickTopup() {
         <template #category-data="{ row }">
           <div class="flex justify-center">
             <div
-              class="px-3 py-[2px] flex items-center justify-center rounded-[5px] gap-1 bg-[#F0F2F5] border border-[#D7D9E5] w-[max-content]"
+              class="px-3 py-[2px] flex items-center justify-center rounded-[5px] gap-1 bg-[#F0F2F5] border border-[#D7D9E5] max-w-[180px]"
             >
               <div class="text-[#1C1D23] text-12-500-20">{{ t(`cards.list.category.${row.cardCategory}`) }}</div>
               <img :src="`/icons/cards/category/${row.cardCategory}.svg`" alt="" />
@@ -170,6 +192,17 @@ function onClickTopup() {
             {{ formatDDMMYYYY(dayjs.utc(row.createdAt).local()) }}
           </div>
         </template>
+        <template #status-data="{ row }">
+          <div
+            class="flex flex-row gap-[6px] w-[100px] items-center justify-center mx-auto px-3 py-[2px] bg-[#F0F2F5] rounded-[110px]"
+            :style="{ color: getStatusColor(row?.status) }"
+          >
+            <div class="text-12-500-20">
+              {{ t(`cards.list.status.${row.status}`) }}
+            </div>
+            <div class="w-[6px] h-[6px] rounded-[1px]" :style="{ background: getStatusColor(row?.status) }"></div>
+          </div>
+        </template>
         <template #action-data="{}">
           <UButton
             @click="onClickTopup"
@@ -184,7 +217,7 @@ function onClickTopup() {
 
       <div v-else class="flex flex-col items-center justify-center gap-4 h-full">
         <img src="~/assets/img/dashboard/no-transaction.svg" alt="" />
-        <div class="text-14-500-20 text-[#A5A8B8]">{{ t('dashboard.transactions.table.empty') }}</div>
+        <div class="text-14-500-20 text-[#A5A8B8]">{{ t('card.list.empty') }}</div>
       </div>
       <div class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700">
         <UPagination

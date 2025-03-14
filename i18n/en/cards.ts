@@ -18,6 +18,11 @@ export default {
     },
   },
   list: {
+    status: {
+      [CardStatus.ACTIVE]: 'Active',
+      [CardStatus.CANCEL]: 'Cancel',
+      [CardStatus.FREEZE]: 'Freeze',
+    },
     empty: 'No card created yet',
     pagination: {
       limit: '{limit} lines/page',
@@ -41,11 +46,6 @@ export default {
       [CardCategory.MARKETING]: 'Marketing',
       [CardCategory.SALES]: 'Sales',
       [CardCategory.OTHER]: 'Other',
-    },
-    status: {
-      [CardStatus.ACTIVE]: 'Active',
-      [CardStatus.CANCEL]: 'Cancel',
-      [CardStatus.FREEZE]: 'Freeze',
     },
   },
 }
