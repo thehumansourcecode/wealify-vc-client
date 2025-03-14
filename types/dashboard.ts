@@ -1,4 +1,4 @@
-import type { ICardData } from './card'
+import type { ICardData } from './cards'
 import type { CommonCurrency } from './common'
 
 export enum TransactionType {
@@ -9,7 +9,7 @@ export enum TransactionType {
 
 export enum TransactionMethod {
   CARD = 'CARD',
-  USDT = 'USDT',
+  CRYPTO = 'CRYPTO',
 }
 
 export enum TransactionStatus {

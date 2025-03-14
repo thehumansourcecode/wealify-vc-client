@@ -40,7 +40,7 @@ export default {
         [TransactionType.PAYMENT]: 'Payment',
         [TransactionType.TOPUP]: 'Top-up',
         [TransactionType.WITHDRAW]: 'Withdraw',
-        [TransactionMethod.USDT]: 'USDT',
+        [TransactionMethod.CRYPTO]: 'Crypto Transfer',
         [TransactionMethod.CARD]: 'Card',
       },
       status: {

@@ -39,7 +39,7 @@ const recentTransactions = computed<ITransactionData[]>(() => [
   {
     type: {
       label: TransactionType.TOPUP,
-      method: TransactionMethod.USDT,
+      method: TransactionMethod.CRYPTO,
     },
     transactionId: 'T124513143726134',
     amount: 100000000,
@@ -64,7 +64,7 @@ const recentTransactions = computed<ITransactionData[]>(() => [
   {
     type: {
       label: TransactionType.WITHDRAW,
-      method: TransactionMethod.USDT,
+      method: TransactionMethod.CRYPTO,
     },
     transactionId: 'T124513143726134',
     amount: 1000,
@@ -364,7 +364,7 @@ async function onClickViewDetail() {
           <div class="flex flex-row items-center gap-[14px] w-[218px]">
             <img src="/icons/dashboard/mastercard.svg" alt="" />
             <div class="flex flex-col gap-1">
-              <span class="text-14-600-20">{{ row.card?.cardName }}</span>
+              <span class="text-14-600-20 text-[#1C1D23]">{{ row.card?.cardName }}</span>
               <span class="text-12-500-20 text-[#7A7D89]"> {{ row.card?.cardNumber }}</span>
             </div>
           </div>

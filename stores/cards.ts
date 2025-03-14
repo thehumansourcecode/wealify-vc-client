@@ -1,4 +1,4 @@
-import { CardCategory, CardStatus, CardType, type ICardData } from '~/types/card'
+import { CardCategory, CardStatus, CardType, type ICardData } from '~/types/cards'
 import type { IUserProfileData } from '~/types/user'
 
 export const useCardStore = defineStore('card', () => {
@@ -14,10 +14,10 @@ export const useCardStore = defineStore('card', () => {
       cardNumber: 'xxxx xxxx xxxx 1234',
       cardType: CardType.DIGITAL,
       cardCategory: CardCategory.INVESTMENT,
-      balance: 1000,
+      balance: 100.0123123,
       totalTopup: 500,
       totalSpend: 500,
-      createdAt: '20/3/2023',
+      createdAt: '2025-03-11T13:36:41.718Z',
       status: CardStatus.ACTIVE,
     },
     {
@@ -25,10 +25,10 @@ export const useCardStore = defineStore('card', () => {
       cardNumber: 'xxxx xxxx xxxx 5678',
       cardType: CardType.PHYSICAL,
       cardCategory: CardCategory.TRAVEL,
-      balance: 1200,
+      balance: 1200123123,
       totalTopup: 700,
       totalSpend: 500,
-      createdAt: '22/3/2023',
+      createdAt: '2025-03-11T13:36:41.718Z',
       status: CardStatus.CANCEL,
     },
     {
@@ -39,7 +39,7 @@ export const useCardStore = defineStore('card', () => {
       balance: 1500,
       totalTopup: 800,
       totalSpend: 700,
-      createdAt: '23/3/2023',
+      createdAt: '2025-03-11T13:36:41.718Z',
       status: CardStatus.FREEZE,
     },
     {
@@ -50,7 +50,7 @@ export const useCardStore = defineStore('card', () => {
       balance: 2000,
       totalTopup: 1000,
       totalSpend: 500,
-      createdAt: '24/3/2023',
+      createdAt: '2025-03-11T13:36:41.718Z',
       status: CardStatus.ACTIVE,
     },
     {
@@ -61,7 +61,7 @@ export const useCardStore = defineStore('card', () => {
       balance: 900,
       totalTopup: 400,
       totalSpend: 500,
-      createdAt: '25/3/2023',
+      createdAt: '2025-03-11T13:36:41.718Z',
       status: CardStatus.CANCEL,
     },
     {
@@ -72,7 +72,7 @@ export const useCardStore = defineStore('card', () => {
       balance: 1300,
       totalTopup: 700,
       totalSpend: 600,
-      createdAt: '26/3/2023',
+      createdAt: '2025-03-11T13:36:41.718Z',
       status: CardStatus.ACTIVE,
     },
     {
@@ -83,7 +83,7 @@ export const useCardStore = defineStore('card', () => {
       balance: 1700,
       totalTopup: 900,
       totalSpend: 800,
-      createdAt: '27/3/2023',
+      createdAt: '2025-03-11T13:36:41.718Z',
       status: CardStatus.FREEZE,
     },
     {
@@ -94,7 +94,7 @@ export const useCardStore = defineStore('card', () => {
       balance: 1000,
       totalTopup: 500,
       totalSpend: 500,
-      createdAt: '28/3/2023',
+      createdAt: '2025-03-11T13:36:41.718Z',
       status: CardStatus.ACTIVE,
     },
     {
@@ -105,7 +105,7 @@ export const useCardStore = defineStore('card', () => {
       balance: 1400,
       totalTopup: 700,
       totalSpend: 700,
-      createdAt: '29/3/2023',
+      createdAt: '2025-03-11T13:36:41.718Z',
       status: CardStatus.CANCEL,
     },
     {
@@ -116,7 +116,7 @@ export const useCardStore = defineStore('card', () => {
       balance: 1600,
       totalTopup: 800,
       totalSpend: 800,
-      createdAt: '30/3/2023',
+      createdAt: '2025-03-11T13:36:41.718Z',
       status: CardStatus.FREEZE,
     },
     {
@@ -127,7 +127,7 @@ export const useCardStore = defineStore('card', () => {
       balance: 1900,
       totalTopup: 900,
       totalSpend: 1000,
-      createdAt: '31/3/2023',
+      createdAt: '2025-03-11T13:36:41.718Z',
       status: CardStatus.ACTIVE,
     },
     {
@@ -138,7 +138,7 @@ export const useCardStore = defineStore('card', () => {
       balance: 1100,
       totalTopup: 600,
       totalSpend: 500,
-      createdAt: '1/4/2023',
+      createdAt: '2025-03-11T13:36:41.718Z',
       status: CardStatus.CANCEL,
     },
     {
@@ -149,7 +149,7 @@ export const useCardStore = defineStore('card', () => {
       balance: 1800,
       totalTopup: 1000,
       totalSpend: 800,
-      createdAt: '2/4/2023',
+      createdAt: '2025-03-11T13:36:41.718Z',
       status: CardStatus.ACTIVE,
     },
     {
@@ -160,7 +160,7 @@ export const useCardStore = defineStore('card', () => {
       balance: 1500,
       totalTopup: 800,
       totalSpend: 700,
-      createdAt: '3/4/2023',
+      createdAt: '2025-03-11T13:36:41.718Z',
       status: CardStatus.FREEZE,
     },
     {
@@ -171,7 +171,7 @@ export const useCardStore = defineStore('card', () => {
       balance: 900,
       totalTopup: 400,
       totalSpend: 500,
-      createdAt: '4/4/2023',
+      createdAt: '2025-03-11T13:36:41.718Z',
       status: CardStatus.ACTIVE,
     },
   ])

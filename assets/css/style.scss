@@ -25,6 +25,10 @@ body {
   background: url('../img/icons/dropdown.svg') no-repeat;
 }
 
+.i-back {
+  background: url('../img/icons/dropdown.svg') no-repeat;
+}
+
 @function vw($target) {
   $vw-context: (1920 * 0.01) * 1px;
   @return ($target / $vw-context) * 1vw;

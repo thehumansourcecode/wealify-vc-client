@@ -1,4 +1,4 @@
-import { CardCategory, CardStatus } from '~/types/card'
+import { CardCategory, CardStatus } from '~/types/cards'
 export default {
   button: {
     withdraw: 'Withdraw',
@@ -6,6 +6,9 @@ export default {
     topup: 'Top-up',
   },
   filter: {
+    placeholder: {
+      search: 'Search card number, card name',
+    },
     label: {
       type: 'Type',
       category: 'Category',
