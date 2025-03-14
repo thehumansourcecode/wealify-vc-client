@@ -89,7 +89,7 @@ function onClickTopup() {
   console.log('click topup')
 }
 
-function clearSelected(){
+function clearSelected() {
   selectedCards.value = []
 }
 
@@ -241,6 +241,7 @@ const totalSelectedAmount = computed(() => {
           <div class="flex justify-center">
             <div
               class="px-3 py-[2px] flex items-center justify-center rounded-[5px] gap-1 bg-[#F0F2F5] border border-[#D7D9E5] max-w-[180px]"
+              :style="{ background: isCardSelected(row) ? 'white' : '#F0F2F5' }"
             >
               <div class="text-[#1C1D23] text-12-500-20">{{ t(`cards.list.category.${row.cardCategory}`) }}</div>
               <img :src="`/icons/cards/category/${row.cardCategory}.svg`" alt="" />
