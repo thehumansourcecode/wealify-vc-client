@@ -4,6 +4,9 @@ export default {
     withdraw: 'Withdraw',
     issue: 'Issue',
     topup: 'Top-up',
+    freeze: 'Freeze',
+    unfreeze: 'Unfreeze',
+    cancel: 'Cancel cards',
   },
   filter: {
     placeholder: {
@@ -13,8 +16,9 @@ export default {
       type: 'Type',
       category: 'Category',
       status: 'Status',
-      total: 'Total: ',
+      total: 'Total: ${amount}',
       amount: '{active}/{total} cards',
+      amountSelected: '{selected}/{total} selected cards'
     },
   },
   list: {

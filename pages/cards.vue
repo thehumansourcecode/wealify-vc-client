@@ -88,10 +88,16 @@ function getStatusColor(status: CardStatus) {
 function onClickTopup() {
   console.log('click topup')
 }
+
+const totalSelectedAmount = computed(() => {
+  const cardListAmount = selectedCards.value.map((selectedCard: ICardData) => selectedCard.balance)
+  return cardListAmount.reduce((a: number, b: number) => a + b, 0)
+})
 </script>
 <template>
-  <div class="flex flex-col overflow-y-auto pl-10 pr-[60px] flex-1 gap-6">
-    <div class="flex flex-row justify-between items-start gap-[200px]">
+  <div class="flex flex-col overflow-y-auto pl-10 pr-[60px] flex-1 gap-6 mt-7">
+    <!-- Cards not selected -->
+    <div v-if="!selectedCards?.length" class="flex flex-row justify-between items-start gap-[200px]">
       <div class="flex flex-col gap-[10px] flex-1">
         <BaseInput
           input-class="input-field"
@@ -101,8 +107,7 @@ function onClickTopup() {
           :placeholder="$t('cards.filter.placeholder.search')"
           autocomplete="off"
         />
-        <div v-if="!selectedCards?.length">456</div>
-        <div v-else>890</div>
+        <div>456</div>
       </div>
       <div class="flex flex-row gap-[10px]">
         <UButton
@@ -116,12 +121,63 @@ function onClickTopup() {
           class="flex items-center justify-center rounded-[49px] bg-[#FF5524] hover:bg-[#EE4413] px-4 py-2 w-[168px]"
         >
           <div class="text-white text-16-600-24">
-            {{ t('cards.button.topup') }}
+            {{ t('cards.button.issue') }}
           </div>
         </UButton>
       </div>
     </div>
-
+    <!-- Cards selected -->
+    <div v-else class="flex flex-row justify-between items-start">
+      <div class="flex flex-col gap-[10px] flex-1">
+        <div class="flex flex-row gap-[10px]">
+          <UButton
+            class="flex items-center justify-center rounded-[49px] bg-[#FF5524] hover:bg-[#EE4413] px-4 py-3 w-[168px]"
+          >
+            <div class="text-white text-16-600-24">
+              {{ t('cards.button.topup') }}
+            </div>
+          </UButton>
+          <UButton
+            class="flex items-center justify-center rounded-[49px] bg-[#F0F2F5] hover:bg-[#E1E3E6] px-4 py-2 w-[168px]"
+          >
+            <div class="text-[#1C1D23] text-16-600-24">
+              {{ t('cards.button.withdraw') }}
+            </div>
+          </UButton>
+          <UButton
+            class="flex items-center justify-center rounded-[49px] bg-[#F0F2F5] hover:bg-[#E1E3E6] px-4 py-2 w-[168px]"
+          >
+            <div class="text-[#1C1D23] text-16-600-24">
+              {{ t('cards.button.freeze') }}
+            </div>
+          </UButton>
+          <UButton
+            class="flex items-center justify-center rounded-[49px] bg-[#F0F2F5] hover:bg-[#E1E3E6] px-4 py-2 w-[168px]"
+          >
+            <div class="text-[#1C1D23] text-16-600-24">
+              {{ t('cards.button.unfreeze') }}
+            </div>
+          </UButton>
+          <UButton
+            class="flex items-center justify-center rounded-[49px] bg-[#F0F2F5] hover:bg-[#E1E3E6] px-4 py-2 w-[168px]"
+          >
+            <div class="text-[#ED2C38] text-16-600-24">
+              {{ t('cards.button.cancel') }}
+            </div>
+          </UButton>
+        </div>
+        <div class="flex items-center gap-5 my-3">
+          <div class="text-[#7A7D89] text-12-500-20">
+            {{ t('cards.filter.label.amountSelected', { selected: selectedCards.length, total: cardList.length }) }}
+          </div>
+          <img src="~/assets/img/common/line.svg" alt="" />
+          <div class="text-[#1C1D23] text-12-600-20">
+            {{ t('cards.filter.label.total', { amount: formatMoney(totalSelectedAmount) }) }}
+          </div>
+        </div>
+      </div>
+      <img class="cursor-pointer hover:opacity-70" src="~/assets/img/common/close.svg" alt="" />
+    </div>
     <div class="rounded-[12px] flex flex-col border border-[#D7D9E5] mb-8 overflow-x-auto w-full">
       <!-- Table -->
       <UTable
