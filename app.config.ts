@@ -1,7 +1,7 @@
 export default defineAppConfig({
   ui: {
     notifications: {
-      wrapper: 'fixed flex flex-col justify-start z-[55]',
+      wrapper: 'fixed flex flex-col justify-start z-[55] h-[max-content]',
       position: 'top-0 end-0',
     },
     notification: {

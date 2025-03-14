@@ -26,7 +26,7 @@ function onClosePrevented() {
   >
     <div class="p-8 bg-white rounded-[20px] flex flex-col gap-7">
       <div class="w-full flex flex-row justify-between items-center">
-        <div class="text-2xl-600-32">{{ label }}</div>
+        <div class="text-20-600-32">{{ label }}</div>
         <img class="cursor-pointer hover:opacity-70" src="~/assets/img/common/close.svg" alt="" @click="onClosePrevented()" />
       </div>
       <slot></slot>

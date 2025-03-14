@@ -73,7 +73,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="px-4 w-[24%] max-w-[480px] min-w-[250px]">
+  <div class="px-4 w-[24%] max-w-[250px] min-w-[250px]">
     <div class="pt-5 pb-8">
       <ULink to="/"><img src="~/assets/img/logo/logo.svg" alt="" /></ULink>
     </div>

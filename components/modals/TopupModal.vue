@@ -61,7 +61,7 @@ function handleCopy(value: string) {
     <div class="flex flex-row items-start gap-7">
       <div>
         <!-- Network -->
-        <div class="text-xs-500-20 mb-1">
+        <div class="text-12-500-20 mb-1">
           <span>{{ t('dashboard.modals.topup.label.network') }}</span>
           <span class="pl-1 text-[#ff5c5c]">*</span>
         </div>
@@ -85,7 +85,7 @@ function handleCopy(value: string) {
             padding: 'p-0',
             rounded: 'rounded-[16px]',
             option: {
-              base: 'cursor-pointer text-sm-500-20 bg-[#F0F2F5]',
+              base: 'cursor-pointer text-14-500-20 bg-[#F0F2F5]',
               inactive: 'bg-white hover:bg-[#F0F2F5] cursor-pointer',
               padding: 'px-3 py-[10px]',
               rounded: 'rounded-none',
@@ -110,7 +110,7 @@ function handleCopy(value: string) {
           <template #label>
             <span
               v-if="selectedNetworkOption?.label"
-              class="truncate text-sm-500-20 text-[#1C1D23] max-w-[350px] pl-2.5"
+              class="truncate text-14-500-20 text-[#1C1D23] max-w-[350px] pl-2.5"
               >{{ selectedNetworkOption?.label }}</span
             >
           </template>
@@ -121,7 +121,7 @@ function handleCopy(value: string) {
         </USelectMenu>
 
         <!-- Currency -->
-        <div class="text-xs-500-20 mt-4 mb-1">
+        <div class="text-12-500-20 mt-4 mb-1">
           <span>{{ t('dashboard.modals.topup.label.currency') }}</span>
           <span class="pl-1 text-[#ff5c5c]">*</span>
         </div>
@@ -145,7 +145,7 @@ function handleCopy(value: string) {
             padding: 'p-0',
             rounded: 'rounded-[16px]',
             option: {
-              base: 'cursor-pointer text-sm-500-20 bg-[#F0F2F5]',
+              base: 'cursor-pointer text-14-500-20 bg-[#F0F2F5]',
               inactive: 'bg-white hover:bg-[#F0F2F5] cursor-pointer',
               padding: 'px-3 py-[10px]',
               rounded: 'rounded-none',
@@ -170,7 +170,7 @@ function handleCopy(value: string) {
           <template #label>
             <span
               v-if="selectedCurrencyOption?.label"
-              class="truncate text-sm-500-20 text-[#1C1D23] max-w-[350px] pl-2.5"
+              class="truncate text-14-500-20 text-[#1C1D23] max-w-[350px] pl-2.5"
             >
               {{ selectedCurrencyOption?.label }}
             </span>
@@ -182,14 +182,14 @@ function handleCopy(value: string) {
         </USelectMenu>
 
         <!-- Address -->
-        <div class="text-xs-500-20 mt-4 mb-1">
+        <div class="text-12-500-20 mt-4 mb-1">
           <span>{{ t('dashboard.modals.topup.label.address') }}</span>
           <span class="pl-1 text-[#ff5c5c]">*</span>
         </div>
         <div
           class="border border-[#D7D9E5] rounded-[48px] py-[10px] px-4 flex flex-row items-center justify-between gap-4"
         >
-          <div class="text-[#7A7D89] text-sm-500-20">{{ topupAddress }}</div>
+          <div class="text-[#7A7D89] text-14-500-20">{{ topupAddress }}</div>
           <div class="relative">
             <img
               class="cursor-pointer"
@@ -199,8 +199,8 @@ function handleCopy(value: string) {
             />
           </div>
         </div>
-        <div class="text-xs-500-20 text-[#7A7D89] mt-4 w-[400px]">{{ t(`dashboard.modals.topup.note`) }}</div>
-        <div class="text-md-600-20 text-[#FF5524] mt-4">{{ t(`dashboard.modals.topup.fee`, { fee: '0' }) }}</div>
+        <div class="text-12-500-20 text-[#7A7D89] mt-4 w-[400px]">{{ t(`dashboard.modals.topup.note`) }}</div>
+        <div class="text-16-600-20 text-[#FF5524] mt-4">{{ t(`dashboard.modals.topup.fee`, { fee: '0' }) }}</div>
       </div>
       <img src="~/assets/img/dashboard/topup-qr.svg" alt="" />
     </div>
