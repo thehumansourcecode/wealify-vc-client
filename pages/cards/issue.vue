@@ -77,6 +77,10 @@ const handleValueInput = (target: HTMLInputElement) => {
     target.value = formattedBalance.value
     return
   }
+  if (+rawValue >= 1000000) {
+    form.startingBalance = 1000000
+    target.value = formattedBalance.value
+  }
   target.value = target.value.trim()
   originalNumericValue.value = rawValue
 }
@@ -86,8 +90,6 @@ const handleInput = async (event: InputEvent) => {
   const target = event.target as HTMLInputElement
   let caretPosition = target.selectionStart || 0
   const originalPositionRight = target.value.length - caretPosition
-  // handleValueInput(target)
-
   try {
     handleValueInput(target)
     nextTick(() => {
