@@ -59,12 +59,11 @@ const validate = (form: IFormCardIssue): FormError[] => {
 
 function fixAmount(event) {
   const input = event.target.value
-  console.log(formattedBalance)
-  if (!input) {
-    event.target.value = 0
+  if (!/^\d*$/.test(input) || Number(input) > 200000000) {
+    // event.target.value = input.slice(0, -1) // Revert the last character
+    event.target.value = 200000000
   }
 }
-
 const formatNumber = num => {
   return new Intl.NumberFormat('en-US').format(num)
 }
@@ -74,15 +73,11 @@ const formatInput = input => {
   formattedBalance.value = rawValue ? formatNumber(rawValue) : ''
 }
 
-const setAmount = amount => {
-  formattedBalance.value = formatMoneyWithoutDecimals(amount)
-}
-
 const formattedBalance = computed({
   get: () => (form.startingBalance === 0 ? '0' : form.startingBalance.toLocaleString()),
   set: value => {
     // Remove commas and parse to integer
-    form.startingBalance = Number(value.replace(/,/g, '')) || 0
+    form.startingBalance = Number(value.replace(/,/g, '').replace(/\D/g, '')) || 0
   },
 })
 
@@ -104,6 +99,10 @@ const presetAmounts = computed(() => {
     return [balance, balance * 10, balance * 100, balance * 1000]
   }
 })
+
+const setAmount = amount => {
+  formattedBalance.value = formatMoneyWithoutDecimals(amount)
+}
 
 async function handleIssue() {
   console.log(form)
@@ -220,14 +219,16 @@ async function handleIssue() {
             </div>
           </div>
           <UFormGroup name="startingBalance">
+            {{ form.startingBalance }} starting
             <div class="flex flex-row justify-between mt-4">
               <UInput
                 class="w-full text-20-700-32 items-center flex"
                 autocomplete="off"
+                type="text"
                 variant="none"
                 v-model="formattedBalance"
-                @update:model-value="formatInput"
                 @input="fixAmount"
+                @update:model-value="formatInput"
                 :ui="{
                   padding: {
                     sm: 'p-0 text-[20px]',
