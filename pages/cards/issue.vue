@@ -89,13 +89,14 @@ const handleValueInput = (target: HTMLInputElement) => {
 const handleInput = async (event: InputEvent) => {
   const target = event.target as HTMLInputElement
   let caretPosition = target.selectionStart || 0
+  console.log(target.value.length, caretPosition)
   const originalPositionRight = target.value.length - caretPosition
   try {
     handleValueInput(target)
-    nextTick(() => {
+    setTimeout(() => {
       caretPosition = target.value.length === 1 ? 1 : target.value.length - originalPositionRight
       target.setSelectionRange(caretPosition, caretPosition)
-    })
+    }, 0)
   } catch (error) {
     console.log(error)
   }
