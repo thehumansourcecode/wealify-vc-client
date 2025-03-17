@@ -24,6 +24,8 @@ onUnmounted(() => {
 
 const cardCategoryOptions = computed(() => [])
 
+const originalNumericValue = ref<number>()
+
 const canSubmit = computed(() => !!form.name && !!form.email && !!form.phoneNumber && !!form.startingBalance)
 
 const issueCardFee = computed(() => 0)
@@ -57,30 +59,45 @@ const validate = (form: IFormCardIssue): FormError[] => {
   return errors
 }
 
-function fixAmount(event) {
-  const input = event.target.value
-  if (!/^\d*$/.test(input) || Number(input) > 200000000) {
-    // event.target.value = input.slice(0, -1) // Revert the last character
-    event.target.value = 200000000
-  }
-}
-const formatNumber = num => {
-  return new Intl.NumberFormat('en-US').format(num)
-}
-
-const formatInput = input => {
-  const rawValue = input.replace(/,/g, '').replace(/\D/g, '')
-  formattedBalance.value = rawValue ? formatNumber(rawValue) : ''
-}
-
 const formattedBalance = computed({
-  get: () => (form.startingBalance === 0 ? '0' : form.startingBalance.toLocaleString()),
+  get: () => form.startingBalance.toLocaleString(),
   set: value => {
     // Remove commas and parse to integer
-    form.startingBalance = Number(value.replace(/,/g, '').replace(/\D/g, '')) || 0
+    form.startingBalance = Number(value.replace(/,/g, '')) || 0
   },
 })
 
+const handleValueInput = (target: HTMLInputElement) => {
+  const rawValue = Number(target.value.split(',').join(''))
+  if (Number.isNaN(Number(rawValue))) {
+    target.value = formattedBalance.value
+    return
+  }
+  if (+rawValue === +formattedBalance.value) {
+    target.value = formattedBalance.value
+    return
+  }
+  target.value = target.value.trim()
+  originalNumericValue.value = rawValue
+}
+
+// Handle manual input updates
+const handleInput = async (event: InputEvent) => {
+  const target = event.target as HTMLInputElement
+  let caretPosition = target.selectionStart || 0
+  const originalPositionRight = target.value.length - caretPosition
+  // handleValueInput(target)
+
+  try {
+    handleValueInput(target)
+    nextTick(() => {
+      caretPosition = target.value.length === 1 ? 1 : target.value.length - originalPositionRight
+      target.setSelectionRange(caretPosition, caretPosition)
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
 const presetAmounts = computed(() => {
   const balance = form.startingBalance
   if (!balance || balance == 0) {
@@ -224,11 +241,9 @@ async function handleIssue() {
               <UInput
                 class="w-full text-20-700-32 items-center flex"
                 autocomplete="off"
-                type="text"
                 variant="none"
                 v-model="formattedBalance"
-                @input="fixAmount"
-                @update:model-value="formatInput"
+                @input="handleInput"
                 :ui="{
                   padding: {
                     sm: 'p-0 text-[20px]',
