@@ -26,6 +26,10 @@ export const formatMoney = (amount: number, currency?: string) => {
   )
 }
 
+export const formatMoneyWithoutDecimals = (amount: number, currency?: string) => {
+  return new Intl.NumberFormat('en-US').format(amount) + (currency ? ` ${currency}` : '')
+}
+
 export const formatSmallNumber = (input: number) => {
   if (input <= 0) return 0
   if (input > 1e-4) return +input

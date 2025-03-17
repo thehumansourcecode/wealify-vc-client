@@ -34,7 +34,6 @@ useSeoMeta({
   twitterCard: 'summary_large_image',
 })
 
-console.log(locale.value)
 setLocale(CommonLanguage.EN)
 </script>
 

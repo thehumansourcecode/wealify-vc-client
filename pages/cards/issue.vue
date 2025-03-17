@@ -2,7 +2,7 @@
 definePageMeta({
   layout: 'home',
 })
-import { formatDDMMYYYY, formatMoney } from '~/common/functions'
+import { formatDDMMYYYY, formatMoney, formatMoneyWithoutDecimals } from '~/common/functions'
 import { CardCategory, CardStatus, CardType, type ICardData, type IFormCardIssue } from '~/types/cards'
 import { PanelChildTab, PanelTab } from '~/types/common'
 import type { FormError } from '#ui/types'
@@ -22,9 +22,13 @@ onUnmounted(() => {
   commonStore.setActiveChildTab(undefined)
 })
 
-const canSubmit = computed(() => form.name && form.email && form.phoneNumber && form.startingBalance)
+const cardCategoryOptions = computed(() => [])
+
+const canSubmit = computed(() => !!form.name && !!form.email && !!form.phoneNumber && !!form.startingBalance)
 
 const issueCardFee = computed(() => 0)
+
+const currentBalance = computed(() => 100)
 
 const form = reactive<IFormCardIssue>({
   type: CardType.VIRTUAL,
@@ -33,7 +37,7 @@ const form = reactive<IFormCardIssue>({
   phoneNumber: '', // req, nếu có thì = sđt user đã add, nếu ko thì rỗng. Max 15, trim, chặn
   category: CardCategory.TRAVEL, // req, default = Travel. Lấy từ API GET List Reporting fields
   purpose: '', // max = 128, chặn
-  startingBalance: undefined, // nhập số nguyên dương. nếu = 0 hiển inline msg
+  startingBalance: 1000, // nhập số nguyên dương. nếu = 0 hiển inline msg
 })
 
 const validate = (form: IFormCardIssue): FormError[] => {
@@ -52,6 +56,54 @@ const validate = (form: IFormCardIssue): FormError[] => {
   }
   return errors
 }
+
+function fixAmount(event) {
+  const input = event.target.value
+  console.log(formattedBalance)
+  if (!input) {
+    event.target.value = 0
+  }
+}
+
+const formatNumber = num => {
+  return new Intl.NumberFormat('en-US').format(num)
+}
+
+const formatInput = input => {
+  const rawValue = input.replace(/,/g, '').replace(/\D/g, '')
+  formattedBalance.value = rawValue ? formatNumber(rawValue) : ''
+}
+
+const setAmount = amount => {
+  formattedBalance.value = formatMoneyWithoutDecimals(amount)
+}
+
+const formattedBalance = computed({
+  get: () => (form.startingBalance === 0 ? '0' : form.startingBalance.toLocaleString()),
+  set: value => {
+    // Remove commas and parse to integer
+    form.startingBalance = Number(value.replace(/,/g, '')) || 0
+  },
+})
+
+const presetAmounts = computed(() => {
+  const balance = form.startingBalance
+  if (!balance || balance == 0) {
+    return [500, 1000, 2000, 5000]
+  }
+  if (+balance >= 100000) {
+    return [Math.round(balance / 1000), Math.round(balance / 100), Math.round(balance / 10), balance]
+  }
+  if (+balance >= 10000) {
+    return [Math.round(balance / 100), Math.round(balance / 10), balance, balance * 10]
+  }
+  if (+balance >= 1000) {
+    return [Math.round(balance / 10), balance, balance * 10, balance * 100]
+  }
+  if (+balance < 1000) {
+    return [balance, balance * 10, balance * 100, balance * 1000]
+  }
+})
 
 async function handleIssue() {
   console.log(form)
@@ -81,10 +133,13 @@ async function handleIssue() {
             <BaseInput
               input-class="input-field"
               v-model="form.name"
+              :clearable="!!form.name"
+              :limit="50"
               leading
               :leading-img="'/icons/cards/issue-card/name.svg'"
               :placeholder="$t('cards.issue.info.form.placeholder.name')"
               autocomplete="off"
+              @clear="form.name = ''"
             />
           </div>
         </UFormGroup>
@@ -97,10 +152,13 @@ async function handleIssue() {
             <BaseInput
               input-class="input-field"
               v-model="form.email"
+              :clearable="!!form.email"
+              :limit="128"
               leading
               :leading-img="'/icons/cards/issue-card/email.svg'"
               :placeholder="$t('cards.issue.info.form.placeholder.email')"
               autocomplete="off"
+              @clear="form.email = ''"
             />
           </div>
         </UFormGroup>
@@ -135,10 +193,13 @@ async function handleIssue() {
             <BaseInput
               input-class="input-field"
               v-model="form.purpose"
+              :limit="128"
+              :clearable="!!form.purpose"
               leading
               :leading-img="'/icons/cards/issue-card/purpose.svg'"
               :placeholder="$t('cards.issue.info.form.placeholder.purpose')"
               autocomplete="off"
+              @clear="form.purpose = ''"
             />
           </div>
         </UFormGroup>
@@ -148,6 +209,48 @@ async function handleIssue() {
         <!-- Card balance -->
         <div class="text-18-600-28 text-[#1C1D23] mt-5">
           {{ t('cards.issue.balance.title') }}
+        </div>
+        <div class="px-6 py-[22px] border border-[#5268E1] rounded-[16px] flex flex-col my-5">
+          <div class="flex flex-row justify-between">
+            <div class="text-[#1C1D23] text-14-500-20">
+              {{ t('cards.issue.balance.form.starting') }}
+            </div>
+            <div class="text-12-500-20 text-[#7A7D89]">
+              {{ t('cards.issue.balance.form.available', { amount: currentBalance }) }}
+            </div>
+          </div>
+          <UFormGroup name="startingBalance">
+            <div class="flex flex-row justify-between mt-4">
+              <UInput
+                class="w-full text-20-700-32 items-center flex"
+                autocomplete="off"
+                variant="none"
+                v-model="formattedBalance"
+                @update:model-value="formatInput"
+                @input="fixAmount"
+                :ui="{
+                  padding: {
+                    sm: 'p-0 text-[20px]',
+                  },
+                }"
+              >
+              </UInput>
+              <div class="flex flex-row gap-[6px] py-1 pr-3 pl-[6px] bg-[#F0F2F5] rounded-[44px]">
+                <img src="~/assets/img/flags/us.svg" alt="" />
+                <div class="text-[#1C1D23] text-12-500-20">USD</div>
+              </div>
+            </div>
+          </UFormGroup>
+          <div class="flex flex-row gap-[5px] mt-[14px] justify-start">
+            <UButton
+              v-for="amount in presetAmounts"
+              :key="amount"
+              @click="setAmount(amount)"
+              class="flex items-center py-[4px] px-3 bg-[#EDEFFF] hover:bg-[#DCDEEE] rounded-[44px] mx-auto w-[min-content] m-0"
+            >
+              <div class="text-[#1C1D23] text-12-500-20">{{ formatMoneyWithoutDecimals(amount) }}</div>
+            </UButton>
+          </div>
         </div>
       </div>
       <div class="flex flex-col">
@@ -194,6 +297,7 @@ async function handleIssue() {
               : 'bg-[#A5A8B8] text-[#D7D9E5] hover:bg-[#B6B9C9] cursor-not-allowed'
           "
           type="submit"
+          :disabled="canSubmit"
         >
           <div class="text-white text-16-600-24">
             {{ t('cards.button.issue') }}

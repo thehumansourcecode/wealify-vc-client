@@ -108,7 +108,7 @@ const totalSelectedAmount = computed(() => {
           class="w-full"
           leading
           :leading-img="'/icons/common/search.svg'"
-          :placeholder="$t('cards.filter.placeholder.search')"
+          :placeholder="t('cards.filter.placeholder.search')"
           autocomplete="off"
         />
         <div>456</div>

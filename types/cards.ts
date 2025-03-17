@@ -46,5 +46,5 @@ export interface IFormCardIssue {
   phoneNumber: string
   category: string
   purpose: string
-  startingBalance: number | undefined
+  startingBalance: number
 }

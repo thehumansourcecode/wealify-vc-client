@@ -2,9 +2,15 @@
 defineProps({
   leading: Boolean,
   leadingImg: String,
-  trailing: Boolean,
-  trailingImg: String,
+  clearable: Boolean,
+  limit: Number,
 })
+
+const emit = defineEmits(['clear'])
+
+function clearInput() {
+  emit('clear')
+}
 </script>
 
 <template>
@@ -12,6 +18,7 @@ defineProps({
     class="w-full"
     autocomplete="off"
     variant="none"
+    :maxlength="limit"
     :ui="{
       padding: {
         sm: 'pr-7 pl-1.5 py-1.5',
@@ -27,58 +34,29 @@ defineProps({
             sm: 'pl-4 pr-2.5',
           },
         },
+        trailing: { pointer: '' },
       },
     }"
   >
     <template #leading>
       <img v-if="leading" :src="leadingImg" alt="" />
     </template>
+    <template #trailing>
+      <UButton
+        v-if="clearable"
+        color="gray"
+        variant="link"
+        icon="i-heroicons-x-mark-20-solid"
+        :padded="false"
+        @click="clearInput"
+        alt=""
+      />
+      <div v-else></div>
+    </template>
   </UInput>
 </template>
 
 <style lang="scss">
-.referral-input-field {
-  height: 46px;
-  box-shadow: none;
-  border-radius: 6px;
-  color: #fca847;
-  font-weight: 300;
-  font-size: 14px;
-  line-height: 23px;
-  &::placeholder {
-    color: #fca847;
-    opacity: 0.7;
-    font-size: 14px;
-    font-family: ClashDisplay-Medium, sans-serif;
-  }
-  font-family: ClashDisplay-Medium, sans-serif;
-}
-
-.market-input-field {
-  height: 38px;
-  box-shadow: none;
-  border: 1px solid #cda981;
-  background: transparent;
-  border-radius: 6px;
-  color: #cda981;
-  font-weight: 300;
-  font-size: 14px;
-  line-height: 23px;
-  font-family: ClashDisplay-Medium, sans-serif;
-  &:focus {
-    border: 1px solid #cda981 !important;
-  }
-  &:hover {
-    border: 1px solid #cda981 !important;
-  }
-  &::placeholder {
-    opacity: 0.7;
-    color: #cda981;
-    font-size: 14px;
-    font-family: ClashDisplay-Medium, sans-serif;
-  }
-}
-
 .input-field {
   height: 44px;
   box-shadow: none;
