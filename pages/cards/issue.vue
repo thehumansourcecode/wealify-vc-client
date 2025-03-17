@@ -291,20 +291,20 @@ async function handleIssue() {
             <div class="text-[#7A7D89] text-12-500-20">
               {{ t('cards.issue.preview.starting') }}
             </div>
-            <div class="text-14-600-20 text-[#1C1D23]">{{ form.startingBalance ? form.startingBalance : '-' }}</div>
+            <div class="text-14-600-20 text-[#1C1D23]">{{ form.startingBalance ? formatMoneyWithoutDecimals(form.startingBalance) : '-' }}</div>
           </div>
           <div class="flex flex-row justify-between mt-6">
             <div class="text-[#7A7D89] text-12-500-20">
               {{ t('cards.issue.preview.fee') }}
             </div>
-            <div class="text-14-600-20 text-[#1C1D23]">{{ issueCardFee }}</div>
+            <div class="text-14-600-20 text-[#1C1D23]">{{ formatMoneyWithoutDecimals(issueCardFee) }}</div>
           </div>
           <img src="~/assets/img/cards/line.svg" class="mt-4" alt="" />
           <div class="flex flex-row justify-between mt-4">
             <div class="text-[#7A7D89] text-12-500-20">
               {{ t('cards.issue.preview.totalTopup') }}
             </div>
-            <div class="text-16-600-25 text-[#FF5524]">{{ form.startingBalance || 0 + issueCardFee }}</div>
+            <div class="text-16-600-25 text-[#FF5524]">{{ formatMoneyWithoutDecimals(form.startingBalance || 0 + issueCardFee) }}</div>
           </div>
         </div>
         <UButton
