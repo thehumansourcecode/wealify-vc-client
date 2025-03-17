@@ -238,7 +238,6 @@ async function handleIssue() {
             </div>
           </div>
           <UFormGroup name="startingBalance">
-            {{ form.startingBalance }} starting
             <div class="flex flex-row justify-between mt-4">
               <UInput
                 class="w-full text-20-700-32 items-center flex"
