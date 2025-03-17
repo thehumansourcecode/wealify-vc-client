@@ -12,6 +12,10 @@ export enum PanelTab {
   CONTACT_SUPPORT = 'CONTACT_SUPPORT',
 }
 
+export enum PanelChildTab {
+  CARD_ISSUE = 'CARD_ISSUE'
+}
+
 export interface IPanelTab {
   value: PanelTab
   label: string

@@ -1,15 +1,23 @@
 export enum CardType {
   PHYSICAL = 'PHYSICAL',
-  DIGITAL = 'DIGITAL',
+  VIRTUAL = 'VIRTUAL',
 }
 
 export enum CardCategory {
-  INVESTMENT = 'INVESTMENT',
+  ENTERTAINMENT = 'ENTERTAINMENT',
+  FOOD_BEVERAGE = 'FOOD_BEVERAGE',
+  GOVERNMENT_SERVICES = 'GOVERNMENT_SERVICES',
+  INVENTORY = 'INVENTORY',
+  MARKETING = 'MARKETING',
+  OFFICE = 'OFFICE',
+  SALARY = 'SALARY',
+  SALES = 'SALES',
+  SERVICE_PROVIDER = 'SERVICE_PROVIDER',
+  SOFTWARE = 'SOFTWARE',
   TRAVEL = 'TRAVEL',
   UTILITIES = 'UTILITIES',
-  SOFTWARE = 'SOFTWARE',
-  MARKETING = 'MARKETING',
-  SALES = 'SALES',
+  INVESTMENT = 'INVESTMENT',
+  RETAIL = 'RETAIL',
   OTHER = 'OTHER',
 }
 
@@ -29,4 +37,14 @@ export interface ICardData {
   totalSpend: number
   createdAt: string
   status: CardStatus
+}
+
+export interface IFormCardIssue {
+  type: CardType
+  name: string
+  email: string
+  phoneNumber: string
+  category: string
+  purpose: string
+  startingBalance: number | undefined
 }

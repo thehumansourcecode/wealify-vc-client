@@ -18,7 +18,7 @@ export default {
       status: 'Status',
       total: 'Total: ${amount}',
       amount: '{active}/{total} cards',
-      amountSelected: '{selected}/{total} selected cards'
+      amountSelected: '{selected}/{total} selected cards',
     },
   },
   list: {
@@ -43,13 +43,58 @@ export default {
       action: 'Action',
     },
     category: {
-      [CardCategory.INVESTMENT]: 'Investment/Dividend',
+      [CardCategory.ENTERTAINMENT]: 'Entertainment',
+      [CardCategory.FOOD_BEVERAGE]: 'Food & Beverage',
+      [CardCategory.GOVERNMENT_SERVICES]: 'Government Services',
+      [CardCategory.INVENTORY]: 'Inventory',
+      [CardCategory.MARKETING]: 'Marketing',
+      [CardCategory.OFFICE]: 'Office',
+      [CardCategory.SALARY]: 'Salary',
+      [CardCategory.SALES]: 'Sales',
+      [CardCategory.SERVICE_PROVIDER]: 'Service Provider',
+      [CardCategory.SOFTWARE]: 'Software',
       [CardCategory.TRAVEL]: 'Travel',
       [CardCategory.UTILITIES]: 'Utilities',
-      [CardCategory.SOFTWARE]: 'Software',
-      [CardCategory.MARKETING]: 'Marketing',
-      [CardCategory.SALES]: 'Sales',
+      [CardCategory.INVESTMENT]: 'Investment/Dividend',
+      [CardCategory.RETAIL]: 'Retail',
       [CardCategory.OTHER]: 'Other',
     },
+  },
+  issue: {
+    info: {
+      title: 'Card information',
+      form: {
+        label: {
+          name: 'Card name',
+          email: 'Email',
+          phoneNumber: 'Phone number',
+          category: 'Card category',
+          purpose: 'Card purpose',
+        },
+        placeholder: {
+          name: 'Enter card name',
+          email: 'Enter your email',
+          phoneNumber: 'Phone number',
+          category: 'Choose card category',
+          purpose: 'Enter card purpose',
+        },
+      },
+    },
+    balance: {
+      title: 'Balance',
+      form: {
+        starting: 'Starting balance of the card',
+        available: 'Available: {amount} USD',
+      },
+    },
+    preview: {
+      title: 'Card preview',
+      namePlaceholder: 'Card holder name',
+      fee: 'Issue card fee',
+      starting: 'Starting balance of the card',
+      totalTopup: 'Total top up',
+      button: 'Issue card',
+    },
+    policy: 'I agree with Terms of Use and Policy',
   },
 }

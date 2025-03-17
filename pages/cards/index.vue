@@ -121,13 +121,14 @@ const totalSelectedAmount = computed(() => {
             {{ t('cards.button.withdraw') }}
           </div>
         </UButton>
-        <UButton
-          class="flex items-center justify-center rounded-[49px] bg-[#FF5524] hover:bg-[#EE4413] px-4 py-2 w-[168px]"
-        >
-          <div class="text-white text-16-600-24">
-            {{ t('cards.button.issue') }}
-          </div>
-        </UButton>
+          <UButton
+            class="flex items-center justify-center rounded-[49px] bg-[#FF5524] hover:bg-[#EE4413] px-4 py-2 w-[168px]"
+            @click="navigateTo('/cards/issue')"
+          >
+            <div class="text-white text-16-600-24">
+              {{ t('cards.button.issue') }}
+            </div>
+          </UButton>
       </div>
     </div>
     <!-- Cards selected -->

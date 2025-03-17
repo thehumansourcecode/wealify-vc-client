@@ -1,4 +1,4 @@
-import { CommonCurrency, PanelTab } from '~/types/common'
+import { CommonCurrency, PanelChildTab, PanelTab } from '~/types/common'
 
 export const useCommonStore = defineStore('common', () => {
   const config = useRuntimeConfig()
@@ -23,6 +23,18 @@ export const useCommonStore = defineStore('common', () => {
     activeTab.value = tab
   }
 
+  const activeChildTab = ref<PanelChildTab>()
+
+  function setActiveChildTab(tab: PanelChildTab | undefined) {
+    activeChildTab.value = tab
+  }
+
+  const isHeaderBackLayout = ref(false)
+
+  function setHeaderBackLayout(state: boolean) {
+    isHeaderBackLayout.value = state
+  }
+
   return {
     config,
     loading,
@@ -31,5 +43,9 @@ export const useCommonStore = defineStore('common', () => {
     setCurrency,
     activeTab,
     setActiveTab,
+    isHeaderBackLayout,
+    setHeaderBackLayout,
+    activeChildTab,
+    setActiveChildTab,
   }
 })

@@ -13,7 +13,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 3575",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "TRAVEL",
     balance: 5706.36,
     totalTopup: 586.32,
@@ -24,7 +24,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 7273",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "SOFTWARE",
     balance: 9491.95,
     totalTopup: 2323.87,
@@ -35,7 +35,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 3242",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "TRAVEL",
     balance: 8644.66,
     totalTopup: 924.08,
@@ -46,7 +46,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 2931",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "INVESTMENT",
     balance: 4444.91,
     totalTopup: 1616.59,
@@ -57,7 +57,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 8969",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "SALES",
     balance: 2064.14,
     totalTopup: 3062.5,
@@ -68,7 +68,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 7237",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "OTHER",
     balance: 8473.12,
     totalTopup: 3403.98,
@@ -101,7 +101,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 6248",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "MARKETING",
     balance: 5977.34,
     totalTopup: 4453.63,
@@ -156,7 +156,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 8801",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "SOFTWARE",
     balance: 7120.48,
     totalTopup: 3477.33,
@@ -200,7 +200,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 5450",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "SOFTWARE",
     balance: 2217.77,
     totalTopup: 1231.1,
@@ -222,7 +222,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 9905",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "SALES",
     balance: 3139.5,
     totalTopup: 1102.23,
@@ -244,7 +244,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 9046",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "UTILITIES",
     balance: 5486.24,
     totalTopup: 4433.23,
@@ -255,7 +255,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 2549",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "SALES",
     balance: 2933.61,
     totalTopup: 641.84,
@@ -277,7 +277,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 2610",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "INVESTMENT",
     balance: 8120.99,
     totalTopup: 148.55,
@@ -288,7 +288,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 4200",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "OTHER",
     balance: 4653.04,
     totalTopup: 3709.76,
@@ -310,7 +310,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 8806",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "INVESTMENT",
     balance: 7971.48,
     totalTopup: 2114.72,
@@ -332,7 +332,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 1613",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "SOFTWARE",
     balance: 349,
     totalTopup: 3570.49,
@@ -343,7 +343,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 8334",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "OTHER",
     balance: 5801.83,
     totalTopup: 3625.04,
@@ -376,7 +376,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 1811",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "INVESTMENT",
     balance: 7695.11,
     totalTopup: 2445.69,
@@ -398,7 +398,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 7838",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "SOFTWARE",
     balance: 444.88,
     totalTopup: 862.83,
@@ -431,7 +431,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 5671",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "UTILITIES",
     balance: 3804.14,
     totalTopup: 290.31,
@@ -442,7 +442,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 1523",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "UTILITIES",
     balance: 8775.34,
     totalTopup: 2620.58,
@@ -453,7 +453,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 7251",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "SOFTWARE",
     balance: 8623.87,
     totalTopup: 3828.75,
@@ -464,7 +464,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 7357",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "UTILITIES",
     balance: 3221.94,
     totalTopup: 2139.69,
@@ -486,7 +486,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 5501",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "TRAVEL",
     balance: 6981.8,
     totalTopup: 2937.98,
@@ -497,7 +497,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 7796",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "SOFTWARE",
     balance: 7246.58,
     totalTopup: 4753.16,
@@ -508,7 +508,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 7489",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "SALES",
     balance: 1740.39,
     totalTopup: 3217.62,
@@ -563,7 +563,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 5026",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "UTILITIES",
     balance: 5399.05,
     totalTopup: 1985.81,
@@ -574,7 +574,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 2373",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "INVESTMENT",
     balance: 1367.39,
     totalTopup: 2694.08,
@@ -585,7 +585,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 8155",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "OTHER",
     balance: 2227.49,
     totalTopup: 3348.17,
@@ -596,7 +596,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 2371",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "SALES",
     balance: 3204.95,
     totalTopup: 3820.27,
@@ -607,7 +607,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 5756",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "INVESTMENT",
     balance: 397.3,
     totalTopup: 1231.25,
@@ -662,7 +662,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 1285",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "OTHER",
     balance: 2762.73,
     totalTopup: 4451.53,
@@ -739,7 +739,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 6279",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "TRAVEL",
     balance: 6506.37,
     totalTopup: 4549.81,
@@ -761,7 +761,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 4940",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "OTHER",
     balance: 7092.89,
     totalTopup: 829.66,
@@ -772,7 +772,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 9785",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "MARKETING",
     balance: 4258.24,
     totalTopup: 3938.5,
@@ -783,7 +783,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 9132",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "MARKETING",
     balance: 4206.68,
     totalTopup: 947.37,
@@ -805,7 +805,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 9461",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "OTHER",
     balance: 4033.57,
     totalTopup: 1152.46,
@@ -816,7 +816,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 6387",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "INVESTMENT",
     balance: 9128.84,
     totalTopup: 1998.78,
@@ -827,7 +827,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 3009",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "MARKETING",
     balance: 6017.7,
     totalTopup: 1909.79,
@@ -838,7 +838,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 3917",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "SALES",
     balance: 6728.33,
     totalTopup: 2234.09,
@@ -860,7 +860,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 7919",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "MARKETING",
     balance: 8214.16,
     totalTopup: 576.27,
@@ -915,7 +915,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 8552",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "TRAVEL",
     balance: 1466.21,
     totalTopup: 1716.76,
@@ -959,7 +959,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 4611",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "SALES",
     balance: 1850.16,
     totalTopup: 1356.08,
@@ -992,7 +992,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 1223",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "OTHER",
     balance: 262.49,
     totalTopup: 2087,
@@ -1047,7 +1047,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 5121",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "SALES",
     balance: 2292.79,
     totalTopup: 2349.76,
@@ -1058,7 +1058,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 7507",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "SOFTWARE",
     balance: 2361.79,
     totalTopup: 48.02,
@@ -1069,7 +1069,7 @@
   {
     cardName: "Nguyen Hong Ngoc",
     cardNumber: "xxxx xxxx xxxx 3952",
-    cardType: "DIGITAL",
+    cardType: "VIRTUAL",
     cardCategory: "TRAVEL",
     balance: 3305.26,
     totalTopup: 273.29,

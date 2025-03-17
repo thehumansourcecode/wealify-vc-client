@@ -1,4 +1,4 @@
-import { PanelTab } from '~/types/common'
+import { PanelChildTab, PanelTab } from '~/types/common'
 
 export default {
   title: {
@@ -8,6 +8,7 @@ export default {
     [PanelTab.SETTINGS]: 'Settings',
     [PanelTab.HELP]: 'Help',
     [PanelTab.CONTACT_SUPPORT]: 'Contact support',
+    [PanelChildTab.CARD_ISSUE]: 'Issue a new card',
   },
   toast: {
     copy: 'Copied to clipboard!'

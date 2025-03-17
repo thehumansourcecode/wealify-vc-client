@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { getTabRoute } from '~/common/functions'
 import { PanelTab } from '~/types/common'
 
 const userStore = useUserStore()
@@ -9,11 +10,22 @@ const { t } = useI18n()
 
 const userProfile = computed(() => userStore.userProfile)
 const activeTab = computed(() => commonStore.activeTab)
+const isHeaderBackLayout = computed(() => commonStore.isHeaderBackLayout)
+const activeChildTab = computed(() => commonStore.activeChildTab)
 </script>
 
 <template>
   <div class="py-4 flex flex-row w-full justify-between items-center pl-10 pr-[60px] flex-none">
-    <div class="text-[20px] leading-8">{{ t(`common.title.${activeTab}`) }}</div>
+    <div v-if="!isHeaderBackLayout" class="text-[20px] leading-8">{{ t(`common.title.${activeTab}`) }}</div>
+    <div v-else class="flex flex-row gap-4 items-center">
+      <img
+        @click="navigateTo(getTabRoute(commonStore.activeTab))"
+        class="cursor-pointer hover:opacity-70"
+        src="~/assets/img/icons/back.svg"
+        alt=""
+      />
+      <div class="text-[20px] leading-8">{{ t(`common.title.${activeChildTab}`) }}</div>
+    </div>
     <div class="flex flex-row items-center">
       <div class="mr-4">EN</div>
       <div class="mr-7">noti</div>

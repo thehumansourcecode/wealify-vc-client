@@ -1,5 +1,5 @@
 import type { Dayjs } from 'dayjs'
-import { CommonCurrency } from '~/types/common'
+import { CommonCurrency, PanelTab } from '~/types/common'
 import { ItemExterior, ItemQuality } from '~/types/market'
 
 export const trimNumber = (input: number, precision: number) => {
@@ -60,4 +60,23 @@ export const shortenAddress = (address: string, front = 4, back = 4) => {
   if (typeof address !== 'string' || !address) return ''
   if (address.length <= front + back) return address
   return address.slice(0, front) + '...' + address.slice(-back)
+}
+
+export const getTabRoute = (tab: PanelTab) => {
+  switch (tab) {
+    case PanelTab.CARD_LIST:
+      return '/cards'
+    case PanelTab.DASHBOARD:
+      return '/'
+    case PanelTab.CONTACT_SUPPORT:
+      return '/support'
+    case PanelTab.HELP:
+      return '/help'
+    case PanelTab.SETTINGS:
+      return '/settings'
+    case PanelTab.TRANSACTIONS:
+      return '/transactions'
+    default:
+      return '/'
+  }
 }

@@ -23,7 +23,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 3575',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.TRAVEL,
       balance: 5706.36,
       totalTopup: 586.32,
@@ -34,7 +34,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 7273',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.SOFTWARE,
       balance: 9491.95,
       totalTopup: 2323.87,
@@ -45,7 +45,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 3242',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.TRAVEL,
       balance: 8644.66,
       totalTopup: 924.08,
@@ -56,7 +56,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 2931',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.INVESTMENT,
       balance: 4444.91,
       totalTopup: 1616.59,
@@ -67,7 +67,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 8969',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.SALES,
       balance: 2064.14,
       totalTopup: 3062.5,
@@ -78,7 +78,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 7237',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.OTHER,
       balance: 8473.12,
       totalTopup: 3403.98,
@@ -111,7 +111,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 6248',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.MARKETING,
       balance: 5977.34,
       totalTopup: 4453.63,
@@ -166,7 +166,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 8801',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.SOFTWARE,
       balance: 7120.48,
       totalTopup: 3477.33,
@@ -210,7 +210,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 5450',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.SOFTWARE,
       balance: 2217.77,
       totalTopup: 1231.1,
@@ -232,7 +232,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 9905',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.SALES,
       balance: 3139.5,
       totalTopup: 1102.23,
@@ -254,7 +254,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 9046',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.UTILITIES,
       balance: 5486.24,
       totalTopup: 4433.23,
@@ -265,7 +265,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 2549',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.SALES,
       balance: 2933.61,
       totalTopup: 641.84,
@@ -287,7 +287,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 2610',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.INVESTMENT,
       balance: 8120.99,
       totalTopup: 148.55,
@@ -298,7 +298,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 4200',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.OTHER,
       balance: 4653.04,
       totalTopup: 3709.76,
@@ -320,7 +320,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 8806',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.INVESTMENT,
       balance: 7971.48,
       totalTopup: 2114.72,
@@ -342,7 +342,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 1613',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.SOFTWARE,
       balance: 349,
       totalTopup: 3570.49,
@@ -353,7 +353,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 8334',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.OTHER,
       balance: 5801.83,
       totalTopup: 3625.04,
@@ -386,7 +386,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 1811',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.INVESTMENT,
       balance: 7695.11,
       totalTopup: 2445.69,
@@ -408,7 +408,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 7838',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.SOFTWARE,
       balance: 444.88,
       totalTopup: 862.83,
@@ -441,7 +441,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 5671',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.UTILITIES,
       balance: 3804.14,
       totalTopup: 290.31,
@@ -452,7 +452,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 1523',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.UTILITIES,
       balance: 8775.34,
       totalTopup: 2620.58,
@@ -463,7 +463,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 7251',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.SOFTWARE,
       balance: 8623.87,
       totalTopup: 3828.75,
@@ -474,7 +474,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 7357',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.UTILITIES,
       balance: 3221.94,
       totalTopup: 2139.69,
@@ -496,7 +496,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 5501',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.TRAVEL,
       balance: 6981.8,
       totalTopup: 2937.98,
@@ -507,7 +507,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 7796',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.SOFTWARE,
       balance: 7246.58,
       totalTopup: 4753.16,
@@ -518,7 +518,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 7489',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.SALES,
       balance: 1740.39,
       totalTopup: 3217.62,
@@ -573,7 +573,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 5026',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.UTILITIES,
       balance: 5399.05,
       totalTopup: 1985.81,
@@ -584,7 +584,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 2373',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.INVESTMENT,
       balance: 1367.39,
       totalTopup: 2694.08,
@@ -595,7 +595,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 8155',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.OTHER,
       balance: 2227.49,
       totalTopup: 3348.17,
@@ -606,7 +606,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 2371',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.SALES,
       balance: 3204.95,
       totalTopup: 3820.27,
@@ -617,7 +617,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 5756',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.INVESTMENT,
       balance: 397.3,
       totalTopup: 1231.25,
@@ -672,7 +672,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 1285',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.OTHER,
       balance: 2762.73,
       totalTopup: 4451.53,
@@ -749,7 +749,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 6279',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.TRAVEL,
       balance: 6506.37,
       totalTopup: 4549.81,
@@ -771,7 +771,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 4940',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.OTHER,
       balance: 7092.89,
       totalTopup: 829.66,
@@ -782,7 +782,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 9785',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.MARKETING,
       balance: 4258.24,
       totalTopup: 3938.5,
@@ -793,7 +793,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 9132',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.MARKETING,
       balance: 4206.68,
       totalTopup: 947.37,
@@ -815,7 +815,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 9461',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.OTHER,
       balance: 4033.57,
       totalTopup: 1152.46,
@@ -826,7 +826,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 6387',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.INVESTMENT,
       balance: 9128.84,
       totalTopup: 1998.78,
@@ -837,7 +837,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 3009',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.MARKETING,
       balance: 6017.7,
       totalTopup: 1909.79,
@@ -848,7 +848,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 3917',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.SALES,
       balance: 6728.33,
       totalTopup: 2234.09,
@@ -870,7 +870,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 7919',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.MARKETING,
       balance: 8214.16,
       totalTopup: 576.27,
@@ -925,7 +925,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 8552',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.TRAVEL,
       balance: 1466.21,
       totalTopup: 1716.76,
@@ -969,7 +969,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 4611',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.SALES,
       balance: 1850.16,
       totalTopup: 1356.08,
@@ -1002,7 +1002,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 1223',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.OTHER,
       balance: 262.49,
       totalTopup: 2087,
@@ -1057,7 +1057,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 5121',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.SALES,
       balance: 2292.79,
       totalTopup: 2349.76,
@@ -1068,7 +1068,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 7507',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.SOFTWARE,
       balance: 2361.79,
       totalTopup: 48.02,
@@ -1079,7 +1079,7 @@ export const useCardStore = defineStore('card', () => {
     {
       cardName: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 3952',
-      cardType: CardType.DIGITAL,
+      cardType: CardType.VIRTUAL,
       cardCategory: CardCategory.TRAVEL,
       balance: 3305.26,
       totalTopup: 273.29,
