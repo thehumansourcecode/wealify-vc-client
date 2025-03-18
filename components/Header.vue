@@ -97,9 +97,4 @@ async function logout() {
 </template>
 
 <style lang="scss" scoped>
-.gradient {
-  background: linear-gradient(to right, #eee, #cda981);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
 </style>
