@@ -28,7 +28,7 @@ const links = computed(() => [
   {
     tab: 'reset',
     label: t(`common.header.resetPassword`),
-    to: '/auth/forgot',
+    to: '/auth/reset',
     icon: hoveredTab.value === 'reset' ? '/icons/header/active-reset.svg' : '/icons/header/reset.svg',
     description: t('common.header.lastReset', { date: formatDDMMYYYY(dayjs.utc(lastResetDate.value).local()) }),
   },
