@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import PinInput from '../pin-input/index.vue'
 const pin = defineModel<string>('value', { default: '' })
-defineProps<{
+const props = defineProps<{
   onComplete: (value: string) => void
 }>()
 </script>
@@ -20,7 +21,7 @@ defineProps<{
     :should-auto-focus="true"
     :should-focus-order="true"
     :placeholder="[]"
-    @on-complete="() => onComplete(pin)"
+    @on-complete="() => props.onComplete(pin)"
     @update:value="pin = $event"
   />
 </template>

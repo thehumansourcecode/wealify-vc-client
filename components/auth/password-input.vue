@@ -10,7 +10,7 @@ const { error } = defineProps<{
 // Use defineModel to create a two-way binding for the 'value' prop
 const password = defineModel<string>('value', { default: '' })
 
-const passwordRef = ref<HTMLInputElement>()
+const passwordRef = ref<any>()
 
 // Handle input event
 const handleInput = (event: Event) => {

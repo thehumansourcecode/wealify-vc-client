@@ -1,11 +1,11 @@
 interface ResetFields {
-  otp: string
+  pin: string
   password: string
   confirmPassword: string
 }
 
 interface ResetErrors {
-  otp: string | undefined
+  pin: string | undefined
   password: string | undefined
   confirmPassword: string | undefined
 }
@@ -17,13 +17,13 @@ export const useReset = () => {
   const toast = useToast()
 
   const fields = ref<ResetFields>({
-    otp: '',
+    pin: '',
     password: '',
     confirmPassword: '',
   })
 
   const errors = ref<ResetErrors>({
-    otp: undefined,
+    pin: undefined,
     password: undefined,
     confirmPassword: undefined,
   })
@@ -60,7 +60,7 @@ export const useReset = () => {
   }
 
   const onCompletedPin = (pin: string) => {
-    fields.value.otp = pin
+    fields.value.pin = pin
     next()
   }
 

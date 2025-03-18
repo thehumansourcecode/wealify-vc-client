@@ -3,7 +3,7 @@ import '~/assets/css/auth.scss'
 </script>
 
 <template>
-  <div className="h-full w-full relative bg-[#f0f2f5] overflow-hidden min-h-screen">
+  <div class="h-full w-full relative bg-[#f0f2f5] overflow-hidden min-h-screen">
     <slot />
   </div>
 </template>

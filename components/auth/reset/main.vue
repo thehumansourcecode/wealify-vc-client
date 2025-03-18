@@ -33,24 +33,24 @@ const { step, back, next, isValidate, onCompletedPin, fields, errors, profile } 
             />
             <div
               v-if="errors.confirmPassword"
-              className="h-5 justify-center text-[#ec2c37] text-xs font-medium font-['Manrope'] leading-tight"
+              class="h-5 justify-center text-[#ec2c37] text-xs font-medium font-['Manrope'] leading-tight"
             >
               {{ errors.confirmPassword }}
             </div>
           </div>
           <div class="auth__right_button">
-            <AuthSubmitButton @click="next()" :disabled="!isValidate" :title="'Next'" />
+            <AuthSubmitButton @click="isValidate && next()" :disabled="!isValidate" :title="'Next'" />
           </div>
         </div>
       </AuthForgotBase>
       <AuthForgotBase
         v-if="step == 2"
         title="Reset your Log in Password"
-        :subtitle="`Please enter the verification code sent to ${maskEmail(profile.email)}`"
+        :subtitle="`Please enter the verification code sent to ${maskEmail(profile?.email ?? '')}`"
         :back="back"
       >
         <template #subtitle2>
-          <div className="text-center justify-start">
+          <div class="text-center justify-start">
             <span class="text-[#7a7c89] text-sm font-medium font-['Manrope'] leading-tight"
               >Your verification code will expire in </span
             ><span class="text-[#ff5524] text-sm font-semibold font-['Manrope'] leading-tight">90s</span>
@@ -60,13 +60,13 @@ const { step, back, next, isValidate, onCompletedPin, fields, errors, profile } 
           <AuthPinInput v-model="fields.pin" :on-complete="onCompletedPin" />
           <div
             v-if="errors.pin"
-            className="self-stretch justify-start text-[#ec2c37] text-xs font-medium font-['Manrope'] leading-tight"
+            class="self-stretch justify-start text-[#ec2c37] text-xs font-medium font-['Manrope'] leading-tight"
           >
             {{ errors.pin }}
           </div>
         </div>
         <div class="auth__right_input flex flex-col gap-2 w-[100%] lg:w-[65%]">
-          <div className="text-center justify-start">
+          <div class="text-center justify-start">
             <span class="text-[#1b1c23] text-sm font-medium font-['Manrope'] leading-tight">Did not receive OTP?</span
             ><span class="text-[#7a7c89] text-sm font-medium font-['Manrope'] leading-tight"> Resend OTP in </span>
             <AuthForgotCountdown :target="60">

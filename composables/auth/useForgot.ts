@@ -1,13 +1,13 @@
 interface ForgotFields {
   email: string
-  otp: string
+  pin: string
   password: string
   confirmPassword: string
 }
 
 interface ForgotErrors {
   email: string | undefined
-  otp: string | undefined
+  pin: string | undefined
   password: string | undefined
   confirmPassword: string | undefined
 }
@@ -19,14 +19,14 @@ export const useForgot = () => {
 
   const fields = ref<ForgotFields>({
     email: '',
-    otp: '',
+    pin: '',
     password: '',
     confirmPassword: '',
   })
 
   const errors = ref<ForgotErrors>({
     email: undefined,
-    otp: undefined,
+    pin: undefined,
     password: undefined,
     confirmPassword: undefined,
   })
@@ -64,7 +64,7 @@ export const useForgot = () => {
   }
 
   const onCompletedPin = (pin: string) => {
-    fields.value.otp = pin
+    fields.value.pin = pin
     next()
   }
 

@@ -52,7 +52,7 @@ const router = useRouter()
           <AuthEmailInput v-model="fields.email" :error="errors.email" />
           <div
             v-if="errors.email"
-            className="h-5 justify-center text-[#ec2c37] text-xs font-medium font-['Manrope'] leading-tight"
+            class="h-5 justify-center text-[#ec2c37] text-xs font-medium font-['Manrope'] leading-tight"
           >
             {{ errors.email }}
           </div>
@@ -64,7 +64,7 @@ const router = useRouter()
           <AuthPasswordInput v-model="fields.password" :error="errors.password" />
           <div
             v-if="errors.password"
-            className="h-5 justify-center text-[#ec2c37] text-xs font-medium font-['Manrope'] leading-tight"
+            class="h-5 justify-center text-[#ec2c37] text-xs font-medium font-['Manrope'] leading-tight"
           >
             {{ errors.password }}
           </div>

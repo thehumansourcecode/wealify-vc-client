@@ -6,7 +6,7 @@ const { error } = defineProps<{
 // Use defineModel to create a two-way binding for the 'value' prop
 const email = defineModel<string>('value', { default: '' })
 
-const emailRef = ref<HTMLInputElement>()
+const emailRef = ref<any>()
 
 // Handle input event with typed event parameter
 const handleInput = (event: Event) => {

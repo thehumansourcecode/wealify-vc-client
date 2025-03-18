@@ -14,7 +14,7 @@ export const useProfileStore = defineStore('profile', {
     async fetchProfile() {
       this.setProfile({
         id: '0',
-        email: 'test@gmail.com',
+        email: 'vandathd49@gmail.com',
       })
     },
     resetProfile() {
