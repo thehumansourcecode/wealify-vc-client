@@ -1,4 +1,4 @@
-import type { IUserProfileData } from '~/types/user'
+import type { IUserProfileData } from '~/types/profile'
 
 export const useDashboardStore = defineStore('dashboard', () => {
   const authStore = useAuthStore()

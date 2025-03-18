@@ -1,21 +1,9 @@
 <script setup lang="ts">
-import '~/assets/css/style.scss'
+import '~/assets/css/auth.scss'
 </script>
 
 <template>
-  <div class="">
+  <div className="h-full w-full relative bg-[#f0f2f5] overflow-hidden min-h-screen">
     <slot />
   </div>
 </template>
-
-<style lang="scss">
-::-webkit-scrollbar {
-  width: 4px;
-}
-::-webkit-scrollbar-thumb {
-  background: #888888;
-}
-::-webkit-scrollbar-track {
-  background: #f0f0f0;
-}
-</style>

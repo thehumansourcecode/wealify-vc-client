@@ -11,6 +11,30 @@ export default defineNuxtConfig({
     public: {
       baseUrl: process.env.BASE_URL,
     },
+    app: {
+      auth: {
+        api: {
+          baseUrl: 'https://dev-api.wealify.com/api/v1/virtual-cards',
+        },
+        pages: {
+          home: '/',
+          sign_in: '/auth/sign-in',
+          sign_up: '/auth/sign-up',
+        },
+        accessToken: {
+          maxAgeInSeconds: 1000,
+          sameSiteAttribute: true,
+        },
+        refreshToken: {
+          maxAgeInSeconds: 1000,
+          sameSiteAttribute: true,
+        },
+        session: {
+          enableRefreshOnWindowFocus: true,
+        },
+        globalAppMiddleware: true,
+      },
+    },
   },
 
   modules: [
@@ -28,13 +52,15 @@ export default defineNuxtConfig({
     'dayjs-nuxt',
   ],
 
+  plugins: ['~/plugins/auth.plugin'],
+
   i18n: {
     vueI18n: '~/i18n.config.ts',
     locales: [CommonLanguage.EN, CommonLanguage.VI], // used in URL path prefix
     defaultLocale: CommonLanguage.EN, // default locale of your project for Nuxt pages and routings,
     lazy: true,
     skipSettingLocaleOnNavigate: true,
-    detectBrowserLanguage: false
+    detectBrowserLanguage: false,
   },
 
   veeValidate: {

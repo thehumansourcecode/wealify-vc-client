@@ -1,4 +1,4 @@
-import type { IDepositForm, IDepositParams, IDepositResponseData, ITransactionData, IUpdateUserProfileParams, IUserProfileData, IWithdrawParams, IWithdrawResponseData } from '~/types/user'
+import type { IDepositForm, IDepositParams, IDepositResponseData, ITransactionData, IUpdateUserProfileParams, IUserProfileData, IWithdrawParams, IWithdrawResponseData } from '~/types/profile'
 import { BaseService } from './base.service'
 import type { ICommonListResponse, ICommonResponse } from '~/types/common'
 

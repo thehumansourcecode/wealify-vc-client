@@ -1,44 +1,35 @@
-export interface ILoginForm {
-  email?: string
-  username?: string
-  password: string
-  isRemember: boolean
-}
-
-export interface IRegisterForm {
-  email?: string
-  username?: string
-  password: string
-  confirmPassword: string
-  referralCode?: string
-}
-export interface IRegisterRequestParams {
+// types/auth.ts
+export interface LoginCredentials {
   email: string
-  username: string
-  password: string
-  referralCode?: string
-}
-
-export interface ILoginRequestParams {
-  credential: string
   password: string
 }
 
-export interface ILoginResponseData {
+export interface Version {
+  code: string
+  name: string
+  path: string
+}
+
+export interface LoginResponse {
+  code: number
+  data: {
+    access_token: string
+    refresh_token: string
+  }
+}
+
+// Optional: JWT payload type (decoded token)
+export interface TokenPayload {
+  id: number
+  is_employee: boolean
+  iat: number
+  exp: number
+}
+
+// Type for stored auth data
+export interface AuthData {
   accessToken: string
-  accessTokenExpiresAt: string
+  accessTokenExpiresAt: number
   refreshToken: string
-  refreshTokenExpiresAt: string
-}
-
-export enum AuthType {
-  LOGIN = 'LOGIN',
-  REGISTER = 'REGISTER',
-}
-
-export enum TokenType {
-  ACCESS_TOKEN = 'ACCESS_TOKEN',
-  REFRESH_TOKEN = 'REFRESH_TOKEN',
-  VERIFY_EMAIL_TOKEN = 'VERIFY_EMAIL_TOKEN',
-  FORGOT_PASSWORD_TOKEN = 'FORGOT_PASSWORD_TOKEN',
+  refreshTokenExpiresAt: number
 }

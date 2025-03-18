@@ -1,5 +1,4 @@
 import axios, { AxiosError, type AxiosInstance, type AxiosResponse, type CreateAxiosDefaults } from 'axios'
-import { authService } from './auth.service'
 import { HTTP_STATUS_CODE } from '~/types/common'
 import { AUTH_ENDPOINTS } from '~/common/constants'
 

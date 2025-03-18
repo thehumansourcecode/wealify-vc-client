@@ -10,23 +10,23 @@ enum LoggerEvent {
 }
 
 class Logger {
-  public error(message: string) {
-    console.error(message)
+  public error(...message: Array<any>) {
+    console.error(...message)
   }
 
-  public warn(message: string) {
-    console.warn(message)
+  public warn(...message: Array<any>) {
+    console.warn(...message)
   }
 
-  public log(message: string) {
-    console.log(message)
+  public log(...message: Array<any>) {
+    console.log(...message)
   }
 
-  public debug(message: string) {
-    console.debug(message)
+  public debug(...message: Array<any>) {
+    console.debug(...message)
   }
 
-  public verbose(message: string) {
+  public verbose(...message: Array<any>) {
     // console.verbose(message)
   }
 }
@@ -52,68 +52,68 @@ export class CommonLogger {
     return CommonLogger._instance
   }
 
-  public error(message: any): void {
+  public error(...message: Array<any>): void {
     try {
-      this._logger.error(message)
+      this._logger.error(...message)
       this._event?.emit(LoggerEvent.error, message)
     } catch (error) {
       ///
     }
   }
 
-  public onError(listener: (message: string, context?: string) => void) {
+  public onError(listener: (message: Array<any>, context?: string) => void) {
     this._event?.addListener(LoggerEvent.error, listener)
   }
 
-  public warn(message: any): void {
+  public warn(...message: Array<any>): void {
     try {
-      this._logger.warn(message)
+      this._logger.warn(...message)
       this._event?.emit(LoggerEvent.warn, message)
     } catch (error) {
       ///
     }
   }
 
-  public onWarn(listener: (message: string, context?: string) => void) {
+  public onWarn(listener: (message: Array<any>, context?: string) => void) {
     this._event?.addListener(LoggerEvent.warn, listener)
   }
 
-  public log(message: any): void {
+  public log(...message: Array<any>): void {
     try {
-      this._logger.log(message)
+      this._logger.log(...message)
       this._event?.emit(LoggerEvent.log, message)
     } catch (error) {
       ///
     }
   }
 
-  public onLog(listener: (message: string, context?: string) => void) {
+  public onLog(listener: (message: Array<any>, context?: string) => void) {
     this._event?.addListener(LoggerEvent.log, listener)
   }
 
-  public debug(message: any): void {
+  public debug(...message: Array<any>): void {
     try {
-      this._logger.debug(message)
+      this._logger.debug(...message)
       this._event?.emit(LoggerEvent.debug, message)
     } catch (error) {
       ///
     }
   }
 
-  public onDebug(listener: (message: string, context?: string) => void) {
+  public onDebug(listener: (message: Array<any>, context?: string) => void) {
     this._event?.addListener(LoggerEvent.debug, listener)
   }
 
-  public verbose(message: any): void {
+  public verbose(...message: Array<any>): void {
     try {
-      this._logger.verbose(message)
+      this._logger.verbose(...message)
       this._event?.emit(LoggerEvent.verbose, message)
     } catch (error) {
       ///
     }
   }
 
-  public onVerbose(listener: (message: string, context?: string) => void) {
+  public onVerbose(listener: (message: Array<any>, context?: string) => void) {
     this._event?.addListener(LoggerEvent.verbose, listener)
   }
 }

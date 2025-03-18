@@ -1,51 +1,143 @@
-import { authService, AuthService } from '~/services/auth.service'
-import { type IRegisterRequestParams, type ILoginRequestParams, AuthType } from '~/types/auth'
-import type { IUserProfileData } from '~/types/user'
+// stores/auth.ts
+import { defineStore } from 'pinia'
+import { jwtDecode } from 'jwt-decode'
+import type { LoginCredentials, LoginResponse, TokenPayload, AuthData } from '~/types/auth'
+import { AuthService } from '~/services/auth.service'
+import { CommonLogger } from '~/common/logger'
+import { AUTH_DATA_STORED_KEY } from '~/common/constants'
 
-export const useAuthStore = defineStore('auth', () => {
-  const accessToken = ref()
-  const isAuthenticated = computed(() => !!accessToken.value)
-  const userStore = useUserStore()
+export const useAuthStore = defineStore('auth', {
+  state: (): { accessToken?: string; refreshToken?: string; refreshInterval?: NodeJS.Timeout } => ({
+    accessToken: undefined,
+    refreshToken: undefined,
+    refreshInterval: undefined, // Store the interval ID
+  }),
+  actions: {
+    setTokens(accessToken: string, refreshToken: string) {
+      this.accessToken = accessToken
+      this.refreshToken = refreshToken
 
-  function initializeAuth() {
-    accessToken.value = localStorage.getItem('accessToken')
-  }
+      if (process.client) {
+        const accessDecoded: TokenPayload = jwtDecode(accessToken)
+        const refreshDecoded: TokenPayload = jwtDecode(refreshToken)
+        const authData: AuthData = {
+          accessToken,
+          accessTokenExpiresAt: accessDecoded.exp,
+          refreshToken,
+          refreshTokenExpiresAt: refreshDecoded.exp,
+        }
+        localStorage.setItem(AUTH_DATA_STORED_KEY, JSON.stringify(authData))
 
-  const userProfile = ref<IUserProfileData>()
-
-  async function login(payload: ILoginRequestParams) {
-    const response = await authService.login(payload)
-    if (response.success) {
-      const data = response?.data
-      localStorage.setItem('accessToken', data.accessToken)
-      localStorage.setItem('accessTokenExpiresAt', data.accessTokenExpiresAt)
-      localStorage.setItem('refreshToken', data.refreshToken)
-      localStorage.setItem('refreshTokenExpiresAt', data.refreshTokenExpiresAt)
-      initializeAuth()
-      if (isAuthenticated.value) {
-        await userStore.getProfile()
+        // Start periodic refresh check
+        this.startRefreshCheck()
       }
-      return response
-    } else {
-      // HANDLE MESSAGE
-      return response
-    }
-  }
+    },
+    loadTokens() {
+      if (process.client) {
+        const storedData = localStorage.getItem(AUTH_DATA_STORED_KEY)
+        if (storedData) {
+          const authData: AuthData = JSON.parse(storedData)
+          const currentTime = Math.floor(Date.now() / 1000)
+          if (authData.refreshTokenExpiresAt > currentTime) {
+            this.accessToken = authData.accessToken
+            this.refreshToken = authData.refreshToken
+            this.startRefreshCheck() // Start refresh check if tokens are loaded
+          } else {
+            this.clearTokens() // Clear if refresh token is expired
+          }
+        }
+      }
+    },
+    clearTokens() {
+      if (process.client) {
+        localStorage.removeItem(AUTH_DATA_STORED_KEY)
+        if (this.refreshInterval) {
+          clearInterval(this.refreshInterval) // Stop the refresh check
+        }
+      }
+      this.$reset()
+    },
+    async signIn(credentials: LoginCredentials): Promise<LoginResponse> {
+      try {
+        const response = await AuthService.instance.signIn(credentials)
+        if (response.code === 200) {
+          this.setTokens(response.data.access_token, response.data.access_token) //! Server is not returned refresh_token, so use access_token
+        } else {
+          throw new Error(`Login failed with code: ${response.code}`)
+        }
+        return response
+      } catch (error) {
+        CommonLogger.instance.error('Login failed:', error)
+        throw error
+      }
+    },
+    async refreshTokens(): Promise<boolean> {
+      if (!this.refreshToken) return false
 
-  async function logout() {
-    localStorage.removeItem('accessToken')
-    localStorage.removeItem('accessTokenExpiresAt')
-    localStorage.removeItem('refreshToken')
-    localStorage.removeItem('refreshTokenExpiresAt')
-    userStore.resetUser()
-    const router = useRouter() // Access the router instance
-    router.push('/')
-  }
+      try {
+        const response = await AuthService.instance.refreshToken()
+        if (response.code === 200) {
+          this.setTokens(response.data.access_token, response.data.refresh_token)
+          return true
+        }
+        return false
+      } catch (error) {
+        CommonLogger.instance.error('Token refresh failed:', error)
+        this.clearTokens() // Clear tokens instead of logout to avoid navigation
+        return false
+      }
+    },
+    logout() {
+      this.clearTokens()
+      navigateTo('/login')
+    },
+    isAccessTokenExpired(): boolean {
+      if (!this.accessToken) return true
 
-  return {
-    isAuthenticated,
-    initializeAuth,
-    login,
-    logout,
-  }
+      if (process.client) {
+        const storedData = localStorage.getItem(AUTH_DATA_STORED_KEY)
+        if (storedData) {
+          const authData: AuthData = JSON.parse(storedData)
+          const currentTime = Math.floor(Date.now() / 1000)
+          return authData.accessTokenExpiresAt < currentTime
+        }
+      }
+      return true
+    },
+    isRefreshTokenExpired(): boolean {
+      if (!this.refreshToken) return true
+
+      if (process.client) {
+        const storedData = localStorage.getItem(AUTH_DATA_STORED_KEY)
+        if (storedData) {
+          const authData: AuthData = JSON.parse(storedData)
+          const currentTime = Math.floor(Date.now() / 1000)
+          return authData.refreshTokenExpiresAt < currentTime
+        }
+      }
+      return true
+    },
+    startRefreshCheck() {
+      if (this.refreshInterval) return // Avoid multiple intervals
+
+      this.refreshInterval = setInterval(async () => {
+        if (this.isRefreshTokenExpired()) {
+          this.clearTokens() // Remove authData if refresh token expires
+          CommonLogger.instance.log('Refresh token expired, authData removed from localStorage')
+        } else if (this.isAccessTokenExpired()) {
+          const refreshed = await this.refreshTokens()
+          if (refreshed) {
+            CommonLogger.instance.log('Access token refreshed successfully')
+          } else {
+            CommonLogger.instance.log('Failed to refresh access token, authData cleared')
+          }
+        }
+      }, 60 * 1000) // Check every minute
+    },
+  },
+  getters: {
+    getAccessToken: (state): string | undefined => state.accessToken,
+    getRefreshToken: (state): string | undefined => state.refreshToken,
+    isAuthenticated: (state): boolean => !!state.accessToken,
+  },
 })

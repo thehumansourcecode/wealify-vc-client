@@ -1,0 +1,17 @@
+@font-face {
+  font-family: Manrope;
+  src: url('~/assets/fonts/Manrope.ttf');
+}
+
+html,
+body {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: Manrope, sans-serif;
+  color: #1c1d23;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 20px;
+}
