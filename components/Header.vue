@@ -36,7 +36,7 @@ const links = computed(() => [
     tab: 'logout',
     label: t(`common.header.logout`),
     icon: hoveredTab.value === 'logout' ? '/icons/header/active-logout.svg' : '/icons/header/logout.svg',
-    action: logout(),
+    action: logout,
   },
 ])
 
@@ -70,7 +70,7 @@ function logout() {
             <ULink
               v-for="link in links"
               :to="link.to"
-              @click="() => link.action"
+              @click="link.action ? link.action() : null"
               @mouseover="hoveredTab = link.tab"
               @mouseout="hoveredTab = ''"
               :key="link.label"
