@@ -7,7 +7,7 @@ export const validateEmail = (email: string): string | undefined => {
   // Rule 2: Check email format using a regex
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   if (!emailRegex.test(email)) {
-    return 'Email is invalid.'
+    return 'Email is invalid'
   }
 
   // If all checks pass, return null (no error)
