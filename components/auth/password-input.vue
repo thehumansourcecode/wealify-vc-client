@@ -60,14 +60,13 @@ const handlePaste = (event: ClipboardEvent) => {
       <img class="w-full" src="/images/auth/lock.svg" />
     </template>
     <template #trailing>
-      <UButton
-        color="gray"
-        variant="link"
-        icon="i-heroicons-x-mark-20-solid"
-        :padded="false"
+      <div
+        class="pr-1 justify-center text-[#ff5524] hover:text-[#ff5524] focus:text-[#ff5524] text-[10px] font-medium font-['Manrope'] cursor-pointer"
         @click="show = !show"
         alt=""
-      />
+      >
+        {{ show ? 'Hide' : 'Show' }}
+      </div>
     </template>
   </UInput>
 </template>
