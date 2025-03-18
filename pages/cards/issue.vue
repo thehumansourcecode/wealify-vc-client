@@ -56,6 +56,9 @@ const validate = (form: IFormCardIssue): FormError[] => {
   if (!form.category) {
     errors.push({ path: 'category', message: t('common.validator.empty.issueCard.category') })
   }
+  if (form.startingBalance === 0){
+    errors.push({ path: 'startingBalance', message: t('common.validator.invalid.startingBalance') })
+  }
   return errors
 }
 
@@ -143,7 +146,13 @@ async function handleIssue() {
         <div class="text-18-600-28 text-[#1C1D23]">
           {{ t('cards.issue.info.title') }}
         </div>
-        <UFormGroup name="name" class="mt-5">
+        <UFormGroup
+          name="name"
+          class="mt-5"
+          :ui="{
+            error: 'ml-[128px] mt-2 text-red-500 dark:text-red-400',
+          }"
+        >
           <div class="flex flex-row items-center">
             <div class="text-14-500-20 w-[128px]" style="flex: 0 0 128px">
               <span>{{ t('cards.issue.info.form.label.name') }}</span>
@@ -162,7 +171,13 @@ async function handleIssue() {
             />
           </div>
         </UFormGroup>
-        <UFormGroup name="email" class="mt-5">
+        <UFormGroup
+          name="email"
+          class="mt-5"
+          :ui="{
+            error: 'ml-[128px] mt-2 text-red-500 dark:text-red-400',
+          }"
+        >
           <div class="flex flex-row items-center">
             <div class="text-14-500-20 w-[128px]" style="flex: 0 0 128px">
               <span>{{ t('cards.issue.info.form.label.email') }}</span>
@@ -181,7 +196,13 @@ async function handleIssue() {
             />
           </div>
         </UFormGroup>
-        <UFormGroup name="category" class="mt-5">
+        <UFormGroup
+          name="category"
+          class="mt-5"
+          :ui="{
+            error: 'ml-[128px] mt-2 text-red-500 dark:text-red-400',
+          }"
+        >
           <div class="flex flex-row items-center">
             <div class="text-14-500-20 w-[128px]" style="flex: 0 0 128px">
               <span>{{ t('cards.issue.info.form.label.category') }}</span>
@@ -207,7 +228,6 @@ async function handleIssue() {
           <div class="flex flex-row items-center">
             <div class="text-14-500-20 w-[128px]" style="flex: 0 0 128px">
               <span>{{ t('cards.issue.info.form.label.purpose') }}</span>
-              <span class="pl-1 text-[#ED2C38]">*</span>
             </div>
             <BaseInput
               input-class="input-field"
@@ -238,7 +258,7 @@ async function handleIssue() {
               {{ t('cards.issue.balance.form.available', { amount: currentBalance }) }}
             </div>
           </div>
-          <UFormGroup name="startingBalance">
+          <UFormGroup name="startingBalance" v-slot="{ error }">
             <div class="flex flex-row justify-between mt-4">
               <UInput
                 class="w-full text-20-700-32 items-center flex"
@@ -291,7 +311,9 @@ async function handleIssue() {
             <div class="text-[#7A7D89] text-12-500-20">
               {{ t('cards.issue.preview.starting') }}
             </div>
-            <div class="text-14-600-20 text-[#1C1D23]">{{ form.startingBalance ? formatMoneyWithoutDecimals(form.startingBalance) : '-' }}</div>
+            <div class="text-14-600-20 text-[#1C1D23]">
+              {{ form.startingBalance ? formatMoneyWithoutDecimals(form.startingBalance) : '-' }}
+            </div>
           </div>
           <div class="flex flex-row justify-between mt-6">
             <div class="text-[#7A7D89] text-12-500-20">
@@ -304,7 +326,9 @@ async function handleIssue() {
             <div class="text-[#7A7D89] text-12-500-20">
               {{ t('cards.issue.preview.totalTopup') }}
             </div>
-            <div class="text-16-600-25 text-[#FF5524]">{{ formatMoneyWithoutDecimals(form.startingBalance || 0 + issueCardFee) }}</div>
+            <div class="text-16-600-25 text-[#FF5524]">
+              {{ formatMoneyWithoutDecimals(form.startingBalance || 0 + issueCardFee) }}
+            </div>
           </div>
         </div>
         <UButton
