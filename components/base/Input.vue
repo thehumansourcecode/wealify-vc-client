@@ -62,7 +62,6 @@ function clearInput() {
   box-shadow: none;
   border: 1px solid #d7d9e5;
   background: white;
-  border-radius: 49px;
   color: #7a7d89;
   font-weight: 500;
   font-size: 14px;
@@ -79,6 +78,10 @@ function clearInput() {
     font-size: 14px;
     line-height: 20px;
   }
+}
+
+.rounded-49 {
+  border-radius: 49px;
 }
 
 .transparent {

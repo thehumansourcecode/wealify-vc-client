@@ -1,8 +1,8 @@
 import axios, { AxiosError, type AxiosInstance, type AxiosResponse, type CreateAxiosDefaults } from 'axios'
 import { HTTP_STATUS_CODE } from '~/types/common'
-import { AUTH_ENDPOINTS } from '~/common/constants'
 
 import dayjs from 'dayjs'
+import { AUTH_ENDPOINTS } from '~/common/constants'
 
 interface RequestOptions {
   params?: object

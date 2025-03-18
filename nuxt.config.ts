@@ -14,7 +14,7 @@ export default defineNuxtConfig({
     app: {
       auth: {
         api: {
-          baseUrl: 'https://dev-api.wealify.com/api/v1/virtual-cards',
+          baseUrl: process.env.BASE_URL,
         },
         pages: {
           home: '/',

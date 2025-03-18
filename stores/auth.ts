@@ -29,7 +29,7 @@ export const useAuthStore = defineStore('auth', {
         localStorage.setItem(AUTH_DATA_STORED_KEY, JSON.stringify(authData))
 
         // Start periodic refresh check
-        this.startRefreshCheck()
+        // this.startRefreshCheck()
       }
     },
     loadTokens() {
@@ -57,11 +57,12 @@ export const useAuthStore = defineStore('auth', {
       }
       this.$reset()
     },
-    async signIn(credentials: LoginCredentials): Promise<LoginResponse> {
+    async login(credentials: LoginCredentials): Promise<LoginResponse> {
       try {
-        const response = await AuthService.instance.signIn(credentials)
+        const response = await AuthService.instance.login(credentials)
         if (response.code === 200) {
           this.setTokens(response.data.access_token, response.data.access_token) //! Server is not returned refresh_token, so use access_token
+          console.log(response)
         } else {
           throw new Error(`Login failed with code: ${response.code}`)
         }
@@ -70,6 +71,10 @@ export const useAuthStore = defineStore('auth', {
         CommonLogger.instance.error('Login failed:', error)
         throw error
       }
+    },
+    logout() {
+      this.clearTokens()
+      navigateTo('/auth/sign-in')
     },
     async refreshTokens(): Promise<boolean> {
       if (!this.refreshToken) return false
@@ -87,10 +92,7 @@ export const useAuthStore = defineStore('auth', {
         return false
       }
     },
-    logout() {
-      this.clearTokens()
-      navigateTo('/login')
-    },
+
     isAccessTokenExpired(): boolean {
       if (!this.accessToken) return true
 
