@@ -61,13 +61,12 @@ const handlePaste = (event: ClipboardEvent) => {
     </template>
     <template #trailing>
       <UButton
-        color="gray"
-        variant="link"
-        icon="i-heroicons-x-mark-20-solid"
-        :padded="false"
         @click="show = !show"
-        alt=""
-      />
+        variant="link"
+        class="justify-center text-[#ff5524] text-[10px] font-medium font-['Manrope']"
+      >
+        {{ show ? 'Hide' : 'Show' }}
+      </UButton>
     </template>
   </UInput>
 </template>
