@@ -16,7 +16,7 @@ export const useSignIn = () => {
   const { fetchProfile } = useProfileStore();
   const router = useRouter();
 
-  const credentials = ref<SignInFields>({
+  const fields = ref<SignInFields>({
     email: '',
     password: '',
   })
@@ -28,37 +28,37 @@ export const useSignIn = () => {
 
   const { isLoading, handleRequest } = useHandleRequest(async () => {
     try {
-      await signIn(credentials.value)
+      await signIn(fields.value)
       await fetchProfile();
       router.push('/');
     } catch (error) {
       CommonLogger.instance.error('useSignIn + error', error)
-      errors.value.password = ''
+      errors.value.password = 'Email or password is incorrect'
     }
   })
 
   const isValidate = computed(
     () =>
       !isLoading.value &&
-      credentials.value.email &&
-      credentials.value.password &&
+      fields.value.email &&
+      fields.value.password &&
       !errors.value.email &&
       !errors.value.password,
   )
 
   watch(
-    () => credentials.value.email,
+    () => fields.value.email,
     () => {
-      errors.value.email = validateEmail(credentials.value.email)
+      errors.value.email = validateEmail(fields.value.email)
     },
   )
 
   watch(
-    () => credentials.value.password,
+    () => fields.value.password,
     () => {
-      errors.value.password = validatePassword(credentials.value.password) as string
+      errors.value.password = validatePassword(fields.value.password) as string
     },
   )
 
-  return { credentials, errors, isLoading, isValidate, signIn: handleRequest }
+  return { fields, errors, isLoading, isValidate, signIn: handleRequest }
 }

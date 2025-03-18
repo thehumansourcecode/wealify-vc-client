@@ -26,10 +26,10 @@ defineProps<{
   <!-- DON'T DELETE DIV -->
   <div></div>
   <div></div>
+  <div></div>
   <!-- DON'T DELETE DIV -->
-  <div @click="back()" className="inline-flex justify-start items-start gap-2">
+  <div @click="back()" className="inline-flex justify-start items-start gap-2 cursor-pointer">
     <img class="w-full h-full" src="/images/auth/back.svg" />
     <div className="justify-center text-[#ff5524] text-base font-medium font-['Manrope'] leading-normal">Back</div>
   </div>
-  <div></div>
 </template>

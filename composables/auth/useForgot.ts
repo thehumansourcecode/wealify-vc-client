@@ -1,6 +1,34 @@
+interface ForgotFields {
+  email: string
+  otp: string
+  password: string
+  confirmPassword: string
+}
+
+interface ForgotErrors {
+  email: string | undefined
+  otp: string | undefined
+  password: string | undefined
+  confirmPassword: string | undefined
+}
+
 export const useForgot = () => {
   const router = useRouter()
   const step = ref<1 | 2 | 3>(1)
+
+  const fields = ref<ForgotFields>({
+    email: '',
+    otp: '',
+    password: '',
+    confirmPassword: '',
+  })
+
+  const errors = ref<ForgotErrors>({
+    email: undefined,
+    otp: undefined,
+    password: undefined,
+    confirmPassword: undefined,
+  })
 
   const back = () => {
     switch (step.value) {
@@ -30,5 +58,19 @@ export const useForgot = () => {
     }
   }
 
-  return { step, back, next }
+  watch(
+    () => fields.value.email,
+    () => {
+      errors.value.email = validateEmail(fields.value.email)
+    },
+  )
+
+  watch(
+    () => fields.value.password,
+    () => {
+      errors.value.password = validatePassword(fields.value.password) as string
+    },
+  )
+
+  return { step, back, next, fields, errors }
 }
