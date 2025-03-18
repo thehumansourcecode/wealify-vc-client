@@ -1,6 +1,5 @@
-import type { ILoginRequestParams, ILoginResponseData, IRegisterRequestParams } from '~/types/auth'
+import type { LoginCredentials, LoginResponse } from '~/types/auth'
 import { BaseService } from './base.service'
-import type { ICommonResponse } from '~/types/common'
 
 export class AuthService extends BaseService {
   private static _instance: AuthService
@@ -14,25 +13,15 @@ export class AuthService extends BaseService {
 
   constructor() {
     const config = useRuntimeConfig()
-    super(config.public.baseUrl + '/auth')
+    super(config.app.auth.api.baseUrl + '/auth')
   }
 
-  async login(payload: ILoginRequestParams): Promise<ICommonResponse<ILoginResponseData>> {
-    console.log('[LOGIN DEBUG]', payload)
-    const response = await this.post('/login', payload)
-    return response
+  async signIn(credentials: LoginCredentials): Promise<LoginResponse> {
+    return this.post('/login', credentials)
   }
 
-  async register(payload: IRegisterRequestParams): Promise<ICommonResponse<any>> {
-    console.log('[REGISTER DEBUG]', payload)
-    const response = await this.post('/register', payload)
-    return response
-  }
-
-  async verifyEmail(payload: any): Promise<ICommonResponse<any>> {
-    const response = await this.post('/verify-email', payload)
-    return response
+  async refreshToken(): Promise<any> {
+    // return this.post('/refresh-token', {})
+    return { code: 403 }
   }
 }
-
-export const authService = new AuthService()

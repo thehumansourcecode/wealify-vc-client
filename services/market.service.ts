@@ -1,4 +1,4 @@
-import type { IUpdateUserProfileParams, IUpdateUserReferralCodeParams, IUserProfileData } from '~/types/user'
+import type { IUpdateUserProfileParams, IUpdateUserReferralCodeParams, IUserProfileData } from '~/types/profile'
 import { BaseService } from './base.service'
 import type { ICommonListResponse, ICommonResponse, IExchangeRateData } from '~/types/common'
 import type {

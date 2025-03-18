@@ -1,5 +1,5 @@
 import { CardCategory, CardStatus, CardType, type ICardData } from '~/types/cards'
-import type { IUserProfileData } from '~/types/user'
+import type { IUserProfileData } from '~/types/profile'
 
 export const useCardStore = defineStore('card', () => {
   const authStore = useAuthStore()

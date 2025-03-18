@@ -6,7 +6,7 @@ import type {
   IUpdateUserProfileParams,
   IUpdateUserReferralCodeParams,
   IUserProfileData,
-} from '~/types/user'
+} from '~/types/profile'
 import { BaseService } from './base.service'
 import type { ICommonListResponse, ICommonResponse } from '~/types/common'
 
