@@ -68,18 +68,25 @@ const router = useRouter()
           >
             {{ errors.password }}
           </div>
+         <div class="w-full flex flex-row justify-end mt-2">
+          <div class="auth__right-forgot-password cursor-pointer">
+            <div
+              @click="() => router.push('/auth/forgot')"
+              class="text-right justify-center text-[#ff5524] text-xs font-semibold font-['Manrope'] leading-tight"
+            >
+              Forgot Password?
+            </div>
+          </div>
+         </div>
         </div>
       </div>
       <div class="auth__right_button md:w-[100%] flex flex-col gap-2 lg:w-[65%]">
-        <AuthSubmitButton :title="'Login'" :loading="isLoading" :disabled="!isValidate" @click="isValidate && signIn()" />
-        <div class="auth__right-forgot-password cursor-pointer">
-          <div
-            @click="() => router.push('/auth/forgot')"
-            class="text-right justify-center text-[#ff5524] text-xs font-semibold font-['Manrope'] leading-tight"
-          >
-            Forgot Password?
-          </div>
-        </div>
+        <AuthSubmitButton
+          :title="'Login'"
+          :loading="isLoading"
+          :disabled="!isValidate"
+          @click="isValidate && signIn()"
+        />
       </div>
       <!-- DON'T DELETE THE DIV -->
       <div></div>
