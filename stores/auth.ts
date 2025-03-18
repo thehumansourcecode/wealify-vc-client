@@ -62,7 +62,6 @@ export const useAuthStore = defineStore('auth', {
         const response = await AuthService.instance.login(credentials)
         if (response.code === 200) {
           this.setTokens(response.data.access_token, response.data.access_token) //! Server is not returned refresh_token, so use access_token
-          console.log(response)
         } else {
           throw new Error(`Login failed with code: ${response.code}`)
         }
