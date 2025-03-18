@@ -30,8 +30,8 @@ export enum CardStatus {
 export interface ICardData {
   cardName: string
   cardNumber: string
-  cardType: CardType
-  cardCategory: CardCategory | string
+  type: CardType
+  category: CardCategory
   balance: number
   totalTopup: number
   totalSpend: number

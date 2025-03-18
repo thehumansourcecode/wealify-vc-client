@@ -1,4 +1,4 @@
-import { CardCategory, CardStatus } from '~/types/cards'
+import { CardCategory, CardStatus, CardType } from '~/types/cards'
 import { CommonCountry } from '~/types/common'
 export default {
   button: {
@@ -23,25 +23,15 @@ export default {
     },
   },
   list: {
+    type: {
+      [CardType.VIRTUAL]: 'Virtual Card',
+      [CardType.PHYSICAL]: 'Physical Card',
+    },
+
     status: {
       [CardStatus.ACTIVE]: 'Active',
       [CardStatus.CANCEL]: 'Cancel',
       [CardStatus.FREEZE]: 'Freeze',
-    },
-    empty: 'No card created yet',
-    pagination: {
-      limit: '{limit} lines/page',
-    },
-    header: {
-      card: 'Card',
-      type: 'Type',
-      category: 'Category',
-      balance: 'Balance',
-      totalTopup: 'Total Top-up',
-      totalSpend: 'Total Spend',
-      createdAt: 'Create Date',
-      status: 'Status',
-      action: 'Action',
     },
 
     category: {
@@ -60,6 +50,21 @@ export default {
       [CardCategory.INVESTMENT]: 'Investment/Dividend',
       [CardCategory.RETAIL]: 'Retail',
       [CardCategory.OTHER]: 'Other',
+    },
+    empty: 'No card created yet',
+    pagination: {
+      limit: '{limit} lines/page',
+    },
+    header: {
+      card: 'Card',
+      type: 'Type',
+      category: 'Category',
+      balance: 'Balance',
+      totalTopup: 'Total Top-up',
+      totalSpend: 'Total Spend',
+      createdAt: 'Create Date',
+      status: 'Status',
+      action: 'Action',
     },
   },
   issue: {

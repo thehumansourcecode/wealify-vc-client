@@ -162,7 +162,7 @@ function handleCopy(value: string) {
           variant="none"
           v-model="selectedCurrencyOption"
           :options="currencyOptions"
-          option-attribute="name"
+          option-attribute="value"
         >
           <template #leading>
             <img v-if="selectedCurrencyOption?.logo" :src="selectedCurrencyOption?.logo" />
