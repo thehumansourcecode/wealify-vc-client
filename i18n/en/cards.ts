@@ -3,7 +3,7 @@ import { CommonCountry } from '~/types/common'
 export default {
   button: {
     withdraw: 'Withdraw',
-    issue: 'Issue',
+    issue: 'Issue card',
     topup: 'Top-up',
     freeze: 'Freeze',
     unfreeze: 'Unfreeze',
@@ -116,5 +116,14 @@ export default {
       button: 'Issue card',
     },
     policy: 'I agree with Terms of Use and Policy',
+    notification: {
+      title: 'Notification',
+      failed: 'Fail to issue a new card. Please try again later',
+      limit: 'You have reached the maximum number of cards created. Please contact sales for more supports',
+      process: {
+        title: 'Processing',
+        description: `We're proccessing your request. One moment please`,
+      },
+    },
   },
 }
