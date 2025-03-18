@@ -44,7 +44,6 @@ const links = computed(() => [
 async function logout() {
   await authStore.logout()
   navigateTo('/auth/sign-in')
-  console.log('123')
 }
 </script>
 

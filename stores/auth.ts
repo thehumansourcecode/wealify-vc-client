@@ -55,15 +55,13 @@ export const useAuthStore = defineStore('auth', {
           clearInterval(this.refreshInterval) // Stop the refresh check
         }
       }
-      this.accessToken = undefined
-      this.refreshToken = undefined
+      this.$reset();
     },
     async login(credentials: LoginCredentials): Promise<LoginResponse> {
       try {
         const response = await AuthService.instance.login(credentials)
         if (response.code === 200) {
           this.setTokens(response.data.access_token, response.data.access_token) //! Server is not returned refresh_token, so use access_token
-          console.log(response)
         } else {
           throw new Error(`Login failed with code: ${response.code}`)
         }
@@ -74,6 +72,7 @@ export const useAuthStore = defineStore('auth', {
       }
     },
     logout() {
+      useProfileStore().resetProfile()
       this.clearTokens()
     },
     async refreshTokens(): Promise<boolean> {
