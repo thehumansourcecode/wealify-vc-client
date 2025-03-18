@@ -2,7 +2,7 @@
 const { groupTabs, selectedOptions, selectedTab, selectedTabIndex, selectTab } = useTabs()
 </script>
 <template>
-  <div class="flex flex-row justify-between w-full relative overflow-hidden min-h-screen pl-10 pr-10 pt-3 gap-4">
+  <div class="flex flex-row justify-between w-full relative overflow-hidden min-h-screen pl-10 pr-10 pt-3 gap-10">
     <div class="w-4/12 relative rounded-lg overflow-hidden flex flex-col gap-4">
       <div
         v-for="group in groupTabs"
