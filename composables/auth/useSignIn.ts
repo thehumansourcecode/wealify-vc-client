@@ -56,7 +56,7 @@ export const useSignIn = () => {
   watch(
     () => fields.value.password,
     () => {
-      errors.value.password = validatePassword(fields.value.password) as string
+      errors.value.password = validatePassword(fields.value.password)
     },
   )
 

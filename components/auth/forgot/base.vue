@@ -2,6 +2,7 @@
 defineProps<{
   title: string
   subtitle: string
+  subtitle2?: string
   back: () => void
 }>()
 </script>
@@ -11,16 +12,21 @@ defineProps<{
   <div></div>
   <!-- DON'T DELETE DIV -->
   <div class="auth__head flex flex-col gap-2">
-    <div
-      class="auth__title text-center justify-center text-[#1b1c23] xl:text-[32px] text-[22px] font-bold font-['Manrope'] leading-[44px]"
-    >
-      {{ title }}
-    </div>
-    <div
-      class="auth__subtitle text-center justify-start text-[#7a7c89] text-sm font-medium font-['Manrope'] leading-tight"
-    >
-      {{ subtitle }}
-    </div>
+    <slot name="title">
+      <div
+        class="auth__title text-center justify-center text-[#1b1c23] xl:text-[32px] text-[22px] font-bold font-['Manrope'] leading-[44px]"
+      >
+        {{ title }}
+      </div>
+    </slot>
+    <slot name="subtitle">
+      <div
+        class="auth__subtitle text-center justify-start text-[#7a7c89] text-sm font-medium font-['Manrope'] leading-tight"
+      >
+        {{ subtitle }}
+      </div>
+    </slot>
+    <slot name="subtitle2" />
   </div>
   <slot />
   <!-- DON'T DELETE DIV -->

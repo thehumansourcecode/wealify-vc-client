@@ -15,6 +15,7 @@ interface ForgotErrors {
 export const useForgot = () => {
   const router = useRouter()
   const step = ref<1 | 2 | 3>(1)
+  const toast = useToast()
 
   const fields = ref<ForgotFields>({
     email: '',
@@ -51,12 +52,32 @@ export const useForgot = () => {
         step.value += 1
         break
       case 3:
+        toast.add({
+          title: 'Password changed successfully',
+          timeout: 5000,
+        })
         router.push('/auth/sign-in')
         break
       default:
         break
     }
   }
+
+  const onCompletedPin = (pin: string) => {
+    fields.value.otp = pin
+    next()
+  }
+
+  const isValidate = computed(
+    () =>
+      fields.value.email &&
+      fields.value.password &&
+      fields.value.confirmPassword &&
+      fields.value.password == fields.value.confirmPassword &&
+      !errors.value.email &&
+      !errors.value.password &&
+      !errors.value.confirmPassword,
+  )
 
   watch(
     () => fields.value.email,
@@ -68,9 +89,16 @@ export const useForgot = () => {
   watch(
     () => fields.value.password,
     () => {
-      errors.value.password = validatePassword(fields.value.password) as string
+      errors.value.password = validatePassword(fields.value.password)
     },
   )
 
-  return { step, back, next, fields, errors }
+  watch(
+    () => fields.value.confirmPassword,
+    () => {
+      errors.value.confirmPassword = validateConfirmPassword(fields.value.confirmPassword, fields.value.password)
+    },
+  )
+
+  return { step, back, next, isValidate, onCompletedPin, fields, errors }
 }

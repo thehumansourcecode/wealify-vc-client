@@ -36,3 +36,18 @@ export const validatePassword = (password: string): string | undefined => {
   // If all checks pass, return null or a success message
   return
 }
+
+export const validateConfirmPassword = (confirmPassword: string, password: string) => {
+  // Check if password is empty
+  if (!confirmPassword || confirmPassword.trim() === '') {
+    return 'Confirm Password is mandatory. Please enter your confirm password'
+  }
+
+  // Check if not compare password
+  if (confirmPassword != password) {
+    return 'The re-entered password must match the new password'
+  }
+
+  // If all checks pass, return null or a success message
+  return
+}

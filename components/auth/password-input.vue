@@ -4,6 +4,7 @@ const show = ref<boolean>(false)
 /// Props
 const { error } = defineProps<{
   error?: string | undefined
+  placeholder?: string | undefined
 }>()
 
 // Use defineModel to create a two-way binding for the 'value' prop
@@ -60,7 +61,7 @@ watch(password, (newValue: string) => {
         trailing: { pointer: '' },
       },
     }"
-    :placeholder="'Your Password'"
+    :placeholder="placeholder ?? 'Your Password'"
     maxlength="16"
     minlength="8"
     @input="handleInput"
