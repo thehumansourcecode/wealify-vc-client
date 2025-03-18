@@ -48,13 +48,13 @@ const validate = (form: IFormCardIssue): FormError[] => {
     errors.push({ path: 'name', message: t('common.validator.empty.issueCard.name') })
   }
   if (!form.email) {
-    errors.push({ path: 'name', message: t('common.validator.empty.issueCard.name') })
+    errors.push({ path: 'email', message: t('common.validator.empty.issueCard.email') })
   }
   if (!form.phoneNumber) {
-    errors.push({ path: 'name', message: t('common.validator.empty.issueCard.phoneNumber') })
+    errors.push({ path: 'phoneNumber', message: t('common.validator.empty.issueCard.phoneNumber') })
   }
   if (!form.category) {
-    errors.push({ path: 'name', message: t('common.validator.empty.issueCard.category') })
+    errors.push({ path: 'category', message: t('common.validator.empty.issueCard.category') })
   }
   return errors
 }
