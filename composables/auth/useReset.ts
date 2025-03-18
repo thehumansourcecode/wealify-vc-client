@@ -76,6 +76,9 @@ export const useReset = () => {
   watch(
     () => fields.value.password,
     () => {
+      if (errors.value.confirmPassword) {
+        errors.value.confirmPassword = validateConfirmPassword(fields.value.confirmPassword, fields.value.password)
+      }
       errors.value.password = validatePassword(fields.value.password)
     },
   )
@@ -83,6 +86,9 @@ export const useReset = () => {
   watch(
     () => fields.value.confirmPassword,
     () => {
+      if (errors.value.password) {
+        errors.value.password = validatePassword(fields.value.password)
+      }
       errors.value.confirmPassword = validateConfirmPassword(fields.value.confirmPassword, fields.value.password)
     },
   )
