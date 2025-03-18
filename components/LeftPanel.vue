@@ -88,7 +88,6 @@ onMounted(() => {
         <ULink :to="link.to">
           <div class="flex flex-row">
             <img class="mx-2" :src="link.icon" alt="" />
-
             <div class="relative py-[10px] cursor-pointer relative" :class="link.active ? 'text-common' : 'text-pale'">
               {{ link.label }}
             </div>

@@ -1,6 +1,5 @@
 import axios, { AxiosError, type AxiosInstance, type AxiosResponse, type CreateAxiosDefaults } from 'axios'
 import { HTTP_STATUS_CODE } from '~/types/common'
-import { AUTH_ENDPOINTS } from '~/common/constants'
 
 import dayjs from 'dayjs'
 
@@ -24,9 +23,9 @@ export class BaseService {
   private initInterceptors() {
     this.client.interceptors.request.use(
       config => {
-        if (AUTH_ENDPOINTS.some(endpoint => config.url?.includes(endpoint))) {
-          return config // Skip attaching the Authorization header for these endpoints
-        }
+        // if (AUTH_ENDPOINTS.some(endpoint => config.url?.includes(endpoint))) {
+        //   return config // Skip attaching the Authorization header for these endpoints
+        // }
 
         const accessToken = localStorage.getItem('accessToken')
         const refreshToken = localStorage.getItem('refreshToken')

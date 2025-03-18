@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { credentials, errors, isLoading, isValidate, signIn } = useSignIn()
+const { credentials, errors, isLoading, isValidate, login } = useSignIn()
 const router = useRouter()
 </script>
 <template>
@@ -85,7 +85,7 @@ const router = useRouter()
           :title="'Log In'"
           :loading="isLoading"
           :disabled="!isValidate"
-          @click="isValidate && signIn()"
+          @click="isValidate && login()"
         />
       </div>
       <!-- DON'T DELETE THE DIV -->

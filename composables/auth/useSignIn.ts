@@ -12,7 +12,7 @@ interface SignInFieldErrors {
 }
 
 export const useSignIn = () => {
-  const { signIn } = useAuthStore()
+  const { login } = useAuthStore()
   const { fetchProfile } = useProfileStore();
   const router = useRouter();
 
@@ -28,7 +28,7 @@ export const useSignIn = () => {
 
   const { isLoading, handleRequest } = useHandleRequest(async () => {
     try {
-      await signIn(credentials.value)
+      await login(credentials.value)
       await fetchProfile();
       router.push('/');
     } catch (error) {
@@ -60,5 +60,5 @@ export const useSignIn = () => {
     },
   )
 
-  return { credentials, errors, isLoading, isValidate, signIn: handleRequest }
+  return { credentials, errors, isLoading, isValidate, login: handleRequest }
 }

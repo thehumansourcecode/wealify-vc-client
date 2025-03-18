@@ -13,10 +13,10 @@ export class AuthService extends BaseService {
 
   constructor() {
     const config = useRuntimeConfig()
-    super(config.app.auth.api.baseUrl + '/auth')
+    super(config.public.baseUrl + '/auth')
   }
 
-  async signIn(credentials: LoginCredentials): Promise<LoginResponse> {
+  async login(credentials: LoginCredentials): Promise<LoginResponse> {
     return this.post('/login', credentials)
   }
 
