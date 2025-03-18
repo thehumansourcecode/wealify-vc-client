@@ -30,7 +30,7 @@ export const validatePassword = (password: string): string | undefined => {
 
   // Check if password
   if (passwordRequirements.some(({ regex }) => !regex.test(password))) {
-    return 'The password must be at least 8 - 16 characters, including uppercase, lowercase, numbers, not contain space and special characters'
+    return 'The password must be at least 8 - 16 characters, including uppercase, lowercase, numbers, special characters and not contain space'
   }
 
   // If all checks pass, return null or a success message
