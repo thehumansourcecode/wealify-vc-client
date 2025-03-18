@@ -55,7 +55,7 @@ export const useAuthStore = defineStore('auth', {
           clearInterval(this.refreshInterval) // Stop the refresh check
         }
       }
-      this.$reset()
+      this.$reset();
     },
     async login(credentials: LoginCredentials): Promise<LoginResponse> {
       try {
@@ -72,8 +72,8 @@ export const useAuthStore = defineStore('auth', {
       }
     },
     logout() {
+      useProfileStore().resetProfile()
       this.clearTokens()
-      navigateTo('/auth/sign-in')
     },
     async refreshTokens(): Promise<boolean> {
       if (!this.refreshToken) return false

@@ -1,8 +1,8 @@
 import axios, { AxiosError, type AxiosInstance, type AxiosResponse, type CreateAxiosDefaults } from 'axios'
 import { HTTP_STATUS_CODE } from '~/types/common'
+import { AUTH_DATA_STORED_KEY, AUTH_ENDPOINTS } from '~/common/constants'
 
 import dayjs from 'dayjs'
-import { AUTH_ENDPOINTS } from '~/common/constants'
 
 interface RequestOptions {
   params?: object
@@ -28,21 +28,20 @@ export class BaseService {
           return config // Skip attaching the Authorization header for these endpoints
         }
 
-        const accessToken = localStorage.getItem('accessToken')
-        const refreshToken = localStorage.getItem('refreshToken')
-        const accessTokenExpiresAt = localStorage.getItem('accessTokenExpiresAt')
-        const refreshTokenExpiresAt = localStorage.getItem('refreshTokenExpiresAt')
+        const tokens = localStorage.getItem(AUTH_DATA_STORED_KEY)
+        let parsedTokens = tokens ? JSON.parse(tokens) : undefined
 
-        const isAccessTokenExpired = dayjs().isAfter(dayjs(accessTokenExpiresAt))
-        const isRefreshTokenExpired = dayjs().isAfter(dayjs(refreshTokenExpiresAt))
+        const accessToken = parsedTokens?.accessToken
+        const refreshToken = parsedTokens?.refreshToken
+        const accessTokenExpiresAt = parsedTokens?.accessTokenExpiresAt
+        const refreshTokenExpiresAt = parsedTokens?.refreshTokenExpiresAt
+
+        const isAccessTokenExpired = accessTokenExpiresAt && dayjs().isAfter(dayjs(accessTokenExpiresAt))
+        const isRefreshTokenExpired = refreshTokenExpiresAt && dayjs().isAfter(dayjs(refreshTokenExpiresAt))
 
         if (refreshToken && isRefreshTokenExpired) {
           console.error('Refresh token expired. Logging out.')
-          localStorage.removeItem('accessToken')
-          localStorage.removeItem('refreshToken')
-          localStorage.removeItem('accessTokenExpiresAt')
-          localStorage.removeItem('refreshTokenExpiresAt')
-          window.location.href = '/' // Redirect to login page
+          window.location.href = '/auth/sign-in' // Redirect to login page
           return Promise.reject('Refresh token expired')
         }
 
