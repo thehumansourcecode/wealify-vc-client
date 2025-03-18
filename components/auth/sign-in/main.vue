@@ -82,7 +82,7 @@ const router = useRouter()
       </div>
       <div class="auth__right_button md:w-[100%] flex flex-col gap-2 lg:w-[65%]">
         <AuthSubmitButton
-          :title="'Login'"
+          :title="'Log In'"
           :loading="isLoading"
           :disabled="!isValidate"
           @click="isValidate && signIn()"
