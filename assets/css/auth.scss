@@ -15,3 +15,8 @@ body {
   font-weight: 600;
   line-height: 20px;
 }
+
+input[type=password]:not(:placeholder-shown) {
+  font-family: Verdana;
+  letter-spacing: 0.125em;
+}

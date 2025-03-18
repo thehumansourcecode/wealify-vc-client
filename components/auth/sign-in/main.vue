@@ -11,7 +11,7 @@ const router = useRouter()
       <div></div>
       <!-- DON'T DELETE THE DIV -->
       <div class="auth__left-logo">
-        <img class="w-[30%]" src="/images/auth/logo.svg" />
+        <img class="w-[30%] min-w-[250px]" src="/images/auth/logo.svg" />
       </div>
       <div class="auth__left-title justify-start text-[#1b1c23] text-5xl font-bold font-['Manrope'] leading-[60px]">
         Make your spending<br />Smarter & Faster.

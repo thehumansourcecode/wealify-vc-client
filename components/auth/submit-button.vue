@@ -7,7 +7,7 @@ defineProps<{
 </script>
 <template>
   <UButton
-    class="auth__button w-full px-4 py-3 rounded-[49px] inline-flex justify-center items-center gap-2"
+    class="auth__button w-full px-4 py-3 rounded-[49px] inline-flex justify-center items-center min-h-[50px] gap-2"
     :loading="loading"
     :class="
       disabled
@@ -18,7 +18,7 @@ defineProps<{
   >
     <div
       v-if="!loading"
-      class="justify-center text-base font-semibold font-['Manrope'] leading-normal"
+      class="justify-center align-center text-base font-semibold font-['Manrope'] leading-normal"
       :class="disabled ? 'text-[#d6d8e5]' : 'text-white'"
     >
       {{ title }}
