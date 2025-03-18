@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { AUTH_DATA_STORED_KEY } from '~/common/constants'
 import { formatDDMMYYYY, getTabRoute } from '~/common/functions'
 import { PanelTab } from '~/types/common'
 
@@ -36,12 +37,14 @@ const links = computed(() => [
     tab: 'logout',
     label: t(`common.header.logout`),
     icon: hoveredTab.value === 'logout' ? '/icons/header/active-logout.svg' : '/icons/header/logout.svg',
-    action: logout,
+    action: () => logout(),
   },
 ])
 
-function logout() {
-  authStore.logout()
+async function logout() {
+  await authStore.logout()
+  navigateTo('/auth/sign-in')
+  console.log('123')
 }
 </script>
 
@@ -59,7 +62,7 @@ function logout() {
     </div>
     <div class="flex flex-row items-center">
       <div class="mr-4">EN</div>
-      <div class="mr-7">noti</div>
+      <div class="mr-7" @click="navigateTo('/cards')">noti</div>
       <UPopover mode="hover" :ui="{ background: 'bg-white', ring: 'ring-0' }">
         <div class="flex items-center justify-between">
           <img src="~/assets/img/common/avatar.svg" alt="" />
