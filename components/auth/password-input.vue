@@ -45,6 +45,11 @@ const handlePaste = (event: ClipboardEvent) => {
         `outline outline-[1.50px] outline-offset-[-1.50px] focus:outline-[#d6d8e5] outline-[#d6d8e5]  ${error ? 'outline-[#ec2c37]' : 'outline-[#d6d8e5]'}`,
       ].join(' ')
     "
+    :ui="{
+      icon: {
+        trailing: { pointer: '' },
+      },
+    }"
     :placeholder="'Your Password'"
     maxlength="16"
     minlength="8"
@@ -56,12 +61,13 @@ const handlePaste = (event: ClipboardEvent) => {
     </template>
     <template #trailing>
       <UButton
-        @click="show = !show"
+        color="gray"
         variant="link"
-        class="justify-center text-[#ff5524] text-[10px] font-medium font-['Manrope']"
-      >
-        {{ show ? 'Hide' : 'Show' }}
-      </UButton>
+        icon="i-heroicons-x-mark-20-solid"
+        :padded="false"
+        @click="show = !show"
+        alt=""
+      />
     </template>
   </UInput>
 </template>
