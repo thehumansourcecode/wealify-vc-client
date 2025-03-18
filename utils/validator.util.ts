@@ -30,7 +30,22 @@ export const validatePassword = (password: string): string | undefined => {
 
   // Check if password
   if (passwordRequirements.some(({ regex }) => !regex.test(password))) {
-    return 'The password must be at least 8 - 16 characters, including uppercase, lowercase, numbers, not contain space and special characters'
+    return 'The password must be at least 8 - 16 characters, including uppercase, lowercase, numbers, special characters and not contain space'
+  }
+
+  // If all checks pass, return null or a success message
+  return
+}
+
+export const validateConfirmPassword = (confirmPassword: string, password: string) => {
+  // Check if password is empty
+  if (!confirmPassword || confirmPassword.trim() === '') {
+    return 'Confirm Password is mandatory. Please enter your confirm password'
+  }
+
+  // Check if not compare password
+  if (confirmPassword != password) {
+    return 'The re-entered password must match the new password'
   }
 
   // If all checks pass, return null or a success message

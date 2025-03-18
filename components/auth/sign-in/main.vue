@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { credentials, errors, isLoading, isValidate, login } = useSignIn()
+const { fields, errors, isLoading, isValidate, login } = useSignIn()
 const router = useRouter()
 </script>
 <template>
@@ -49,10 +49,10 @@ const router = useRouter()
       <div class="auth__right_input flex flex-col gap-3 md:w-[100%] lg:w-[65%]">
         <div class="auth__right-email inline-flex flex-col justify-center items-start gap-1">
           <div class="h-5 justify-center text-[#1b1c23] text-xs font-medium font-['Manrope'] leading-tight">Email</div>
-          <AuthEmailInput v-model="credentials.email" :error="errors.email" />
+          <AuthEmailInput v-model="fields.email" :error="errors.email" />
           <div
             v-if="errors.email"
-            className="h-5 justify-center text-[#ec2c37] text-xs font-medium font-['Manrope'] leading-tight"
+            class="h-5 justify-center text-[#ec2c37] text-xs font-medium font-['Manrope'] leading-tight"
           >
             {{ errors.email }}
           </div>
@@ -61,23 +61,23 @@ const router = useRouter()
           <div class="h-5 justify-center text-[#1b1c23] text-xs font-medium font-['Manrope'] leading-tight">
             Password
           </div>
-          <AuthPasswordInput v-model="credentials.password" :error="errors.password" />
+          <AuthPasswordInput v-model="fields.password" :error="errors.password" />
           <div
             v-if="errors.password"
-            className="h-5 justify-center text-[#ec2c37] text-xs font-medium font-['Manrope'] leading-tight"
+            class="h-5 justify-center text-[#ec2c37] text-xs font-medium font-['Manrope'] leading-tight"
           >
             {{ errors.password }}
           </div>
-         <div class="w-full flex flex-row justify-end mt-2">
-          <div class="auth__right-forgot-password cursor-pointer">
-            <div
-              @click="() => router.push('/auth/forgot')"
-              class="text-right justify-center text-[#ff5524] text-xs font-semibold font-['Manrope'] leading-tight"
-            >
-              Forgot Password?
+          <div class="w-full flex flex-row justify-end mt-2">
+            <div class="auth__right-forgot-password cursor-pointer">
+              <div
+                @click="() => router.push('/auth/forgot')"
+                class="text-right justify-center text-[#ff5524] text-xs font-semibold font-['Manrope'] leading-tight"
+              >
+                Forgot Password?
+              </div>
             </div>
           </div>
-         </div>
         </div>
       </div>
       <div class="auth__right_button md:w-[100%] flex flex-col gap-2 lg:w-[65%]">

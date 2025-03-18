@@ -1,31 +1,28 @@
-interface ForgotFields {
-  email: string
+interface ResetFields {
   pin: string
   password: string
   confirmPassword: string
 }
 
-interface ForgotErrors {
-  email: string | undefined
+interface ResetErrors {
   pin: string | undefined
   password: string | undefined
   confirmPassword: string | undefined
 }
 
-export const useForgot = () => {
+export const useReset = () => {
+  const { profile } = useProfileStore()
   const router = useRouter()
   const step = ref<1 | 2 | 3>(1)
   const toast = useToast()
 
-  const fields = ref<ForgotFields>({
-    email: '',
+  const fields = ref<ResetFields>({
     pin: '',
     password: '',
     confirmPassword: '',
   })
 
-  const errors = ref<ForgotErrors>({
-    email: undefined,
+  const errors = ref<ResetErrors>({
     pin: undefined,
     password: undefined,
     confirmPassword: undefined,
@@ -48,10 +45,9 @@ export const useForgot = () => {
   const next = () => {
     switch (step.value) {
       case 1:
-      case 2:
         step.value += 1
         break
-      case 3:
+      case 2:
         toast.add({
           title: 'Password changed successfully',
           timeout: 5000,
@@ -70,20 +66,11 @@ export const useForgot = () => {
 
   const isValidate = computed(
     () =>
-      fields.value.email &&
       fields.value.password &&
       fields.value.confirmPassword &&
       fields.value.password == fields.value.confirmPassword &&
-      !errors.value.email &&
       !errors.value.password &&
       !errors.value.confirmPassword,
-  )
-
-  watch(
-    () => fields.value.email,
-    () => {
-      errors.value.email = validateEmail(fields.value.email)
-    },
   )
 
   watch(
@@ -100,5 +87,5 @@ export const useForgot = () => {
     },
   )
 
-  return { step, back, next, isValidate, onCompletedPin, fields, errors }
+  return { step, back, next, isValidate, profile, onCompletedPin, fields, errors }
 }

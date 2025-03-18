@@ -6,6 +6,8 @@ const { error } = defineProps<{
 // Use defineModel to create a two-way binding for the 'value' prop
 const email = defineModel<string>('value', { default: '' })
 
+const emailRef = ref<any>()
+
 // Handle input event with typed event parameter
 const handleInput = (event: Event) => {
   const target = event.target as HTMLInputElement
@@ -21,15 +23,23 @@ const handlePaste = (event: ClipboardEvent) => {
   const pastedText: string = (event.clipboardData || (window as any).clipboardData).getData('text')
   // If length exceeds 128, truncate from the 129th character
   if (pastedText.length > 128) {
-    event.preventDefault()
+    // event.preventDefault()
     email.value = pastedText.substring(0, 128).trim()
   } else {
     email.value = pastedText.trim()
   }
 }
+
+// Force update if reactivity fails
+watch(email, (newValue: string) => {
+  if (emailRef.value && emailRef.value.input) {
+    emailRef.value.input.value = newValue
+  }
+})
 </script>
 <template>
   <UInput
+    ref="emailRef"
     class="w-full"
     variant="none"
     :input-class="

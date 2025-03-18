@@ -4,10 +4,13 @@ const show = ref<boolean>(false)
 /// Props
 const { error } = defineProps<{
   error?: string | undefined
+  placeholder?: string | undefined
 }>()
 
 // Use defineModel to create a two-way binding for the 'value' prop
 const password = defineModel<string>('value', { default: '' })
+
+const passwordRef = ref<any>()
 
 // Handle input event
 const handleInput = (event: Event) => {
@@ -30,12 +33,20 @@ const handlePaste = (event: ClipboardEvent) => {
   const truncatedText = cleanedText.substring(0, 16)
 
   // Prevent default paste behavior and set cleaned value
-  event.preventDefault()
+  // event.preventDefault()
   password.value = truncatedText
 }
+
+// Force update if reactivity fails
+watch(password, (newValue: string) => {
+  if (passwordRef.value && passwordRef.value.input) {
+    passwordRef.value.input.value = newValue
+  }
+})
 </script>
 <template>
   <UInput
+    ref="passwordRef"
     class="w-full"
     variant="none"
     :type="show ? 'text' : 'password'"
@@ -50,7 +61,7 @@ const handlePaste = (event: ClipboardEvent) => {
         trailing: { pointer: '' },
       },
     }"
-    :placeholder="'Your Password'"
+    :placeholder="placeholder ?? 'Your Password'"
     maxlength="16"
     minlength="8"
     @input="handleInput"
