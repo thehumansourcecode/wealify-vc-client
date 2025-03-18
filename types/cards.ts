@@ -43,6 +43,7 @@ export interface IFormCardIssue {
   type: CardType
   name: string
   email: string
+  countryCode: string
   phoneNumber: string
   category: string
   purpose: string

@@ -104,7 +104,7 @@ const totalSelectedAmount = computed(() => {
     <div v-if="!selectedCards?.length" class="flex flex-row justify-between items-start gap-[200px]">
       <div class="flex flex-col gap-[10px] flex-1">
         <BaseInput
-          input-class="input-field"
+          input-class="input-field rounded-49"
           class="w-full"
           leading
           :leading-img="'/icons/common/search.svg'"

@@ -13,7 +13,7 @@ export enum PanelTab {
 }
 
 export enum PanelChildTab {
-  CARD_ISSUE = 'CARD_ISSUE'
+  CARD_ISSUE = 'CARD_ISSUE',
 }
 
 export interface IPanelTab {
@@ -33,6 +33,20 @@ export enum CommonUSDTNetwork {
   ERC20 = 'ERC-20',
   SOL = 'SOL',
   TRC20 = 'TRC-20',
+}
+
+export enum CommonCountry {
+  INDONESIA = 'ID',
+  MYANMAR = 'MM',
+  THAILAND = 'TH',
+  VIETNAM = 'VN',
+  MALAYSIA = 'MY',
+  PHILIPPINES = 'PH',
+  LAOS = 'LA',
+  CAMBODIA = 'KH',
+  EAST_TIMOR = 'TL',
+  BRUNEI = 'BN',
+  SINGAPORE = 'SG',
 }
 
 export enum HTTP_STATUS_CODE {

@@ -1,4 +1,5 @@
 import { CardCategory, CardStatus } from '~/types/cards'
+import { CommonCountry } from '~/types/common'
 export default {
   button: {
     withdraw: 'Withdraw',
@@ -42,6 +43,7 @@ export default {
       status: 'Status',
       action: 'Action',
     },
+
     category: {
       [CardCategory.ENTERTAINMENT]: 'Entertainment',
       [CardCategory.FOOD_BEVERAGE]: 'Food & Beverage',
@@ -64,6 +66,19 @@ export default {
     info: {
       title: 'Card information',
       form: {
+        country: {
+          [CommonCountry.INDONESIA]: 'Indonesia',
+          [CommonCountry.MYANMAR]: 'Myanmar',
+          [CommonCountry.THAILAND]: 'Thailand',
+          [CommonCountry.VIETNAM]: 'Vietnam',
+          [CommonCountry.MALAYSIA]: 'Malaysia',
+          [CommonCountry.PHILIPPINES]: 'Philippines',
+          [CommonCountry.LAOS]: 'Laos',
+          [CommonCountry.CAMBODIA]: 'Cambodia',
+          [CommonCountry.EAST_TIMOR]: 'East Timor',
+          [CommonCountry.BRUNEI]: 'Brunei',
+          [CommonCountry.SINGAPORE]: 'Singapore',
+        },
         label: {
           name: 'Card name',
           email: 'Email',
@@ -74,7 +89,7 @@ export default {
         placeholder: {
           name: 'Enter card name',
           email: 'Enter your email',
-          phoneNumber: 'Phone number',
+          phoneNumber: `Enter cardholder's phone number`,
           category: 'Choose card category',
           purpose: 'Enter card purpose',
         },
