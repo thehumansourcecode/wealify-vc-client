@@ -71,7 +71,7 @@ const router = useRouter()
         </div>
       </div>
       <div class="auth__right_button md:w-[100%] flex flex-col gap-2 lg:w-[65%]">
-        <AuthSubmitButton :title="'Login'" :loading="isLoading" :disabled="!isValidate" @click="signIn()" />
+        <AuthSubmitButton :title="'Login'" :loading="isLoading" :disabled="!isValidate" @click="isValidate && signIn()" />
         <div class="auth__right-forgot-password cursor-pointer">
           <div
             @click="() => router.push('/auth/forgot')"
