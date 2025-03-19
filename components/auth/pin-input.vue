@@ -8,11 +8,11 @@ const props = defineProps<{
 <template>
   <PinInput
     ref="pinInput"
-    class="flex flex-row justify-between gap-2"
+    class="flex flex-row justify-between gap-1"
     :input-classes="[
       'w-[68px] h-[68px] relative rounded-[49px] text-center justify-center p-2',
       'border-[1.50px] focus:border-[#ec2c37] border-[#d6d8e5]',
-      `text-[#1b1c23] text-2xl font-semibold font-['Manrope'] leading-9`,
+      `text-[#1b1c23] text-2xl font-semibold leading-9`,
     ]"
     input-type="letter-numeric"
     input-mode="numeric"

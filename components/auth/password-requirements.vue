@@ -29,7 +29,7 @@ watch(
     >
       <img class="w-5 h-5 relative" :src="req.met ? '/images/auth/available.svg' : '/images/auth/unavailable.svg'" />
 
-      <span class="justify-start text-[#7a7c89] text-base font-medium font-['Manrope'] leading-normal">
+      <span class="justify-start text-[#7a7c89] text-base font-medium leading-normal">
         {{ req.text }}
         <span class="sr-only">
           {{ req.met ? ' - Requirement met' : ' - Requirement not met' }}

@@ -21,6 +21,10 @@ const handleInput = (event: Event) => {
 
   // Update password value
   password.value = value
+  if (passwordRef.value && passwordRef.value.input) {
+    passwordRef.value.value = password.value
+    passwordRef.value.input.value = password.value
+  }
 }
 
 // Handle paste event
@@ -35,14 +39,11 @@ const handlePaste = (event: ClipboardEvent) => {
   // Prevent default paste behavior and set cleaned value
   // event.preventDefault()
   password.value = truncatedText
+  // if (passwordRef.value && passwordRef.value.input) {
+  //   passwordRef.value.value = password.value
+  //   passwordRef.value.input.value = password.value
+  // }
 }
-
-// Force update if reactivity fails
-watch(password, (newValue: string) => {
-  if (passwordRef.value && passwordRef.value.input) {
-    passwordRef.value.input.value = newValue
-  }
-})
 </script>
 <template>
   <UInput
@@ -50,14 +51,22 @@ watch(password, (newValue: string) => {
     class="w-full"
     variant="none"
     :type="show ? 'text' : 'password'"
-    :input-class="
-      [
-        `input__field self-stretch px-4 py-3.5 rounded-[49px] inline-flex justify-start items-center gap-2.5 `,
-        `outline outline-[1.50px] outline-offset-[-1.50px] focus:outline-[#d6d8e5] outline-[#d6d8e5]  ${error ? 'outline-[#ec2c37]' : 'outline-[#d6d8e5]'}`,
-      ].join(' ')
-    "
+    :input-class="[`styled-input`, `${error ? 'error' : ''}`].join(' ')"
     :ui="{
+      padding: {
+        sm: 'pr-7 pl-1.5 py-1.5',
+      },
+      leading: {
+        padding: {
+          sm: 'ps-10',
+        },
+      },
       icon: {
+        leading: {
+          padding: {
+            sm: 'pl-4 pr-2.5',
+          },
+        },
         trailing: { pointer: '' },
       },
     }"
@@ -71,11 +80,7 @@ watch(password, (newValue: string) => {
       <img class="w-full" src="/images/auth/lock.svg" />
     </template>
     <template #trailing>
-      <div
-        class="pr-1 justify-center text-[#ff5524] hover:text-[#ff5524] focus:text-[#ff5524] text-[10px] font-medium font-['Manrope'] cursor-pointer"
-        @click="show = !show"
-        alt=""
-      >
+      <div class="styled-text-button pr-1 text-[10px]" @click="show = !show" alt="">
         {{ show ? 'Hide' : 'Show' }}
       </div>
     </template>

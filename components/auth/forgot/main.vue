@@ -5,20 +5,20 @@ const { step, back, next, isValidate, onCompletedPin, fields, errors } = useForg
   <div class="flex flex-row justify-center w-full relative overflow-hidden min-h-screen">
     <div class="xl:w-5/12 w-full flex flex-col justify-between items-center bg-white p-5">
       <AuthForgotBase v-if="step == 1" title="Reset your Log in Password" subtitle="" :back="back">
-        <div class="auth__right_input flex flex-col gap-10 w-[100%] lg:w-[65%]">
-          <div class="auth__right-email inline-flex flex-col justify-center items-start gap-1">
-            <div class="h-5 justify-center text-[#1b1c23] text-xs font-medium font-['Manrope'] leading-tight">
+        <div class="flex flex-col gap-10 w-[100%] lg:w-[65%]">
+          <div class="inline-flex flex-col justify-center items-start gap-1">
+            <div class="h-5 justify-center text-[#1b1c23] text-xs font-medium leading-tight">
               Email
             </div>
             <AuthEmailInput v-model="fields.email" :error="errors.email" />
             <div
               v-if="errors.email"
-              class="h-5 justify-center text-[#ec2c37] text-xs font-medium font-['Manrope'] leading-tight"
+              class="h-5 justify-center text-[#ec2c37] text-xs font-medium leading-tight"
             >
               {{ errors.email }}
             </div>
           </div>
-          <div class="auth__right_button">
+          <div class="">
             <AuthSubmitButton
               @click="!errors.email && fields.email && next()"
               :disabled="!!errors.email || !fields.email"
@@ -35,29 +35,29 @@ const { step, back, next, isValidate, onCompletedPin, fields, errors } = useForg
       >
         <template #subtitle2>
           <div class="text-center justify-start">
-            <span class="text-[#7a7c89] text-sm font-medium font-['Manrope'] leading-tight"
+            <span class="text-[#7a7c89] text-sm font-medium leading-tight"
               >Your verification code will expire in </span
-            ><span class="text-[#ff5524] text-sm font-semibold font-['Manrope'] leading-tight">90s</span>
+            ><span class="text-[#ff5524] text-sm font-semibold leading-tight">90s</span>
           </div>
         </template>
-        <div class="auth__right_input flex flex-col gap-2 w-[100%] lg:w-[65%]">
+        <div class="flex flex-col gap-2 w-[100%] lg:w-[65%]">
           <AuthPinInput v-model="fields.pin" :on-complete="onCompletedPin" />
           <div
             v-if="errors.pin"
-            class="self-stretch justify-start text-[#ec2c37] text-xs font-medium font-['Manrope'] leading-tight"
+            class="self-stretch justify-start text-[#ec2c37] text-xs font-medium leading-tight"
           >
             {{ errors.pin }}
           </div>
         </div>
-        <div class="auth__right_input flex flex-col gap-2 w-[100%] lg:w-[65%]">
+        <div class="flex flex-col gap-2 w-[100%] lg:w-[65%]">
           <div class="text-center justify-start">
-            <span class="text-[#1b1c23] text-sm font-medium font-['Manrope'] leading-tight">Did not receive OTP?</span
-            ><span class="text-[#7a7c89] text-sm font-medium font-['Manrope'] leading-tight"> Resend OTP in </span>
-            <AuthForgotCountdown :target="60">
+            <span class="text-[#1b1c23] text-sm font-medium leading-tight">Did not receive OTP?</span
+            ><span class="text-[#7a7c89] text-sm font-medium leading-tight"> Resend OTP in </span>
+            <AuthCountdown :target="60">
               <template #countdown="{ time }">
-                <span class="text-[#ff5524] text-sm font-semibold font-['Manrope'] leading-tight">{{ time }}s</span>
+                <span class="text-[#ff5524] text-sm font-semibold leading-tight">{{ time }}s</span>
               </template>
-            </AuthForgotCountdown>
+            </AuthCountdown>
           </div>
         </div>
       </AuthForgotBase>
@@ -67,9 +67,9 @@ const { step, back, next, isValidate, onCompletedPin, fields, errors } = useForg
         subtitle="Please enter your new password"
         :back="back"
       >
-        <div class="auth__right_input flex flex-col gap-5 w-[100%] lg:w-[65%]">
-          <div class="auth__right-email inline-flex flex-col justify-center items-start gap-1">
-            <div class="h-5 justify-center text-[#1b1c23] text-xs font-medium font-['Manrope'] leading-tight">
+        <div class="flex flex-col gap-5 w-[100%] lg:w-[65%]">
+          <div class="inline-flex flex-col justify-center items-start gap-1">
+            <div class="h-5 justify-center text-[#1b1c23] text-xs font-medium leading-tight">
               Password
             </div>
             <AuthPasswordInput
@@ -79,8 +79,8 @@ const { step, back, next, isValidate, onCompletedPin, fields, errors } = useForg
             />
           </div>
           <AuthPasswordRequirements v-if="!isValidate" :password="fields.password" />
-          <div class="auth__right-email inline-flex flex-col justify-center items-start gap-1">
-            <div class="h-5 justify-center text-[#1b1c23] text-xs font-medium font-['Manrope'] leading-tight">
+          <div class="inline-flex flex-col justify-center items-start gap-1">
+            <div class="h-5 justify-center text-[#1b1c23] text-xs font-medium leading-tight">
               Confirm Password
             </div>
             <AuthPasswordInput
@@ -90,12 +90,12 @@ const { step, back, next, isValidate, onCompletedPin, fields, errors } = useForg
             />
             <div
               v-if="errors.confirmPassword"
-              class="h-5 justify-center text-[#ec2c37] text-xs font-medium font-['Manrope'] leading-tight"
+              class="h-5 justify-center text-[#ec2c37] text-xs font-medium leading-tight"
             >
               {{ errors.confirmPassword }}
             </div>
           </div>
-          <div class="auth__right_button">
+          <div class="">
             <AuthSubmitButton
               @click="next()"
               :disabled="!isValidate"
