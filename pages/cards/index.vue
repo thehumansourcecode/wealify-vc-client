@@ -2,15 +2,40 @@
 definePageMeta({
   layout: 'home',
 })
-import { formatDDMMYYYY, formatMoney } from '~/common/functions'
-import { CardStatus, type ICardData } from '~/types/cards'
+import { formatDDMMYYYY, formatMoney, normalize } from '~/common/functions'
+import { CardCategory, CardStatus, CardType, type ICardData } from '~/types/cards'
 
 const { t } = useI18n()
 const dayjs = useDayjs()
 
 const cardStore = useCardStore()
 const cardList = computed(() => cardStore.cardList)
-const selectedCards = ref([])
+
+const cardListBeforeDeselectAll = ref([])
+
+const filteredCardList = computed(() =>
+  cardList.value.filter((card: ICardData) => {
+    const haveType = payload.value.type ? card.type === payload.value.type : true
+    const haveCategory = payload.value.categories.length ? payload.value.categories.includes(card.category) : true
+    const haveStatus = payload.value.statuses.length ? payload.value.statuses.includes(card.status) : true
+    const haveKeyword = payload.value.keyword
+      ? normalize(card.cardName) === normalize(payload.value.keyword) || card.cardNumber.includes(payload.value.keyword)
+      : true
+    return haveType && haveStatus && haveCategory && haveKeyword
+  }),
+)
+const selectedCardList = ref([])
+const activeCardList = computed(() =>
+  filteredCardList.value.filter((card: ICardData) => card.status === CardStatus.ACTIVE),
+)
+const totalSelectedAmount = computed(() => {
+  const cardListAmount = selectedCardList.value.map((selectedCard: ICardData) => selectedCard.balance)
+  return cardListAmount.reduce((a: number, b: number) => a + b, 0)
+})
+const totalActiveAmount = computed(() => {
+  const cardListAmount = activeCardList.value.map((activeCard: ICardData) => activeCard.balance)
+  return cardListAmount.reduce((a: number, b: number) => a + b, 0)
+})
 
 const page = ref(1)
 
@@ -18,12 +43,33 @@ const pageCountOptions = ref([10, 30, 50])
 const pageCount = ref(pageCountOptions.value[0])
 
 const rows = computed(() => {
-  return cardList.value.slice((page.value - 1) * pageCount.value, page.value * pageCount.value)
+  return filteredCardList.value.slice((page.value - 1) * pageCount.value, page.value * pageCount.value)
 })
 
 function isCardSelected(card: ICardData) {
-  return selectedCards.value.some((selectedCard: ICardData) => selectedCard.createdAt === card.createdAt)
+  return selectedCardList.value.some((selectedCard: ICardData) => selectedCard.createdAt === card.createdAt)
 }
+
+const typeOptions = Object.values(CardType)
+const categoryOptions = Object.values(CardCategory)
+const statusOptions = Object.values(CardStatus)
+
+function isCategorySelected(category: CardCategory) {
+  return payload.value.categories.includes(category)
+}
+
+function isStatusSelected(status: CardStatus) {
+  return payload.value.statuses.includes(status)
+}
+
+const payload = ref({
+  keyword: undefined,
+  type: undefined,
+  categories: [] as CardCategory[],
+  statuses: [] as CardStatus[],
+  startDate: undefined,
+  endDate: undefined,
+})
 
 const cardTableColumns = [
   {
@@ -39,7 +85,7 @@ const cardTableColumns = [
   {
     key: 'category',
     label: t('cards.list.header.category'),
-    class: 'mr-5 text-center max-w-[180px]',
+    class: 'mr-5 text-center w-[172px] grow',
   },
   {
     key: 'balance',
@@ -52,8 +98,8 @@ const cardTableColumns = [
     class: 'text-center mr-5 w-[150px]',
   },
   {
-    key: 'totalSpend',
-    label: t('cards.list.header.totalSpend'),
+    key: 'totalWithdraw',
+    label: t('cards.list.header.totalWithdraw'),
     class: 'mr-5 text-center w-[150px]',
   },
   {
@@ -69,7 +115,7 @@ const cardTableColumns = [
   {
     key: 'action',
     label: t('cards.list.header.action'),
-    class: 'text-center w-[120px]',
+    class: 'text-center w-[128px]',
   },
 ]
 
@@ -90,28 +136,210 @@ function onClickTopup() {
 }
 
 function clearSelected() {
-  selectedCards.value = []
+  selectedCardList.value = []
 }
 
-const totalSelectedAmount = computed(() => {
-  const cardListAmount = selectedCards.value.map((selectedCard: ICardData) => selectedCard.balance)
-  return cardListAmount.reduce((a: number, b: number) => a + b, 0)
-})
+function onUpdateCurrentPage(page) {
+  console.log(page)
+}
+
+// (handle bug: deselect 1 page => deselect all other pages)
+
+function onSelectAllPage(value) {
+  if (!value) {
+    selectedCardList.value = [...cardListBeforeDeselectAll.value]
+  }
+}
+
+function onUpdateSelection(selectedRows: any[]) {
+  console.log(selectedCardList.value, 'scl')
+  // select all
+  if (selectedRows.length > 1) {
+    if (selectedCardList.value.length > 0) {
+      cardListBeforeDeselectAll.value = [...selectedCardList.value]
+    }
+  }
+  console.log(cardListBeforeDeselectAll.value, 'cdbda')
+}
 </script>
 <template>
   <div class="flex flex-col overflow-y-auto pl-10 pr-[60px] flex-1 gap-6 mt-7">
     <!-- Cards not selected -->
-    <div v-if="!selectedCards?.length" class="flex flex-row justify-between items-start gap-[200px]">
+    <div v-if="!selectedCardList?.length" class="flex flex-row justify-between items-start gap-[100px]">
       <div class="flex flex-col gap-[10px] flex-1">
         <BaseInput
           input-class="input-field rounded-49"
-          class="w-full"
+          class="w-[80%]"
+          v-model="payload.keyword"
           leading
           :leading-img="'/icons/common/search.svg'"
           :placeholder="t('cards.filter.placeholder.search')"
           autocomplete="off"
         />
-        <div>456</div>
+        <!-- Filters -->
+        <div class="flex flex-row gap-5 items-center">
+          <!-- Type -->
+          <BaseSingleSelect
+            class="w-[150px]"
+            :options="typeOptions"
+            v-model="payload.type"
+            :selected-icon="'i-selected'"
+          >
+            <template #default="{ open: open }">
+              <div
+                class="px-3 py-[6px] w-full rounded-[36px] bg-[#f0f2f5] border flex items-center justify-between"
+                :class="open ? 'border-[#FF5524]' : 'border-[f0f2f5]'"
+              >
+                <div class="text-12-500-20 text-[#7A7D89]">
+                  <span v-if="payload.type">
+                    {{ t(`cards.list.type.${payload.type}`) }}
+                  </span>
+                  <span v-else>
+                    {{ t('cards.filter.label.type') }}
+                  </span>
+                </div>
+                <img
+                  v-if="!payload.type"
+                  src="/assets/img/icons/dropdown.svg"
+                  class="transition-transform"
+                  :class="[open && 'transform rotate-180']"
+                />
+                <img
+                  @click.prevent="payload.type = undefined"
+                  v-else
+                  class="cursor-pointer"
+                  src="/assets/img/icons/clear.svg"
+                  alt=""
+                />
+              </div>
+            </template>
+            <template #option="{ option: type }">
+              <span class="text-[#1C1D23] text-14-500-20">
+                {{ t(`cards.list.type.${type}`) }}
+              </span>
+            </template>
+          </BaseSingleSelect>
+
+          <img src="~/assets/img/common/line.svg" alt="" />
+
+          <!-- Category -->
+          <BaseMultipleSelect
+            class="w-[200px]"
+            multiple
+            searchable
+            :searchable-placeholder="'Search categories'"
+            :options="categoryOptions"
+            v-model="payload.categories"
+          >
+            <template #default="{ open: open }">
+              <div
+                class="px-3 py-[6px] w-full rounded-[36px] bg-[#f0f2f5] border flex items-center justify-between"
+                :class="open ? 'border-[#FF5524]' : 'border-[f0f2f5]'"
+              >
+                <div class="text-12-500-20 text-[#7A7D89]">
+                  <span v-if="payload.categories.length == 1">
+                    {{ t(`cards.list.category.${payload.categories[0]}`) }}
+                  </span>
+                  <span v-else-if="payload.categories.length > 1" class="text-12-500-20 text-[#7A7D89]">
+                    {{ payload.categories.length }} selected
+                  </span>
+                  <span v-else>
+                    {{ t('cards.filter.label.category') }}
+                  </span>
+                </div>
+                <img
+                  v-if="!payload.categories.length"
+                  src="/assets/img/icons/dropdown.svg"
+                  class="transition-transform"
+                  :class="[open && 'transform rotate-180']"
+                />
+                <img
+                  @click.prevent="payload.categories = []"
+                  v-else
+                  class="cursor-pointer"
+                  src="/assets/img/icons/clear.svg"
+                  alt=""
+                />
+              </div>
+            </template>
+            <template #option="{ option: category }">
+              <div class="flex flex-row gap-[9px]">
+                <UCheckbox
+                  @click.prevent
+                  :model-value="isCategorySelected(category)"
+                  :ui="{
+                    base: 'cursor-pointer',
+                  }"
+                />
+                <span class="text-[#1C1D23] text-14-500-20">
+                  {{ t(`cards.list.category.${category}`) }}
+                </span>
+              </div>
+            </template>
+          </BaseMultipleSelect>
+
+          <img src="~/assets/img/common/line.svg" alt="" />
+
+          <!-- Status -->
+          <BaseMultipleSelect class="w-[150px]" multiple :options="statusOptions" v-model="payload.statuses">
+            <template #default="{ open: open }">
+              <div
+                class="px-3 py-[6px] w-full rounded-[36px] bg-[#f0f2f5] border flex items-center justify-between"
+                :class="open ? 'border-[#FF5524]' : 'border-[f0f2f5]'"
+              >
+                <div class="text-12-500-20 text-[#7A7D89]">
+                  <span v-if="payload.statuses.length == 1">
+                    {{ t(`cards.list.status.${payload.statuses[0]}`) }}
+                  </span>
+                  <span v-else-if="payload.statuses.length > 1" class="text-12-500-20 text-[#7A7D89]">
+                    {{ payload.statuses.length }} selected
+                  </span>
+                  <span v-else>
+                    {{ t('cards.filter.label.status') }}
+                  </span>
+                </div>
+                <img
+                  v-if="!payload.statuses.length"
+                  src="/assets/img/icons/dropdown.svg"
+                  class="transition-transform"
+                  :class="[open && 'transform rotate-180']"
+                />
+                <img
+                  @click.prevent="payload.statuses = []"
+                  v-else
+                  class="cursor-pointer"
+                  src="/assets/img/icons/clear.svg"
+                  alt=""
+                />
+              </div>
+            </template>
+            <template #option="{ option: status }">
+              <div class="flex flex-row gap-[9px]">
+                <UCheckbox
+                  @click.passive
+                  :model-value="isStatusSelected(status)"
+                  :ui="{
+                    base: 'cursor-pointer',
+                  }"
+                />
+                <span class="text-[#1C1D23] text-14-500-20">
+                  {{ t(`cards.list.status.${status}`) }}
+                </span>
+              </div>
+            </template>
+          </BaseMultipleSelect>
+
+          <img src="~/assets/img/common/line.svg" alt="" />
+
+          <!-- Active / Total -->
+          <div class="text-[#7A7D89] text-12-500-20">
+            {{ t('cards.filter.label.amount', { active: activeCardList.length, total: filteredCardList.length }) }}
+          </div>
+          <img src="~/assets/img/common/line.svg" alt="" />
+          <div class="text-[#1C1D23] text-12-600-20">
+            {{ t('cards.filter.label.total', { amount: formatMoney(totalActiveAmount) }) }}
+          </div>
+        </div>
       </div>
       <div class="flex flex-row gap-[10px]">
         <UButton
@@ -121,14 +349,14 @@ const totalSelectedAmount = computed(() => {
             {{ t('cards.button.withdraw') }}
           </div>
         </UButton>
-          <UButton
-            class="flex items-center justify-center rounded-[49px] bg-[#FF5524] hover:bg-[#EE4413] px-4 py-2 w-[168px]"
-            @click="navigateTo('/cards/issue')"
-          >
-            <div class="text-white text-16-600-24">
-              {{ t('cards.button.issue') }}
-            </div>
-          </UButton>
+        <UButton
+          class="flex items-center justify-center rounded-[49px] bg-[#FF5524] hover:bg-[#EE4413] px-4 py-2 w-[168px]"
+          @click="navigateTo('/cards/issue')"
+        >
+          <div class="text-white text-16-600-24">
+            {{ t('cards.button.issue') }}
+          </div>
+        </UButton>
       </div>
     </div>
     <!-- Cards selected -->
@@ -137,35 +365,35 @@ const totalSelectedAmount = computed(() => {
       <div class="flex flex-col gap-[10px] flex-1">
         <div class="flex flex-row gap-[10px]">
           <UButton
-            class="flex items-center justify-center rounded-[49px] bg-[#FF5524] hover:bg-[#EE4413] px-4 py-3 w-[168px]"
+            class="flex items-center justify-center rounded-[49px] bg-[#FF5524] hover:bg-[#EE4413] px-4 py-3 w-[168px] cursor-not-allowed"
           >
             <div class="text-white text-16-600-24">
               {{ t('cards.button.topup') }}
             </div>
           </UButton>
           <UButton
-            class="flex items-center justify-center rounded-[49px] bg-[#F0F2F5] hover:bg-[#E1E3E6] px-4 py-2 w-[168px]"
+            class="flex items-center justify-center rounded-[49px] bg-[#F0F2F5] hover:bg-[#E1E3E6] px-4 py-2 w-[168px] cursor-not-allowed"
           >
             <div class="text-[#1C1D23] text-16-600-24">
               {{ t('cards.button.withdraw') }}
             </div>
           </UButton>
           <UButton
-            class="flex items-center justify-center rounded-[49px] bg-[#F0F2F5] hover:bg-[#E1E3E6] px-4 py-2 w-[168px]"
+            class="flex items-center justify-center rounded-[49px] bg-[#F0F2F5] hover:bg-[#E1E3E6] px-4 py-2 w-[168px] cursor-not-allowed"
           >
             <div class="text-[#1C1D23] text-16-600-24">
               {{ t('cards.button.freeze') }}
             </div>
           </UButton>
           <UButton
-            class="flex items-center justify-center rounded-[49px] bg-[#F0F2F5] hover:bg-[#E1E3E6] px-4 py-2 w-[168px]"
+            class="flex items-center justify-center rounded-[49px] bg-[#F0F2F5] hover:bg-[#E1E3E6] px-4 py-2 w-[168px] cursor-not-allowed"
           >
             <div class="text-[#1C1D23] text-16-600-24">
               {{ t('cards.button.unfreeze') }}
             </div>
           </UButton>
           <UButton
-            class="flex items-center justify-center rounded-[49px] bg-[#F0F2F5] hover:bg-[#E1E3E6] px-4 py-2 w-[168px]"
+            class="flex items-center justify-center rounded-[49px] bg-[#F0F2F5] hover:bg-[#E1E3E6] px-4 py-2 w-[168px] cursor-not-allowed"
           >
             <div class="text-[#ED2C38] text-16-600-24">
               {{ t('cards.button.cancel') }}
@@ -174,7 +402,12 @@ const totalSelectedAmount = computed(() => {
         </div>
         <div class="flex items-center gap-5 my-3">
           <div class="text-[#7A7D89] text-12-500-20">
-            {{ t('cards.filter.label.amountSelected', { selected: selectedCards.length, total: cardList.length }) }}
+            {{
+              t('cards.filter.label.amountSelected', {
+                selected: selectedCardList.length,
+                total: filteredCardList.length,
+              })
+            }}
           </div>
           <img src="~/assets/img/common/line.svg" alt="" />
           <div class="text-[#1C1D23] text-12-600-20">
@@ -185,12 +418,14 @@ const totalSelectedAmount = computed(() => {
       <!-- Close -->
       <img @click="clearSelected" class="cursor-pointer hover:opacity-70" src="~/assets/img/common/close.svg" alt="" />
     </div>
-    <div class="rounded-[12px] flex flex-col border border-[#D7D9E5] mb-8 overflow-x-auto w-full">
+    <div class="rounded-[12px] flex flex-col border border-[#D7D9E5] mb-8 overflow-x-auto w-full grow">
       <!-- Table -->
       <UTable
         selectable
-        v-model="selectedCards"
-        v-if="cardList?.length"
+        @select:all="onSelectAllPage"
+        @update:modelValue="onUpdateSelection"
+        v-model="selectedCardList"
+        v-if="filteredCardList?.length"
         :rows="rows"
         :columns="cardTableColumns"
         :ui="{
@@ -235,17 +470,17 @@ const totalSelectedAmount = computed(() => {
         </template>
         <template #type-data="{ row }">
           <div class="w-16 flex justify-center">
-            <img :src="`/icons/cards/${row.cardType}.svg`" alt="" />
+            <img :src="`/icons/cards/${row.type}.svg`" alt="" />
           </div>
         </template>
         <template #category-data="{ row }">
-          <div class="flex justify-center">
+          <div class="flex justify-center w-[172px]">
             <div
               class="px-3 py-[2px] flex items-center justify-center rounded-[5px] gap-1 bg-[#F0F2F5] border border-[#D7D9E5] max-w-[180px]"
               :style="{ background: isCardSelected(row) ? 'white' : '#F0F2F5' }"
             >
-              <div class="text-[#1C1D23] text-12-500-20">{{ t(`cards.list.category.${row.cardCategory}`) }}</div>
-              <img :src="`/icons/cards/category/${row.cardCategory}.svg`" alt="" />
+              <div class="text-[#1C1D23] text-12-500-20">{{ t(`cards.list.category.${row.category}`) }}</div>
+              <img :src="`/icons/cards/category/${row.category}.svg`" alt="" />
             </div>
           </div>
         </template>
@@ -255,8 +490,8 @@ const totalSelectedAmount = computed(() => {
         <template #totalTopup-data="{ row }">
           <div class="text-16-700-24 w-[150px] text-[#2EA518] text-center">${{ formatMoney(row.totalTopup) }}</div>
         </template>
-        <template #totalSpend-data="{ row }">
-          <div class="text-16-700-24 w-[150px] text-[#ED2C38] text-center">${{ formatMoney(row.totalSpend) }}</div>
+        <template #totalWithdraw-data="{ row }">
+          <div class="text-16-700-24 w-[150px] text-[#ED2C38] text-center">${{ formatMoney(row.totalWithdraw) }}</div>
         </template>
         <template #createdAt-data="{ row }">
           <div class="text-14-500-20 w-[150px] text-[#7A7D89] text-center">
@@ -278,24 +513,26 @@ const totalSelectedAmount = computed(() => {
           <UButton
             v-if="row.status === CardStatus.ACTIVE"
             @click="onClickTopup"
-            class="flex items-center py-[6px] px-4 bg-[#1C1D23] hover:bg-[#3D3E34] rounded-[6px] mx-auto"
+            class="flex items-center py-[6px] px-4 mx-4 bg-[#1C1D23] hover:bg-[#3D3E34] rounded-[6px]"
           >
             <div class="text-12-600-20 text-white">
               {{ t('cards.button.topup') }}
             </div>
           </UButton>
+          <div v-else class="w-[104px]"></div>
         </template>
       </UTable>
 
-      <div v-else class="flex flex-col items-center justify-center gap-4 h-full">
+      <div v-else class="flex flex-col items-center justify-center gap-4 h-full grow">
         <img src="~/assets/img/dashboard/no-transaction.svg" alt="" />
-        <div class="text-14-500-20 text-[#A5A8B8]">{{ t('card.list.empty') }}</div>
+        <div class="text-14-500-20 text-[#A5A8B8]">{{ t('cards.list.empty') }}</div>
       </div>
+
       <div
-        v-if="cardList?.length > pageCount"
+        v-if="filteredCardList?.length > pageCount"
         class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700 gap-10 items-center"
       >
-        <USelectMenu v-model="pageCount" :options="pageCountOptions">
+        <USelectMenu v-model="pageCount" :options="pageCountOptions" @change="page = 1">
           <template #option="{ option }">
             <div class="text-12-500-20">{{ t(`cards.list.pagination.limit`, { limit: option }) }}</div>
           </template>
@@ -311,7 +548,7 @@ const totalSelectedAmount = computed(() => {
           :max="6"
           v-model="page"
           :page-count="pageCount"
-          :total="cardList?.length"
+          :total="filteredCardList?.length"
           class="pagination-custom"
           :active-button="{
             color: '',

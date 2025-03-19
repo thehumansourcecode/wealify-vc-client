@@ -281,7 +281,28 @@ async function handleIssue() {
             </div>
             <div class="flex flex-row items-center w-full">
               <!-- Country code -->
-              <USelectMenu v-model="countryCode" :options="countryCodeOptions" class="">
+              <USelectMenu
+                v-model="countryCode"
+                :options="countryCodeOptions"
+                class=""
+                :ui-menu="{
+                  select: 'cursor-pointer',
+                  background: 'bg-white',
+                  base: 'relative focus:outline-none overflow-y-auto scroll-py-1',
+                  padding: 'p-0',
+                  option: {
+                    base: 'cursor-pointer text-14-500-20 bg-[#F0F2F5]',
+                    inactive: 'bg-white hover:bg-[#F0F2F5] cursor-pointer',
+                    padding: 'px-3 py-2',
+                    rounded: 'rounded-none',
+                    selectedIcon: {
+                      base: 'h-[18px] w-[18px]',
+                    },
+                    empty: 'text-sm',
+                  },
+                  empty: 'text-sm',
+                }"
+              >
                 <template #option="{ option }">
                   <div class="flex flex-row gap-[10px]">
                     <img :src="option.flag" alt="" />
