@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { TransactionStatus, TransactionType } from '~/types/dashboard'
-import { formatMMYYYY, formatMoney, shortenAddress, formatMoneyWithoutDecimals } from '~/common/functions'
+import { formatMMYYYY, formatMoney, shortenAddress, formatMoneyWithoutDecimals, roundNumber } from '~/common/functions'
 import { CardStatus } from '~/types/cards'
 import { CommonCurrency } from '~/types/common'
 
@@ -30,6 +30,20 @@ const cardNumberArray = computed(() => cardDetail.value?.cardNumber.split(' '))
 const isShowCardSensitiveDetail = ref(false)
 const isShowCardSensitiveDetailOverlay = ref(false)
 
+const balanceRate = computed(() =>
+  cardDetail.value?.balance
+    ? roundNumber(
+        ((cardDetail.value?.totalTopup || 0 + (cardDetail.value?.totalWithdraw || 0)) / cardDetail.value?.balance) *
+          100,
+        1,
+      )
+    : 0,
+)
+
+const chartClass = computed(() => {
+  return `background: conic-gradient(#FF5524 0% ${balanceRate.value}%, #D7D9E5 ${balanceRate.value}% 100%)`
+})
+
 function handleShowSensitiveDetail() {
   // OTP, PIN ...
   isShowCardSensitiveDetail.value = true
@@ -38,6 +52,12 @@ function handleShowSensitiveDetail() {
 
 function onClosePrevented() {
   cardStore.toggleCardDetailSlideover(false)
+}
+
+function handleViewTransaction() {
+  cardStore.toggleCardDetailSlideover(false)
+  // Set payload => filter transactions only current card
+  navigateTo('/transactions')
 }
 
 // Actions
@@ -201,7 +221,11 @@ function handleUnfreeze() {}
           </div>
           <!-- Analysis -->
           <div class="flex flex-row justify-between items-center mt-7 gap-8 mb-12">
-            <div class="w-[128px] h-[128px]"></div>
+            <div class="w-[128px] h-[128px]">
+              <div class="chart flex items-center justify-center z-100" :style="chartClass">
+                <div class="balance-rate">{{ balanceRate }}%</div>
+              </div>
+            </div>
             <div class="flex flex-col gap-4 text-[#7A7D89] text-12-500-20 grow">
               <div class="flex flex-row">
                 <span class="text-[#ff5c5c] w-2">*</span>
@@ -223,9 +247,12 @@ function handleUnfreeze() {}
             </div>
           </div>
           <!-- Actions -->
-          <UButton class="flex items-center justify-center w-[400px] bg-[#1C1D23] hover:bg-[#3D3E34] rounded-[49px]">
+          <UButton
+            @click="handleViewTransaction"
+            class="flex items-center justify-center w-[400px] bg-[#1C1D23] hover:bg-[#3D3E34] rounded-[49px]"
+          >
             <div class="text-white text-14-600-20 px-4 py-[14px]">
-              <div>{{ t(`cards.slideovers.detail.button.viewInfo`) }}</div>
+              <div>{{ t(`cards.slideovers.detail.button.transaction`) }}</div>
             </div>
           </UButton>
         </div>
@@ -248,5 +275,32 @@ function handleUnfreeze() {}
 .fade-overlay-enter-from,
 .fade-overlay-leave-to {
   opacity: 0;
+}
+
+.chart {
+  /* Make a perfect circle */
+  position: relative;
+  width: 128px;
+  height: 128px;
+  border-radius: 50%;
+}
+
+/* Pseudo-element to create the inner circle (the 'hole') */
+.chart::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 108px;
+  height: 108px;
+  border-radius: 50%;
+  background: #fff; /* Or any background color to fill the center */
+}
+
+.balance-rate {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 </style>

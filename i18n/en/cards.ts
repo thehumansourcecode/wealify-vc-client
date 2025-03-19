@@ -139,7 +139,7 @@ export default {
         totalWithdraw: 'Total Withdraw',
       },
       button: {
-        transaction: 'Transaction',
+        transaction: 'View Transaction',
         viewInfo: 'View card information',
         topup: 'Top-Up',
         freeze: 'Freeze',
