@@ -126,4 +126,27 @@ export default {
       },
     },
   },
+  slideovers: {
+    detail: {
+      label: 'Card detail',
+      info: {
+        cardNumber: 'Card number',
+        CVV: 'CVV',
+        expired: 'Expired date',
+        cardBalance: 'Card balance',
+        purpose: 'Card purpose',
+        totalTopup: 'Total Top-up',
+        totalWithdraw: 'Total Withdraw',
+      },
+      button: {
+        transaction: 'Transaction',
+        viewInfo: 'View card information',
+        topup: 'Top-Up',
+        freeze: 'Freeze',
+        cancel: 'Cancel',
+        withdraw: 'Withdraw',
+        unfreeze: 'Unfreeze',
+      },
+    },
+  },
 }

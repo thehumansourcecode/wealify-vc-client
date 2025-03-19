@@ -1,5 +1,5 @@
+import { normalize } from '~/common/functions'
 import { CardCategory, CardStatus, CardType, type ICardData } from '~/types/cards'
-import type { IUserProfileData } from '~/types/profile'
 
 export const useCardStore = defineStore('card', () => {
   const authStore = useAuthStore()
@@ -7,6 +7,26 @@ export const useCardStore = defineStore('card', () => {
   const toast = useToast()
   const nuxtApp = useNuxtApp()
   const i18n = nuxtApp.$i18n
+
+  const payload = ref({
+    keyword: undefined,
+    type: undefined,
+    categories: [] as CardCategory[],
+    statuses: [] as CardStatus[],
+    startDate: undefined,
+    endDate: undefined,
+  })
+
+  const selectedCardDetail = ref<ICardData>()
+  function setSelectedCardDetail(card?: ICardData) {
+    selectedCardDetail.value = card
+  }
+
+  const isOpenCardDetailSlideover = ref(false)
+
+  function toggleCardDetailSlideover(state: boolean) {
+    isOpenCardDetailSlideover.value = state
+  }
 
   const cardList = ref<ICardData[]>(
     [
@@ -1118,10 +1138,32 @@ export const useCardStore = defineStore('card', () => {
     }),
   )
 
+  const activeCardList = computed(() => cardList.value.filter((card: ICardData) => card.status === CardStatus.ACTIVE))
+
+  const filteredCardList = computed(() =>
+    cardList.value.filter((card: ICardData) => {
+      const haveType = payload.value.type ? card.type === payload.value.type : true
+      const haveCategory = payload.value.categories.length ? payload.value.categories.includes(card.category) : true
+      const haveStatus = payload.value.statuses.length ? payload.value.statuses.includes(card.status) : true
+      const haveKeyword = payload.value.keyword
+        ? normalize(card.cardName) === normalize(payload.value.keyword) ||
+          card.cardNumber.includes(payload.value.keyword)
+        : true
+      return haveType && haveStatus && haveCategory && haveKeyword
+    }),
+  )
+
   async function getCardList() {}
 
   return {
     cardList,
     getCardList,
+    activeCardList,
+    payload,
+    filteredCardList,
+    isOpenCardDetailSlideover,
+    toggleCardDetailSlideover,
+    selectedCardDetail,
+    setSelectedCardDetail,
   }
 })
