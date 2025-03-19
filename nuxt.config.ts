@@ -52,7 +52,7 @@ export default defineNuxtConfig({
     'dayjs-nuxt',
   ],
 
-  plugins: ['~/plugins/auth.plugin'],
+  plugins: ['~/plugins/auth.plugin', '~/plugins/element-plus.plugin'],
 
   i18n: {
     vueI18n: '~/i18n.config.ts',

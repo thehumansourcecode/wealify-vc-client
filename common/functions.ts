@@ -45,6 +45,12 @@ export const formatLargeNumber = (input: number) => {
   return roundNumber(input, 3) + ''
 }
 
+export const formatYYYYMMDD = (input: Dayjs) => {
+  if (!input) return ''
+  return input.format('YYYY/MM/DD')
+}
+
+
 export const formatDDMMYYYY = (input: Dayjs) => {
   if (!input) return ''
   return input.format('DD/MM/YYYY')

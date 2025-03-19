@@ -3,6 +3,7 @@ definePageMeta({
   layout: 'home',
 })
 import { formatMoney } from '~/common/functions'
+import type { CardCategory, CardStatus } from '~/types/cards'
 import { TransactionStatus, TransactionType } from '~/types/dashboard'
 
 const { t } = useI18n()
@@ -14,6 +15,17 @@ const page = ref(1)
 
 const pageCountOptions = ref([10, 30, 50])
 const pageCount = ref(pageCountOptions.value[0])
+
+const payload = ref({
+  keyword: undefined,
+  type: undefined,
+  statuses: [] as CardStatus[],
+  dateRange: [undefined, undefined] as [Date | undefined, Date | undefined],
+})
+
+function isStatusSelected(status: CardStatus) {
+  return payload.value.statuses.includes(status)
+}
 
 const rows = computed(() => {
   return transactionList.value.slice((page.value - 1) * pageCount.value, page.value * pageCount.value)
@@ -78,10 +90,10 @@ async function onClickViewDetail() {
   <div class="flex flex-col overflow-y-auto pl-10 pr-[60px] flex-1 gap-6 mt-7">
     <!-- Cards not selected -->
     <div class="flex flex-row justify-between items-start gap-[200px]">
-      <div class="flex flex-col gap-[10px] flex-1">
+      <div class="flex flex-col relative gap-[10px] flex-1">
         <BaseInput
           input-class="input-field rounded-49"
-          class="w-full"
+          class="w-full w-[75%]"
           leading
           :leading-img="'/images/transactions/glass.svg'"
           :placeholder="t('transactions.filter.placeholder.search')"
@@ -96,8 +108,101 @@ async function onClickViewDetail() {
         </UButton>
       </div>
     </div>
-    <!-- Cards selected -->
-    <div class="flex flex-row justify-between items-start"></div>
+    <!-- Filters -->
+    <div class="flex flex-row gap-5 items-center">
+      <!-- Date -->
+      <DatePicker v-model="payload.dateRange" />
+
+      <img src="~/assets/img/common/line.svg" alt="" />
+
+      <!-- Type -->
+      <BaseSingleSelect class="w-[150px]" :options="typeOptions" v-model="payload.type" :selected-icon="'i-selected'">
+        <template #default="{ open: open }">
+          <div
+            class="px-3 py-[6px] w-full rounded-[36px] bg-[#f0f2f5] border flex items-center justify-between"
+            :class="open ? 'border-[#FF5524]' : 'border-[f0f2f5]'"
+          >
+            <div class="text-12-500-20 text-[#7A7D89]">
+              <span v-if="payload.type">
+                {{ t(`cards.list.type.${payload.type}`) }}
+              </span>
+              <span v-else>
+                {{ t('cards.filter.label.type') }}
+              </span>
+            </div>
+            <img
+              v-if="!payload.type"
+              src="/assets/img/icons/dropdown.svg"
+              class="transition-transform"
+              :class="[open && 'transform rotate-180']"
+            />
+            <img
+              @click.prevent="payload.type = undefined"
+              v-else
+              class="cursor-pointer"
+              src="/assets/img/icons/clear.svg"
+              alt=""
+            />
+          </div>
+        </template>
+        <template #option="{ option: type }">
+          <span class="text-[#1C1D23] text-14-500-20">
+            {{ t(`cards.list.type.${type}`) }}
+          </span>
+        </template>
+      </BaseSingleSelect>
+
+      <img src="~/assets/img/common/line.svg" alt="" />
+
+      <!-- Status -->
+      <BaseMultipleSelect class="w-[150px]" multiple :options="statusOptions" v-model="payload.statuses">
+        <template #default="{ open: open }">
+          <div
+            class="px-3 py-[6px] w-full rounded-[36px] bg-[#f0f2f5] border flex items-center justify-between"
+            :class="open ? 'border-[#FF5524]' : 'border-[f0f2f5]'"
+          >
+            <div class="text-12-500-20 text-[#7A7D89]">
+              <span v-if="payload.statuses.length == 1">
+                {{ t(`cards.list.status.${payload.statuses[0]}`) }}
+              </span>
+              <span v-else-if="payload.statuses.length > 1" class="text-12-500-20 text-[#7A7D89]">
+                {{ payload.statuses.length }} selected
+              </span>
+              <span v-else>
+                {{ t('cards.filter.label.status') }}
+              </span>
+            </div>
+            <img
+              v-if="!payload.statuses.length"
+              src="/assets/img/icons/dropdown.svg"
+              class="transition-transform"
+              :class="[open && 'transform rotate-180']"
+            />
+            <img
+              @click.prevent="payload.statuses = []"
+              v-else
+              class="cursor-pointer"
+              src="/assets/img/icons/clear.svg"
+              alt=""
+            />
+          </div>
+        </template>
+        <template #option="{ option: status }">
+          <div class="flex flex-row gap-[9px]">
+            <UCheckbox
+              @click.passive
+              :model-value="isStatusSelected(status)"
+              :ui="{
+                base: 'cursor-pointer',
+              }"
+            />
+            <span class="text-[#1C1D23] text-14-500-20">
+              {{ t(`cards.list.status.${status}`) }}
+            </span>
+          </div>
+        </template>
+      </BaseMultipleSelect>
+    </div>
     <div class="rounded-[12px] flex flex-col border border-[#D7D9E5] mb-8 overflow-x-auto w-full">
       <!-- Table -->
       <UTable
