@@ -17,6 +17,11 @@ const handleInput = (event: Event) => {
   value = value.trim()
   // Update email value
   email.value = value
+
+  if (emailRef.value && emailRef.value.input) {
+    emailRef.value.value = email.value
+    emailRef.value.input.value = email.value
+  }
 }
 
 // Handle paste event with typed event parameter
@@ -24,31 +29,41 @@ const handlePaste = (event: ClipboardEvent) => {
   const pastedText: string = (event.clipboardData || (window as any).clipboardData).getData('text')
   // If length exceeds 128, truncate from the 129th character
   if (pastedText.length > 128) {
-    // event.preventDefault()
+    event.preventDefault()
     email.value = pastedText.substring(0, 128).trim()
   } else {
     email.value = pastedText.trim()
   }
-}
-
-// Force update if reactivity fails
-watch(email, (newValue: string) => {
   if (emailRef.value && emailRef.value.input) {
-    emailRef.value.input.value = newValue
+    emailRef.value.value = email.value
+    emailRef.value.input.value = email.value
   }
-})
+}
 </script>
 <template>
   <UInput
     ref="emailRef"
     class="w-full"
     variant="none"
-    :input-class="
-      [
-        `input__field self-stretch px-4 py-3.5 rounded-[49px] inline-flex justify-start items-center gap-2.5`,
-        `outline outline-[1.50px] outline-offset-[-1.50px]  focus:outline-[#d6d8e5] outline-[#d6d8e5] ${error ? 'outline-[#ec2c37]' : 'outline-[#d6d8e5]'}`,
-      ].join(' ')
-    "
+    :input-class="[`styled-input`, `${error ? 'error' : ''}`].join(' ')"
+    :ui="{
+      padding: {
+        sm: 'pr-7 pl-1.5 py-1.5',
+      },
+      leading: {
+        padding: {
+          sm: 'ps-10',
+        },
+      },
+      icon: {
+        leading: {
+          padding: {
+            sm: 'pl-4 pr-2.5',
+          },
+        },
+        trailing: { pointer: '' },
+      },
+    }"
     :placeholder="placeholder ?? 'Your Email'"
     @input="handleInput"
     @paste="handlePaste"

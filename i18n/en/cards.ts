@@ -1,9 +1,9 @@
-import { CardCategory, CardStatus } from '~/types/cards'
+import { CardCategory, CardStatus, CardType } from '~/types/cards'
 import { CommonCountry } from '~/types/common'
 export default {
   button: {
     withdraw: 'Withdraw',
-    issue: 'Issue',
+    issue: 'Issue card',
     topup: 'Top-up',
     freeze: 'Freeze',
     unfreeze: 'Unfreeze',
@@ -23,25 +23,15 @@ export default {
     },
   },
   list: {
+    type: {
+      [CardType.VIRTUAL]: 'Virtual Card',
+      [CardType.PHYSICAL]: 'Physical Card',
+    },
+
     status: {
       [CardStatus.ACTIVE]: 'Active',
       [CardStatus.CANCEL]: 'Cancel',
       [CardStatus.FREEZE]: 'Freeze',
-    },
-    empty: 'No card created yet',
-    pagination: {
-      limit: '{limit} lines/page',
-    },
-    header: {
-      card: 'Card',
-      type: 'Type',
-      category: 'Category',
-      balance: 'Balance',
-      totalTopup: 'Total Top-up',
-      totalSpend: 'Total Spend',
-      createdAt: 'Create Date',
-      status: 'Status',
-      action: 'Action',
     },
 
     category: {
@@ -60,6 +50,21 @@ export default {
       [CardCategory.INVESTMENT]: 'Investment/Dividend',
       [CardCategory.RETAIL]: 'Retail',
       [CardCategory.OTHER]: 'Other',
+    },
+    empty: 'No card created yet',
+    pagination: {
+      limit: '{limit} lines/page',
+    },
+    header: {
+      card: 'Card',
+      type: 'Type',
+      category: 'Category',
+      balance: 'Card Balance',
+      totalTopup: 'Total Top-up',
+      totalWithdraw: 'Total Withdraw',
+      createdAt: 'Create Date',
+      status: 'Status',
+      action: 'Action',
     },
   },
   issue: {
@@ -111,5 +116,14 @@ export default {
       button: 'Issue card',
     },
     policy: 'I agree with Terms of Use and Policy',
+    notification: {
+      title: 'Notification',
+      failed: 'Fail to issue a new card. Please try again later',
+      limit: 'You have reached the maximum number of cards created. Please contact sales for more supports',
+      process: {
+        title: 'Processing',
+        description: `We're proccessing your request. One moment please`,
+      },
+    },
   },
 }

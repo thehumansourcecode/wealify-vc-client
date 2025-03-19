@@ -10,11 +10,9 @@ const { step, back, next, isValidate, onCompletedPin, fields, errors, profile } 
         subtitle="Please enter your new password"
         :back="back"
       >
-        <div class="auth__right_input flex flex-col gap-5 w-[100%] lg:w-[65%]">
-          <div class="auth__right-password inline-flex flex-col justify-center items-start gap-1">
-            <div class="h-5 justify-center text-[#1b1c23] text-xs font-medium font-['Manrope'] leading-tight">
-              Password
-            </div>
+        <div class="flex flex-col gap-5 w-[100%] lg:w-[65%]">
+          <div class="inline-flex flex-col justify-center items-start gap-1">
+            <div class="h-5 justify-center text-[#1b1c23] text-xs font-medium leading-tight">Password</div>
             <AuthPasswordInput
               placeholder="Please enter the password"
               v-model="fields.password"
@@ -22,10 +20,8 @@ const { step, back, next, isValidate, onCompletedPin, fields, errors, profile } 
             />
           </div>
           <AuthPasswordRequirements v-if="!isValidate" :password="fields.password" />
-          <div class="auth__right-confirm_password inline-flex flex-col justify-center items-start gap-1">
-            <div class="h-5 justify-center text-[#1b1c23] text-xs font-medium font-['Manrope'] leading-tight">
-              Confirm Password
-            </div>
+          <div class="inline-flex flex-col justify-center items-start gap-1">
+            <div class="h-5 justify-center text-[#1b1c23] text-xs font-medium leading-tight">Confirm Password</div>
             <AuthPasswordInput
               placeholder="Please enter the password again"
               v-model="fields.confirmPassword"
@@ -33,12 +29,12 @@ const { step, back, next, isValidate, onCompletedPin, fields, errors, profile } 
             />
             <div
               v-if="errors.confirmPassword"
-              class="h-5 justify-center text-[#ec2c37] text-xs font-medium font-['Manrope'] leading-tight"
+              class="h-5 justify-center text-[#ec2c37] text-xs font-medium leading-tight"
             >
               {{ errors.confirmPassword }}
             </div>
           </div>
-          <div class="auth__right_button">
+          <div class="">
             <AuthSubmitButton @click="isValidate && next()" :disabled="!isValidate" :title="'Next'" />
           </div>
         </div>
@@ -51,29 +47,25 @@ const { step, back, next, isValidate, onCompletedPin, fields, errors, profile } 
       >
         <template #subtitle2>
           <div class="text-center justify-start">
-            <span class="text-[#7a7c89] text-sm font-medium font-['Manrope'] leading-tight"
-              >Your verification code will expire in </span
-            ><span class="text-[#ff5524] text-sm font-semibold font-['Manrope'] leading-tight">90s</span>
+            <span class="text-[#7a7c89] text-sm font-medium leading-tight">Your verification code will expire in </span
+            ><span class="text-[#ff5524] text-sm font-semibold leading-tight">90s</span>
           </div>
         </template>
-        <div class="auth__right_input flex flex-col gap-2 w-[100%] lg:w-[65%]">
+        <div class="flex flex-col gap-2 w-[100%] lg:w-[65%]">
           <AuthPinInput v-model="fields.pin" :on-complete="onCompletedPin" />
-          <div
-            v-if="errors.pin"
-            class="self-stretch justify-start text-[#ec2c37] text-xs font-medium font-['Manrope'] leading-tight"
-          >
+          <div v-if="errors.pin" class="self-stretch justify-start text-[#ec2c37] text-xs font-medium leading-tight">
             {{ errors.pin }}
           </div>
         </div>
-        <div class="auth__right_input flex flex-col gap-2 w-[100%] lg:w-[65%]">
+        <div class="flex flex-col gap-2 w-[100%] lg:w-[65%]">
           <div class="text-center justify-start">
-            <span class="text-[#1b1c23] text-sm font-medium font-['Manrope'] leading-tight">Did not receive OTP?</span
-            ><span class="text-[#7a7c89] text-sm font-medium font-['Manrope'] leading-tight"> Resend OTP in </span>
-            <AuthForgotCountdown :target="60">
+            <span class="text-[#1b1c23] text-sm font-medium leading-tight">Did not receive OTP?</span
+            ><span class="text-[#7a7c89] text-sm font-medium leading-tight"> Resend OTP in </span>
+            <AuthCountdown :target="60">
               <template #countdown="{ time }">
-                <span class="text-[#ff5524] text-sm font-semibold font-['Manrope'] leading-tight">{{ time }}s</span>
+                <span class="text-[#ff5524] text-sm font-semibold leading-tight">{{ time }}s</span>
               </template>
-            </AuthForgotCountdown>
+            </AuthCountdown>
           </div>
         </div>
       </AuthForgotBase>

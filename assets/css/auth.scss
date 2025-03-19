@@ -1,6 +1,6 @@
 @font-face {
   font-family: Manrope;
-  src: url('~/assets/fonts/Manrope.ttf');
+  src: url("~/assets/fonts/Manrope.ttf");
 }
 
 html,
@@ -16,7 +16,81 @@ body {
   line-height: 20px;
 }
 
-input[type=password]:not(:placeholder-shown) {
-  font-family: Verdana;
-  letter-spacing: 0.125em;
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-background-clip: text;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+*:focus-visible {
+  outline: none !important;
+}
+
+*:focus {
+  outline: none !important;
+}
+
+.styled-input,
+.styled-input:focus,
+.styled-input:hover {
+  height: 50px;
+  box-shadow: none;
+  border: 1px solid #d7d9e5;
+  background: white;
+  color: #7a7d89;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  border-radius: 50px;
+  &::placeholder {
+    color: #7a7d89;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+  }
+  &[type="password"]:not(:placeholder-shown) {
+    font-family: Verdana;
+    font-size: 18px;
+    letter-spacing: 0.125em;
+  }
+  &.error {
+    border: 1px solid #ec2c37;
+  }
+}
+
+.styled-button,
+.styled-button:focus,
+.styled-button:hover {
+  height: 50px;
+  border-radius: 50px;
+  box-shadow: none;
+  background-color: #ff5524;
+  &:disabled {
+    background-color: #a4a8b8;
+  }
+}
+
+.styled-text-button,
+.styled-text-button:focus,
+.styled-text-button:hover {
+  color: #ff5524;
+  cursor: pointer;
+  &:disabled {
+    color: #a4a8b8;
+    cursor: not-allowed;
+  }
 }

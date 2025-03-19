@@ -7,21 +7,19 @@ defineProps<{
 </script>
 <template>
   <UButton
-    class="auth__button w-full px-4 py-3 rounded-[49px] inline-flex justify-center items-center min-h-[50px] gap-2"
+    class="styled-button w-full px-4 py-3 inline-flex justify-center items-center"
     :loading="loading"
-    :class="
-      disabled
-        ? 'bg-[#a4a8b8] hover:bg-[#a4a8b8] focus:bg-[#a4a8b8] disabled:bg-[#a4a8b8]'
-        : 'bg-[#ff5524] hover:bg-[#ff5524] focus:bg-[#ff5524] disabled:bg-[#ff5524]'
-    "
+    :disabled="disabled"
     v-bind="$attrs"
   >
-    <div
-      v-if="!loading"
-      class="justify-center align-center text-base font-semibold font-['Manrope'] leading-normal"
-      :class="disabled ? 'text-[#d6d8e5]' : 'text-white'"
-    >
-      {{ title }}
-    </div>
+    <slot>
+      <div
+        v-if="!loading"
+        class="text-base font-semibold leading-normal"
+        :class="disabled ? 'text-[#d6d8e5]' : 'text-white'"
+      >
+        {{ title }}
+      </div>
+    </slot>
   </UButton>
 </template>

@@ -85,6 +85,10 @@ export const getTabRoute = (tab: PanelTab) => {
   }
 }
 
+export const normalize = (val: string) => {
+  return val.toLocaleLowerCase()
+}
+
 export const getCountryCode = (country: CommonCountry) => {
   switch (country) {
     case CommonCountry.INDONESIA:

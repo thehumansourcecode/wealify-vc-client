@@ -4,7 +4,7 @@
   >
     <div class="self-stretch flex flex-col justify-start items-start gap-[18px]">
       <div class="self-stretch inline-flex justify-between items-center">
-        <div class="flex-1 justify-center text-[#1b1c23] text-2xl font-semibold font-['Manrope'] leading-9">OTP</div>
+        <div class="flex-1 justify-center text-[#1b1c23] text-2xl font-semibold leading-9">OTP</div>
         <div
           class="p-1.5 bg-white rounded-[50px] outline outline-[0.70px] outline-offset-[-0.70px] outline-[#d6d8e5] flex justify-start items-start gap-2.5"
         >
@@ -18,12 +18,12 @@
           </div>
         </div>
       </div>
-      <div class="self-stretch justify-start text-[#7a7c89] text-sm font-medium font-['Manrope'] leading-tight">
+      <div class="self-stretch justify-start text-[#7a7c89] text-sm font-medium leading-tight">
         You have reached the maximum fail attempts. Please try again after 30 minutes
       </div>
     </div>
     <div class="w-[180px] px-4 py-3 bg-[#a4a8b8] rounded-[49px] inline-flex justify-center items-center gap-2">
-      <div class="justify-center text-[#f0f2f5] text-base font-semibold font-['Manrope'] leading-normal">29m59s</div>
+      <div class="justify-center text-[#f0f2f5] text-base font-semibold leading-normal">29m59s</div>
     </div>
   </div>
 </template>
