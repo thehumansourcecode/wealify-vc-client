@@ -2,7 +2,7 @@
 definePageMeta({
   layout: 'home',
 })
-import { formatDDMMYYYY, formatMoney } from '~/common/functions'
+import { formatDDMMYYYY, formatMoney, normalize } from '~/common/functions'
 import { CardCategory, CardStatus, CardType, type ICardData } from '~/types/cards'
 
 const { t } = useI18n()
@@ -16,7 +16,10 @@ const filteredCardList = computed(() =>
     const haveType = payload.value.type ? card.type === payload.value.type : true
     const haveCategory = payload.value.categories.length ? payload.value.categories.includes(card.category) : true
     const haveStatus = payload.value.statuses.length ? payload.value.statuses.includes(card.status) : true
-    return haveType && haveStatus && haveCategory
+    const haveKeyword = payload.value.keyword
+      ? normalize(card.cardName) === normalize(payload.value.keyword) || card.cardNumber.includes(payload.value.keyword)
+      : true
+    return haveType && haveStatus && haveCategory && haveKeyword
   }),
 )
 const selectedCardList = ref([])
@@ -58,6 +61,7 @@ function isStatusSelected(status: CardStatus) {
 }
 
 const payload = ref({
+  keyword: undefined,
   type: undefined,
   categories: [] as CardCategory[],
   statuses: [] as CardStatus[],
@@ -79,7 +83,7 @@ const cardTableColumns = [
   {
     key: 'category',
     label: t('cards.list.header.category'),
-    class: 'mr-5 text-center max-w-[180px]',
+    class: 'mr-5 text-center w-[172px] grow',
   },
   {
     key: 'balance',
@@ -109,7 +113,7 @@ const cardTableColumns = [
   {
     key: 'action',
     label: t('cards.list.header.action'),
-    class: 'text-center w-[120px]',
+    class: 'text-center w-[128px]',
   },
 ]
 
@@ -141,6 +145,7 @@ function clearSelected() {
         <BaseInput
           input-class="input-field rounded-49"
           class="w-[80%]"
+          v-model="payload.keyword"
           leading
           :leading-img="'/icons/common/search.svg'"
           :placeholder="t('cards.filter.placeholder.search')"
@@ -442,7 +447,7 @@ function clearSelected() {
           </div>
         </template>
         <template #category-data="{ row }">
-          <div class="flex justify-center">
+          <div class="flex justify-center w-[172px]">
             <div
               class="px-3 py-[2px] flex items-center justify-center rounded-[5px] gap-1 bg-[#F0F2F5] border border-[#D7D9E5] max-w-[180px]"
               :style="{ background: isCardSelected(row) ? 'white' : '#F0F2F5' }"
@@ -481,12 +486,13 @@ function clearSelected() {
           <UButton
             v-if="row.status === CardStatus.ACTIVE"
             @click="onClickTopup"
-            class="flex items-center py-[6px] px-4 bg-[#1C1D23] hover:bg-[#3D3E34] rounded-[6px] mx-auto"
+            class="flex items-center py-[6px] px-4 mx-4 bg-[#1C1D23] hover:bg-[#3D3E34] rounded-[6px]"
           >
             <div class="text-12-600-20 text-white">
               {{ t('cards.button.topup') }}
             </div>
           </UButton>
+          <div v-else class="w-[104px]"></div>
         </template>
       </UTable>
 
