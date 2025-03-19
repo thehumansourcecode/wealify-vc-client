@@ -34,7 +34,7 @@ export interface ICardData {
   category: CardCategory
   balance: number
   totalTopup: number
-  totalSpend: number
+  totalWithdraw: number
   createdAt: string
   status: CardStatus
 }

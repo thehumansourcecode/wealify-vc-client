@@ -98,8 +98,8 @@ const cardTableColumns = [
     class: 'text-center mr-5 w-[150px]',
   },
   {
-    key: 'totalSpend',
-    label: t('cards.list.header.totalSpend'),
+    key: 'totalWithdraw',
+    label: t('cards.list.header.totalWithdraw'),
     class: 'mr-5 text-center w-[150px]',
   },
   {
@@ -490,8 +490,8 @@ function onUpdateSelection(selectedRows: any[]) {
         <template #totalTopup-data="{ row }">
           <div class="text-16-700-24 w-[150px] text-[#2EA518] text-center">${{ formatMoney(row.totalTopup) }}</div>
         </template>
-        <template #totalSpend-data="{ row }">
-          <div class="text-16-700-24 w-[150px] text-[#ED2C38] text-center">${{ formatMoney(row.totalSpend) }}</div>
+        <template #totalWithdraw-data="{ row }">
+          <div class="text-16-700-24 w-[150px] text-[#ED2C38] text-center">${{ formatMoney(row.totalWithdraw) }}</div>
         </template>
         <template #createdAt-data="{ row }">
           <div class="text-14-500-20 w-[150px] text-[#7A7D89] text-center">

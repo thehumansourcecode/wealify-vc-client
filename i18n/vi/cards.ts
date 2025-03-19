@@ -25,7 +25,7 @@ export default {
       category: 'Category',
       balance: 'Balance',
       totalTopup: 'Total Top-up',
-      totalSpend: 'Total Spend',
+      totalWithdraw: 'Total Spend',
       createdAt: 'Create Date',
       status: 'Status',
       action: 'Action',
