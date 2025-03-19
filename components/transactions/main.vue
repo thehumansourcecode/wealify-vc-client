@@ -198,7 +198,7 @@ async function onClickViewDetail() {
         <div class="text-14-500-20 text-[#A5A8B8]">{{ t('transactions.list.empty') }}</div>
       </div>
       <div class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700 gap-10 items-center">
-        <USelectMenu v-model="pageCount" :options="pageCountOptions" selected-icon="page-checked">
+        <USelectMenu v-model="pageCount" :options="pageCountOptions" selected-icon="i-selected">
           <template #option="{ option }">
             <div class="text-12-500-20">{{ t(`transactions.list.pagination.limit`, { limit: option }) }}</div>
           </template>
@@ -271,9 +271,5 @@ async function onClickViewDetail() {
 }
 ::-webkit-scrollbar-track {
   background: #f0f0f0;
-}
-
-.iconify.i-page-checked.text-gray-900 {
-  background-image: url('/images/transactions/checked.svg');
 }
 </style>
