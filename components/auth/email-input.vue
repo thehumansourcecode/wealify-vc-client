@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { error } = defineProps<{
   error?: string | undefined
+  placeholder?: string | undefined
 }>()
 
 // Use defineModel to create a two-way binding for the 'value' prop
@@ -48,7 +49,7 @@ watch(email, (newValue: string) => {
         `outline outline-[1.50px] outline-offset-[-1.50px]  focus:outline-[#d6d8e5] outline-[#d6d8e5] ${error ? 'outline-[#ec2c37]' : 'outline-[#d6d8e5]'}`,
       ].join(' ')
     "
-    :placeholder="'Your Email'"
+    :placeholder="placeholder ?? 'Your Email'"
     @input="handleInput"
     @paste="handlePaste"
   >
