@@ -66,7 +66,7 @@ export default defineNuxtRouteMiddleware(to => {
   }
 
   // We do not want to block the login page when the local provider is used
-  if (to.path == config.app.auth.pages.sign_in) {
+  if (to.path == config.app.auth.pages.signIn) {
     return
   }
 
@@ -78,5 +78,5 @@ export default defineNuxtRouteMiddleware(to => {
     }
   }
 
-  return navigateTo(nuxt.$localePath(config.app.auth.pages.sign_in))
+  return navigateTo(nuxt.$localePath(config.app.auth.pages.signIn))
 })
