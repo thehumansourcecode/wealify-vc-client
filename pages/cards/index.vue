@@ -136,11 +136,11 @@ function clearSelected() {
 <template>
   <div class="flex flex-col overflow-y-auto pl-10 pr-[60px] flex-1 gap-6 mt-7">
     <!-- Cards not selected -->
-    <div v-if="!selectedCardList?.length" class="flex flex-row justify-between items-start gap-[200px]">
+    <div v-if="!selectedCardList?.length" class="flex flex-row justify-between items-start gap-[100px]">
       <div class="flex flex-col gap-[10px] flex-1">
         <BaseInput
           input-class="input-field rounded-49"
-          class="w-full"
+          class="w-[80%]"
           leading
           :leading-img="'/icons/common/search.svg'"
           :placeholder="t('cards.filter.placeholder.search')"
@@ -235,6 +235,7 @@ function clearSelected() {
             <template #option="{ option: category }">
               <div class="flex flex-row gap-[9px]">
                 <UCheckbox
+                  @click.prevent
                   :model-value="isCategorySelected(category)"
                   :ui="{
                     base: 'cursor-pointer',
@@ -285,6 +286,7 @@ function clearSelected() {
             <template #option="{ option: status }">
               <div class="flex flex-row gap-[9px]">
                 <UCheckbox
+                  @click.passive
                   :model-value="isStatusSelected(status)"
                   :ui="{
                     base: 'cursor-pointer',
