@@ -10,16 +10,16 @@ const router = useRouter()
       <!-- DON'T DELETE THE DIV -->
       <div></div>
       <!-- DON'T DELETE THE DIV -->
-      <div class="auth__left-logo">
+      <div class="">
         <img class="w-[30%] min-w-[250px]" src="/images/auth/logo.svg" />
       </div>
-      <div class="auth__left-title justify-start text-[#1b1c23] text-5xl font-bold font-['Manrope'] leading-[60px]">
+      <div class="justify-start text-[#1b1c23] text-5xl font-bold leading-[60px]">
         Make your spending<br />Smarter & Faster.
       </div>
-      <div class="auth__left-banner">
+      <div class="">
         <img class="w-[65%] translate-x-[-50px]" src="/images/auth/banner.svg" />
       </div>
-      <div class="auth__left-subtitle justify-start text-[#7a7c89] text-md font-semibold font-['Manrope'] leading-7">
+      <div class="justify-start text-[#7a7c89] text-md font-semibold leading-7">
         Global corporate cards, expense management, reimbursements, <br />
         travel, and bill pay — all in one.
       </div>
@@ -33,46 +33,34 @@ const router = useRouter()
       <div></div>
       <div></div>
       <!-- DON'T DELETE DIV -->
-      <div class="auth__right_head flex flex-col gap-2">
-        <div
-          class="auth__right-title text-center justify-center text-[#1b1c23] text-[32px] font-bold font-['Manrope'] leading-[44px]"
-        >
+      <div class="flex flex-col gap-2">
+        <div class="text-center justify-center text-[#1b1c23] text-[32px] font-bold leading-[44px]">
           Sign in to Wealify
         </div>
-        <div
-          class="auth__right-subtitle text-center justify-start text-[#7a7c89] text-sm font-medium font-['Manrope'] leading-tight"
-        >
+        <div class="text-center justify-start text-[#7a7c89] text-sm font-medium leading-tight">
           Unlock the power of secure and <br />
           convenient money transfers
         </div>
       </div>
-      <div class="auth__right_input flex flex-col gap-3 md:w-[100%] lg:w-[65%]">
-        <div class="auth__right-email inline-flex flex-col justify-center items-start gap-1">
-          <div class="h-5 justify-center text-[#1b1c23] text-xs font-medium font-['Manrope'] leading-tight">Email</div>
+      <div class="flex flex-col gap-3 md:w-[100%] lg:w-[65%]">
+        <div class="inline-flex flex-col justify-center items-start gap-1">
+          <div class="h-5 justify-center text-[#1b1c23] text-xs font-medium leading-tight">Email</div>
           <AuthEmailInput v-model="fields.email" :error="errors.email" />
-          <div
-            v-if="errors.email"
-            class="h-5 justify-center text-[#ec2c37] text-xs font-medium font-['Manrope'] leading-tight"
-          >
+          <div v-if="errors.email" class="h-5 justify-center text-[#ec2c37] text-xs font-medium leading-tight">
             {{ errors.email }}
           </div>
         </div>
-        <div class="auth__right-password inline-flex flex-col justify-center items-start gap-1">
-          <div class="h-5 justify-center text-[#1b1c23] text-xs font-medium font-['Manrope'] leading-tight">
-            Password
-          </div>
+        <div class="inline-flex flex-col justify-center items-start gap-1">
+          <div class="h-5 justify-center text-[#1b1c23] text-xs font-medium leading-tight">Password</div>
           <AuthPasswordInput v-model="fields.password" :error="errors.password" />
-          <div
-            v-if="errors.password"
-            class="h-5 justify-center text-[#ec2c37] text-xs font-medium font-['Manrope'] leading-tight"
-          >
+          <div v-if="errors.password" class="h-5 justify-center text-[#ec2c37] text-xs font-medium leading-tight">
             {{ errors.password }}
           </div>
           <div class="w-full flex flex-row justify-end mt-2">
-            <div class="auth__right-forgot-password cursor-pointer">
+            <div class="cursor-pointer">
               <div
                 @click="() => router.push('/auth/forgot')"
-                class="text-right justify-center text-[#ff5524] text-xs font-semibold font-['Manrope'] leading-tight"
+                class="text-right justify-center text-[#ff5524] text-xs font-semibold leading-tight"
               >
                 Forgot Password?
               </div>
@@ -80,7 +68,7 @@ const router = useRouter()
           </div>
         </div>
       </div>
-      <div class="auth__right_button md:w-[100%] flex flex-col gap-2 lg:w-[65%]">
+      <div class="md:w-[100%] flex flex-col gap-2 lg:w-[65%]">
         <AuthSubmitButton
           :title="'Log In'"
           :loading="isLoading"
