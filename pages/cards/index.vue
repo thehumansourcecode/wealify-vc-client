@@ -11,6 +11,8 @@ const dayjs = useDayjs()
 const cardStore = useCardStore()
 const cardList = computed(() => cardStore.cardList)
 
+const cardListBeforeDeselectAll = ref([])
+
 const filteredCardList = computed(() =>
   cardList.value.filter((card: ICardData) => {
     const haveType = payload.value.type ? card.type === payload.value.type : true
@@ -135,6 +137,29 @@ function onClickTopup() {
 
 function clearSelected() {
   selectedCardList.value = []
+}
+
+function onUpdateCurrentPage(page) {
+  console.log(page)
+}
+
+// (handle bug: deselect 1 page => deselect all other pages)
+
+function onSelectAllPage(value) {
+  if (!value) {
+    selectedCardList.value = [...cardListBeforeDeselectAll.value]
+  }
+}
+
+function onUpdateSelection(selectedRows: any[]) {
+  console.log(selectedCardList.value, 'scl')
+  // select all
+  if (selectedRows.length > 1) {
+    if (selectedCardList.value.length > 0) {
+      cardListBeforeDeselectAll.value = [...selectedCardList.value]
+    }
+  }
+  console.log(cardListBeforeDeselectAll.value, 'cdbda')
 }
 </script>
 <template>
@@ -340,35 +365,35 @@ function clearSelected() {
       <div class="flex flex-col gap-[10px] flex-1">
         <div class="flex flex-row gap-[10px]">
           <UButton
-            class="flex items-center justify-center rounded-[49px] bg-[#FF5524] hover:bg-[#EE4413] px-4 py-3 w-[168px]"
+            class="flex items-center justify-center rounded-[49px] bg-[#FF5524] hover:bg-[#EE4413] px-4 py-3 w-[168px] cursor-not-allowed"
           >
             <div class="text-white text-16-600-24">
               {{ t('cards.button.topup') }}
             </div>
           </UButton>
           <UButton
-            class="flex items-center justify-center rounded-[49px] bg-[#F0F2F5] hover:bg-[#E1E3E6] px-4 py-2 w-[168px]"
+            class="flex items-center justify-center rounded-[49px] bg-[#F0F2F5] hover:bg-[#E1E3E6] px-4 py-2 w-[168px] cursor-not-allowed"
           >
             <div class="text-[#1C1D23] text-16-600-24">
               {{ t('cards.button.withdraw') }}
             </div>
           </UButton>
           <UButton
-            class="flex items-center justify-center rounded-[49px] bg-[#F0F2F5] hover:bg-[#E1E3E6] px-4 py-2 w-[168px]"
+            class="flex items-center justify-center rounded-[49px] bg-[#F0F2F5] hover:bg-[#E1E3E6] px-4 py-2 w-[168px] cursor-not-allowed"
           >
             <div class="text-[#1C1D23] text-16-600-24">
               {{ t('cards.button.freeze') }}
             </div>
           </UButton>
           <UButton
-            class="flex items-center justify-center rounded-[49px] bg-[#F0F2F5] hover:bg-[#E1E3E6] px-4 py-2 w-[168px]"
+            class="flex items-center justify-center rounded-[49px] bg-[#F0F2F5] hover:bg-[#E1E3E6] px-4 py-2 w-[168px] cursor-not-allowed"
           >
             <div class="text-[#1C1D23] text-16-600-24">
               {{ t('cards.button.unfreeze') }}
             </div>
           </UButton>
           <UButton
-            class="flex items-center justify-center rounded-[49px] bg-[#F0F2F5] hover:bg-[#E1E3E6] px-4 py-2 w-[168px]"
+            class="flex items-center justify-center rounded-[49px] bg-[#F0F2F5] hover:bg-[#E1E3E6] px-4 py-2 w-[168px] cursor-not-allowed"
           >
             <div class="text-[#ED2C38] text-16-600-24">
               {{ t('cards.button.cancel') }}
@@ -397,6 +422,8 @@ function clearSelected() {
       <!-- Table -->
       <UTable
         selectable
+        @select:all="onSelectAllPage"
+        @update:modelValue="onUpdateSelection"
         v-model="selectedCardList"
         v-if="filteredCardList?.length"
         :rows="rows"
@@ -505,7 +532,7 @@ function clearSelected() {
         v-if="filteredCardList?.length > pageCount"
         class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700 gap-10 items-center"
       >
-        <USelectMenu v-model="pageCount" :options="pageCountOptions">
+        <USelectMenu v-model="pageCount" :options="pageCountOptions" @change="page = 1">
           <template #option="{ option }">
             <div class="text-12-500-20">{{ t(`cards.list.pagination.limit`, { limit: option }) }}</div>
           </template>
