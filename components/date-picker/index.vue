@@ -41,10 +41,10 @@ const styleHeaders = () => {
 }
 
 const onChangeMonthYear = () => {
-  const timer = setTimeout(() => {
+  const timer = requestAnimationFrame(() => {
     styleHeaders()
-    clearTimeout(timer)
-  }, 6)
+    cancelAnimationFrame(timer)
+  })
 }
 </script>
 <template>
