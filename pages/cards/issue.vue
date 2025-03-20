@@ -6,10 +6,12 @@ import { formatDDMMYYYY, formatMoney, formatMoneyWithoutDecimals, getCountryCode
 import { CardCategory, CardStatus, CardType, type ICardData, type IFormCardIssue } from '~/types/cards'
 import { CommonCountry, PanelChildTab, PanelTab } from '~/types/common'
 import type { FormError } from '#ui/types'
+import { validator } from '~/common/validator'
 
 const { t } = useI18n()
 
 const commonStore = useCommonStore()
+const cardStore = useCardStore()
 
 onMounted(() => {
   commonStore.setHeaderBackLayout(true)
@@ -71,7 +73,7 @@ const countryCodeOptions = [
 
 const isSubmitEnabled = ref(false)
 
-const cardCategoryOptions = computed(() => [])
+const cardCategoryOptions = computed(() => cardStore.categoryList)
 
 const originalNumericValue = ref<number>()
 
@@ -85,41 +87,47 @@ const countryCode = ref({
 })
 
 const form = reactive<IFormCardIssue>({
-  type: CardType.VIRTUAL,
-  name: '', //req, max 50 char, ko dấu
+  card_type: CardType.VIRTUAL,
+  card_name: '', //req, max 50 char, ko dấu
   email: '', //req, max 128, chữ số ký tự, auto trim, chặn
-  countryCode: getCountryCode(CommonCountry.VIETNAM),
-  phoneNumber: '', // req, nếu có thì = sđt user đã add, nếu ko thì rỗng. Max 15, trim, chặn
-  category: CardCategory.TRAVEL, // req, default = Travel. Lấy từ API GET List Reporting fields,
-  purpose: '', // max = 128, chặn
-  startingBalance: 1000, // nhập số nguyên dương. nếu = 0 hiển inline msg
+  country_code: getCountryCode(CommonCountry.VIETNAM),
+  phone_number: '', // req, nếu có thì = sđt user đã add, nếu ko thì rỗng. Max 15, trim, chặn
+  category: undefined, // req, default = Travel. Lấy từ API GET List Reporting fields,
+  card_purpose: '', // max = 128, chặn
+  spend_limit: 1000, // nhập số nguyên dương. nếu = 0 hiển inline msg
 })
 
 const validate = (form: IFormCardIssue): FormError[] => {
   const errors = []
-  if (!form.name) {
+  if (!form.card_name) {
     errors.push({ path: 'name', message: t('common.validator.empty.issueCard.name') })
   }
   if (!form.email) {
     errors.push({ path: 'email', message: t('common.validator.empty.issueCard.email') })
   }
-  if (!form.phoneNumber) {
+  if (!validator.isEmail(form.email)) {
+    errors.push({
+      path: 'email',
+      message: t('common.validator.invalid.issueCard.email'),
+    })
+  }
+  if (!form.phone_number) {
     errors.push({ path: 'phoneNumber', message: t('common.validator.empty.issueCard.phoneNumber') })
   }
   if (!form.category) {
     errors.push({ path: 'category', message: t('common.validator.empty.issueCard.category') })
   }
-  if (form.startingBalance === 0) {
-    errors.push({ path: 'startingBalance', message: t('common.validator.invalid.startingBalance') })
+  if (form.spend_limit === 0) {
+    errors.push({ path: 'startingBalance', message: t('common.validator.invalid.issueCard.startingBalance') })
   }
   return errors
 }
 
 const formattedBalance = computed({
-  get: () => form.startingBalance.toLocaleString(),
+  get: () => form.spend_limit.toLocaleString(),
   set: value => {
     // Remove commas and parse to integer
-    form.startingBalance = Number(value.replace(/,/g, '')) || 0
+    form.spend_limit = Number(value.replace(/,/g, '')) || 0
   },
 })
 
@@ -151,7 +159,7 @@ const formatBalance = (target: HTMLInputElement) => {
     return
   }
   if (+rawValue >= 1000000) {
-    form.startingBalance = 1000000
+    form.spend_limit = 1000000
     target.value = formattedBalance.value
   }
   target.value = target.value.trim()
@@ -175,7 +183,7 @@ const handleInputBalance = async (event: InputEvent) => {
 }
 
 const presetAmounts = computed(() => {
-  const balance = form.startingBalance
+  const balance = form.spend_limit
   if (!balance || balance == 0) {
     return [500, 1000, 2000, 5000]
   }
@@ -198,7 +206,8 @@ const setAmount = amount => {
 }
 
 async function handleIssue() {
-  console.log(form)
+  const payload = { ...form }
+  await cardStore.issueCard(payload)
 }
 </script>
 
@@ -230,14 +239,14 @@ async function handleIssue() {
             </div>
             <BaseInput
               input-class="input-field rounded-49"
-              v-model="form.name"
-              :clearable="!!form.name"
+              v-model="form.card_name"
+              :clearable="!!form.card_name"
               :limit="50"
               leading
               :leading-img="'/icons/cards/issue-card/name.svg'"
               :placeholder="$t('cards.issue.info.form.placeholder.name')"
               autocomplete="off"
-              @clear="form.name = ''"
+              @clear="form.card_name = ''"
             />
           </div>
         </UFormGroup>
@@ -330,8 +339,8 @@ async function handleIssue() {
                 class="w-full"
                 input-class="input-field"
                 variant="none"
-                v-model="form.phoneNumber"
-                :clearable="!!form.phoneNumber"
+                v-model="form.phone_number"
+                :clearable="!!form.phone_number"
                 :maxlength="15"
                 @input="handleInputPhoneNumber"
                 :placeholder="$t('cards.issue.info.form.placeholder.phoneNumber')"
@@ -339,12 +348,12 @@ async function handleIssue() {
               >
                 <template #trailing>
                   <UButton
-                    v-if="form.phoneNumber"
+                    v-if="form.phone_number"
                     color="gray"
                     variant="link"
                     icon="i-heroicons-x-mark-20-solid"
                     :padded="false"
-                    @click="form.phoneNumber = ''"
+                    @click="form.phone_number = ''"
                     alt=""
                   />
                   <div v-else></div>
@@ -366,20 +375,33 @@ async function handleIssue() {
               <span>{{ t('cards.issue.info.form.label.category') }}</span>
               <span class="pl-1 text-[#ED2C38]">*</span>
             </div>
-            <USelectMenu v-model="form.category" :options="cardCategoryOptions" class="w-[50%] min-w-[360px]">
-              <template #option="{ option }">
-                <div class="flex flex-row gap-[10px]">
-                  <div class="text-12-500-20">{{ t(`cards.issue.info.form.category.${option}`) }}</div>
+            <BaseSingleSelect
+              v-model="form.category"
+              :options="cardCategoryOptions"
+              class="w-[50%] min-w-[360px]"
+              :selected-icon="'i-selected'"
+            >
+              <template #default="{ open: open }">
+                <div
+                  class="border border-[#D7D9E5] rounded-[90px] py-[10px] pl-4 pr-3 flex flex-row w-full gap-[10px] justify-between"
+                >
+                  <img src="/icons/cards/issue-card/category.svg" alt="" />
+                  <div class="text-14-500-20 text-[#1C1D23] grow">
+                    {{ form.category ? t(`cards.list.category.${form.category}`) : t('cards.issue.info.form.placeholder.category') }}
+                  </div>
+                  <img
+                    src="/assets/img/icons/dropdown.svg"
+                    class="transition-transform"
+                    :class="[open && 'transform rotate-180']"
+                  />
                 </div>
               </template>
-              <div class="border border-[#D7D9E5] rounded-[90px] py-[10px] pl-4 pr-3 flex flex-row gap-[10px] w-full">
-                <img src="/icons/cards/issue-card/category.svg" alt="" />
-                <div class="text-14-500-20 text-[#1C1D23] grow">
-                  {{ t(`cards.list.category.${form.category}`) }}
+              <template #option="{ option }">
+                <div class="flex flex-row gap-[10px]">
+                  <div class="text-12-500-20">{{ t(`cards.list.category.${option}`) }}</div>
                 </div>
-                <img class="justify-self-end" src="assets/img/icons/dropdown.svg" alt="" />
-              </div>
-            </USelectMenu>
+              </template>
+            </BaseSingleSelect>
           </div>
         </UFormGroup>
         <UFormGroup name="purpose" class="mt-5">
@@ -389,14 +411,14 @@ async function handleIssue() {
             </div>
             <BaseInput
               input-class="input-field rounded-49"
-              v-model="form.purpose"
+              v-model="form.card_purpose"
               :limit="128"
-              :clearable="!!form.purpose"
+              :clearable="!!form.card_purpose"
               leading
               :leading-img="'/icons/cards/issue-card/purpose.svg'"
               :placeholder="$t('cards.issue.info.form.placeholder.purpose')"
               autocomplete="off"
-              @clear="form.purpose = ''"
+              @clear="form.card_purpose = ''"
             />
           </div>
         </UFormGroup>
@@ -482,7 +504,7 @@ async function handleIssue() {
           >
             <img src="~/assets/img/cards/card-logo.svg" alt="" />
             <div class="text-20-500-32 text-[#FFFFFF] mt-5 w-[270px]" :class="{ uppercase: form.name }">
-              {{ form.name ? form.name : t('cards.issue.preview.namePlaceholder') }}
+              {{ form.card_name ? form.card_name : t('cards.issue.preview.namePlaceholder') }}
             </div>
             <img class="mt-auto" src="~/assets/img/cards/card-number.svg" alt="" />
           </div>
@@ -493,7 +515,7 @@ async function handleIssue() {
               {{ t('cards.issue.preview.starting') }}
             </div>
             <div class="text-14-600-20 text-[#1C1D23]">
-              {{ form.startingBalance ? formatMoneyWithoutDecimals(form.startingBalance) : '-' }}
+              {{ form.spend_limit ? formatMoneyWithoutDecimals(form.spend_limit) : '-' }}
             </div>
           </div>
           <div class="flex flex-row justify-between mt-6">
@@ -508,7 +530,7 @@ async function handleIssue() {
               {{ t('cards.issue.preview.totalTopup') }}
             </div>
             <div class="text-16-600-25 text-[#FF5524]">
-              {{ formatMoneyWithoutDecimals(form.startingBalance || 0 + issueCardFee) }}
+              {{ formatMoneyWithoutDecimals(form.spend_limit || 0 + issueCardFee) }}
             </div>
           </div>
         </div>

@@ -20,7 +20,7 @@ export const ceilNumber = (input: number, toFixed: number) => {
 }
 
 export const formatMoney = (amount: number | undefined, currency?: string) => {
-  if(!amount) return ''
+  if (!amount) return ''
   return (
     Number(amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) +
     (currency ? ` ${currency}` : '')
@@ -28,7 +28,7 @@ export const formatMoney = (amount: number | undefined, currency?: string) => {
 }
 
 export const formatMoneyWithoutDecimals = (amount: number | undefined, currency?: string) => {
-  if(!amount) return ''
+  if (!amount) return ''
   return new Intl.NumberFormat('en-US').format(amount) + (currency ? ` ${currency}` : '')
 }
 
@@ -129,4 +129,19 @@ export const getCountryCode = (country: CommonCountry) => {
     default:
       return ''
   }
+}
+
+export enum ToastType {
+  SUCCESS = 'SUCCESS',
+  FAILED = 'FAILED',
+}
+
+export function showToast(type: ToastType, title: string) {
+  const toast = useToast()
+  toast.clear()
+  toast.add({
+    title: title,
+    avatar: { src: type === ToastType.SUCCESS ? '/icons/common/toast-success.svg' :  '/icons/common/toast-failed.svg'},
+    timeout: 5000,
+  })
 }

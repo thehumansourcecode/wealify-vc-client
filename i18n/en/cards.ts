@@ -36,20 +36,22 @@ export default {
 
     category: {
       [CardCategory.ENTERTAINMENT]: 'Entertainment',
-      [CardCategory.FOOD_BEVERAGE]: 'Food & Beverage',
-      [CardCategory.GOVERNMENT_SERVICES]: 'Government Services',
+      [CardCategory.FOOD_BEVERAGES]: 'Food & Beverages',
       [CardCategory.INVENTORY]: 'Inventory',
       [CardCategory.MARKETING]: 'Marketing',
       [CardCategory.OFFICE]: 'Office',
       [CardCategory.SALARY]: 'Salary',
       [CardCategory.SALES]: 'Sales',
       [CardCategory.SERVICE_PROVIDER]: 'Service Provider',
-      [CardCategory.SOFTWARE]: 'Software',
       [CardCategory.TRAVEL]: 'Travel',
       [CardCategory.UTILITIES]: 'Utilities',
-      [CardCategory.INVESTMENT]: 'Investment/Dividend',
-      [CardCategory.RETAIL]: 'Retail',
       [CardCategory.OTHER]: 'Other',
+      [CardCategory.EQUIPMENT]: 'Equipment',
+      [CardCategory.TAXES]: 'Taxes',
+      [CardCategory.API_PAYMENTS]: 'API Payments',
+      [CardCategory.CLIMATE_CHANGE]: 'Climate Change',
+      [CardCategory.FOOD]: 'Food',
+      [CardCategory.ADS_SERVICE]: 'Ads Service',
     },
     empty: 'No card created yet',
     pagination: {
@@ -118,7 +120,7 @@ export default {
     policy: 'I agree with Terms of Use and Policy',
     notification: {
       title: 'Notification',
-      failed: 'Fail to issue a new card. Please try again later',
+      failed: 'Failed to issue a new card. Please try again later',
       limit: 'You have reached the maximum number of cards created. Please contact sales for more supports',
       process: {
         title: 'Processing',

@@ -36,8 +36,8 @@ export class BaseService {
         const accessTokenExpiresAt = parsedTokens?.accessTokenExpiresAt
         const refreshTokenExpiresAt = parsedTokens?.refreshTokenExpiresAt
 
-        const isAccessTokenExpired = accessTokenExpiresAt && dayjs().isAfter(dayjs(accessTokenExpiresAt))
-        const isRefreshTokenExpired = refreshTokenExpiresAt && dayjs().isAfter(dayjs(refreshTokenExpiresAt))
+        const isAccessTokenExpired = accessTokenExpiresAt && dayjs().isAfter(dayjs.unix(accessTokenExpiresAt))
+        const isRefreshTokenExpired = refreshTokenExpiresAt && dayjs().isAfter(dayjs.unix(refreshTokenExpiresAt))
 
         if (refreshToken && isRefreshTokenExpired) {
           console.error('Refresh token expired. Logging out.')

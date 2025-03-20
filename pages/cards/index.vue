@@ -9,16 +9,16 @@ const { t } = useI18n()
 const dayjs = useDayjs()
 
 const cardStore = useCardStore()
-const payload = computed(() => cardStore.payload)
 const filteredCardList = computed(() => cardStore.filteredCardList)
 const selectedCardList = ref([])
+const payload = computed(() => cardStore.payload)
 
 function isCardSelected(card: ICardData) {
   return selectedCardList.value.some((selectedCard: ICardData) => selectedCard.id === card.id)
 }
 
-const activeCardList = computed(() =>
-  filteredCardList.value.filter((card: ICardData) => card.status === CardStatus.ACTIVE),
+const activeCardList = computed(
+  () => filteredCardList.value?.filter((card: ICardData) => card.status === CardStatus.ACTIVE) || [],
 )
 
 const totalSelectedAmount = computed(() => {
@@ -30,12 +30,8 @@ const totalActiveAmount = computed(() => {
   return cardListAmount.reduce((a: number, b: number) => a + b, 0)
 })
 
-const rows = computed(() => {
-  return filteredCardList.value.slice((page.value - 1) * limit.value, page.value * limit.value)
-})
-
 const typeOptions = Object.values(CardType)
-const categoryOptions = Object.values(CardCategory)
+const categoryOptions = computed(() => cardStore.categoryList)
 const statusOptions = Object.values(CardStatus)
 
 function isCategorySelected(category: CardCategory) {
@@ -114,19 +110,24 @@ function clearSelected() {
   selectedCardList.value = []
 }
 
-const page = ref(1)
 const limitOptions = ref([10, 30, 50])
-const limit = ref(limitOptions.value[0])
 
 watch(
-  () => [page.value, limit.value],
+  () => [payload.value.page, payload.value.limit],
   () => {
     clearSelected()
   },
 )
 
+const page = computed(() => payload.value.page)
+const limit = computed(() => payload.value.limit)
+
+const rows = computed(() => {
+  return filteredCardList.value?.slice((page.value - 1) * limit.value, page.value * limit.value)
+})
+
 function onChangeLimit() {
-  page.value = 1
+  payload.value.page = 1
 }
 
 function handleClickCard(row) {
@@ -136,6 +137,11 @@ function handleClickCard(row) {
     cardStore.setSelectedCardDetail(selectedCardDetail)
     cardStore.toggleCardDetailSlideover(true)
   }
+}
+
+onMounted(() => initPage())
+async function initPage() {
+  await Promise.all([cardStore.getCardList(payload.value), cardStore.getCategoryList()])
 }
 </script>
 <template>
@@ -309,7 +315,7 @@ function handleClickCard(row) {
 
           <!-- Active / Total -->
           <div class="text-[#7A7D89] text-12-500-20">
-            {{ t('cards.filter.label.amount', { active: activeCardList.length, total: filteredCardList.length }) }}
+            {{ t('cards.filter.label.amount', { active: activeCardList?.length, total: filteredCardList?.length }) }}
           </div>
           <img src="~/assets/img/common/line.svg" alt="" />
           <div class="text-[#1C1D23] text-12-600-20">
@@ -521,8 +527,8 @@ function handleClickCard(row) {
         <UPagination
           size="md"
           :max="6"
-          v-model="page"
-          :page-count="limit"
+          v-model="payload.page"
+          :page-count="payload.limit"
           :total="filteredCardList?.length"
           class="pagination-custom"
           :active-button="{
