@@ -15,7 +15,13 @@ export class CardsService extends BaseService {
 
   constructor() {
     const config = useRuntimeConfig()
-    super(config.public.baseUrl + '/auth')
+    super(config.public.baseUrl + '/cards')
+  }
+
+  async getCardList(payload: IGetCardListParams): Promise<ICommonListResponse<ICardData>> {
+    return this.get('/', {
+      params: payload,
+    })
   }
 }
 

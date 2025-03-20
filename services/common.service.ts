@@ -1,7 +1,7 @@
 import type { LoginCredentials, LoginResponse } from '~/types/auth'
 import { BaseService } from './base.service'
-import type { CardCategory, ICardData, IGetCardListParams, IIssueCardParams } from '~/types/cards'
-import type { ICommonListResponse, ICommonResponse } from '~/types/common'
+import type { CardCategory, ICardData, IGetDropdownCardListParams, IIssueCardParams } from '~/types/cards'
+import type { ICommonListResponse, ICommonResponse, IDropdownCardData } from '~/types/common'
 
 export class CommonService extends BaseService {
   private static _instance: CommonService
@@ -18,11 +18,11 @@ export class CommonService extends BaseService {
     super(config.public.baseUrl)
   }
 
-  async getCategoryList(): Promise<ICommonListResponse<CardCategory>> {
+  async getDropdownCategoryList(): Promise<ICommonListResponse<CardCategory>> {
     return this.get('/dropdown/categories')
   }
 
-  async getCardList(payload: IGetCardListParams): Promise<ICommonListResponse<ICardData>> {
+  async getDropdownCardList(payload: IGetDropdownCardListParams): Promise<ICommonListResponse<IDropdownCardData>> {
     return this.get('/dropdown/cards', {
       params: payload,
     })

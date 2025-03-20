@@ -1,12 +1,13 @@
 import { normalize, showToast, ToastType } from '~/common/functions'
+import { cardsService } from '~/services/cards.service'
 import { commonService } from '~/services/common.service'
 import {
   CardCategory,
   CardStatus,
   CardType,
   type ICardData,
-  type IGetCardListParams,
   type IIssueCardParams,
+  type IGetCardListParams,
 } from '~/types/cards'
 
 export const useCardStore = defineStore('card', () => {
@@ -16,16 +17,20 @@ export const useCardStore = defineStore('card', () => {
   const nuxtApp = useNuxtApp()
   const i18n = nuxtApp.$i18n
 
-  const payload = ref({
+  const payload = ref<IGetCardListParams>({
     page: 1,
     limit: 10,
     keyword: undefined,
-    type: undefined,
-    categories: [] as CardCategory[],
-    statuses: [] as CardStatus[],
+    card_type: undefined,
+    card_status: [] as CardStatus[],
+    category: [] as CardCategory[],
     start_date: undefined,
     end_date: undefined,
   })
+
+  function setPayload(_payload: IGetCardListParams) {
+    payload.value = { ..._payload }
+  }
 
   const selectedCardDetail = ref<ICardData>()
   function setSelectedCardDetail(card?: ICardData) {
@@ -40,15 +45,17 @@ export const useCardStore = defineStore('card', () => {
 
   const cardList = ref<ICardData[]>([])
 
-  const activeCardList = computed(() => cardList.value.filter((card: ICardData) => card.status === CardStatus.ACTIVE))
+  const activeCardList = computed(() =>
+    cardList.value.filter((card: ICardData) => card.card_status === CardStatus.ACTIVE),
+  )
 
   const filteredCardList = computed(() =>
     cardList.value?.filter((card: ICardData) => {
-      const haveType = payload.value.type ? card.type === payload.value.type : true
-      const haveCategory = payload.value.categories.length ? payload.value.categories.includes(card.category) : true
-      const haveStatus = payload.value.statuses.length ? payload.value.statuses.includes(card.status) : true
+      const haveType = payload.value.card_type ? card.card_type === payload.value.card_type : true
+      const haveCategory = payload.value.category.length ? payload.value.category.includes(card.category) : true
+      const haveStatus = payload.value.card_status.length ? payload.value.card_status.includes(card.card_status) : true
       const haveKeyword = payload.value.keyword
-        ? normalize(card.cardName) === normalize(payload.value.keyword) ||
+        ? normalize(card.card_name) === normalize(payload.value.keyword) ||
           card.cardNumber.includes(payload.value.keyword)
         : true
       return haveType && haveStatus && haveCategory && haveKeyword
@@ -56,27 +63,28 @@ export const useCardStore = defineStore('card', () => {
   )
 
   async function getCardList(payload: IGetCardListParams) {
-    const response = await commonService.getCardList(payload)
+    const response = await cardsService.getCardList(payload)
     if (response.success) {
-      cardList.value = response.data
+      cardList.value = response.data.items
     }
     return response
   }
 
   const categoryList = ref<CardCategory[]>([])
 
-  async function getCategoryList() {
-    const response = await commonService.getCategoryList()
+  async function getDropdownCategoryList() {
+    const response = await commonService.getDropdownCategoryList()
     if (response.success) {
-      categoryList.value = response.data
+      categoryList.value = response.data as CardCategory[]
     }
     return response
   }
 
   async function issueCard(params: IIssueCardParams) {
     const response = await commonService.issueCard(params)
-    console.log(response)
     if (response.success) {
+      navigateTo('/cards')
+      payload.value = { ...payload.value, card_status: [CardStatus.ACTIVE] }
       await getCardList(payload.value)
     } else {
       showToast(ToastType.FAILED, i18n.t('cards.issue.notification.failed'))
@@ -86,12 +94,13 @@ export const useCardStore = defineStore('card', () => {
 
   return {
     payload,
+    setPayload,
     cardList,
     getCardList,
     activeCardList,
     filteredCardList,
     categoryList,
-    getCategoryList,
+    getDropdownCategoryList,
     issueCard,
     isOpenCardDetailSlideover,
     toggleCardDetailSlideover,

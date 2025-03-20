@@ -85,7 +85,7 @@ export default {
       address: 'Received address',
       txhash: 'TxHash',
       id: 'Top up ID',
-      createdAt: 'Created at',
+      created_at: 'Created at',
       successAt: 'Success at',
       newTopup: 'Create new top up',
       contact:

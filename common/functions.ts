@@ -20,7 +20,7 @@ export const ceilNumber = (input: number, toFixed: number) => {
 }
 
 export const formatMoney = (amount: number | undefined, currency?: string) => {
-  if (!amount) return ''
+  if (!amount) return 0
   return (
     Number(amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) +
     (currency ? ` ${currency}` : '')
@@ -28,7 +28,7 @@ export const formatMoney = (amount: number | undefined, currency?: string) => {
 }
 
 export const formatMoneyWithoutDecimals = (amount: number | undefined, currency?: string) => {
-  if (!amount) return ''
+  if (!amount) return 0.00
   return new Intl.NumberFormat('en-US').format(amount) + (currency ? ` ${currency}` : '')
 }
 
