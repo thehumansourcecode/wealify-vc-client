@@ -23,6 +23,8 @@ const payload = ref({
   dateRange: [undefined, undefined] as [Date | undefined, Date | undefined],
 })
 
+const statusOptions = Object.values(TransactionStatus)
+
 function isStatusSelected(status: CardStatus) {
   return payload.value.statuses.includes(status)
 }
@@ -129,13 +131,13 @@ async function onClickViewDetail() {
           >
             <div class="text-12-500-20 text-[#7A7D89]">
               <span v-if="payload.statuses.length == 1">
-                {{ t(`cards.list.status.${payload.statuses[0]}`) }}
+                {{ t(`transactions.list.status.${payload.statuses[0]}`) }}
               </span>
               <span v-else-if="payload.statuses.length > 1" class="text-12-500-20 text-[#7A7D89]">
                 {{ payload.statuses.length }} selected
               </span>
               <span v-else>
-                {{ t('cards.filter.label.status') }}
+                {{ t('transactions.filter.label.status') }}
               </span>
             </div>
             <img
@@ -163,7 +165,7 @@ async function onClickViewDetail() {
               }"
             />
             <span class="text-[#1C1D23] text-14-500-20">
-              {{ t(`cards.list.status.${status}`) }}
+              {{ t(`transactions.list.status.${status}`) }}
             </span>
           </div>
         </template>
