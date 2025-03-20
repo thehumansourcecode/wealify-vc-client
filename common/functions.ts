@@ -135,3 +135,18 @@ export const getCountryCode = (country: CommonCountry) => {
       return ''
   }
 }
+
+export enum ToastType {
+  SUCCESS = 'SUCCESS',
+  FAILED = 'FAILED',
+}
+
+export function showToast(type: ToastType, title: string) {
+  const toast = useToast()
+  toast.clear()
+  toast.add({
+    title: title,
+    avatar: { src: type === ToastType.SUCCESS ? '/icons/common/toast-success.svg' :  '/icons/common/toast-failed.svg'},
+    timeout: 5000,
+  })
+}

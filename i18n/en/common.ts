@@ -28,8 +28,10 @@ export default {
       },
     },
     invalid: {
-      issueCard: 'Invalid email address',
-      startingBalance: 'Please enter an amount greater than 0',
+      issueCard: {
+        email: 'Invalid email address',
+        startingBalance: 'Please enter an amount greater than 0',
+      },
     },
   },
 }

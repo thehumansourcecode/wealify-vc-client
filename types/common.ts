@@ -109,10 +109,7 @@ export interface ICommonResponse<T> {
 
 export interface ICommonListResponse<T> {
   code: HTTP_STATUS_CODE
-  data: {
-    items: T[]
-    totalItems: number
-  }
+  data: T[]
   message: string
   success: boolean
 }

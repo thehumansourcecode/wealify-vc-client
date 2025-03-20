@@ -4,21 +4,23 @@ export enum CardType {
 }
 
 export enum CardCategory {
-  ENTERTAINMENT = 'ENTERTAINMENT',
-  FOOD_BEVERAGE = 'FOOD_BEVERAGE',
-  GOVERNMENT_SERVICES = 'GOVERNMENT_SERVICES',
-  INVENTORY = 'INVENTORY',
-  MARKETING = 'MARKETING',
-  OFFICE = 'OFFICE',
-  SALARY = 'SALARY',
-  SALES = 'SALES',
-  SERVICE_PROVIDER = 'SERVICE_PROVIDER',
-  SOFTWARE = 'SOFTWARE',
-  TRAVEL = 'TRAVEL',
-  UTILITIES = 'UTILITIES',
-  INVESTMENT = 'INVESTMENT',
-  RETAIL = 'RETAIL',
-  OTHER = 'OTHER',
+  INVENTORY = 'Inventory',
+  MARKETING = 'Marketing',
+  SALARY = 'Salary',
+  EQUIPMENT = 'Equipment',
+  SERVICE_PROVIDER = 'Service Provider',
+  TAXES = 'Taxes',
+  TRAVEL = 'Travel',
+  OFFICE = 'Office',
+  UTILITIES = 'Utilities',
+  SALES = 'Sales',
+  FOOD_BEVERAGES = 'Food & Beverages',
+  ENTERTAINMENT = 'Entertainment',
+  API_PAYMENTS = 'API Payments',
+  CLIMATE_CHANGE = 'Climate Change',
+  FOOD = 'Food',
+  ADS_SERVICE = 'Ads Service',
+  OTHER = 'Other',
 }
 
 export enum CardStatus {
@@ -26,7 +28,6 @@ export enum CardStatus {
   FREEZE = 'FREEZE',
   CANCEL = 'CANCEL',
 }
-
 export interface ICardData {
   id?: string
   cardName: string
@@ -41,12 +42,25 @@ export interface ICardData {
 }
 
 export interface IFormCardIssue {
-  type: CardType
-  name: string
+  card_name: string
   email: string
-  countryCode: string
-  phoneNumber: string
-  category: string
-  purpose: string
-  startingBalance: number
+  phone_number: string
+  country_code: string
+  category?: CardCategory
+  card_purpose?: string
+  card_type: string
+  spend_limit: number
+}
+
+// Request - Response
+
+export interface IGetCardListParams {
+  page: number
+  limit: number
+  start_date?: string
+  end_date?: string
+  keyword?: string
+  card_status?: CardStatus
+  card_type?: CardType
+  category?: CardCategory
 }

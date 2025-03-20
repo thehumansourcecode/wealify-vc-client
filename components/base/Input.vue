@@ -62,7 +62,7 @@ function clearInput() {
   box-shadow: none;
   border: 1px solid #d7d9e5;
   background: white;
-  color: #7a7d89;
+  color: #1C1D23;
   font-weight: 500;
   font-size: 14px;
   line-height: 20px;
