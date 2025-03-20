@@ -76,10 +76,10 @@ export default {
     transaction: {
       to: 'to {destination}',
       topupAmount: 'Top up amount',
-      amount: 'USDT {amount}',
+      amount: '{amount} USDT',
       rate: 'Rate',
       fee: 'Fee',
-      rateValue: 'USDT {rateUSDT} = USD {rateUSD}',
+      rateValue: '{rateUSDT} USDT = {rateUSD} USD',
       feeValue: 'USD {fee}',
       account: 'Top up account',
       address: 'Received address',

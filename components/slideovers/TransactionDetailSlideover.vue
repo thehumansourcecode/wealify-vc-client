@@ -91,7 +91,16 @@ function createNewTopup() {
 </script>
 
 <template>
-  <USlideover v-model="isOpenTransactionDetailSlideover" :prevent-close="true" @close-prevented="onClosePrevented()">
+  <USlideover
+    v-model="isOpenTransactionDetailSlideover"
+    :ui="{
+      overlay: {
+        background: 'bg-[#1b1c23]/30',
+      },
+    }"
+    :prevent-close="true"
+    @close-prevented="onClosePrevented()"
+  >
     <div class="flex flex-col items-center">
       <div class="w-full flex flex-row justify-between items-center py-6 px-8">
         <div class="text-20-600-32 text-[#1C1D23]">

@@ -52,7 +52,6 @@ const options = computed<Array<TransactionType>>(() =>
 
 const displayValue = computed<string>(() => {
   const selectedOptions = options.value.filter(({ value }) => model.value.includes(value))
-  console.log(selectedOptions)
   return shortenString(selectedOptions.map(({ title }) => title).join(','))
 })
 
@@ -60,9 +59,16 @@ const reset = () => {
   model.value = []
 }
 
+const isVCCardEnabled = computed<boolean>(() => {
+  return model.value.includes(1)
+})
+
 const onSelect = (value: any) => {
   if (model.value.includes(value)) {
-    model.value = model.value.filter(val => val != value)
+    model.value = model.value.filter(val => {
+      if (value == 1) return val != 4 && val != value
+      return val != value
+    })
   } else {
     model.value = [...model.value, value]
   }
@@ -100,21 +106,20 @@ const onSelect = (value: any) => {
                 <div
                   v-for="option in group.options"
                   class="inline-flex items-center gap-2"
-                  :class="index % 2 == 0 ? 'justify-start' : 'justify-center'"
+                  :class="[index % 2 == 0 ? 'justify-start' : 'justify-center']"
                 >
-                  <img
-                    v-if="model.includes(option.value)"
+                  <UCheckbox
                     @click="onSelect(option.value)"
-                    class="cursor-pointer"
-                    src="/images/transactions/checked-box.svg"
+                    :disabled="!isVCCardEnabled && option.value == 4"
+                    :model-value="model.includes(option.value)"
+                    :ui="{
+                      base: 'cursor-pointer',
+                    }"
                   />
-                  <img
-                    v-else
-                    @click="onSelect(option.value)"
-                    class="cursor-pointer"
-                    src="/images/transactions/check-box.svg"
-                  />
-                  <div class="justify-center text-[#1b1c23] text-sm font-semibold font-['Manrope'] leading-tight">
+                  <div
+                    class="justify-center text-[#1b1c23] text-sm font-semibold font-['Manrope'] leading-tight"
+                    :class="!isVCCardEnabled && option.value == 4 ? 'opacity-50' : ''"
+                  >
                     {{ option.title }}
                   </div>
                 </div>
