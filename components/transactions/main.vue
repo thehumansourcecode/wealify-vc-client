@@ -89,7 +89,7 @@ async function onClickViewDetail() {
 }
 </script>
 <template>
-  <div class="flex flex-col overflow-y-auto pl-10 pr-[60px] flex-1 gap-6 mt-7">
+  <div class="flex flex-col overflow-y-auto pl-10 pr-[60px] flex-1 gap-5 mt-7">
     <!-- Cards not selected -->
     <div class="flex flex-row justify-between items-start gap-[200px]">
       <div class="flex flex-col relative gap-[10px] flex-1">
@@ -113,7 +113,7 @@ async function onClickViewDetail() {
       </div>
     </div>
     <!-- Filters -->
-    <div class="flex flex-row gap-5 items-center">
+    <div class="flex flex-row gap-5 pb-5 items-center">
       <!-- Date -->
       <DatePicker v-model="payload.dateRange" />
 
