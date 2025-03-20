@@ -9,25 +9,18 @@ const { t } = useI18n()
 const dayjs = useDayjs()
 
 const cardStore = useCardStore()
-const cardList = computed(() => cardStore.cardList)
-
-const cardListBeforeDeselectAll = ref([])
-
-const filteredCardList = computed(() =>
-  cardList.value.filter((card: ICardData) => {
-    const haveType = payload.value.type ? card.type === payload.value.type : true
-    const haveCategory = payload.value.categories.length ? payload.value.categories.includes(card.category) : true
-    const haveStatus = payload.value.statuses.length ? payload.value.statuses.includes(card.status) : true
-    const haveKeyword = payload.value.keyword
-      ? normalize(card.cardName) === normalize(payload.value.keyword) || card.cardNumber.includes(payload.value.keyword)
-      : true
-    return haveType && haveStatus && haveCategory && haveKeyword
-  }),
-)
+const payload = computed(() => cardStore.payload)
+const filteredCardList = computed(() => cardStore.filteredCardList)
 const selectedCardList = ref([])
+
+function isCardSelected(card: ICardData) {
+  return selectedCardList.value.some((selectedCard: ICardData) => selectedCard.id === card.id)
+}
+
 const activeCardList = computed(() =>
   filteredCardList.value.filter((card: ICardData) => card.status === CardStatus.ACTIVE),
 )
+
 const totalSelectedAmount = computed(() => {
   const cardListAmount = selectedCardList.value.map((selectedCard: ICardData) => selectedCard.balance)
   return cardListAmount.reduce((a: number, b: number) => a + b, 0)
@@ -37,18 +30,9 @@ const totalActiveAmount = computed(() => {
   return cardListAmount.reduce((a: number, b: number) => a + b, 0)
 })
 
-const page = ref(1)
-
-const pageCountOptions = ref([10, 30, 50])
-const pageCount = ref(pageCountOptions.value[0])
-
 const rows = computed(() => {
-  return filteredCardList.value.slice((page.value - 1) * pageCount.value, page.value * pageCount.value)
+  return filteredCardList.value.slice((page.value - 1) * limit.value, page.value * limit.value)
 })
-
-function isCardSelected(card: ICardData) {
-  return selectedCardList.value.some((selectedCard: ICardData) => selectedCard.createdAt === card.createdAt)
-}
 
 const typeOptions = Object.values(CardType)
 const categoryOptions = Object.values(CardCategory)
@@ -61,15 +45,6 @@ function isCategorySelected(category: CardCategory) {
 function isStatusSelected(status: CardStatus) {
   return payload.value.statuses.includes(status)
 }
-
-const payload = ref({
-  keyword: undefined,
-  type: undefined,
-  categories: [] as CardCategory[],
-  statuses: [] as CardStatus[],
-  startDate: undefined,
-  endDate: undefined,
-})
 
 const cardTableColumns = [
   {
@@ -139,27 +114,28 @@ function clearSelected() {
   selectedCardList.value = []
 }
 
-function onUpdateCurrentPage(page) {
-  console.log(page)
+const page = ref(1)
+const limitOptions = ref([10, 30, 50])
+const limit = ref(limitOptions.value[0])
+
+watch(
+  () => [page.value, limit.value],
+  () => {
+    clearSelected()
+  },
+)
+
+function onChangeLimit() {
+  page.value = 1
 }
 
-// (handle bug: deselect 1 page => deselect all other pages)
-
-function onSelectAllPage(value) {
-  if (!value) {
-    selectedCardList.value = [...cardListBeforeDeselectAll.value]
+function handleClickCard(row) {
+  const id = row.id
+  const selectedCardDetail = filteredCardList.value.find((card: ICardData) => card.id === id)
+  if (selectedCardDetail) {
+    cardStore.setSelectedCardDetail(selectedCardDetail)
+    cardStore.toggleCardDetailSlideover(true)
   }
-}
-
-function onUpdateSelection(selectedRows: any[]) {
-  console.log(selectedCardList.value, 'scl')
-  // select all
-  if (selectedRows.length > 1) {
-    if (selectedCardList.value.length > 0) {
-      cardListBeforeDeselectAll.value = [...selectedCardList.value]
-    }
-  }
-  console.log(cardListBeforeDeselectAll.value, 'cdbda')
 }
 </script>
 <template>
@@ -422,11 +398,10 @@ function onUpdateSelection(selectedRows: any[]) {
       <!-- Table -->
       <UTable
         selectable
-        @select:all="onSelectAllPage"
-        @update:modelValue="onUpdateSelection"
         v-model="selectedCardList"
         v-if="filteredCardList?.length"
         :rows="rows"
+        @select="handleClickCard"
         :columns="cardTableColumns"
         :ui="{
           default: {
@@ -529,16 +504,16 @@ function onUpdateSelection(selectedRows: any[]) {
       </div>
 
       <div
-        v-if="filteredCardList?.length > pageCount"
+        v-if="filteredCardList?.length > limit"
         class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700 gap-10 items-center"
       >
-        <USelectMenu v-model="pageCount" :options="pageCountOptions" @change="page = 1">
+        <USelectMenu v-model="limit" :options="limitOptions" @change="onChangeLimit">
           <template #option="{ option }">
             <div class="text-12-500-20">{{ t(`cards.list.pagination.limit`, { limit: option }) }}</div>
           </template>
           <div class="border border-[#D7D9E5] rounded-[90px] py-[10px] pl-5 pr-4 flex flex-row gap-8">
             <div class="text-14-500-20 text-[#1C1D23]">
-              {{ t(`cards.list.pagination.limit`, { limit: pageCount }) }}
+              {{ t(`cards.list.pagination.limit`, { limit: limit }) }}
             </div>
             <img src="assets/img/icons/dropdown.svg" alt="" />
           </div>
@@ -547,7 +522,7 @@ function onUpdateSelection(selectedRows: any[]) {
           size="md"
           :max="6"
           v-model="page"
-          :page-count="pageCount"
+          :page-count="limit"
           :total="filteredCardList?.length"
           class="pagination-custom"
           :active-button="{

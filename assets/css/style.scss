@@ -10,6 +10,11 @@ body {
   font-family: Manrope, sans-serif;
 }
 
+.karla {
+  font-family: Karla, sans-serif;
+}
+
+
 .i-copy {
   background: url('../img/icons/copy.svg') no-repeat;
 }
@@ -273,6 +278,12 @@ input[type='number'] {
   font-style: normal;
   font-weight: 600;
   line-height: 32px;
+}
+
+.text-24-400 {
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
 }
 
 .text-32-700-44 {

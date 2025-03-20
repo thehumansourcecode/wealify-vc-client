@@ -19,14 +19,16 @@ export const ceilNumber = (input: number, toFixed: number) => {
   return Math.ceil(input * 10 ** toFixed) / 10 ** toFixed
 }
 
-export const formatMoney = (amount: number, currency?: string) => {
+export const formatMoney = (amount: number | undefined, currency?: string) => {
+  if(!amount) return ''
   return (
     Number(amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) +
     (currency ? ` ${currency}` : '')
   )
 }
 
-export const formatMoneyWithoutDecimals = (amount: number, currency?: string) => {
+export const formatMoneyWithoutDecimals = (amount: number | undefined, currency?: string) => {
+  if(!amount) return ''
   return new Intl.NumberFormat('en-US').format(amount) + (currency ? ` ${currency}` : '')
 }
 
@@ -64,6 +66,11 @@ export const formatDDMMYYYYHHMM = (input: Dayjs) => {
 export const formatYYYYMMDDhmmA = (input: Dayjs) => {
   if (!input) return ''
   return input.format('YYYY/MM/DD | h:mm A')
+}
+
+export const formatMMYYYY = (input: Dayjs) => {
+  if (!input) return ''
+  return input.format('MM/YYYY')
 }
 
 export const shortenAddress = (address: string, front = 4, back = 4) => {

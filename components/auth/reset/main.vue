@@ -10,33 +10,33 @@ const { step, back, next, isValidate, onCompletedPin, fields, errors, profile } 
         subtitle="Please enter your new password"
         :back="back"
       >
-        <div class="flex flex-col gap-5 w-[100%] lg:w-[65%]">
-          <div class="inline-flex flex-col justify-center items-start gap-1">
-            <div class="h-5 justify-center text-[#1b1c23] text-xs font-medium leading-tight">Password</div>
-            <AuthPasswordInput
-              placeholder="Please enter the password"
-              v-model="fields.password"
-              :error="errors.password"
-            />
-          </div>
-          <AuthPasswordRequirements v-if="!isValidate" :password="fields.password" />
-          <div class="inline-flex flex-col justify-center items-start gap-1">
-            <div class="h-5 justify-center text-[#1b1c23] text-xs font-medium leading-tight">Confirm Password</div>
-            <AuthPasswordInput
-              placeholder="Please enter the password again"
-              v-model="fields.confirmPassword"
-              :error="errors.confirmPassword"
-            />
-            <div
-              v-if="errors.confirmPassword"
-              class="h-5 justify-center text-[#ec2c37] text-xs font-medium leading-tight"
-            >
-              {{ errors.confirmPassword }}
+        <div class="flex flex-col gap-10 w-[100%] lg:w-[65%]">
+          <div class="flex flex-col gap-5">
+            <div class="inline-flex flex-col justify-center items-start gap-1">
+              <div class="h-5 justify-center text-[#1b1c23] text-xs font-medium leading-tight">Password</div>
+              <AuthPasswordInput
+                placeholder="Please enter the password"
+                v-model="fields.password"
+                :error="errors.password"
+              />
+            </div>
+            <AuthPasswordRequirements v-if="!isValidate" :password="fields.password" />
+            <div class="inline-flex flex-col justify-center items-start gap-1">
+              <div class="h-5 justify-center text-[#1b1c23] text-xs font-medium leading-tight">Confirm Password</div>
+              <AuthPasswordInput
+                placeholder="Please enter the password again"
+                v-model="fields.confirmPassword"
+                :error="errors.confirmPassword"
+              />
+              <div
+                v-if="errors.confirmPassword"
+                class="h-5 justify-center text-[#ec2c37] text-xs font-medium leading-tight"
+              >
+                {{ errors.confirmPassword }}
+              </div>
             </div>
           </div>
-          <div class="">
-            <AuthSubmitButton @click="isValidate && next()" :disabled="!isValidate" :title="'Next'" />
-          </div>
+          <AuthSubmitButton @click="isValidate && next()" :disabled="!isValidate" :title="'Next'" />
         </div>
       </AuthForgotBase>
       <AuthForgotBase

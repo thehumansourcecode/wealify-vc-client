@@ -28,6 +28,7 @@ export enum CardStatus {
 }
 
 export interface ICardData {
+  id?: string
   cardName: string
   cardNumber: string
   type: CardType
