@@ -56,7 +56,7 @@ const recentTransactions = computed<ITransactionData[]>(() => [
     amount: 1000,
     currency: CommonCurrency.USD,
     card: {
-      cardName: 'Nguyen Hong Ngoc',
+      card_name: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 1232',
     },
     status: TransactionStatus.PROCESSING,
@@ -81,7 +81,7 @@ const recentTransactions = computed<ITransactionData[]>(() => [
     amount: 1000,
     currency: CommonCurrency.USD,
     card: {
-      cardName: 'Nguyen Hong Ngoc',
+      card_name: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 1232',
     },
     status: TransactionStatus.PROCESSING,
@@ -95,7 +95,7 @@ const recentTransactions = computed<ITransactionData[]>(() => [
     amount: 1000,
     currency: CommonCurrency.USD,
     card: {
-      cardName: 'Nguyen Hong Ngoc',
+      card_name: 'Nguyen Hong Ngoc',
       cardNumber: 'xxxx xxxx xxxx 1232',
     },
     status: TransactionStatus.PROCESSING,
@@ -366,7 +366,7 @@ async function onClickViewDetail() {
           <div v-if="row.card" class="flex flex-row items-center gap-[14px] w-[218px]">
             <img src="/icons/dashboard/mastercard.svg" alt="" />
             <div class="flex flex-col gap-1">
-              <span class="text-14-600-20 text-[#1C1D23]">{{ row.card?.cardName }}</span>
+              <span class="text-14-600-20 text-[#1C1D23]">{{ row.card?.card_name }}</span>
               <span class="text-12-500-20 text-[#7A7D89]"> {{ row.card?.cardNumber }}</span>
             </div>
           </div>

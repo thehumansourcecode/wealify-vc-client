@@ -21,11 +21,11 @@ function clearInput() {
     :maxlength="limit"
     :ui="{
       padding: {
-        sm: 'pr-7 pl-1.5 py-1.5',
+        sm: 'pr-9 pl-1.5 py-1.5',
       },
       leading: {
         padding: {
-          sm: 'ps-10',
+          sm: 'ps-11 pe-11',
         },
       },
       icon: {

@@ -109,7 +109,20 @@ export interface ICommonResponse<T> {
 
 export interface ICommonListResponse<T> {
   code: HTTP_STATUS_CODE
-  data: T[]
+  data: {
+    items: T[]
+    limit: number
+    page: number
+    total_items: number
+    total_page: number
+  }
   message: string
   success: boolean
+}
+
+// Dropdowns
+export interface IDropdownCardData {
+  card_name: string
+  id: string
+  last_four: string
 }

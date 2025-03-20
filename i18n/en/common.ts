@@ -25,6 +25,7 @@ export default {
         name: 'Card name is mandatory. Please enter your card name',
         phoneNumber: 'Phone number is mandatory. Please enter your phone number',
         email: 'Email is mandatory. Please enter your email',
+        category: "Category is mandatory. Please choose your category"
       },
     },
     invalid: {

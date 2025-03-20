@@ -30,18 +30,20 @@ export enum CardStatus {
 }
 export interface ICardData {
   id?: string
-  cardName: string
+  card_name: string
   cardNumber: string
-  type: CardType
+  card_type: CardType
+  card_status: CardStatus
+  expiry_date: string
   category: CardCategory
   balance: number
-  totalTopup: number
-  totalWithdraw: number
-  createdAt: string
-  status: CardStatus
+  total_top_up: number
+  total_withdraw: number
+  created_at: string
+
 }
 
-export interface IFormCardIssue {
+export interface IIssueCardParams {
   card_name: string
   email: string
   phone_number: string
@@ -54,13 +56,24 @@ export interface IFormCardIssue {
 
 // Request - Response
 
+export interface IGetDropdownCardListParams {
+  page: number
+  limit: number
+  start_date?: string
+  end_date?: string
+  keyword?: string
+  card_status: CardStatus[]
+  card_type?: CardType
+  category: CardCategory[]
+}
+
 export interface IGetCardListParams {
   page: number
   limit: number
   start_date?: string
   end_date?: string
   keyword?: string
-  card_status?: CardStatus
+  card_status: CardStatus[]
   card_type?: CardType
-  category?: CardCategory
+  category: CardCategory[]
 }

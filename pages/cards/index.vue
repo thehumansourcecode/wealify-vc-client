@@ -2,7 +2,7 @@
 definePageMeta({
   layout: 'home',
 })
-import { formatDDMMYYYY, formatMoney, normalize } from '~/common/functions'
+import { formatDDMMYYYY, formatMoney } from '~/common/functions'
 import { CardCategory, CardStatus, CardType, type ICardData } from '~/types/cards'
 
 const { t } = useI18n()
@@ -18,7 +18,7 @@ function isCardSelected(card: ICardData) {
 }
 
 const activeCardList = computed(
-  () => filteredCardList.value?.filter((card: ICardData) => card.status === CardStatus.ACTIVE) || [],
+  () => filteredCardList.value?.filter((card: ICardData) => card.card_status === CardStatus.ACTIVE) || [],
 )
 
 const totalSelectedAmount = computed(() => {
@@ -35,11 +35,11 @@ const categoryOptions = computed(() => cardStore.categoryList)
 const statusOptions = Object.values(CardStatus)
 
 function isCategorySelected(category: CardCategory) {
-  return payload.value.categories.includes(category)
+  return payload.value.category.includes(category)
 }
 
 function isStatusSelected(status: CardStatus) {
-  return payload.value.statuses.includes(status)
+  return payload.value.card_status.includes(status)
 }
 
 const cardTableColumns = [
@@ -64,18 +64,18 @@ const cardTableColumns = [
     class: 'text-center mr-5 w-[150px]',
   },
   {
-    key: 'totalTopup',
-    label: t('cards.list.header.totalTopup'),
+    key: 'total_top_up',
+    label: t('cards.list.header.total_top_up'),
     class: 'text-center mr-5 w-[150px]',
   },
   {
-    key: 'totalWithdraw',
-    label: t('cards.list.header.totalWithdraw'),
+    key: 'total_withdraw',
+    label: t('cards.list.header.total_withdraw'),
     class: 'mr-5 text-center w-[150px]',
   },
   {
-    key: 'createdAt',
-    label: t('cards.list.header.createdAt'),
+    key: 'created_at',
+    label: t('cards.list.header.created_at'),
     class: 'text-center mr-5 w-[150px]',
   },
   {
@@ -140,9 +140,39 @@ function handleClickCard(row) {
 }
 
 onMounted(() => initPage())
+
 async function initPage() {
-  await Promise.all([cardStore.getCardList(payload.value), cardStore.getCategoryList()])
+  await Promise.all([cardStore.getCardList(payload.value), cardStore.getDropdownCategoryList()])
 }
+
+onUnmounted(() =>
+  // Reset payload
+  cardStore.setPayload({
+    page: 1,
+    limit: 10,
+    keyword: undefined,
+    card_type: undefined,
+    card_status: [] as CardStatus[],
+    category: [] as CardCategory[],
+    start_date: undefined,
+    end_date: undefined,
+  }),
+)
+
+const tableRef = ref(null)
+watch(
+  () => [tableRef.value, selectedCardList.value.length],
+  () => {
+    const checkboxes = document.querySelectorAll('.table-wrapper input[type=checkbox]')
+    checkboxes.forEach(item => {
+      item.addEventListener('click', e => {
+        console.log(item)
+        e.stopPropagation()
+      })
+    })
+  },
+  { immediate: true, flush: 'sync' },
+)
 </script>
 <template>
   <div class="flex flex-col overflow-y-auto pl-10 pr-[60px] flex-1 gap-6 mt-7">
@@ -164,7 +194,7 @@ async function initPage() {
           <BaseSingleSelect
             class="w-[150px]"
             :options="typeOptions"
-            v-model="payload.type"
+            v-model="payload.card_type"
             :selected-icon="'i-selected'"
           >
             <template #default="{ open: open }">
@@ -173,21 +203,21 @@ async function initPage() {
                 :class="open ? 'border-[#FF5524]' : 'border-[f0f2f5]'"
               >
                 <div class="text-12-500-20 text-[#7A7D89]">
-                  <span v-if="payload.type">
-                    {{ t(`cards.list.type.${payload.type}`) }}
+                  <span v-if="payload.card_type">
+                    {{ t(`cards.list.type.${payload.card_type}`) }}
                   </span>
                   <span v-else>
                     {{ t('cards.filter.label.type') }}
                   </span>
                 </div>
                 <img
-                  v-if="!payload.type"
+                  v-if="!payload.card_type"
                   src="/assets/img/icons/dropdown.svg"
                   class="transition-transform"
                   :class="[open && 'transform rotate-180']"
                 />
                 <img
-                  @click.prevent="payload.type = undefined"
+                  @click.prevent="payload.card_type = undefined"
                   v-else
                   class="cursor-pointer"
                   src="/assets/img/icons/clear.svg"
@@ -211,7 +241,7 @@ async function initPage() {
             searchable
             :searchable-placeholder="'Search categories'"
             :options="categoryOptions"
-            v-model="payload.categories"
+            v-model="payload.category"
           >
             <template #default="{ open: open }">
               <div
@@ -219,24 +249,24 @@ async function initPage() {
                 :class="open ? 'border-[#FF5524]' : 'border-[f0f2f5]'"
               >
                 <div class="text-12-500-20 text-[#7A7D89]">
-                  <span v-if="payload.categories.length == 1">
-                    {{ t(`cards.list.category.${payload.categories[0]}`) }}
+                  <span v-if="payload.category.length == 1">
+                    {{ t(`cards.list.category.${payload.category[0]}`) }}
                   </span>
-                  <span v-else-if="payload.categories.length > 1" class="text-12-500-20 text-[#7A7D89]">
-                    {{ payload.categories.length }} selected
+                  <span v-else-if="payload.category.length > 1" class="text-12-500-20 text-[#7A7D89]">
+                    {{ payload.category.length }} selected
                   </span>
                   <span v-else>
                     {{ t('cards.filter.label.category') }}
                   </span>
                 </div>
                 <img
-                  v-if="!payload.categories.length"
+                  v-if="!payload.category.length"
                   src="/assets/img/icons/dropdown.svg"
                   class="transition-transform"
                   :class="[open && 'transform rotate-180']"
                 />
                 <img
-                  @click.prevent="payload.categories = []"
+                  @click.prevent="payload.category = []"
                   v-else
                   class="cursor-pointer"
                   src="/assets/img/icons/clear.svg"
@@ -263,31 +293,31 @@ async function initPage() {
           <img src="~/assets/img/common/line.svg" alt="" />
 
           <!-- Status -->
-          <BaseMultipleSelect class="w-[150px]" multiple :options="statusOptions" v-model="payload.statuses">
+          <BaseMultipleSelect class="w-[150px]" multiple :options="statusOptions" v-model="payload.card_status">
             <template #default="{ open: open }">
               <div
                 class="px-3 py-[6px] w-full rounded-[36px] bg-[#f0f2f5] border flex items-center justify-between"
                 :class="open ? 'border-[#FF5524]' : 'border-[f0f2f5]'"
               >
                 <div class="text-12-500-20 text-[#7A7D89]">
-                  <span v-if="payload.statuses.length == 1">
-                    {{ t(`cards.list.status.${payload.statuses[0]}`) }}
+                  <span v-if="payload.card_status.length == 1">
+                    {{ t(`cards.list.status.${payload.card_status[0]}`) }}
                   </span>
-                  <span v-else-if="payload.statuses.length > 1" class="text-12-500-20 text-[#7A7D89]">
-                    {{ payload.statuses.length }} selected
+                  <span v-else-if="payload.card_status.length > 1" class="text-12-500-20 text-[#7A7D89]">
+                    {{ payload.card_status.length }} selected
                   </span>
                   <span v-else>
                     {{ t('cards.filter.label.status') }}
                   </span>
                 </div>
                 <img
-                  v-if="!payload.statuses.length"
+                  v-if="!payload.card_status.length"
                   src="/assets/img/icons/dropdown.svg"
                   class="transition-transform"
                   :class="[open && 'transform rotate-180']"
                 />
                 <img
-                  @click.prevent="payload.statuses = []"
+                  @click.prevent="payload.card_status = []"
                   v-else
                   class="cursor-pointer"
                   src="/assets/img/icons/clear.svg"
@@ -404,6 +434,7 @@ async function initPage() {
       <!-- Table -->
       <UTable
         selectable
+        ref="tableRef"
         v-model="selectedCardList"
         v-if="filteredCardList?.length"
         :rows="rows"
@@ -444,14 +475,16 @@ async function initPage() {
           <div class="flex flex-row items-center gap-[14px] w-[200px]">
             <img src="/icons/dashboard/mastercard.svg" alt="" />
             <div class="flex flex-col gap-1">
-              <span class="text-14-600-20 text-[#1C1D23]">{{ row?.cardName }}</span>
-              <span class="text-12-500-20 text-[#7A7D89]"> {{ row?.cardNumber }}</span>
+              <span class="text-14-600-20 text-[#1C1D23]">{{ row?.card_name }}</span>
+              <span class="text-12-500-20 text-[#7A7D89]">
+                {{ t(`cards.list.cardNumber`, { value: row?.last_four }) }}</span
+              >
             </div>
           </div>
         </template>
         <template #type-data="{ row }">
           <div class="w-16 flex justify-center">
-            <img :src="`/icons/cards/${row.type}.svg`" alt="" />
+            <img :src="`/icons/cards/${row.card_type}.svg`" alt="" />
           </div>
         </template>
         <template #category-data="{ row }">
@@ -468,32 +501,34 @@ async function initPage() {
         <template #balance-data="{ row }">
           <div class="text-16-700-24 w-[150px] text-[#1C1D23] text-center">${{ formatMoney(row.balance) }}</div>
         </template>
-        <template #totalTopup-data="{ row }">
-          <div class="text-16-700-24 w-[150px] text-[#2EA518] text-center">${{ formatMoney(row.totalTopup) }}</div>
+        <template #total_top_up-data="{ row }">
+          <div class="text-16-700-24 w-[150px] text-[#2EA518] text-center">
+            ${{ formatMoney(row.total_top_up) || 0 }}
+          </div>
         </template>
-        <template #totalWithdraw-data="{ row }">
-          <div class="text-16-700-24 w-[150px] text-[#ED2C38] text-center">${{ formatMoney(row.totalWithdraw) }}</div>
+        <template #total_withdraw-data="{ row }">
+          <div class="text-16-700-24 w-[150px] text-[#ED2C38] text-center">${{ formatMoney(row.total_withdraw) }}</div>
         </template>
-        <template #createdAt-data="{ row }">
+        <template #created_at-data="{ row }">
           <div class="text-14-500-20 w-[150px] text-[#7A7D89] text-center">
-            {{ formatDDMMYYYY(dayjs.utc(row.createdAt).local()) }}
+            {{ formatDDMMYYYY(dayjs.utc(row.created_at).local()) }}
           </div>
         </template>
         <template #status-data="{ row }">
           <div
             class="flex flex-row gap-[6px] w-[100px] items-center justify-center mx-auto px-3 py-[2px] rounded-[110px]"
-            :style="{ color: getStatusColor(row?.status), background: isCardSelected(row) ? 'white' : '#F0F2F5' }"
+            :style="{ color: getStatusColor(row?.card_status), background: isCardSelected(row) ? 'white' : '#F0F2F5' }"
           >
             <div class="text-12-500-20">
-              {{ t(`cards.list.status.${row.status}`) }}
+              {{ t(`cards.list.status.${row.card_status}`) }}
             </div>
-            <div class="w-[6px] h-[6px] rounded-[1px]" :style="{ background: getStatusColor(row?.status) }"></div>
+            <div class="w-[6px] h-[6px] rounded-[1px]" :style="{ background: getStatusColor(row?.card_status) }"></div>
           </div>
         </template>
         <template #action-data="{ row }">
           <UButton
-            v-if="row.status === CardStatus.ACTIVE"
-            @click="onClickTopup"
+            v-if="row.card_status === CardStatus.ACTIVE"
+            @click.stop="onClickTopup"
             class="flex items-center py-[6px] px-4 mx-4 bg-[#1C1D23] hover:bg-[#3D3E34] rounded-[6px]"
           >
             <div class="text-12-600-20 text-white">

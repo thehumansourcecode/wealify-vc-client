@@ -76,7 +76,7 @@ const transactionDetail = computed(() => {
     to: 'Wallet',
     fee: 0,
     id: 'P12345678958254',
-    createdAt: '2025-03-11T13:36:41.718Z',
+    created_at: '2025-03-11T13:36:41.718Z',
     updatedAt: '2025-03-11T13:36:41.718Z',
     account: 'Wealify Balance',
     address: '0x1437bEbAa45MfA88Dc9C6CFeB6e0bAAeDCD6eCdb',
@@ -185,10 +185,10 @@ function createNewTopup() {
           </div>
           <div class="flex flex-row justify-between items-center pb-5">
             <div class="text-12-500-20 text-[#7A7D89]">
-              {{ t('dashboard.slideovers.transaction.createdAt') }}
+              {{ t('dashboard.slideovers.transaction.created_at') }}
             </div>
             <div class="text-14-500-20 text-[#1C1D23]">
-              {{ formatYYYYMMDDhmmA(dayjs.utc(transactionDetail.createdAt).local()) }}
+              {{ formatYYYYMMDDhmmA(dayjs.utc(transactionDetail.created_at).local()) }}
             </div>
           </div>
           <div class="flex flex-row justify-between items-center mb-1">

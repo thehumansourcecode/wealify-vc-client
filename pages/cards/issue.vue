@@ -2,9 +2,9 @@
 definePageMeta({
   layout: 'home',
 })
-import { formatDDMMYYYY, formatMoney, formatMoneyWithoutDecimals, getCountryCode } from '~/common/functions'
-import { CardCategory, CardStatus, CardType, type ICardData, type IFormCardIssue } from '~/types/cards'
-import { CommonCountry, PanelChildTab, PanelTab } from '~/types/common'
+import { formatMoneyWithoutDecimals, getCountryCode } from '~/common/functions'
+import { CardType, type IIssueCardParams } from '~/types/cards'
+import { CommonCountry, CommonCurrency, PanelChildTab, PanelTab } from '~/types/common'
 import type { FormError } from '#ui/types'
 import { validator } from '~/common/validator'
 
@@ -17,6 +17,7 @@ onMounted(() => {
   commonStore.setHeaderBackLayout(true)
   commonStore.setActiveTab(PanelTab.CARD_LIST)
   commonStore.setActiveChildTab(PanelChildTab.CARD_ISSUE)
+  cardStore.getDropdownCategoryList()
 })
 
 onUnmounted(() => {
@@ -86,18 +87,18 @@ const countryCode = ref({
   flag: `/icons/flags/${CommonCountry.VIETNAM}.svg`,
 })
 
-const form = reactive<IFormCardIssue>({
+const form = reactive<IIssueCardParams>({
   card_type: CardType.VIRTUAL,
   card_name: '', //req, max 50 char, ko dấu
   email: '', //req, max 128, chữ số ký tự, auto trim, chặn
-  country_code: getCountryCode(CommonCountry.VIETNAM),
+  country_code: CommonCountry.VIETNAM,
   phone_number: '', // req, nếu có thì = sđt user đã add, nếu ko thì rỗng. Max 15, trim, chặn
   category: undefined, // req, default = Travel. Lấy từ API GET List Reporting fields,
   card_purpose: '', // max = 128, chặn
   spend_limit: 1000, // nhập số nguyên dương. nếu = 0 hiển inline msg
 })
 
-const validate = (form: IFormCardIssue): FormError[] => {
+const validate = (form: IIssueCardParams): FormError[] => {
   const errors = []
   if (!form.card_name) {
     errors.push({ path: 'name', message: t('common.validator.empty.issueCard.name') })
@@ -224,6 +225,36 @@ async function handleIssue() {
         <!-- Card information -->
         <div class="text-18-600-28 text-[#1C1D23]">
           {{ t('cards.issue.info.title') }}
+        </div>
+        <div class="flex flex-row gap-3 text-14-600-20 mt-5 items-center">
+          <div
+            @click="form.card_type = CardType.VIRTUAL"
+            class="px-5 py-4 bg-[#F0F2F5] hover:bg-[#F2F4F7] rounded-[16px] flex flex-row gap-3 items-center w-[250px] cursor-pointer"
+            :class="
+              form.card_type === CardType.VIRTUAL
+                ? 'text-[#1C1D23] border border-[#FF5524]'
+                : 'text-[#7A7D89] border border-[#F0F2F5]'
+            "
+          >
+            <img class="p-[10px] bg-[#FFF] rounded-full" :src="`/icons/cards/${CardType.VIRTUAL}.svg`" alt="" />
+            <div>{{ t(`cards.list.type.${CardType.VIRTUAL}`) }}</div>
+          </div>
+          <div
+            class="px-5 py-4 bg-[#F0F2F5] hover:bg-[#F2F4F7] rounded-[16px] flex flex-row gap-3 items-center w-[250px] cursor-not-allowed relative"
+            :class="
+              form.card_type === CardType.PHYSICAL
+                ? 'text-[#1C1D23] border border-[#FF5524]'
+                : 'text-[#7A7D89] border border-[#F0F2F5]'
+            "
+          >
+            <div
+              class="absolute right-5 -top-[10px] px-[6px] py-[2px] rounded-[10px] bg-[#5268E1] text-10-500-14 text-white"
+            >
+              Coming soon
+            </div>
+            <img class="p-[10px] bg-[#FFF] rounded-full" :src="`/icons/cards/${CardType.PHYSICAL}.svg`" alt="" />
+            <div>{{ t(`cards.list.type.${CardType.PHYSICAL}`) }}</div>
+          </div>
         </div>
         <UFormGroup
           name="name"
@@ -385,9 +416,15 @@ async function handleIssue() {
                 <div
                   class="border border-[#D7D9E5] rounded-[90px] py-[10px] pl-4 pr-3 flex flex-row w-full gap-[10px] justify-between"
                 >
-                  <img src="/icons/cards/issue-card/category.svg" alt="" />
-                  <div class="text-14-500-20 text-[#1C1D23] grow">
-                    {{ form.category ? t(`cards.list.category.${form.category}`) : t('cards.issue.info.form.placeholder.category') }}
+                  <div class="flex gap-[10px]">
+                    <img src="/icons/cards/issue-card/category.svg" alt="" />
+                    <div class="text-14-500-20 text-[#1C1D23] grow">
+                      {{
+                        form.category
+                          ? t(`cards.list.category.${form.category}`)
+                          : t('cards.issue.info.form.placeholder.category')
+                      }}
+                    </div>
                   </div>
                   <img
                     src="/assets/img/icons/dropdown.svg"
@@ -515,22 +552,24 @@ async function handleIssue() {
               {{ t('cards.issue.preview.starting') }}
             </div>
             <div class="text-14-600-20 text-[#1C1D23]">
-              {{ form.spend_limit ? formatMoneyWithoutDecimals(form.spend_limit) : '-' }}
+              {{ form.spend_limit ? formatMoneyWithoutDecimals(form.spend_limit, CommonCurrency.USD) : '-' }}
             </div>
           </div>
           <div class="flex flex-row justify-between mt-6">
             <div class="text-[#7A7D89] text-12-500-20">
               {{ t('cards.issue.preview.fee') }}
             </div>
-            <div class="text-14-600-20 text-[#1C1D23]">{{ formatMoneyWithoutDecimals(issueCardFee) }}</div>
+            <div class="text-14-600-20 text-[#1C1D23]">
+              {{ formatMoneyWithoutDecimals(issueCardFee, CommonCurrency.USD) || '0 USD' }}
+            </div>
           </div>
           <img src="~/assets/img/cards/line.svg" class="mt-4" alt="" />
           <div class="flex flex-row justify-between mt-4">
             <div class="text-[#7A7D89] text-12-500-20">
-              {{ t('cards.issue.preview.totalTopup') }}
+              {{ t('cards.issue.preview.total_top_up') }}
             </div>
             <div class="text-16-600-25 text-[#FF5524]">
-              {{ formatMoneyWithoutDecimals(form.spend_limit || 0 + issueCardFee) }}
+              {{ formatMoneyWithoutDecimals(form.spend_limit || 0 + issueCardFee, CommonCurrency.USD) }}
             </div>
           </div>
         </div>

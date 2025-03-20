@@ -30,7 +30,7 @@ export const useTransactionStore = defineStore('transaction', () => {
       amount: 1000,
       currency: CommonCurrency.USD,
       card: {
-        cardName: 'Nguyen Hong Ngoc',
+        card_name: 'Nguyen Hong Ngoc',
         cardNumber: 'xxxx xxxx xxxx 1232',
       },
       status: TransactionStatus.PROCESSING,
@@ -55,7 +55,7 @@ export const useTransactionStore = defineStore('transaction', () => {
       amount: 1000,
       currency: CommonCurrency.USD,
       card: {
-        cardName: 'Nguyen Hong Ngoc',
+        card_name: 'Nguyen Hong Ngoc',
         cardNumber: 'xxxx xxxx xxxx 1232',
       },
       status: TransactionStatus.PROCESSING,
@@ -69,7 +69,7 @@ export const useTransactionStore = defineStore('transaction', () => {
       amount: 1000,
       currency: CommonCurrency.USD,
       card: {
-        cardName: 'Nguyen Hong Ngoc',
+        card_name: 'Nguyen Hong Ngoc',
         cardNumber: 'xxxx xxxx xxxx 1232',
       },
       status: TransactionStatus.PROCESSING,
@@ -94,7 +94,7 @@ export const useTransactionStore = defineStore('transaction', () => {
       amount: 1000,
       currency: CommonCurrency.USD,
       card: {
-        cardName: 'Nguyen Hong Ngoc',
+        card_name: 'Nguyen Hong Ngoc',
         cardNumber: 'xxxx xxxx xxxx 1232',
       },
       status: TransactionStatus.PROCESSING,
@@ -119,7 +119,7 @@ export const useTransactionStore = defineStore('transaction', () => {
       amount: 1000,
       currency: CommonCurrency.USD,
       card: {
-        cardName: 'Nguyen Hong Ngoc',
+        card_name: 'Nguyen Hong Ngoc',
         cardNumber: 'xxxx xxxx xxxx 1232',
       },
       status: TransactionStatus.PROCESSING,
@@ -133,7 +133,7 @@ export const useTransactionStore = defineStore('transaction', () => {
       amount: 1000,
       currency: CommonCurrency.USD,
       card: {
-        cardName: 'Nguyen Hong Ngoc',
+        card_name: 'Nguyen Hong Ngoc',
         cardNumber: 'xxxx xxxx xxxx 1232',
       },
       status: TransactionStatus.PROCESSING,
@@ -158,7 +158,7 @@ export const useTransactionStore = defineStore('transaction', () => {
       amount: 1000,
       currency: CommonCurrency.USD,
       card: {
-        cardName: 'Nguyen Hong Ngoc',
+        card_name: 'Nguyen Hong Ngoc',
         cardNumber: 'xxxx xxxx xxxx 1232',
       },
       status: TransactionStatus.PROCESSING,
@@ -183,7 +183,7 @@ export const useTransactionStore = defineStore('transaction', () => {
       amount: 1000,
       currency: CommonCurrency.USD,
       card: {
-        cardName: 'Nguyen Hong Ngoc',
+        card_name: 'Nguyen Hong Ngoc',
         cardNumber: 'xxxx xxxx xxxx 1232',
       },
       status: TransactionStatus.PROCESSING,
@@ -197,7 +197,7 @@ export const useTransactionStore = defineStore('transaction', () => {
       amount: 1000,
       currency: CommonCurrency.USD,
       card: {
-        cardName: 'Nguyen Hong Ngoc',
+        card_name: 'Nguyen Hong Ngoc',
         cardNumber: 'xxxx xxxx xxxx 1232',
       },
       status: TransactionStatus.PROCESSING,

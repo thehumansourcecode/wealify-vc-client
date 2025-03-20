@@ -26,14 +26,14 @@ function handleCopy(index: number, value: string) {
 const cardStore = useCardStore()
 const isOpenCardDetailSlideover = computed(() => cardStore.isOpenCardDetailSlideover)
 const cardDetail = computed(() => cardStore.selectedCardDetail)
-const cardNumberArray = computed(() => cardDetail.value?.cardNumber.split(' '))
+const cardNumberArray = computed(() => cardDetail.value?.cardNumber?.split(' '))
 const isShowCardSensitiveDetail = ref(false)
 const isShowCardSensitiveDetailOverlay = ref(false)
 
 const balanceRate = computed(() =>
   cardDetail.value?.balance
     ? roundNumber(
-        ((cardDetail.value?.totalTopup || 0 + (cardDetail.value?.totalWithdraw || 0)) / cardDetail.value?.balance) *
+        ((cardDetail.value?.total_top_up || 0 + (cardDetail.value?.total_withdraw || 0)) / cardDetail.value?.balance) *
           100,
         1,
       )
@@ -103,7 +103,7 @@ function handleUnfreeze() {}
         </div>
         <!-- Information -->
         <div class="bg-white grow px-8 pt-4 pb-9 rounded-t-[20px] flex flex-col">
-          <div class="text-[#1C1D23] text-20-500-32 uppercase">{{ cardDetail?.cardName }}</div>
+          <div class="text-[#1C1D23] text-20-500-32 uppercase">{{ cardDetail?.card_name }}</div>
           <div class="mt-2 flex flex-row gap-8">
             <div class="flex flex-row gap-2">
               <img src="~/assets/img/icons/mail.svg" alt="" />
@@ -202,11 +202,11 @@ function handleUnfreeze() {}
             <div class="flex flex-row justify-between text-14-500-20">
               <div class="text-[#7A7D89]">{{ t(`cards.slideovers.detail.info.expired`) }}</div>
               <div class="flex flex-row gap-2 items-center">
-                <div>{{ formatMMYYYY(dayjs.utc(cardDetail?.createdAt).local()) }}</div>
+                <div>{{ formatMMYYYY(dayjs.utc(cardDetail?.created_at).local()) }}</div>
                 <img
                   v-if="isShowCardSensitiveDetail"
                   class="cursor-pointer"
-                  @click="handleCopy(2, formatMMYYYY(dayjs.utc(cardDetail?.createdAt).local()))"
+                  @click="handleCopy(2, formatMMYYYY(dayjs.utc(cardDetail?.created_at).local()))"
                   :src="
                     copied && copyIndex === 2 ? `/icons/common/copied-bordered.svg` : `/icons/common/copy-bordered.svg`
                   "
@@ -234,14 +234,14 @@ function handleUnfreeze() {}
               </div>
               <div class="flex flex-row items-center">
                 <div class="bg-[#D7D9E5] w-2 h-2 rounded-full"></div>
-                <div class="ml-3">{{ t(`cards.slideovers.detail.info.totalTopup`) }}</div>
-                <div class="ml-auto">{{ formatMoneyWithoutDecimals(cardDetail?.totalTopup, CommonCurrency.USD) }}</div>
+                <div class="ml-3">{{ t(`cards.slideovers.detail.info.total_top_up`) }}</div>
+                <div class="ml-auto">{{ formatMoneyWithoutDecimals(cardDetail?.total_top_up, CommonCurrency.USD) }}</div>
               </div>
               <div class="flex flex-row items-center">
                 <div class="bg-[#FF5524] w-2 h-2 rounded-full"></div>
-                <div class="ml-3">{{ t(`cards.slideovers.detail.info.totalWithdraw`) }}</div>
+                <div class="ml-3">{{ t(`cards.slideovers.detail.info.total_withdraw`) }}</div>
                 <div class="ml-auto">
-                  {{ formatMoneyWithoutDecimals(cardDetail?.totalWithdraw, CommonCurrency.USD) }}
+                  {{ formatMoneyWithoutDecimals(cardDetail?.total_withdraw, CommonCurrency.USD) }}
                 </div>
               </div>
             </div>
