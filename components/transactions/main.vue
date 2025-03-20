@@ -18,7 +18,7 @@ const pageCount = ref(pageCountOptions.value[0])
 
 const payload = ref({
   keyword: undefined,
-  type: undefined,
+  type: [],
   statuses: [] as CardStatus[],
   dateRange: [undefined, undefined] as [Date | undefined, Date | undefined],
 })
@@ -116,41 +116,7 @@ async function onClickViewDetail() {
       <img src="~/assets/img/common/line.svg" alt="" />
 
       <!-- Type -->
-      <BaseSingleSelect class="w-[150px]" :options="typeOptions" v-model="payload.type" :selected-icon="'i-selected'">
-        <template #default="{ open: open }">
-          <div
-            class="px-3 py-[6px] w-full rounded-[36px] bg-[#f0f2f5] border flex items-center justify-between"
-            :class="open ? 'border-[#FF5524]' : 'border-[f0f2f5]'"
-          >
-            <div class="text-12-500-20 text-[#7A7D89]">
-              <span v-if="payload.type">
-                {{ t(`cards.list.type.${payload.type}`) }}
-              </span>
-              <span v-else>
-                {{ t('cards.filter.label.type') }}
-              </span>
-            </div>
-            <img
-              v-if="!payload.type"
-              src="/assets/img/icons/dropdown.svg"
-              class="transition-transform"
-              :class="[open && 'transform rotate-180']"
-            />
-            <img
-              @click.prevent="payload.type = undefined"
-              v-else
-              class="cursor-pointer"
-              src="/assets/img/icons/clear.svg"
-              alt=""
-            />
-          </div>
-        </template>
-        <template #option="{ option: type }">
-          <span class="text-[#1C1D23] text-14-500-20">
-            {{ t(`cards.list.type.${type}`) }}
-          </span>
-        </template>
-      </BaseSingleSelect>
+      <TransactionsTypeSelection v-model="payload.type" />
 
       <img src="~/assets/img/common/line.svg" alt="" />
 

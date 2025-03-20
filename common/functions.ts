@@ -20,7 +20,7 @@ export const ceilNumber = (input: number, toFixed: number) => {
 }
 
 export const formatMoney = (amount: number | undefined, currency?: string) => {
-  if(!amount) return ''
+  if (!amount) return ''
   return (
     Number(amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) +
     (currency ? ` ${currency}` : '')
@@ -28,7 +28,7 @@ export const formatMoney = (amount: number | undefined, currency?: string) => {
 }
 
 export const formatMoneyWithoutDecimals = (amount: number | undefined, currency?: string) => {
-  if(!amount) return ''
+  if (!amount) return ''
   return new Intl.NumberFormat('en-US').format(amount) + (currency ? ` ${currency}` : '')
 }
 
@@ -51,7 +51,6 @@ export const formatYYYYMMDD = (input: Dayjs) => {
   if (!input) return ''
   return input.format('YYYY/MM/DD')
 }
-
 
 export const formatDDMMYYYY = (input: Dayjs) => {
   if (!input) return ''
@@ -77,6 +76,12 @@ export const shortenAddress = (address: string, front = 4, back = 4) => {
   if (typeof address !== 'string' || !address) return ''
   if (address.length <= front + back) return address
   return address.slice(0, front) + '...' + address.slice(-back)
+}
+
+export const shortenString = (address: string, front = 20, back = 10) => {
+  if (typeof address !== 'string' || !address) return ''
+  if (address.length <= front + back) return address
+  return address.slice(0, front) + '...'
 }
 
 export const getTabRoute = (tab: PanelTab) => {
