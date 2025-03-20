@@ -5,11 +5,12 @@ const { password } = defineProps<{
   password: string | undefined
 }>()
 
-const checkStrength = (str: string) => {
+const checkStrength = (str: string | undefined) => {
+  if (str == undefined) return []
   return passwordRequirements.map(req => ({ met: req.regex.test(str), text: req.text }))
 }
 
-const strength = ref<any>(checkStrength(''))
+const strength = ref<Array<any>>(checkStrength(undefined))
 
 watch(
   () => password,
@@ -20,7 +21,7 @@ watch(
 )
 </script>
 <template>
-  <ul class="space-y-1">
+  <ul v-if="strength.length > 0" class="space-y-1">
     <li
       v-for="(req, index) in strength"
       :key="index"
