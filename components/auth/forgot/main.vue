@@ -9,7 +9,7 @@ const { step, back, next, isValidate, onCompletedPin, fields, errors } = useForg
           <div class="inline-flex flex-col justify-center items-start gap-1">
             <div class="h-5 justify-center text-[#1b1c23] text-xs font-medium leading-tight">Email</div>
             <AuthEmailInput v-model="fields.email" :error="errors.email" />
-            <div v-if="errors.email" class="h-5 justify-center text-[#ec2c37] text-xs font-medium leading-tight">
+            <div class="h-5 justify-center text-[#ec2c37] text-xs font-medium leading-tight">
               {{ errors.email }}
             </div>
           </div>
@@ -34,7 +34,7 @@ const { step, back, next, isValidate, onCompletedPin, fields, errors } = useForg
         </template>
         <div class="flex flex-col gap-2 w-[100%] lg:w-[65%]">
           <AuthPinInput v-model="fields.pin" :on-complete="onCompletedPin" />
-          <div v-if="errors.pin" class="self-stretch justify-start text-[#ec2c37] text-xs font-medium leading-tight">
+          <div class="self-stretch justify-start text-[#ec2c37] text-xs font-medium leading-tight">
             {{ errors.pin }}
           </div>
         </div>
@@ -74,10 +74,7 @@ const { step, back, next, isValidate, onCompletedPin, fields, errors } = useForg
                 v-model="fields.confirmPassword"
                 :error="errors.confirmPassword"
               />
-              <div
-                v-if="errors.confirmPassword"
-                class="h-5 justify-center text-[#ec2c37] text-xs font-medium leading-tight"
-              >
+              <div class="h-5 justify-center text-[#ec2c37] text-xs font-medium leading-tight">
                 {{ errors.confirmPassword }}
               </div>
             </div>

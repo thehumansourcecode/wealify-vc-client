@@ -42,18 +42,18 @@ const router = useRouter()
           convenient money transfers
         </div>
       </div>
-      <div class="flex flex-col gap-3 md:w-[100%] lg:w-[65%]">
+      <div class="flex flex-col gap-2 md:w-[100%] lg:w-[65%]">
         <div class="inline-flex flex-col justify-center items-start gap-1">
           <div class="h-5 justify-center text-[#1b1c23] text-xs font-medium leading-tight">Email</div>
           <AuthEmailInput v-model="fields.email" :error="errors.email" />
-          <div v-if="errors.email" class="h-5 justify-center text-[#ec2c37] text-xs font-medium leading-tight">
+          <div class="h-5 justify-center text-[#ec2c37] text-xs font-medium leading-tight">
             {{ errors.email }}
           </div>
         </div>
         <div class="inline-flex flex-col justify-center items-start gap-1">
           <div class="h-5 justify-center text-[#1b1c23] text-xs font-medium leading-tight">Password</div>
           <AuthPasswordInput v-model="fields.password" :error="errors.password" />
-          <div v-if="errors.password" class="h-5 justify-center text-[#ec2c37] text-xs font-medium leading-tight">
+          <div class="h-5 justify-center text-[#ec2c37] text-xs font-medium leading-tight">
             {{ errors.password }}
           </div>
           <div class="w-full flex flex-row justify-end mt-2">
