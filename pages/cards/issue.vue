@@ -73,7 +73,7 @@ const countryCodeOptions = [
   },
 ]
 
-const isSubmitEnabled = ref(false)
+const isSubmitEnabled = ref(true)
 
 const cardCategoryOptions = computed(() => cardStore.categoryList)
 
