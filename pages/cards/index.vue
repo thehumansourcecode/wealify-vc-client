@@ -12,15 +12,17 @@ const loading = computed(() => cardStore.isLoading)
 const cardStore = useCardStore()
 const selectedCardList = ref([])
 const payload = computed(() => cardStore.payload)
-
 const tempKeyword = ref<string | undefined>(payload.value.keyword)
+
+const cardList = computed(() => cardStore.cardList)
+const cardCount = computed(() => cardStore.cardCount)
+const limitOptions = ref([10, 30, 50])
+const page = computed(() => payload.value.page)
+const limit = computed(() => payload.value.limit)
 
 function isCardSelected(card: ICardData) {
   return selectedCardList.value.some((selectedCard: ICardData) => selectedCard.id === card.id)
 }
-
-const cardList = computed(() => cardStore.cardList)
-const cardCount = computed(() => cardStore.cardCount)
 
 async function getCardList() {
   await cardStore.getCardList(payload.value)
@@ -119,11 +121,6 @@ function clearSelected() {
   selectedCardList.value = []
 }
 
-const limitOptions = ref([10, 30, 50])
-
-const page = computed(() => payload.value.page)
-const limit = computed(() => payload.value.limit)
-
 watch(
   () => [page.value, limit.value],
   () => {
@@ -211,7 +208,6 @@ onUnmounted(() =>
     end_date: undefined,
   }),
 )
-
 </script>
 <template>
   <div class="flex flex-col overflow-y-auto pl-10 pr-[60px] flex-1 gap-6 mt-7">
