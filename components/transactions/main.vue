@@ -213,7 +213,9 @@ async function onClickViewDetail() {
           <div class="flex flex-row items-center gap-[14px] w-[165px]">
             <img :src="`/images/transactions/${row.type.label}.svg`" alt="" />
             <div class="flex flex-col gap-1">
-              <span class="text-14-600-20">{{ t(`transactions.list.type.${row.type.label}`) }}</span>
+              <span class="text-14-600-20 text-[#1b1c23] text-sm font-semibold font-['Manrope'] leading-tight">{{
+                t(`transactions.list.type.${row.type.label}`)
+              }}</span>
               <span class="text-12-500-20 text-[#7A7D89]">{{ t(`transactions.list.type.${row.type.method}`) }}</span>
             </div>
           </div>
@@ -273,7 +275,11 @@ async function onClickViewDetail() {
       <div class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700 gap-10 items-center">
         <USelectMenu v-model="pageCount" :options="pageCountOptions" selected-icon="i-selected">
           <template #option="{ option }">
-            <div class="text-12-500-20">{{ t(`transactions.list.pagination.limit`, { limit: option }) }}</div>
+            <div
+              className="self-stretch justify-center text-[#1b1c23] text-sm font-medium font-['Manrope'] leading-tight"
+            >
+              {{ t(`transactions.list.pagination.limit`, { limit: option }) }}
+            </div>
           </template>
           <div class="border border-[#D7D9E5] rounded-[90px] py-[10px] pl-5 pr-4 flex flex-row gap-8">
             <div class="text-14-500-20 text-[#1C1D23]">
