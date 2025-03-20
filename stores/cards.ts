@@ -16,6 +16,12 @@ export const useCardStore = defineStore('card', () => {
   const toast = useToast()
   const nuxtApp = useNuxtApp()
   const i18n = nuxtApp.$i18n
+  const cardCount = ref(0)
+
+  const isLoading = ref({
+    issueCard: false,
+    cardTable: false,
+  })
 
   const payload = ref<IGetCardListParams>({
     page: 1,
@@ -30,6 +36,10 @@ export const useCardStore = defineStore('card', () => {
 
   function setPayload(_payload: IGetCardListParams) {
     payload.value = { ..._payload }
+  }
+
+  function setPayloadPage(page: number) {
+    payload.value.page = page
   }
 
   const selectedCardDetail = ref<ICardData>()
@@ -49,24 +59,15 @@ export const useCardStore = defineStore('card', () => {
     cardList.value.filter((card: ICardData) => card.card_status === CardStatus.ACTIVE),
   )
 
-  const filteredCardList = computed(() =>
-    cardList.value?.filter((card: ICardData) => {
-      const haveType = payload.value.card_type ? card.card_type === payload.value.card_type : true
-      const haveCategory = payload.value.category.length ? payload.value.category.includes(card.category) : true
-      const haveStatus = payload.value.card_status.length ? payload.value.card_status.includes(card.card_status) : true
-      const haveKeyword = payload.value.keyword
-        ? normalize(card.card_name) === normalize(payload.value.keyword) ||
-          card.cardNumber.includes(payload.value.keyword)
-        : true
-      return haveType && haveStatus && haveCategory && haveKeyword
-    }),
-  )
-
   async function getCardList(payload: IGetCardListParams) {
+    isLoading.value.cardTable = true
+    cardList.value = []
     const response = await cardsService.getCardList(payload)
     if (response.success) {
       cardList.value = response.data.items
+      cardCount.value = response.data.total_items
     }
+    isLoading.value.cardTable = false
     return response
   }
 
@@ -81,6 +82,9 @@ export const useCardStore = defineStore('card', () => {
   }
 
   async function issueCard(params: IIssueCardParams) {
+    isLoading.value.issueCard = true
+    console.log(isLoading.value)
+    console.log(isLoading.value.issueCard)
     const response = await commonService.issueCard(params)
     if (response.success) {
       navigateTo('/cards')
@@ -89,16 +93,18 @@ export const useCardStore = defineStore('card', () => {
     } else {
       showToast(ToastType.FAILED, i18n.t('cards.issue.notification.failed'))
     }
+    isLoading.value.issueCard = false
     return response
   }
 
   return {
     payload,
     setPayload,
+    setPayloadPage,
     cardList,
+    cardCount,
     getCardList,
     activeCardList,
-    filteredCardList,
     categoryList,
     getDropdownCategoryList,
     issueCard,
@@ -106,5 +112,6 @@ export const useCardStore = defineStore('card', () => {
     toggleCardDetailSlideover,
     selectedCardDetail,
     setSelectedCardDetail,
+    isLoading,
   }
 })

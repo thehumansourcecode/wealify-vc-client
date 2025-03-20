@@ -8,17 +8,26 @@ import { CardCategory, CardStatus, CardType, type ICardData } from '~/types/card
 const { t } = useI18n()
 const dayjs = useDayjs()
 
+const loading = computed(() => cardStore.isLoading)
 const cardStore = useCardStore()
-const filteredCardList = computed(() => cardStore.filteredCardList)
 const selectedCardList = ref([])
 const payload = computed(() => cardStore.payload)
+
+const tempKeyword = ref<string | undefined>(payload.value.keyword)
 
 function isCardSelected(card: ICardData) {
   return selectedCardList.value.some((selectedCard: ICardData) => selectedCard.id === card.id)
 }
 
+const cardList = computed(() => cardStore.cardList)
+const cardCount = computed(() => cardStore.cardCount)
+
+async function getCardList() {
+  await cardStore.getCardList(payload.value)
+}
+
 const activeCardList = computed(
-  () => filteredCardList.value?.filter((card: ICardData) => card.card_status === CardStatus.ACTIVE) || [],
+  () => cardList.value?.filter((card: ICardData) => card.card_status === CardStatus.ACTIVE) || [],
 )
 
 const totalSelectedAmount = computed(() => {
@@ -46,7 +55,7 @@ const cardTableColumns = [
   {
     key: 'card',
     label: t('cards.list.header.card'),
-    class: 'mr-5 w-[max-content]',
+    class: 'mr-5 w-[240px]',
   },
   {
     key: 'type',
@@ -112,37 +121,81 @@ function clearSelected() {
 
 const limitOptions = ref([10, 30, 50])
 
+const page = computed(() => payload.value.page)
+const limit = computed(() => payload.value.limit)
+
 watch(
-  () => [payload.value.page, payload.value.limit],
+  () => [page.value, limit.value],
   () => {
     clearSelected()
   },
 )
 
-const page = computed(() => payload.value.page)
-const limit = computed(() => payload.value.limit)
+async function onChangeLimit(limit: number) {
+  cardStore.setPayload({ ...payload.value, limit: limit })
+  if (page.value !== 1) {
+    cardStore.setPayloadPage(1)
+  }
+}
 
-const rows = computed(() => {
-  return filteredCardList.value?.slice((page.value - 1) * limit.value, page.value * limit.value)
-})
-
-function onChangeLimit() {
-  payload.value.page = 1
+async function onChangePage(page: number) {
+  cardStore.setPayloadPage(page)
+  await getCardList()
 }
 
 function handleClickCard(row) {
   const id = row.id
-  const selectedCardDetail = filteredCardList.value.find((card: ICardData) => card.id === id)
+  const selectedCardDetail = cardList.value.find((card: ICardData) => card.id === id)
   if (selectedCardDetail) {
     cardStore.setSelectedCardDetail(selectedCardDetail)
     cardStore.toggleCardDetailSlideover(true)
   }
 }
 
+const tableRef = ref(null)
+
+watch(
+  () => [tableRef.value, selectedCardList.value.length],
+  () => {
+    const checkboxes = document.querySelectorAll('.table-wrapper input[type=checkbox]')
+    checkboxes.forEach(item => {
+      item.addEventListener('click', e => {
+        console.log(item)
+        e.stopPropagation()
+      })
+    })
+  },
+  { immediate: true, flush: 'sync' },
+)
+
+watch(
+  () => [
+    payload.value.card_status,
+    payload.value.card_type,
+    payload.value.category,
+    payload.value.keyword,
+    payload.value.limit,
+  ],
+  async () => {
+    if (page.value !== 1) {
+      cardStore.setPayloadPage(1)
+    }
+    await getCardList()
+  },
+  { deep: true },
+)
+
+async function onEnterKeyword() {
+  if (tempKeyword.value !== payload.value.keyword) {
+    cardStore.setPayload({ ...payload.value, keyword: tempKeyword.value })
+    await getCardList()
+  }
+}
+
 onMounted(() => initPage())
 
 async function initPage() {
-  await Promise.all([cardStore.getCardList(payload.value), cardStore.getDropdownCategoryList()])
+  await Promise.all([getCardList(), cardStore.getDropdownCategoryList()])
 }
 
 onUnmounted(() =>
@@ -159,20 +212,6 @@ onUnmounted(() =>
   }),
 )
 
-const tableRef = ref(null)
-watch(
-  () => [tableRef.value, selectedCardList.value.length],
-  () => {
-    const checkboxes = document.querySelectorAll('.table-wrapper input[type=checkbox]')
-    checkboxes.forEach(item => {
-      item.addEventListener('click', e => {
-        console.log(item)
-        e.stopPropagation()
-      })
-    })
-  },
-  { immediate: true, flush: 'sync' },
-)
 </script>
 <template>
   <div class="flex flex-col overflow-y-auto pl-10 pr-[60px] flex-1 gap-6 mt-7">
@@ -180,9 +219,11 @@ watch(
     <div v-if="!selectedCardList?.length" class="flex flex-row justify-between items-start gap-[100px]">
       <div class="flex flex-col gap-[10px] flex-1">
         <BaseInput
+          @blur="onEnterKeyword()"
+          @keyup.enter="onEnterKeyword()"
           input-class="input-field rounded-49"
           class="w-[80%]"
-          v-model="payload.keyword"
+          v-model="tempKeyword"
           leading
           :leading-img="'/icons/common/search.svg'"
           :placeholder="t('cards.filter.placeholder.search')"
@@ -345,7 +386,7 @@ watch(
 
           <!-- Active / Total -->
           <div class="text-[#7A7D89] text-12-500-20">
-            {{ t('cards.filter.label.amount', { active: activeCardList?.length, total: filteredCardList?.length }) }}
+            {{ t('cards.filter.label.amount', { active: activeCardList?.length, total: cardList?.length }) }}
           </div>
           <img src="~/assets/img/common/line.svg" alt="" />
           <div class="text-[#1C1D23] text-12-600-20">
@@ -417,7 +458,7 @@ watch(
             {{
               t('cards.filter.label.amountSelected', {
                 selected: selectedCardList.length,
-                total: filteredCardList.length,
+                total: cardList.length,
               })
             }}
           </div>
@@ -432,12 +473,21 @@ watch(
     </div>
     <div class="rounded-[12px] flex flex-col border border-[#D7D9E5] mb-8 overflow-x-auto w-full grow">
       <!-- Table -->
+      <div
+        v-if="!cardList?.length && !loading.cardTable"
+        class="flex flex-col items-center justify-center gap-4 h-full grow"
+      >
+        <img src="~/assets/img/dashboard/no-transaction.svg" alt="" />
+        <div class="text-14-500-20 text-[#A5A8B8]">{{ t('cards.list.empty') }}</div>
+      </div>
       <UTable
+        v-else
         selectable
         ref="tableRef"
+        :loading="loading.cardTable"
+        :loading-state="{ icon: 'i-heroicons-arrow-path-20-solid', label: 'Loading...' }"
         v-model="selectedCardList"
-        v-if="filteredCardList?.length"
-        :rows="rows"
+        :rows="cardList"
         @select="handleClickCard"
         :columns="cardTableColumns"
         :ui="{
@@ -472,10 +522,20 @@ watch(
         class="table-wrapper grow"
       >
         <template #card-data="{ row }">
-          <div class="flex flex-row items-center gap-[14px] w-[200px]">
+          <div class="flex flex-row items-center gap-[14px] w-[240px]">
             <img src="/icons/dashboard/mastercard.svg" alt="" />
             <div class="flex flex-col gap-1">
-              <span class="text-14-600-20 text-[#1C1D23]">{{ row?.card_name }}</span>
+              <UTooltip
+                :text="row?.card_name"
+                :ui="{
+                  background: 'bg-white',
+                  base: 'h-8 px-2.5 py-1.5 text-sm font-medium',
+                  shadow: '',
+                }"
+                :popper="{ placement: 'top' }"
+              >
+                <span class="text-14-600-20 text-[#1C1D23] max-w-[180px] truncate">{{ row?.card_name }}</span>
+              </UTooltip>
               <span class="text-12-500-20 text-[#7A7D89]">
                 {{ t(`cards.list.cardNumber`, { value: row?.last_four }) }}</span
               >
@@ -539,16 +599,8 @@ watch(
         </template>
       </UTable>
 
-      <div v-else class="flex flex-col items-center justify-center gap-4 h-full grow">
-        <img src="~/assets/img/dashboard/no-transaction.svg" alt="" />
-        <div class="text-14-500-20 text-[#A5A8B8]">{{ t('cards.list.empty') }}</div>
-      </div>
-
-      <div
-        v-if="filteredCardList?.length > limit"
-        class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700 gap-10 items-center"
-      >
-        <USelectMenu v-model="limit" :options="limitOptions" @change="onChangeLimit">
+      <div class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700 gap-10 items-center">
+        <USelectMenu v-model="payload.limit" :options="limitOptions">
           <template #option="{ option }">
             <div class="text-12-500-20">{{ t(`cards.list.pagination.limit`, { limit: option }) }}</div>
           </template>
@@ -559,53 +611,12 @@ watch(
             <img src="assets/img/icons/dropdown.svg" alt="" />
           </div>
         </USelectMenu>
-        <UPagination
-          size="md"
-          :max="6"
-          v-model="payload.page"
-          :page-count="payload.limit"
-          :total="filteredCardList?.length"
-          class="pagination-custom"
-          :active-button="{
-            color: '',
-            variant: 'ghost',
-            class: 'bg-[#FF5524] rounded-full w-10 h-10 text-center justify-center text-white p-3',
-          }"
-          :inactive-button="{
-            color: '',
-            variant: 'ghost',
-            class: 'rounded-full border border-[#D7D9E5] w-10 h-10 justify-center',
-          }"
-          :ui="{
-            wrapper: 'flex items-center -space-x-px gap-[6px]',
-            default: {
-              activeButton: {},
-            },
-          }"
-        >
-          <template #prev="{ onClick, canGoPrev }">
-            <UTooltip text="Previous page">
-              <UButton class="p-0 shadow-none bg-[#FFFFFF] hover:bg-[#FFFFFF]" @click="onClick">
-                <img
-                  :class="canGoPrev ? '' : 'opacity-50 cursor-not-allowed'"
-                  src="~/assets/img/icons/back.svg"
-                  alt=""
-                />
-              </UButton>
-            </UTooltip>
-          </template>
-          <template #next="{ onClick, canGoNext }">
-            <UTooltip text="Next page">
-              <UButton class="p-0 shadow-none bg-[#FFFFFF] hover:bg-[#FFFFFF]" @click="onClick">
-                <img
-                  :class="canGoNext ? '' : 'opacity-50 cursor-not-allowed'"
-                  src="~/assets/img/icons/next.svg"
-                  alt=""
-                />
-              </UButton>
-            </UTooltip>
-          </template>
-        </UPagination>
+        <BasePagination
+          @update:model-value="onChangePage"
+          :model-value="payload.page"
+          :limit="payload.limit"
+          :total="cardCount"
+        />
       </div>
     </div>
   </div>

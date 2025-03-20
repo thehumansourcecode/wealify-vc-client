@@ -89,7 +89,6 @@ const internalValue = ref([...props.modelValue])
 
 // 2) When USelectMenu updates its selection, sync to our internalValue and emit up
 function onSelectChange(newValue: any[]) {
-  console.log(internalValue.value, newValue)
   internalValue.value = newValue
   emit('update:modelValue', newValue)
 }
