@@ -18,8 +18,8 @@ export default defineNuxtConfig({
         },
         pages: {
           home: '/',
-          sign_in: '/auth/sign-in',
-          sign_up: '/auth/sign-up',
+          signIn: '/auth/sign-in',
+          signUp: '/auth/sign-up',
         },
         accessToken: {
           maxAgeInSeconds: 1000,

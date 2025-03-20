@@ -13,6 +13,7 @@ export default defineAppConfig({
       inner: 'w-0 flex-0 self-center',
       padding: 'p-5',
       gap: 'gap-[18px]',
+      ring: 'ring-0',
       progress: {
         base: 'absolute bottom-0 end-0 start-0',
         background: 'bg-[#F0F2F5]'

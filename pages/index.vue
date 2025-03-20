@@ -226,13 +226,13 @@ async function onClickViewDetail() {
           </div>
           <div class="flex flex-row gap-12 justify-end">
             <div @click="onClickTopup" class="flex flex-col items-center cursor-pointer hover:opacity-90">
-              <img width="40" src="~/assets/img/dashboard/topup.svg" alt="" />
+              <img width="40" src="~/assets/img/cards/topup.svg" alt="" />
               <span class="text-xs text-[#FFF] leading-5">
                 {{ t('dashboard.balance.wealify.topup') }}
               </span>
             </div>
             <div @click="onClickWithdraw" class="flex flex-col items-center cursor-not-allowed hover:opacity-90">
-              <img width="40" src="~/assets/img/dashboard/withdraw.svg" alt="" />
+              <img width="40" src="~/assets/img/cards/withdraw.svg" alt="" />
               <span class="text-xs text-[#FFF] leading-5">
                 {{ t('dashboard.balance.wealify.withdraw') }}
               </span>

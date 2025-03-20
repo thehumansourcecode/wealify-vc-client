@@ -17,7 +17,6 @@ const handleInput = (event: Event) => {
   value = value.trim()
   // Update email value
   email.value = value
-
   if (emailRef.value && emailRef.value.input) {
     emailRef.value.value = email.value
     emailRef.value.input.value = email.value
@@ -31,12 +30,12 @@ const handlePaste = (event: ClipboardEvent) => {
   if (pastedText.length > 128) {
     event.preventDefault()
     email.value = pastedText.substring(0, 128).trim()
+    if (emailRef.value && emailRef.value.input) {
+      emailRef.value.value = email.value
+      emailRef.value.input.value = email.value
+    }
   } else {
     email.value = pastedText.trim()
-  }
-  if (emailRef.value && emailRef.value.input) {
-    emailRef.value.value = email.value
-    emailRef.value.input.value = email.value
   }
 }
 </script>
