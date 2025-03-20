@@ -18,10 +18,12 @@ const pageCount = ref(pageCountOptions.value[0])
 
 const payload = ref({
   keyword: undefined,
-  type: undefined,
+  type: [],
   statuses: [] as CardStatus[],
   dateRange: [undefined, undefined] as [Date | undefined, Date | undefined],
 })
+
+const statusOptions = Object.values(TransactionStatus)
 
 function isStatusSelected(status: CardStatus) {
   return payload.value.statuses.includes(status)
@@ -87,7 +89,7 @@ async function onClickViewDetail() {
 }
 </script>
 <template>
-  <div class="flex flex-col overflow-y-auto pl-10 pr-[60px] flex-1 gap-6 mt-7">
+  <div class="flex flex-col overflow-y-auto pl-10 pr-[60px] flex-1 gap-5 mt-7">
     <!-- Cards not selected -->
     <div class="flex flex-row justify-between items-start gap-[200px]">
       <div class="flex flex-col relative gap-[10px] flex-1">
@@ -102,55 +104,23 @@ async function onClickViewDetail() {
       </div>
       <div class="flex flex-row justify-end gap-[10px]">
         <UButton
-          class="flex items-center justify-center rounded-[49px] bg-[#FF5524] hover:bg-[#EE4413] px-4 py-2 w-[168px]"
+          class="flex items-center justify-center rounded-[49px] bg-[#FF5524] disabled:bg-[#FF5524] hover:bg-[#EE4413] px-4 py-2 w-[168px]"
+          aria-disabled
+          disabled
         >
           <div class="text-white text-16-600-24">{{ t('transactions.button.export') }}</div>
         </UButton>
       </div>
     </div>
     <!-- Filters -->
-    <div class="flex flex-row gap-5 items-center">
+    <div class="flex flex-row gap-5 pb-5 items-center">
       <!-- Date -->
       <DatePicker v-model="payload.dateRange" />
 
       <img src="~/assets/img/common/line.svg" alt="" />
 
       <!-- Type -->
-      <BaseSingleSelect class="w-[150px]" :options="typeOptions" v-model="payload.type" :selected-icon="'i-selected'">
-        <template #default="{ open: open }">
-          <div
-            class="px-3 py-[6px] w-full rounded-[36px] bg-[#f0f2f5] border flex items-center justify-between"
-            :class="open ? 'border-[#FF5524]' : 'border-[f0f2f5]'"
-          >
-            <div class="text-12-500-20 text-[#7A7D89]">
-              <span v-if="payload.type">
-                {{ t(`cards.list.type.${payload.type}`) }}
-              </span>
-              <span v-else>
-                {{ t('cards.filter.label.type') }}
-              </span>
-            </div>
-            <img
-              v-if="!payload.type"
-              src="/assets/img/icons/dropdown.svg"
-              class="transition-transform"
-              :class="[open && 'transform rotate-180']"
-            />
-            <img
-              @click.prevent="payload.type = undefined"
-              v-else
-              class="cursor-pointer"
-              src="/assets/img/icons/clear.svg"
-              alt=""
-            />
-          </div>
-        </template>
-        <template #option="{ option: type }">
-          <span class="text-[#1C1D23] text-14-500-20">
-            {{ t(`cards.list.type.${type}`) }}
-          </span>
-        </template>
-      </BaseSingleSelect>
+      <TransactionsTypeSelection v-model="payload.type" />
 
       <img src="~/assets/img/common/line.svg" alt="" />
 
@@ -163,13 +133,13 @@ async function onClickViewDetail() {
           >
             <div class="text-12-500-20 text-[#7A7D89]">
               <span v-if="payload.statuses.length == 1">
-                {{ t(`cards.list.status.${payload.statuses[0]}`) }}
+                {{ t(`transactions.list.status.${payload.statuses[0]}`) }}
               </span>
               <span v-else-if="payload.statuses.length > 1" class="text-12-500-20 text-[#7A7D89]">
                 {{ payload.statuses.length }} selected
               </span>
               <span v-else>
-                {{ t('cards.filter.label.status') }}
+                {{ t('transactions.filter.label.status') }}
               </span>
             </div>
             <img
@@ -197,7 +167,7 @@ async function onClickViewDetail() {
               }"
             />
             <span class="text-[#1C1D23] text-14-500-20">
-              {{ t(`cards.list.status.${status}`) }}
+              {{ t(`transactions.list.status.${status}`) }}
             </span>
           </div>
         </template>
@@ -245,7 +215,9 @@ async function onClickViewDetail() {
           <div class="flex flex-row items-center gap-[14px] w-[165px]">
             <img :src="`/images/transactions/${row.type.label}.svg`" alt="" />
             <div class="flex flex-col gap-1">
-              <span class="text-14-600-20">{{ t(`transactions.list.type.${row.type.label}`) }}</span>
+              <span class="text-14-600-20 text-[#1b1c23] text-sm font-semibold font-['Manrope'] leading-tight">{{
+                t(`transactions.list.type.${row.type.label}`)
+              }}</span>
               <span class="text-12-500-20 text-[#7A7D89]">{{ t(`transactions.list.type.${row.type.method}`) }}</span>
             </div>
           </div>
@@ -268,11 +240,11 @@ async function onClickViewDetail() {
           <div class="text-14-500-20 w-[120px] text-[#FF5524] text-center">{{ row.currency }}</div>
         </template>
         <template #card-data="{ row }">
-          <div class="flex flex-row items-center gap-[14px] w-[218px]">
+          <div v-if="row.card" class="flex flex-row items-center gap-[14px] w-[218px]">
             <img src="/images/transactions/mastercard.svg" alt="" />
             <div class="flex flex-col gap-1">
-              <span class="text-14-600-20 text-[#1C1D23]">{{ row.card?.cardName }}</span>
-              <span class="text-12-500-20 text-[#7A7D89]"> {{ row.card?.cardNumber }}</span>
+              <span class="text-14-600-20 text-[#1C1D23]">{{ row.card.cardName }}</span>
+              <span class="text-12-500-20 text-[#7A7D89]"> {{ row.card.cardNumber }}</span>
             </div>
           </div>
         </template>
@@ -305,7 +277,11 @@ async function onClickViewDetail() {
       <div class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700 gap-10 items-center">
         <USelectMenu v-model="pageCount" :options="pageCountOptions" selected-icon="i-selected">
           <template #option="{ option }">
-            <div class="text-12-500-20">{{ t(`transactions.list.pagination.limit`, { limit: option }) }}</div>
+            <div
+              className="self-stretch justify-center text-[#1b1c23] text-sm font-medium font-['Manrope'] leading-tight"
+            >
+              {{ t(`transactions.list.pagination.limit`, { limit: option }) }}
+            </div>
           </template>
           <div class="border border-[#D7D9E5] rounded-[90px] py-[10px] pl-5 pr-4 flex flex-row gap-8">
             <div class="text-14-500-20 text-[#1C1D23]">

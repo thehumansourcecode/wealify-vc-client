@@ -1,0 +1,129 @@
+<script setup lang="ts">
+import { shortenAddress, shortenString } from '~/common/functions'
+
+interface TransactionType {
+  title: string
+  value: any
+}
+
+interface TransactionTypeGroup {
+  name: string
+  options: Array<TransactionType>
+}
+
+const model = defineModel<Array<any>>({ default: [] })
+const open = ref<boolean>(false)
+const groups = ref<Array<TransactionTypeGroup>>([
+  {
+    name: 'Wallet Type',
+    options: [
+      {
+        title: 'Wealify Wallet',
+        value: 0,
+      },
+      {
+        title: 'Virtual Card Wallet',
+        value: 1,
+      },
+    ],
+  },
+  {
+    name: 'Wealify Wallet',
+    options: [
+      {
+        title: 'Top-up',
+        value: 2,
+      },
+      {
+        title: 'Withdraw',
+        value: 3,
+      },
+      {
+        title: 'Spend',
+        value: 4,
+      },
+    ],
+  },
+])
+
+const options = computed<Array<TransactionType>>(() =>
+  Object.values(groups.value).reduce<Array<TransactionType>>((list, item) => [...list, ...item.options], []),
+)
+
+const displayValue = computed<string>(() => {
+  const selectedOptions = options.value.filter(({ value }) => model.value.includes(value))
+  console.log(selectedOptions)
+  return shortenString(selectedOptions.map(({ title }) => title).join(','))
+})
+
+const reset = () => {
+  model.value = []
+}
+
+const onSelect = (value: any) => {
+  if (model.value.includes(value)) {
+    model.value = model.value.filter(val => val != value)
+  } else {
+    model.value = [...model.value, value]
+  }
+}
+</script>
+<template>
+  <UPopover mode="click" :ui="{ background: 'bg-white', ring: 'ring-0' }">
+    <div
+      class="min-w-[160px] inline-flex justify-start items-center gap-1.5 bg-[#F0F2F5] border border-[#D7D9E5] text-[#7A7D89] text-12-500-20 rounded-[36px] py-[7px] px-3"
+    >
+      <div
+        class="flex-1 justify-center text-[#7a7c89] text-xs font-medium font-['Manrope'] leading-tight cursor-pointer"
+      >
+        {{ model.length > 0 ? displayValue : 'Type' }}
+      </div>
+      <img
+        v-if="model.length < 1"
+        src="/assets/img/icons/dropdown.svg"
+        class="transition-transform"
+        :class="[open && 'transform rotate-180']"
+      />
+      <img v-else @click="reset()" class="cursor-pointer" src="/assets/img/icons/clear.svg" alt="" />
+    </div>
+    <template #panel>
+      <div
+        class="relative bg-white rounded-2xl shadow-[0px_12px_16px_0px_rgba(0,0,0,0.11)] outline outline-[1.50px] outline-offset-[-1.50px] outline-[#d6d8e5]"
+      >
+        <div class="flex flex-row justify-between align-center gap-5 p-5">
+          <template v-for="(group, index) in groups">
+            <div class="flex-1 min-w-[200px] flex flex-col gap-5">
+              <div class="text-[#7a7c89] text-xs font-medium leading-tight">
+                {{ group.name }}
+              </div>
+              <div class="flex flex-col justify-center items-start gap-5">
+                <div
+                  v-for="option in group.options"
+                  class="inline-flex items-center gap-2"
+                  :class="index % 2 == 0 ? 'justify-start' : 'justify-center'"
+                >
+                  <img
+                    v-if="model.includes(option.value)"
+                    @click="onSelect(option.value)"
+                    class="cursor-pointer"
+                    src="/images/transactions/checked-box.svg"
+                  />
+                  <img
+                    v-else
+                    @click="onSelect(option.value)"
+                    class="cursor-pointer"
+                    src="/images/transactions/check-box.svg"
+                  />
+                  <div class="justify-center text-[#1b1c23] text-sm font-semibold font-['Manrope'] leading-tight">
+                    {{ option.title }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div v-if="index % 2 == 0" class="w-0 h-32 origin-top-left border border-[#d6d8e5]" />
+          </template>
+        </div>
+      </div>
+    </template>
+  </UPopover>
+</template>

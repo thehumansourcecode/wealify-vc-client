@@ -52,7 +52,6 @@ export const formatYYYYMMDD = (input: Dayjs) => {
   return input.format('YYYY/MM/DD')
 }
 
-
 export const formatDDMMYYYY = (input: Dayjs) => {
   if (!input) return ''
   return input.format('DD/MM/YYYY')
@@ -77,6 +76,12 @@ export const shortenAddress = (address: string, front = 4, back = 4) => {
   if (typeof address !== 'string' || !address) return ''
   if (address.length <= front + back) return address
   return address.slice(0, front) + '...' + address.slice(-back)
+}
+
+export const shortenString = (address: string, front = 20, back = 10) => {
+  if (typeof address !== 'string' || !address) return ''
+  if (address.length <= front + back) return address
+  return address.slice(0, front) + '...'
 }
 
 export const getTabRoute = (tab: PanelTab) => {

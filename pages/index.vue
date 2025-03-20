@@ -336,7 +336,9 @@ async function onClickViewDetail() {
           <div class="flex flex-row items-center gap-[14px] w-[165px]">
             <img :src="`/icons/dashboard/${row.type.label}.svg`" alt="" />
             <div class="flex flex-col gap-1">
-              <span class="text-14-600-20">{{ t(`dashboard.transactions.table.type.${row.type.label}`) }}</span>
+              <span class="text-14-600-20 text-[#1b1c23] text-sm font-semibold font-['Manrope'] leading-tight">{{
+                t(`dashboard.transactions.table.type.${row.type.label}`)
+              }}</span>
               <span class="text-12-500-20 text-[#7A7D89]">{{
                 t(`dashboard.transactions.table.type.${row.type.method}`)
               }}</span>
@@ -361,7 +363,7 @@ async function onClickViewDetail() {
           <div class="text-14-500-20 w-[120px] text-[#FF5524] text-center">{{ row.currency }}</div>
         </template>
         <template #card-data="{ row }">
-          <div class="flex flex-row items-center gap-[14px] w-[218px]">
+          <div v-if="row.card" class="flex flex-row items-center gap-[14px] w-[218px]">
             <img src="/icons/dashboard/mastercard.svg" alt="" />
             <div class="flex flex-col gap-1">
               <span class="text-14-600-20 text-[#1C1D23]">{{ row.card?.cardName }}</span>
