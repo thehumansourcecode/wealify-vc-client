@@ -361,7 +361,7 @@ async function onClickViewDetail() {
           <div class="text-14-500-20 w-[120px] text-[#FF5524] text-center">{{ row.currency }}</div>
         </template>
         <template #card-data="{ row }">
-          <div class="flex flex-row items-center gap-[14px] w-[218px]">
+          <div v-if="row.card" class="flex flex-row items-center gap-[14px] w-[218px]">
             <img src="/icons/dashboard/mastercard.svg" alt="" />
             <div class="flex flex-col gap-1">
               <span class="text-14-600-20 text-[#1C1D23]">{{ row.card?.cardName }}</span>

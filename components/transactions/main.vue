@@ -104,7 +104,9 @@ async function onClickViewDetail() {
       </div>
       <div class="flex flex-row justify-end gap-[10px]">
         <UButton
-          class="flex items-center justify-center rounded-[49px] bg-[#FF5524] hover:bg-[#EE4413] px-4 py-2 w-[168px]"
+          class="flex items-center justify-center rounded-[49px] bg-[#FF5524] disabled:bg-[#FF5524] hover:bg-[#EE4413] px-4 py-2 w-[168px]"
+          aria-disabled
+          disabled
         >
           <div class="text-white text-16-600-24">{{ t('transactions.button.export') }}</div>
         </UButton>
@@ -238,11 +240,11 @@ async function onClickViewDetail() {
           <div class="text-14-500-20 w-[120px] text-[#FF5524] text-center">{{ row.currency }}</div>
         </template>
         <template #card-data="{ row }">
-          <div class="flex flex-row items-center gap-[14px] w-[218px]">
+          <div v-if="row.card" class="flex flex-row items-center gap-[14px] w-[218px]">
             <img src="/images/transactions/mastercard.svg" alt="" />
             <div class="flex flex-col gap-1">
-              <span class="text-14-600-20 text-[#1C1D23]">{{ row.card?.cardName }}</span>
-              <span class="text-12-500-20 text-[#7A7D89]"> {{ row.card?.cardNumber }}</span>
+              <span class="text-14-600-20 text-[#1C1D23]">{{ row.card.cardName }}</span>
+              <span class="text-12-500-20 text-[#7A7D89]"> {{ row.card.cardNumber }}</span>
             </div>
           </div>
         </template>
