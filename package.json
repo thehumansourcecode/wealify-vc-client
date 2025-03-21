@@ -41,8 +41,9 @@
     "sass": "^1.79.4",
     "swiper": "^11.2.0",
     "v-calendar": "^3.1.2",
+    "vee-validate": "^4.15.0",
     "vietnam-qr-pay": "^1.4.0",
-    "yup": "^1.4.0"
+    "yup": "^1.6.1"
   },
   "devDependencies": {
     "@nuxt/eslint-config": "^0.2.0",

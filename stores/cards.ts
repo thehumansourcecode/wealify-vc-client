@@ -91,7 +91,7 @@ export const useCardStore = defineStore('card', () => {
       payload.value = { ...payload.value, card_status: [CardStatus.ACTIVE] }
       await getCardList(payload.value)
     } else {
-      showToast(ToastType.FAILED, i18n.t('cards.issue.notification.failed'))
+      showToast(ToastType.FAILED, response.message)
     }
     isLoading.value.issueCard = false
     return response

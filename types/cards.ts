@@ -1,3 +1,5 @@
+import type { CommonCountry } from "./common"
+
 export enum CardType {
   PHYSICAL = 'PHYSICAL',
   VIRTUAL = 'VIRTUAL',
@@ -47,7 +49,7 @@ export interface IIssueCardParams {
   card_name: string
   email: string
   phone_number: string
-  country_code: string
+  country_code: CommonCountry
   category?: CardCategory
   card_purpose?: string
   card_type: string
