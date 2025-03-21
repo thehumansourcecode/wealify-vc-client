@@ -1,4 +1,6 @@
 import { defineStore } from 'pinia'
+import { CommonLogger } from '~/common/logger'
+import { ProfileService } from '~/services/profile.service'
 import type { ProfileData } from '~/types/profile'
 export const useProfileStore = defineStore('profile', {
   state: (): { data: { id?: string; email?: string } | undefined } => ({
@@ -6,16 +8,21 @@ export const useProfileStore = defineStore('profile', {
   }),
   actions: {
     setProfile(profile: ProfileData) {
-      this.data = {
-        id: profile.id,
-        email: profile.email,
-      }
+      this.data = profile
     },
     async fetchProfile() {
-      this.setProfile({
-        id: '0',
-        email: 'vandathd49@gmail.com',
-      })
+      try {
+        const response = await ProfileService.instance.getProfile()
+        if (response.code === 200) {
+          this.setProfile(response.data)
+          return true
+        }
+        return false
+      } catch (error) {
+        CommonLogger.instance.error('Fetch profile failed:', error)
+        this.resetProfile()
+        return false
+      }
     },
     resetProfile() {
       this.$reset()
