@@ -77,8 +77,6 @@ const isSubmitEnabled = ref(true)
 
 const cardCategoryOptions = computed(() => cardStore.categoryList)
 
-const originalNumericValue = ref<number>()
-
 const issueCardFee = computed(() => 0)
 
 const currentBalance = computed(() => 100)
@@ -125,14 +123,6 @@ const validate = (form: IIssueCardParams): FormError[] => {
   return errors
 }
 
-const formattedBalance = computed({
-  get: () => form.spend_limit.toLocaleString(),
-  set: value => {
-    // Remove commas and parse to integer
-    form.spend_limit = Number(value.replace(/,/g, '')) || 0
-  },
-})
-
 const formatPhoneNumber = (target: HTMLInputElement) => {
   const rawValue = Number(target.value)
   if (Number.isNaN(Number(rawValue))) {
@@ -150,8 +140,22 @@ const handleInputPhoneNumber = async (event: InputEvent) => {
   }
 }
 
+const originalNumericValue = ref<number>()
+
+const formattedBalance = computed({
+  get: () => {
+    const formatted = new Intl.NumberFormat('en-US')
+    return formatted.format(form.spend_limit)
+  },
+  set: value => {
+    // Remove commas and parse to integer
+    form.spend_limit = Number(value.replace(/,/g, '')) || 0
+  },
+})
+
 const formatBalance = (target: HTMLInputElement) => {
   const rawValue = Number(target.value.split(',').join(''))
+
   if (Number.isNaN(Number(rawValue))) {
     target.value = formattedBalance.value
     return
@@ -203,6 +207,16 @@ const presetAmounts = computed(() => {
   }
 })
 
+const sanitizeInput = event => {
+  let inputValue = event.target.value
+
+  // Remove everything that is NOT a-z or A-Z
+  inputValue = inputValue.replace(/[^A-Za-z]/g, '')
+
+  // Update the value
+  form.card_name = inputValue
+  event.target.value = inputValue
+}
 const setAmount = amount => {
   formattedBalance.value = formatMoneyWithoutDecimals(amount)
 }
@@ -271,6 +285,7 @@ async function handleIssue() {
             </div>
             <BaseInput
               input-class="input-field rounded-49"
+              @input="sanitizeInput"
               v-model="form.card_name"
               :clearable="!!form.card_name"
               :limit="50"

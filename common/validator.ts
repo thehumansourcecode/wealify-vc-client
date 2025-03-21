@@ -157,4 +157,9 @@ export const validator = {
     const regex = /^[a-zA-Z0-9]{4,15}$/
     return regex.test(value)
   },
+  isOnlyEnglishCharacters: (value?: string): boolean => {
+    if (!value) return false
+    const regex = /^[a-zA-Z]+$/
+    return regex.test(value)
+  },
 }
