@@ -2,11 +2,13 @@
 definePageMeta({
   layout: 'home',
 })
-import { formatMoneyWithoutDecimals, getCountryCode } from '~/common/functions'
+import { formatMoneyWithoutDecimals, getCountryCode, replaceAccentedCharacters } from '~/common/functions'
 import { CardType, type IIssueCardParams } from '~/types/cards'
 import { CommonCountry, CommonCurrency, PanelChildTab, PanelTab } from '~/types/common'
 import type { FormError } from '#ui/types'
 import { validator } from '~/common/validator'
+import { accentedCharactersRegex, removedAccentMap } from '~/common/constants'
+import { MAX_SPEND_LIMIT } from '~/components/cards/constants'
 
 const { t } = useI18n()
 
@@ -118,7 +120,10 @@ const validate = (form: IIssueCardParams): FormError[] => {
     errors.push({ path: 'category', message: t('common.validator.empty.issueCard.category') })
   }
   if (form.spend_limit === 0) {
-    errors.push({ path: 'startingBalance', message: t('common.validator.invalid.issueCard.startingBalance') })
+    errors.push({ path: 'startingBalance', message: t('common.validator.invalid.issueCard.zeroStartingBalance') })
+  }
+  if (form.spend_limit >= MAX_SPEND_LIMIT) {
+    errors.push({ path: 'startingBalance', message: t('common.validator.invalid.issueCard.limitStartingBalance') })
   }
   return errors
 }
@@ -138,6 +143,33 @@ const handleInputPhoneNumber = async (event: InputEvent) => {
   } catch (error) {
     console.log(error)
   }
+}
+
+const formattedCardName = computed(() => {
+  return form.card_name
+    .split('')
+    .map(char => removedAccentMap[char] || char)
+    .join('')
+    .toLocaleUpperCase()
+    .trim()
+})
+
+const handlePasteName = event => {
+  event.preventDefault()
+  let paste = (event.clipboardData || window.clipboardData).getData('text')
+  let inputValue = paste.replace(accentedCharactersRegex, '')
+  const remaining = 50 - event.target.value.length
+  if (remaining > 0) {
+    event.target.value += inputValue.slice(0, remaining)
+    form.card_name = event.target.value
+  }
+}
+
+const handleInputName = event => {
+  let inputValue = event.target.value
+  inputValue = inputValue.replace(accentedCharactersRegex, '')
+  // Update the value
+  event.target.value = inputValue
 }
 
 const originalNumericValue = ref<number>()
@@ -161,12 +193,14 @@ const formatBalance = (target: HTMLInputElement) => {
     return
   }
   if (+rawValue === +formattedBalance.value) {
-    target.value = formattedBalance.value
+    const formatted = new Intl.NumberFormat('en-US')
+    target.value = formatted.format(+formattedBalance.value)
     return
   }
-  if (+rawValue >= 1000000) {
-    form.spend_limit = 1000000
-    target.value = formattedBalance.value
+  if (+rawValue > MAX_SPEND_LIMIT) {
+    const formatted = new Intl.NumberFormat('en-US')
+    target.value = formatted.format(form.spend_limit)
+    return
   }
   target.value = target.value.trim()
   originalNumericValue.value = rawValue
@@ -194,35 +228,28 @@ const presetAmounts = computed(() => {
     return [500, 1000, 2000, 5000]
   }
   if (+balance >= 100000) {
-    return [Math.round(balance / 1000), Math.round(balance / 100), Math.round(balance / 10), balance]
+    return [
+      Math.round(balance / 100),
+      Math.round(balance / 10),
+      balance,
+      balance * 10 > MAX_SPEND_LIMIT ? MAX_SPEND_LIMIT : balance * 10,
+    ]
   }
   if (+balance >= 10000) {
-    return [Math.round(balance / 100), Math.round(balance / 10), balance, balance * 10]
-  }
-  if (+balance >= 1000) {
     return [Math.round(balance / 10), balance, balance * 10, balance * 100]
   }
-  if (+balance < 1000) {
+  if (+balance < 10000) {
     return [balance, balance * 10, balance * 100, balance * 1000]
   }
 })
 
-const sanitizeInput = event => {
-  let inputValue = event.target.value
-
-  // Remove everything that is NOT a-z or A-Z
-  inputValue = inputValue.replace(/[^A-Za-z]/g, '')
-
-  // Update the value
-  form.card_name = inputValue
-  event.target.value = inputValue
-}
 const setAmount = amount => {
-  formattedBalance.value = formatMoneyWithoutDecimals(amount)
+  formattedBalance.value =
+    amount > MAX_SPEND_LIMIT ? formatMoneyWithoutDecimals(MAX_SPEND_LIMIT) : formatMoneyWithoutDecimals(amount)
 }
 
 async function handleIssue() {
-  const payload = { ...form }
+  const payload = { ...form, card_name: formattedCardName.value }
   await cardStore.issueCard(payload)
 }
 </script>
@@ -285,7 +312,8 @@ async function handleIssue() {
             </div>
             <BaseInput
               input-class="input-field rounded-49"
-              @input="sanitizeInput"
+              @input="handleInputName"
+              @paste="handlePasteName"
               v-model="form.card_name"
               :clearable="!!form.card_name"
               :limit="50"
@@ -556,8 +584,8 @@ async function handleIssue() {
             class="w-[399px] h-[219px] rounded-[21px] flex flex-col items-start overflow-hidden bg-[url(~/assets/img/cards/card-bg.svg)] bg-left pt-5 pb-6 pl-4 pr-6"
           >
             <img src="~/assets/img/cards/card-logo.svg" alt="" />
-            <div class="text-20-500-32 text-[#FFFFFF] mt-5 w-[270px]" :class="{ uppercase: form.name }">
-              {{ form.card_name ? form.card_name : t('cards.issue.preview.namePlaceholder') }}
+            <div class="text-20-500-32 text-[#FFFFFF] mt-5 w-[360px]" :class="{ uppercase: form.name }">
+              {{ form.card_name ? formattedCardName : t('cards.issue.preview.namePlaceholder') }}
             </div>
             <img class="mt-auto" src="~/assets/img/cards/card-number.svg" alt="" />
           </div>
@@ -589,7 +617,6 @@ async function handleIssue() {
             </div>
           </div>
         </div>
-        {{ loading.issueCard }}
         <BaseSubmitButton
           :loading="loading.issueCard"
           :is-submit-enabled="isSubmitEnabled"

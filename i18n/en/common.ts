@@ -31,7 +31,8 @@ export default {
     invalid: {
       issueCard: {
         email: 'Invalid email address',
-        startingBalance: 'Please enter an amount greater than 0',
+        zeroStartingBalance: 'Please enter an amount greater than 0',
+        limitStartingBalance: 'The maximum amount is 999,999,999',
       },
     },
   },

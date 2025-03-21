@@ -28,7 +28,7 @@ export const formatMoney = (amount: number | undefined, currency?: string) => {
 }
 
 export const formatMoneyWithoutDecimals = (amount: number | undefined, currency?: string) => {
-  if (!amount) return 0.00
+  if (!amount) return 0.0
   return new Intl.NumberFormat('en-US').format(amount) + (currency ? ` ${currency}` : '')
 }
 
@@ -146,7 +146,7 @@ export function showToast(type: ToastType, title: string) {
   toast.clear()
   toast.add({
     title: title,
-    avatar: { src: type === ToastType.SUCCESS ? '/icons/common/toast-success.svg' :  '/icons/common/toast-failed.svg'},
+    avatar: { src: type === ToastType.SUCCESS ? '/icons/common/toast-success.svg' : '/icons/common/toast-failed.svg' },
     timeout: 5000,
   })
 }
