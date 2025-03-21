@@ -1,4 +1,4 @@
-import type { ProfileResponse } from '~/types/profile'
+import type { ProfileData, ProfileResponse } from '~/types/profile'
 import { BaseService } from './base.service'
 
 export class ProfileService extends BaseService {
@@ -18,6 +18,11 @@ export class ProfileService extends BaseService {
 
   async getProfile(): Promise<ProfileResponse> {
     const response = await this.get('/users/profile')
+    return response
+  }
+
+  async updateProfile(data: Partial<ProfileData>): Promise<ProfileResponse> {
+    const response = await this.put('/users/profile', data)
     return response
   }
 }

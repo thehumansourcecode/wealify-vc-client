@@ -7,14 +7,24 @@ export const useProfileStore = defineStore('profile', {
     data: undefined,
   }),
   actions: {
-    setProfile(profile: ProfileData) {
-      this.data = profile
+    async updateProfile(data: Partial<ProfileData>) {
+      try {
+        const response = await ProfileService.instance.updateProfile(data)
+        if (response.code === 200) {
+          this.data = { ...this.data, ...data }
+          return true
+        }
+        return false
+      } catch (error) {
+        CommonLogger.instance.error('Update profile failed:', error)
+        return false
+      }
     },
     async fetchProfile() {
       try {
         const response = await ProfileService.instance.getProfile()
         if (response.code === 200) {
-          this.setProfile(response.data)
+          this.data = response.data
           return true
         }
         return false
