@@ -94,7 +94,7 @@ const form = reactive<IIssueCardParams>({
   phone_number: '', // req, nếu có thì = sđt user đã add, nếu ko thì rỗng. Max 15, trim, chặn
   category: undefined, // req, default = Travel. Lấy từ API GET List Reporting fields,
   card_purpose: '', // max = 128, chặn
-  spend_limit: 1000, // nhập số nguyên dương. nếu = 0 hiển inline msg
+  spend_limit: 0, // nhập số nguyên dương. nếu = 0 hiển inline msg
 })
 
 const validate = (form: IIssueCardParams): FormError[] => {
