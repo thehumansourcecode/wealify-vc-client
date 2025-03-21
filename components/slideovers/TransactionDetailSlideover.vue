@@ -2,6 +2,7 @@
 import { TransactionStatus, TransactionType } from '~/types/dashboard'
 import { formatMoney, shortenAddress } from '~/common/functions'
 import { formatYYYYMMDDhmmA } from '~/common/functions'
+import { formatAmount } from '~/utils/amount.util'
 
 const { copy, copied } = useClipboard()
 const { t } = useI18n()
@@ -149,7 +150,7 @@ function createNewTopup() {
               {{ t('dashboard.slideovers.transaction.topupAmount') }}
             </div>
             <div class="text-16-700-24 text-[#1C1D23]">
-              {{ t(`dashboard.slideovers.transaction.amount`, { amount: transactionDetail.amount }) }}
+              {{ t(`dashboard.slideovers.transaction.amount`, { amount: formatAmount(transactionDetail.amount) }) }}
             </div>
           </div>
           <div class="flex flex-row justify-between">
@@ -159,8 +160,8 @@ function createNewTopup() {
             <div class="text-14-500-20 text-[#1C1D23]">
               {{
                 t(`dashboard.slideovers.transaction.rateValue`, {
-                  rateUSDT: transactionDetail.rate.usdt,
-                  rateUSD: transactionDetail.rate.usd,
+                  rateUSDT: formatAmount(transactionDetail.rate.usdt),
+                  rateUSD: formatAmount(transactionDetail.rate.usd),
                 })
               }}
             </div>
@@ -170,7 +171,7 @@ function createNewTopup() {
               {{ t('dashboard.slideovers.transaction.fee') }}
             </div>
             <div class="text-14-500-20 text-[#1C1D23]">
-              {{ t(`dashboard.slideovers.transaction.feeValue`, { fee: transactionDetail.fee }) }}
+              {{ t(`dashboard.slideovers.transaction.feeValue`, { fee: formatAmount(transactionDetail.fee) }) }}
             </div>
           </div>
         </div>
