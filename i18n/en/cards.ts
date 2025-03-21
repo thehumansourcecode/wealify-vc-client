@@ -95,11 +95,11 @@ export default {
           purpose: 'Card purpose',
         },
         placeholder: {
-          name: 'Enter card name',
-          email: 'Enter your email',
+          name: 'Enter your card name',
+          email: `Enter cardholder's email`,
           phoneNumber: `Enter cardholder's phone number`,
           category: 'Choose card category',
-          purpose: 'Enter card purpose',
+          purpose: 'Enter your card purpose',
         },
       },
     },
@@ -153,3 +153,4 @@ export default {
     },
   },
 }
+

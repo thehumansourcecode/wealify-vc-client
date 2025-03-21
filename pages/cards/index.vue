@@ -210,7 +210,8 @@ onUnmounted(() =>
 )
 </script>
 <template>
-  <div class="flex flex-col overflow-y-auto pl-10 pr-[60px] flex-1 gap-6 mt-7">
+  <!-- Note: Overflow-y-auto here if want to fit table data into 100vh -->
+  <div class="flex flex-col pl-10 pr-[60px] flex-1 gap-6 mt-7">
     <!-- Cards not selected -->
     <div v-if="!selectedCardList?.length" class="flex flex-row justify-between items-start gap-[100px]">
       <div class="flex flex-col gap-[10px] flex-1">
