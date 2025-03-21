@@ -1,21 +1,38 @@
 import { defineStore } from 'pinia'
+import { CommonLogger } from '~/common/logger'
+import { ProfileService } from '~/services/profile.service'
 import type { ProfileData } from '~/types/profile'
 export const useProfileStore = defineStore('profile', {
-  state: (): { data: { id?: string; email?: string } | undefined } => ({
+  state: (): { data: ProfileData | undefined } => ({
     data: undefined,
   }),
   actions: {
-    setProfile(profile: ProfileData) {
-      this.data = {
-        id: profile.id,
-        email: profile.email,
+    async updateProfile(data: Partial<ProfileData>) {
+      try {
+        const response = await ProfileService.instance.updateProfile(data)
+        if (response.code === 200) {
+          this.data = { ...this.data, ...data } as ProfileData
+          return true
+        }
+        return false
+      } catch (error) {
+        CommonLogger.instance.error('Update profile failed:', error)
+        return false
       }
     },
     async fetchProfile() {
-      this.setProfile({
-        id: '0',
-        email: 'vandathd49@gmail.com',
-      })
+      try {
+        const response = await ProfileService.instance.getProfile()
+        if (response.code === 200) {
+          this.data = response.data
+          return true
+        }
+        return false
+      } catch (error) {
+        CommonLogger.instance.error('Fetch profile failed:', error)
+        this.resetProfile()
+        return false
+      }
     },
     resetProfile() {
       this.$reset()
