@@ -3,7 +3,7 @@ import { CommonLogger } from '~/common/logger'
 import { ProfileService } from '~/services/profile.service'
 import type { ProfileData } from '~/types/profile'
 export const useProfileStore = defineStore('profile', {
-  state: (): { data: { id?: string; email?: string } | undefined } => ({
+  state: (): { data: ProfileData | undefined } => ({
     data: undefined,
   }),
   actions: {
@@ -11,7 +11,7 @@ export const useProfileStore = defineStore('profile', {
       try {
         const response = await ProfileService.instance.updateProfile(data)
         if (response.code === 200) {
-          this.data = { ...this.data, ...data }
+          this.data = { ...this.data, ...data } as ProfileData
           return true
         }
         return false
