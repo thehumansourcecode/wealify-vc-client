@@ -416,7 +416,7 @@ watch(
               <BaseSingleSelect
                 v-model="form.category"
                 :options="cardCategoryOptions"
-                class="w-[50%] min-w-[360px]"
+                class="w-full"
                 :selected-icon="'i-selected'"
                 :error="error"
               >

@@ -1,3 +1,4 @@
+import { userService } from '~/services/user.service'
 import type { IUserProfileData } from '~/types/user'
 
 export const useUserStore = defineStore('user', () => {
@@ -12,7 +13,10 @@ export const useUserStore = defineStore('user', () => {
     userProfile.value = undefined
   }
 
-  async function getProfile() {}
+  async function getProfile() {
+    const response = await userService.getProfile()
+    console.log(response)
+  }
 
   return {
     userProfile,

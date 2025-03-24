@@ -383,7 +383,7 @@ onUnmounted(() =>
 
           <!-- Active / Total -->
           <div class="text-[#7A7D89] text-12-500-20">
-            {{ t('cards.filter.label.amount', { active: activeCardList?.length, total: cardList?.length }) }}
+            {{ t('cards.filter.label.amount', { active: activeCardList?.length, total: cardCount }) }}
           </div>
           <img src="~/assets/img/common/line.svg" alt="" />
           <div class="text-[#1C1D23] text-12-600-20">

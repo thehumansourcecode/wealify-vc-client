@@ -11,16 +11,17 @@ definePageMeta({
 const { t } = useI18n()
 
 const dashboardStore = useDashboardStore()
+const commonStore = useCommonStore()
+const userStore = useUserStore()
 
 const isShowBalance = ref(true)
 function toggleBalance() {
   isShowBalance.value = !isShowBalance.value
 }
 
-const commonStore = useCommonStore()
-
 onMounted(() => {
   commonStore.setActiveTab(PanelTab.DASHBOARD)
+  userStore.getProfile()
 })
 
 const wealifyBalance = ref({
