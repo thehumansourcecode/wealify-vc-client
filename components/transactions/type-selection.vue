@@ -98,14 +98,15 @@ const onSelect = (value: WalletType | TransactionType) => {
         class="relative bg-white rounded-2xl shadow-[0px_12px_16px_0px_rgba(0,0,0,0.11)] outline outline-[1.50px] outline-offset-[-1.50px] outline-[#d6d8e5]"
       >
         <div class="flex flex-row justify-between align-center gap-5 p-5">
-          <template v-for="(group, index) in groups">
+          <template v-for="(group, index) in groups" :key="index">
             <div class="flex-1 min-w-[200px] flex flex-col gap-5">
               <div class="text-[#7a7c89] text-xs font-medium leading-tight">
                 {{ group.title }}
               </div>
               <div class="flex flex-col justify-center items-start gap-5">
                 <div
-                  v-for="option in group.options"
+                  v-for="(option, index) in group.options"
+                  :key="index + 'z'"
                   class="inline-flex items-center gap-2"
                   :class="[index % 2 == 0 ? 'justify-start' : 'justify-center']"
                 >
