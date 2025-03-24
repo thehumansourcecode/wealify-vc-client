@@ -255,7 +255,7 @@ function handleUnfreeze() {}
               <div class="flex flex-row gap-4">
                 <img src="~/assets/img/cards/purpose.svg" alt="" />
                 <div class="ml-1.5 w-[85px] flex-none">{{ t(`cards.slideovers.detail.info.purpose`) }}</div>
-                <div class="ml-auto grow truncate">{{ cardDetail?.card_purpose }}</div>
+                <div class="ml-auto grow truncate text-right">{{ cardDetail?.card_purpose }}</div>
               </div>
               <div class="flex flex-row items-center gap-4">
                 <div class="bg-[#D7D9E5] w-2 h-2 mx-[3px] rounded-full"></div>
