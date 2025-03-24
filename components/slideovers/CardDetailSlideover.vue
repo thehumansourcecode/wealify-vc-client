@@ -35,19 +35,42 @@ const cardSensitiveDetail = ref({
 })
 
 const cardNumberArray = cardSensitiveDetail.value.card_number.split(' ')
+
 const balanceRate = computed(() =>
-  cardDetail.value?.balance
-    ? roundNumber(
-        ((cardDetail.value?.total_top_up || 0 + (cardDetail.value?.total_withdraw || 0)) / cardDetail.value?.balance) *
-          100,
-        1,
-      )
+  cardDetail.value?.total_top_up
+    ? roundNumber(((cardDetail.value?.total_withdraw || 120) / cardDetail.value?.total_top_up) * 100, 1)
     : 0,
 )
 
 const chartClass = computed(() => {
   return `background: conic-gradient(#FF5524 0% ${balanceRate.value}%, #D7D9E5 ${balanceRate.value}% 100%)`
 })
+
+const chartContainer = ref(null)
+const isWithdrawTooltipVisible = ref(false)
+const isBalanceTooltipVisible = ref(false)
+
+// Handle mouse movement to detect hover over total_withdraw section
+const handleMouseMove = event => {
+  const rect = chartContainer.value?.getBoundingClientRect()
+  const x = event.clientX - rect.left - 64 // Center at (64, 64)
+  const y = event.clientY - rect.top - 64
+  const distance = Math.sqrt(x * x + y * y)
+  const angle = (Math.atan2(y, x) * (180 / Math.PI) + 360) % 360 // Convert to degrees, 0-360
+  const adjusted_angle = (angle + 90) % 360 // Shift to start from north
+  const theta = (balanceRate?.value || 0) * 3.6 // Convert percentage to degrees (100% = 360°)
+  // Check if mouse is within the ring (r_inner=54, r_outer=64) and total_withdraw angle
+  if (distance >= 54 && distance <= 64 && adjusted_angle <= theta) {
+    isWithdrawTooltipVisible.value = true
+  } else {
+    isWithdrawTooltipVisible.value = false
+  }
+  if (distance >= 54 && distance <= 64 && adjusted_angle >= theta) {
+    isBalanceTooltipVisible.value = true
+  } else {
+    isBalanceTooltipVisible.value = false
+  }
+}
 
 function handleShowSensitiveDetail() {
   // OTP, PIN ...
@@ -246,16 +269,45 @@ function handleUnfreeze() {}
           </div>
           <!-- Analysis -->
           <div class="flex flex-row justify-between items-center mt-7 gap-8 mb-12">
-            <div class="w-[128px] h-[128px]">
+            <div
+              class="w-[128px] h-[128px] relative flex-none"
+              ref="chartContainer"
+              @mousemove="handleMouseMove"
+              @mouseleave="isWithdrawTooltipVisible = false"
+            >
               <div class="chart flex items-center justify-center z-100" :style="chartClass">
                 <div class="balance-rate">{{ balanceRate }}%</div>
+              </div>
+              <div
+                v-if="isWithdrawTooltipVisible && cardDetail?.total_withdraw"
+                class="absolute top-[50%] -translate-y-1/2 left-[103%] bg-[#1C1D23] py-2 px-3 flex flex-row items-center gap-[6px] rounded-[8px]"
+              >
+                <div class="bg-[#FF5524] w-2 h-2 mx-[3px] rounded-full"></div>
+                <div class="w-[85px] text-[#A5A8B8] text-10-500-14">
+                  {{ t(`cards.slideovers.detail.info.total_withdraw`) }}
+                </div>
+                <div class="ml-auto text-[#FFF] text-14-500-20">
+                  ${{ formatMoneyWithoutDecimals(cardDetail?.total_withdraw) }}
+                </div>
+              </div>
+              <div
+                v-if="isBalanceTooltipVisible"
+                class="absolute -top-10 bg-[#1C1D23] py-2 px-3 flex flex-row items-center gap-[6px] rounded-[8px]"
+              >
+                <div class="bg-[#D7D9E5] w-2 h-2 mx-[3px] rounded-full"></div>
+                <div class="w-[85px] text-[#A5A8B8] text-10-500-14">
+                  {{ t(`cards.slideovers.detail.info.balance`) }}
+                </div>
+                <div class="ml-auto text-[#FFF] text-14-500-20">
+                  ${{ formatMoneyWithoutDecimals(cardDetail?.balance) }}
+                </div>
               </div>
             </div>
             <div class="flex flex-col gap-4 text-[#7A7D89] text-12-500-20 grow">
               <div class="flex flex-row gap-4">
                 <img src="~/assets/img/cards/purpose.svg" alt="" />
                 <div class="ml-1.5 w-[85px] flex-none">{{ t(`cards.slideovers.detail.info.purpose`) }}</div>
-                <div class="ml-auto grow truncate text-right">{{ cardDetail?.card_purpose }}</div>
+                <div class="ml-auto truncate text-right max-w-[100px]">{{ cardDetail?.card_purpose }}</div>
               </div>
               <div class="flex flex-row items-center gap-4">
                 <div class="bg-[#D7D9E5] w-2 h-2 mx-[3px] rounded-full"></div>
