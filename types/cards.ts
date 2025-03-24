@@ -27,8 +27,8 @@ export enum CardCategory {
 
 export enum CardStatus {
   ACTIVE = 'ACTIVE',
-  FREEZE = 'FREEZE',
-  CANCEL = 'CANCEL',
+  FROZEN = 'FROZEN',
+  CANCELLED = 'CANCELLED',
 }
 export interface ICardData {
   id?: string
@@ -51,9 +51,12 @@ export interface ICardDetail {
   card_status: string
   category: string
   email: string
+  expiry_date: string
   id: string
   last_four: string
   phone_number: string
+  total_top_up: number
+  total_withdraw: number
 }
 
 export interface IIssueCardParams {

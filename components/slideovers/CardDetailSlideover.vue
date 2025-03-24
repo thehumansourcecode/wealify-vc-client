@@ -140,7 +140,7 @@ function handleUnfreeze() {}
               <div>{{ t(`cards.slideovers.detail.button.withdraw`) }}</div>
             </div>
           </div>
-          <div v-if="cardDetail?.card_status === CardStatus.FREEZE" class="mt-7 flex flex-row w-full justify-between">
+          <div v-if="cardDetail?.card_status === CardStatus.FROZEN" class="mt-7 flex flex-row w-full justify-between">
             <div
               @click="handleUnfreeze"
               class="flex flex-col gap-3 w-[50%] items-center cursor-pointer hover:opacity-90"
@@ -206,11 +206,11 @@ function handleUnfreeze() {}
             <div class="flex flex-row justify-between text-14-500-20">
               <div class="text-[#7A7D89]">{{ t(`cards.slideovers.detail.info.expired`) }}</div>
               <div class="flex flex-row gap-2 items-center">
-                <div>{{ formatMMYYYY(dayjs.utc(cardDetail?.created_at).local()) }}</div>
+                <div>{{ cardDetail?.expiry_date }}</div>
                 <img
-                  v-if="isShowCardSensitiveDetail"
+                  v-if="isShowCardSensitiveDetail && cardDetail?.expiry_date"
                   class="cursor-pointer"
-                  @click="handleCopy(2, formatMMYYYY(dayjs.utc(cardDetail?.created_at).local()))"
+                  @click="handleCopy(2, cardDetail?.expiry_date)"
                   :src="
                     copied && copyIndex === 2 ? `/icons/common/copied-bordered.svg` : `/icons/common/copy-bordered.svg`
                   "
@@ -239,15 +239,15 @@ function handleUnfreeze() {}
               <div class="flex flex-row items-center">
                 <div class="bg-[#D7D9E5] w-2 h-2 rounded-full"></div>
                 <div class="ml-3">{{ t(`cards.slideovers.detail.info.total_top_up`) }}</div>
-                <div class="ml-auto">
-                  {{ formatMoneyWithoutDecimals(cardDetail?.total_top_up, CommonCurrency.USD) }}
+                <div class="ml-auto text-[#1C1D23] text-14-500-20">
+                  ${{ formatMoneyWithoutDecimals(cardDetail?.total_top_up) }}
                 </div>
               </div>
               <div class="flex flex-row items-center">
                 <div class="bg-[#FF5524] w-2 h-2 rounded-full"></div>
                 <div class="ml-3">{{ t(`cards.slideovers.detail.info.total_withdraw`) }}</div>
-                <div class="ml-auto">
-                  {{ formatMoneyWithoutDecimals(cardDetail?.total_withdraw, CommonCurrency.USD) }}
+                <div class="ml-auto text-[#1C1D23] text-14-500-20">
+                  ${{ formatMoneyWithoutDecimals(cardDetail?.total_withdraw) }}
                 </div>
               </div>
             </div>

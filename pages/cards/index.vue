@@ -102,13 +102,13 @@ const cardTableColumns = [
 ]
 
 function getStatusColor(status: CardStatus) {
-  if (status === CardStatus.CANCEL) {
+  if (status === CardStatus.CANCELLED) {
     return '#ED2C38'
   }
   if (status === CardStatus.ACTIVE) {
     return '#2EA518'
   }
-  if (status === CardStatus.FREEZE) {
+  if (status === CardStatus.FROZEN) {
     return '#7A7D89'
   }
 }

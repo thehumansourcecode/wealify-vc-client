@@ -31,8 +31,8 @@ export default {
 
     status: {
       [CardStatus.ACTIVE]: 'Active',
-      [CardStatus.CANCEL]: 'Cancel',
-      [CardStatus.FREEZE]: 'Freeze',
+      [CardStatus.CANCELLED]: 'Cancel',
+      [CardStatus.FROZEN]: 'Freeze',
     },
 
     category: {
