@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { formatMoneyWithoutDecimals } from '~/common/functions'
+import { formatMoney, formatMoneyWithoutDecimals } from '~/common/functions'
 import { getCountryCode, getCountryFlag } from '~/components/cards/functions'
 import { CardCategory, CardType, type IIssueCardParams } from '~/types/cards'
 import { CommonCountry, CommonCurrency, PanelChildTab, PanelTab } from '~/types/common'
@@ -15,14 +15,17 @@ const { t } = useI18n()
 
 const commonStore = useCommonStore()
 const cardStore = useCardStore()
+const userStore = useUserStore()
 const loading = computed(() => cardStore.isLoading)
 
-onMounted(() => {
+onMounted(async () => {
   commonStore.setHeaderBackLayout(true)
   commonStore.setActiveTab(PanelTab.CARD_LIST)
   commonStore.setActiveChildTab(PanelChildTab.CARD_ISSUE)
-  cardStore.getDropdownCategoryList()
+  await Promise.all([cardStore.getDropdownCategoryList(), userStore.getBalance()])
 })
+
+const totalBalance = computed(() => userStore.userBalance?.wallet_balance?.balance)
 
 onUnmounted(() => {
   commonStore.setHeaderBackLayout(false)
@@ -32,14 +35,7 @@ onUnmounted(() => {
 const isPolicyChecked = ref(true)
 const cardCategoryOptions = computed(() => cardStore.categoryList)
 
-const issueCardFee = computed(() => 0)
-
-const currentBalance = computed(() => 100)
-
-const countryCode = ref({
-  country: CommonCountry.VIETNAM,
-  flag: `/icons/flags/${CommonCountry.VIETNAM}.svg`,
-})
+const issueCardFee = computed(() => 1.75)
 
 const form = reactive<IIssueCardParams>({
   card_type: CardType.VIRTUAL,
@@ -52,6 +48,8 @@ const form = reactive<IIssueCardParams>({
   spend_limit: 0, // nhập số nguyên dương. nếu = 0 hiển inline msg
 })
 
+const threshold = computed(() => +(totalBalance.value || 0) - issueCardFee.value)
+
 const issueCardSchema = object({
   card_name: string().required(t('common.validator.empty.issueCard.name')),
   email: string()
@@ -62,7 +60,9 @@ const issueCardSchema = object({
   category: string().required(t('common.validator.empty.issueCard.category')),
   spend_limit: number()
     .min(1, t('common.validator.invalid.issueCard.zeroStartingBalance'))
-    .max(MAX_SPEND_LIMIT, t('common.validator.invalid.issueCard.limitStartingBalance')),
+    .test('max-threshold', t('common.validator.invalid.issueCard.insufficientBalance'), value => {
+      return value <= +threshold.value
+    }),
 })
 
 const formatPhoneNumber = (target: HTMLInputElement) => {
@@ -538,10 +538,9 @@ watch(
                   </UTooltip>
                 </div>
                 <div class="text-12-500-20 text-[#7A7D89]">
-                  {{ t('cards.issue.balance.form.available', { amount: currentBalance }) }}
+                  {{ t('cards.issue.balance.form.available', { amount: formatMoney(totalBalance) }) }}
                 </div>
               </div>
-
               <div class="flex flex-row justify-between mt-4">
                 <UInput
                   class="w-full text-20-700-32 items-center flex"
@@ -626,10 +625,11 @@ watch(
               {{ t('cards.issue.preview.total_top_up') }}
             </div>
             <div class="text-16-600-25 text-[#FF5524]">
-              {{ formatMoneyWithoutDecimals(form.spend_limit || 0 + issueCardFee, CommonCurrency.USD) }}
+              {{ formatMoneyWithoutDecimals((form.spend_limit || 0) + issueCardFee, CommonCurrency.USD) }}
             </div>
           </div>
         </div>
+        {{ form.spend_limit < totalBalance - issueCardFee }}
         <BaseSubmitButton
           @click="handleIssue"
           :loading="loading.issueCard"
