@@ -103,6 +103,7 @@ const handlePasteName = event => {
 }
 
 const handleInputName = event => {
+  // Remove all non-Viet/English characters
   let inputValue = event.target.value
   inputValue = inputValue.replace(accentedCharactersRegex, '')
   // Update the value

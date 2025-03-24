@@ -597,16 +597,47 @@ onUnmounted(() =>
       </UTable>
 
       <div class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700 gap-10 items-center">
-        <USelectMenu v-model="payload.limit" :options="limitOptions">
+        <USelectMenu
+          v-model="payload.limit"
+          :options="limitOptions"
+          :selected-icon="'i-selected'"
+          :ui-menu="{
+            select: 'cursor-pointer',
+            base: 'relative focus:outline-none overflow-y-auto scroll-py-1',
+            padding: 'p-0',
+            rounded: 'rounded-[16px]',
+            width: 'w-[max-content] min-w-full',
+            option: {
+              base: 'cursor-pointer text-14-500-20',
+              selected: 'bg-[#F0F2F5]',
+              active: 'bg-[#F0F2F5]',
+              inactive: 'cursor-pointer',
+              padding: 'px-3 py-[10px]',
+              rounded: 'rounded-none',
+              selectedIcon: {
+                base: 'h-[18px] w-[18px]',
+              },
+              empty: 'text-sm',
+            },
+            empty: 'text-sm',
+            input: 'px-3 py-[10px] w-full text-[#7A7D89] icon-search font-medium text-sm leading-5 m-0 bg-white',
+          }"
+        >
           <template #option="{ option }">
-            <div class="text-12-500-20">{{ t(`cards.list.pagination.limit`, { limit: option }) }}</div>
+            <div class="text-14-500-20">{{ t(`cards.list.pagination.limit`, { limit: option }) }}</div>
           </template>
-          <div class="border border-[#D7D9E5] rounded-[90px] py-[10px] pl-5 pr-4 flex flex-row gap-8">
-            <div class="text-14-500-20 text-[#1C1D23]">
-              {{ t(`cards.list.pagination.limit`, { limit: limit }) }}
+          <template #default="{ open: open }">
+            <div class="px-3 py-[6px] w-full rounded-[36px] border flex items-center justify-between">
+              <div class="text-14-500-20 text-[#1C1D23] w-[152px] px-2 py-1">
+                {{ t(`cards.list.pagination.limit`, { limit: limit }) }}
+              </div>
+              <img
+                src="/assets/img/icons/dropdown.svg"
+                class="transition-transform"
+                :class="[open && 'transform rotate-180']"
+              />
             </div>
-            <img src="assets/img/icons/dropdown.svg" alt="" />
-          </div>
+          </template>
         </USelectMenu>
         <BasePagination
           @update:model-value="onChangePage"
