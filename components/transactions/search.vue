@@ -4,15 +4,10 @@ const transactionStore = useTransactionStore()
 const payload = computed(() => transactionStore.payload)
 const tempKeyword = ref<string | undefined>(payload.value.keyword)
 
-async function getTransactionList() {
-  await transactionStore.getTransactionList(payload.value)
-}
-
 async function onEnterKeyword() {
-  if (tempKeyword.value !== payload.value.keyword) {
-    transactionStore.setPayload({ ...payload.value, page: 1, keyword: tempKeyword.value })
-    await getTransactionList()
-  }
+  if (tempKeyword.value == payload.value.keyword) return
+  await transactionStore.setPayload({ ...payload.value, page: 1, keyword: tempKeyword.value })
+  transactionStore.getTransactionList(payload.value)
 }
 </script>
 <template>
@@ -24,6 +19,7 @@ async function onEnterKeyword() {
         @keyup.enter="onEnterKeyword()"
         input-class="input-field rounded-49"
         class="w-[80%]"
+        v-model="tempKeyword"
         leading
         :leading-img="'/icons/common/search.svg'"
         :placeholder="t('transactions.filter.placeholder.search')"
