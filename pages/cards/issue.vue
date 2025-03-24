@@ -59,7 +59,9 @@ const issueCardSchema = object({
   phone_number: string().required(t('common.validator.empty.issueCard.phoneNumber')),
   category: string().required(t('common.validator.empty.issueCard.category')),
   spend_limit: number()
-    .min(1, t('common.validator.invalid.issueCard.zeroStartingBalance'))
+    .test('min-threshold', t('common.validator.invalid.issueCard.zeroStartingBalance'), (value) => {
+      return value >= 1
+    })
     .test('max-threshold', t('common.validator.invalid.issueCard.insufficientBalance'), value => {
       return value <= +threshold.value
     }),
@@ -144,9 +146,17 @@ const formatBalance = (target: HTMLInputElement) => {
   originalNumericValue.value = rawValue
 }
 
+const removeDots = event => {
+  console.log(event)
+  if (event.key === '.' || event.key === ',') {
+    event.preventDefault()
+  }
+}
+
 // Handle manual input updates
-const handleInputBalance = async (event: InputEvent) => {
+const handleInputBalance = async event => {
   const target = event.target as HTMLInputElement
+  // value = value.replace(/[^0-9]+/g, '')
   let caretPosition = target.selectionStart || 0
   const originalPositionRight = target.value.length - caretPosition
   try {
@@ -193,7 +203,6 @@ const isFormValid = ref(false)
 watch(
   form,
   async () => {
-    console.log(form)
     try {
       // Validate the entire form, don't stop at the first error
       await issueCardSchema.validate(form, { abortEarly: false })
@@ -548,6 +557,7 @@ watch(
                   variant="none"
                   v-model="formattedBalance"
                   @input="handleInputBalance"
+                  @keydown="removeDots"
                   :ui="{
                     padding: {
                       sm: 'p-0 text-[20px]',

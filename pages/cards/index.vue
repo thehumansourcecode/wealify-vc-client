@@ -128,23 +128,16 @@ watch(
   },
 )
 
-async function onChangeLimit(limit: number) {
-  cardStore.setPayload({ ...payload.value, limit: limit })
-  if (page.value !== 1) {
-    cardStore.setPayloadPage(1)
-  }
-}
-
 async function onChangePage(page: number) {
   cardStore.setPayloadPage(page)
   await getCardList()
 }
 
-function handleClickCard(row) {
+async function handleClickCard(row) {
   const id = row.id
   const selectedCardDetail = cardList.value.find((card: ICardData) => card.id === id)
   if (selectedCardDetail) {
-    cardStore.setSelectedCardDetail(selectedCardDetail)
+    await cardStore.getCardDetailById(id)
     cardStore.toggleCardDetailSlideover(true)
   }
 }

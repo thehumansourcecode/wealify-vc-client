@@ -8,6 +8,7 @@ import {
   type ICardData,
   type IIssueCardParams,
   type IGetCardListParams,
+  type ICardDetail,
 } from '~/types/cards'
 
 export const useCardStore = defineStore('card', () => {
@@ -37,8 +38,9 @@ export const useCardStore = defineStore('card', () => {
     payload.value.page = page
   }
 
-  const selectedCardDetail = ref<ICardData>()
-  function setSelectedCardDetail(card?: ICardData) {
+  const selectedCardDetail = ref<ICardDetail>()
+  
+  function setSelectedCardDetail(card?: ICardDetail) {
     selectedCardDetail.value = card
   }
 
@@ -92,7 +94,16 @@ export const useCardStore = defineStore('card', () => {
     return response
   }
 
+  async function getCardDetailById(id: string) {
+    const response = await cardsService.getCardDetailById(id)
+    if (response.success) {
+      selectedCardDetail.value = response.data
+    }
+    return response
+  }
+
   return {
+    isLoading,
     payload,
     setPayload,
     setPayloadPage,
@@ -107,6 +118,6 @@ export const useCardStore = defineStore('card', () => {
     toggleCardDetailSlideover,
     selectedCardDetail,
     setSelectedCardDetail,
-    isLoading,
+    getCardDetailById,
   }
 })

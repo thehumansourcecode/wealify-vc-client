@@ -26,9 +26,13 @@ function handleCopy(index: number, value: string) {
 const cardStore = useCardStore()
 const isOpenCardDetailSlideover = computed(() => cardStore.isOpenCardDetailSlideover)
 const cardDetail = computed(() => cardStore.selectedCardDetail)
-const cardNumberArray = computed(() => cardDetail.value?.cardNumber?.split(' '))
 const isShowCardSensitiveDetail = ref(false)
 const isShowCardSensitiveDetailOverlay = ref(false)
+
+const cardSensitiveDetail = ref({
+  CVV: '888',
+  card_number: '1231 1232 1233 9998',
+})
 
 const balanceRate = computed(() =>
   cardDetail.value?.balance
@@ -107,16 +111,16 @@ function handleUnfreeze() {}
           <div class="mt-2 flex flex-row gap-8">
             <div class="flex flex-row gap-2">
               <img src="~/assets/img/icons/mail.svg" alt="" />
-              <div class="text-[#7A7D89] text-14-500-20">ota@gmail.com</div>
+              <div class="text-[#7A7D89] text-14-500-20">{{ cardDetail?.email }}</div>
             </div>
             <div class="flex flex-row gap-2">
               <img src="~/assets/img/icons/phone.svg" alt="" />
-              <div class="text-[#7A7D89] text-14-500-20">024 657 7891</div>
+              <div class="text-[#7A7D89] text-14-500-20">{{ cardDetail?.phone_number }}</div>
             </div>
           </div>
           <!-- Buttons -->
           <div
-            v-if="cardDetail?.status === CardStatus.ACTIVE"
+            v-if="cardDetail?.card_status === CardStatus.ACTIVE"
             class="mt-7 flex flex-row w-full justify-around text-[#1C1D23] text-14-500-20"
           >
             <div @click="handleTopup" class="flex flex-col gap-3 items-center cursor-pointer hover:opacity-90">
@@ -136,7 +140,7 @@ function handleUnfreeze() {}
               <div>{{ t(`cards.slideovers.detail.button.withdraw`) }}</div>
             </div>
           </div>
-          <div v-if="cardDetail?.status === CardStatus.FREEZE" class="mt-7 flex flex-row w-full justify-between">
+          <div v-if="cardDetail?.card_status === CardStatus.FREEZE" class="mt-7 flex flex-row w-full justify-between">
             <div
               @click="handleUnfreeze"
               class="flex flex-col gap-3 w-[50%] items-center cursor-pointer hover:opacity-90"
@@ -172,25 +176,25 @@ function handleUnfreeze() {}
             <div class="flex flex-row justify-between text-14-500-20 text-[#1C1D23]">
               <div>{{ t(`cards.slideovers.detail.info.cardNumber`) }}</div>
               <div v-if="isShowCardSensitiveDetail" class="flex flex-row gap-2 items-center">
-                <span>**** **** **** {{ cardNumberArray?.[3] }}</span>
+                <span>{{ cardSensitiveDetail?.card_number }}</span>
                 <img
                   class="cursor-pointer"
-                  @click="handleCopy(0, cardDetail?.cardNumber || '')"
+                  @click="handleCopy(0, cardSensitiveDetail?.card_number || '')"
                   :src="
                     copied && copyIndex === 0 ? `/icons/common/copied-bordered.svg` : `/icons/common/copy-bordered.svg`
                   "
                   alt=""
                 />
               </div>
-              <div v-else>{{ cardDetail?.cardNumber }}</div>
+              <div v-else>**** **** **** {{ cardDetail?.last_four }}</div>
             </div>
             <div class="flex flex-row justify-between text-14-500-20">
               <div class="text-[#7A7D89]">{{ t(`cards.slideovers.detail.info.CVV`) }}</div>
               <div v-if="isShowCardSensitiveDetail" class="flex flex-row gap-2 items-center">
-                <span>{{ cardDetail?.CVV || 'CVV' }}</span>
+                <span>{{ cardSensitiveDetail?.CVV || 'CVV' }}</span>
                 <img
                   class="cursor-pointer"
-                  @click="handleCopy(1, cardDetail?.CVV || 'CVV')"
+                  @click="handleCopy(1, cardSensitiveDetail?.CVV || 'CVV')"
                   :src="
                     copied && copyIndex === 1 ? `/icons/common/copied-bordered.svg` : `/icons/common/copy-bordered.svg`
                   "
@@ -230,12 +234,14 @@ function handleUnfreeze() {}
               <div class="flex flex-row">
                 <span class="text-[#ff5c5c] w-2">*</span>
                 <div class="ml-3">{{ t(`cards.slideovers.detail.info.purpose`) }}</div>
-                <div class="ml-auto">Travel Spending</div>
+                <div class="ml-auto">{{ cardDetail?.card_purpose }}</div>
               </div>
               <div class="flex flex-row items-center">
                 <div class="bg-[#D7D9E5] w-2 h-2 rounded-full"></div>
                 <div class="ml-3">{{ t(`cards.slideovers.detail.info.total_top_up`) }}</div>
-                <div class="ml-auto">{{ formatMoneyWithoutDecimals(cardDetail?.total_top_up, CommonCurrency.USD) }}</div>
+                <div class="ml-auto">
+                  {{ formatMoneyWithoutDecimals(cardDetail?.total_top_up, CommonCurrency.USD) }}
+                </div>
               </div>
               <div class="flex flex-row items-center">
                 <div class="bg-[#FF5524] w-2 h-2 rounded-full"></div>

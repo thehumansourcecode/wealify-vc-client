@@ -1,7 +1,7 @@
 import type { LoginCredentials, LoginResponse } from '~/types/auth'
 import { BaseService } from './base.service'
-import type { CardCategory, ICardData, IGetCardListParams, IIssueCardParams } from '~/types/cards'
-import type { ICommonListResponse } from '~/types/common'
+import type { CardCategory, ICardData, ICardDetail, IGetCardListParams, IIssueCardParams } from '~/types/cards'
+import type { ICommonListResponse, ICommonResponse } from '~/types/common'
 
 export class CardsService extends BaseService {
   private static _instance: CardsService
@@ -22,6 +22,9 @@ export class CardsService extends BaseService {
     return this.get('/', {
       params: payload,
     })
+  }
+  async getCardDetailById(id: string): Promise<ICommonResponse<ICardDetail>> {
+    return this.get(`/${id}`)
   }
 }
 
