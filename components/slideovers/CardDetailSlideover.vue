@@ -243,20 +243,20 @@ function handleUnfreeze() {}
             </div>
             <div class="flex flex-col gap-4 text-[#7A7D89] text-12-500-20 grow">
               <div class="flex flex-row">
-                <span class="text-[#ff5c5c] w-2">*</span>
-                <div class="ml-3">{{ t(`cards.slideovers.detail.info.purpose`) }}</div>
+                <img src="~/assets/img/cards/purpose.svg" alt="">
+                <div class="ml-1.5">{{ t(`cards.slideovers.detail.info.purpose`) }}</div>
                 <div class="ml-auto">{{ cardDetail?.card_purpose }}</div>
               </div>
               <div class="flex flex-row items-center">
-                <div class="bg-[#D7D9E5] w-2 h-2 rounded-full"></div>
-                <div class="ml-3">{{ t(`cards.slideovers.detail.info.total_top_up`) }}</div>
+                <div class="bg-[#D7D9E5] w-2 h-2 mx-[3px] rounded-full"></div>
+                <div class="ml-1.5">{{ t(`cards.slideovers.detail.info.total_top_up`) }}</div>
                 <div class="ml-auto text-[#1C1D23] text-14-500-20">
                   ${{ formatMoneyWithoutDecimals(cardDetail?.total_top_up) }}
                 </div>
               </div>
               <div class="flex flex-row items-center">
-                <div class="bg-[#FF5524] w-2 h-2 rounded-full"></div>
-                <div class="ml-3">{{ t(`cards.slideovers.detail.info.total_withdraw`) }}</div>
+                <div class="bg-[#FF5524] w-2 h-2 mx-[3px] rounded-full"></div>
+                <div class="ml-1.5">{{ t(`cards.slideovers.detail.info.total_withdraw`) }}</div>
                 <div class="ml-auto text-[#1C1D23] text-14-500-20">
                   ${{ formatMoneyWithoutDecimals(cardDetail?.total_withdraw) }}
                 </div>
