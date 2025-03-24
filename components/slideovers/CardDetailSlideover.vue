@@ -74,7 +74,17 @@ function handleUnfreeze() {}
 </script>
 
 <template>
-  <USlideover v-model="isOpenCardDetailSlideover" :prevent-close="true" @close-prevented="onClosePrevented()">
+  <USlideover
+    v-model="isOpenCardDetailSlideover"
+    :prevent-close="true"
+    @close-prevented="onClosePrevented()"
+    :ui="{
+      width: 'w-screen max-w-[464px]',
+      overlay: {
+        background: 'bg-[#1c1d23]/30',
+      },
+    }"
+  >
     <div class="flex flex-col items-center bg-[#1C1D23]">
       <div class="w-full flex flex-row items-center py-6 px-8 gap-4">
         <img
@@ -242,21 +252,21 @@ function handleUnfreeze() {}
               </div>
             </div>
             <div class="flex flex-col gap-4 text-[#7A7D89] text-12-500-20 grow">
-              <div class="flex flex-row">
-                <img src="~/assets/img/cards/purpose.svg" alt="">
-                <div class="ml-1.5">{{ t(`cards.slideovers.detail.info.purpose`) }}</div>
-                <div class="ml-auto">{{ cardDetail?.card_purpose }}</div>
+              <div class="flex flex-row gap-4">
+                <img src="~/assets/img/cards/purpose.svg" alt="" />
+                <div class="ml-1.5 w-[85px] flex-none">{{ t(`cards.slideovers.detail.info.purpose`) }}</div>
+                <div class="ml-auto grow truncate">{{ cardDetail?.card_purpose }}</div>
               </div>
-              <div class="flex flex-row items-center">
+              <div class="flex flex-row items-center gap-4">
                 <div class="bg-[#D7D9E5] w-2 h-2 mx-[3px] rounded-full"></div>
-                <div class="ml-1.5">{{ t(`cards.slideovers.detail.info.total_top_up`) }}</div>
+                <div class="ml-1.5 w-[85px]">{{ t(`cards.slideovers.detail.info.total_top_up`) }}</div>
                 <div class="ml-auto text-[#1C1D23] text-14-500-20">
                   ${{ formatMoneyWithoutDecimals(cardDetail?.total_top_up) }}
                 </div>
               </div>
-              <div class="flex flex-row items-center">
+              <div class="flex flex-row items-center gap-4">
                 <div class="bg-[#FF5524] w-2 h-2 mx-[3px] rounded-full"></div>
-                <div class="ml-1.5">{{ t(`cards.slideovers.detail.info.total_withdraw`) }}</div>
+                <div class="ml-1.5 w-[85px]">{{ t(`cards.slideovers.detail.info.total_withdraw`) }}</div>
                 <div class="ml-auto text-[#1C1D23] text-14-500-20">
                   ${{ formatMoneyWithoutDecimals(cardDetail?.total_withdraw) }}
                 </div>
