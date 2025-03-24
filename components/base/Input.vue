@@ -4,6 +4,7 @@ defineProps({
   leadingImg: String,
   clearable: Boolean,
   limit: Number,
+  error: Boolean,
 })
 
 const emit = defineEmits(['clear'])
@@ -19,6 +20,7 @@ function clearInput() {
     autocomplete="off"
     variant="none"
     :maxlength="limit"
+    :input-class="[`input-field rounded-49`, `${error ? 'error' : ''}`].join(' ')"
     :ui="{
       padding: {
         sm: 'pr-9 pl-1.5 py-1.5',
@@ -62,7 +64,7 @@ function clearInput() {
   box-shadow: none;
   border: 1px solid #d7d9e5;
   background: white;
-  color: #1C1D23;
+  color: #1c1d23;
   font-weight: 500;
   font-size: 14px;
   line-height: 20px;
@@ -77,6 +79,9 @@ function clearInput() {
     font-weight: 500;
     font-size: 14px;
     line-height: 20px;
+  }
+  &.error {
+    border: 1px solid #ec2c37 !important;
   }
 }
 

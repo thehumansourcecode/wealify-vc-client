@@ -33,6 +33,7 @@ export default {
         email: 'Invalid email address',
         zeroStartingBalance: 'Please enter an amount greater than 0',
         limitStartingBalance: 'The maximum amount is 999,999,999',
+        insufficientBalance: 'Insufficient balance',
       },
     },
   },

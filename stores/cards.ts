@@ -11,11 +11,6 @@ import {
 } from '~/types/cards'
 
 export const useCardStore = defineStore('card', () => {
-  const authStore = useAuthStore()
-  const commonStore = useCommonStore()
-  const toast = useToast()
-  const nuxtApp = useNuxtApp()
-  const i18n = nuxtApp.$i18n
   const cardCount = ref(0)
 
   const isLoading = ref({
@@ -91,7 +86,7 @@ export const useCardStore = defineStore('card', () => {
       payload.value = { ...payload.value, card_status: [CardStatus.ACTIVE] }
       await getCardList(payload.value)
     } else {
-      showToast(ToastType.FAILED, i18n.t('cards.issue.notification.failed'))
+      showToast(ToastType.FAILED, response.message)
     }
     isLoading.value.issueCard = false
     return response

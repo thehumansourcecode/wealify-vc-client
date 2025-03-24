@@ -9,29 +9,20 @@ definePageMeta({
 const { t } = useI18n()
 
 const dashboardStore = useDashboardStore()
+const commonStore = useCommonStore()
+const userStore = useUserStore()
 
 const isShowBalance = ref(true)
 function toggleBalance() {
   isShowBalance.value = !isShowBalance.value
 }
 
-const commonStore = useCommonStore()
-
-onMounted(() => {
+onMounted(async () => {
   commonStore.setActiveTab(PanelTab.DASHBOARD)
+  await Promise.all([userStore.getProfile(), userStore.getBalance()])
 })
 
-const wealifyBalance = ref({
-  balance: 0,
-  moneyIn: 0,
-  moneyOut: 0,
-})
-
-const cardBalance = ref({
-  balance: 0,
-  topup: 0,
-  withdraw: 0,
-})
+const userBalance = computed(() => userStore.userBalance)
 
 function onClickTopup() {
   dashboardStore.toggleTopupModal(true)
@@ -66,7 +57,9 @@ function onClickWithdraw() {
               {{ t('dashboard.balance.wealify.balance') }}
             </span>
             <div class="text-[18px] font-bold leading-7 mt-1">
-              <span class="text-[#FFF]">{{ isShowBalance ? wealifyBalance.balance : '*' }}</span>
+              <span class="text-[#FFF]">{{
+                isShowBalance ? formatMoney(userBalance?.wallet_balance?.balance) : '*'
+              }}</span>
               <span class="pl-1 text-[#7A7D89]">USD</span>
             </div>
             <div class="pt-4 flex flex-col w-[220px] gap-2">
@@ -80,7 +73,7 @@ function onClickWithdraw() {
                 <div class="flex flex-row gap-[2px] items-center">
                   <img src="~/assets/img/dashboard/green-arrow.svg" alt="" />
                   <span class="text-[#FFF] text-xs font-semibold leading-5">
-                    +{{ isShowBalance ? wealifyBalance.moneyIn : '*' }} USD
+                    +{{ isShowBalance ? formatMoney(userBalance?.wallet_balance?.money_in) : '*' }} USD
                   </span>
                 </div>
               </div>
@@ -94,7 +87,7 @@ function onClickWithdraw() {
                 <div class="flex flex-row gap-[2px] items-center">
                   <img src="~/assets/img/dashboard/red-arrow.svg" alt="" />
                   <span class="text-[#FFF] text-xs font-semibold leading-5">
-                    -{{ isShowBalance ? wealifyBalance.moneyOut : '*' }} USD
+                    -{{ isShowBalance ? formatMoney(userBalance?.wallet_balance?.money_out) : '*' }} USD
                   </span>
                 </div>
               </div>
@@ -125,7 +118,7 @@ function onClickWithdraw() {
               {{ t('dashboard.balance.card.balance') }}
             </span>
             <div class="text-[18px] font-bold leading-7 mt-1">
-              <span class="">{{ isShowBalance ? cardBalance.balance : '*' }}</span>
+              <span class="">{{ isShowBalance ? formatMoney(userBalance?.card_balance?.total) : '*' }}</span>
               <span class="pl-1 text-[#7A7D89]">USD</span>
             </div>
             <div class="pt-4 flex flex-col w-[220px] gap-2">
@@ -139,7 +132,7 @@ function onClickWithdraw() {
                 <div class="flex flex-row gap-[2px] items-center">
                   <img src="~/assets/img/dashboard/green-arrow.svg" alt="" />
                   <span class="text-xs font-semibold leading-5">
-                    +{{ isShowBalance ? cardBalance.topup : '*' }} USD
+                    +{{ isShowBalance ? formatMoney(userBalance?.card_balance?.total_top_up) : '*' }} USD
                   </span>
                 </div>
               </div>
@@ -153,7 +146,10 @@ function onClickWithdraw() {
                 <div class="flex flex-row gap-[2px] items-center">
                   <img src="~/assets/img/dashboard/red-arrow.svg" alt="" />
                   <span class="text-xs font-semibold leading-5">
-                    -{{ isShowBalance ? cardBalance.withdraw : '*' }} USD
+                    -{{
+                      isShowBalance ? formatMoney(userBalance?.card_balance?.total_withdraw) : '*'
+                    }}
+                    USD
                   </span>
                 </div>
               </div>
