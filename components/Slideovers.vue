@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-const dashboardStore = useDashboardStore()
+const transactionStore = useTransactionStore()
 const cardStore = useCardStore()
-const isOpenTransactionDetailSlideover = computed(() => dashboardStore.isOpenTransactionDetailSlideover)
+const isOpenTransactionDetailSlideover = computed(() => transactionStore.isOpenTransactionDetailSlideover)
 const isOpenCardDetailSlideover = computed(() => cardStore.isOpenCardDetailSlideover)
 </script>
 

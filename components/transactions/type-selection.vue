@@ -1,53 +1,54 @@
 <script setup lang="ts">
-import { shortenAddress, shortenString } from '~/common/functions'
+import { shortenString } from '~/common/functions'
+import { TransactionType, WalletType } from '~/types/transactions'
 
-interface TransactionType {
+interface Option {
   title: string
-  value: any
+  value: WalletType | TransactionType
 }
 
-interface TransactionTypeGroup {
-  name: string
-  options: Array<TransactionType>
+interface OptionGroup {
+  title: string
+  options: Array<Option>
 }
 
-const model = defineModel<Array<any>>({ default: [] })
+const model = defineModel<Array<WalletType | TransactionType>>({ default: [] })
 const open = ref<boolean>(false)
-const groups = ref<Array<TransactionTypeGroup>>([
+const groups = ref<Array<OptionGroup>>([
   {
-    name: 'Wallet Type',
+    title: 'Wallet Type',
     options: [
       {
         title: 'Wealify Wallet',
-        value: 0,
+        value: WalletType.MAIN,
       },
       {
         title: 'Virtual Card Wallet',
-        value: 1,
+        value: WalletType.VC,
       },
     ],
   },
   {
-    name: 'Wealify Wallet',
+    title: 'Wealify Wallet',
     options: [
       {
         title: 'Top-up',
-        value: 2,
+        value: TransactionType.TOP_UP,
       },
       {
         title: 'Withdraw',
-        value: 3,
+        value: TransactionType.WITHDRAWAL,
       },
       {
         title: 'Spend',
-        value: 4,
+        value: TransactionType.INTERNAL,
       },
     ],
   },
 ])
 
-const options = computed<Array<TransactionType>>(() =>
-  Object.values(groups.value).reduce<Array<TransactionType>>((list, item) => [...list, ...item.options], []),
+const options = computed<Array<Option>>(() =>
+  Object.values(groups.value).reduce<Array<Option>>((list, item) => [...list, ...item.options], []),
 )
 
 const displayValue = computed<string>(() => {
@@ -60,13 +61,13 @@ const reset = () => {
 }
 
 const isVCCardEnabled = computed<boolean>(() => {
-  return model.value.includes(1)
+  return model.value.includes(WalletType.VC)
 })
 
-const onSelect = (value: any) => {
+const onSelect = (value: WalletType | TransactionType) => {
   if (model.value.includes(value)) {
     model.value = model.value.filter(val => {
-      if (value == 1) return val != 4 && val != value
+      if (value == WalletType.VC) return val != TransactionType.INTERNAL && val != value
       return val != value
     })
   } else {
@@ -75,7 +76,7 @@ const onSelect = (value: any) => {
 }
 </script>
 <template>
-  <UPopover mode="click" :ui="{ background: 'bg-white', ring: 'ring-0' }">
+  <UPopover mode="hover" :ui="{ background: 'bg-white', ring: 'ring-0' }">
     <div
       class="min-w-[160px] inline-flex justify-start items-center gap-1.5 bg-[#F0F2F5] border border-[#D7D9E5] text-[#7A7D89] text-12-500-20 rounded-[36px] py-[7px] px-3"
     >
@@ -100,7 +101,7 @@ const onSelect = (value: any) => {
           <template v-for="(group, index) in groups">
             <div class="flex-1 min-w-[200px] flex flex-col gap-5">
               <div class="text-[#7a7c89] text-xs font-medium leading-tight">
-                {{ group.name }}
+                {{ group.title }}
               </div>
               <div class="flex flex-col justify-center items-start gap-5">
                 <div
@@ -110,7 +111,7 @@ const onSelect = (value: any) => {
                 >
                   <UCheckbox
                     @click="onSelect(option.value)"
-                    :disabled="!isVCCardEnabled && option.value == 4"
+                    :disabled="!isVCCardEnabled && option.value == TransactionType.INTERNAL"
                     :model-value="model.includes(option.value)"
                     :ui="{
                       base: 'cursor-pointer',
@@ -118,7 +119,7 @@ const onSelect = (value: any) => {
                   />
                   <div
                     class="justify-center text-[#1b1c23] text-sm font-semibold font-['Manrope'] leading-tight"
-                    :class="!isVCCardEnabled && option.value == 4 ? 'opacity-50' : ''"
+                    :class="!isVCCardEnabled && option.value == TransactionType.INTERNAL ? 'opacity-50' : ''"
                   >
                     {{ option.title }}
                   </div>
