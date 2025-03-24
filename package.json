@@ -47,7 +47,7 @@
   },
   "devDependencies": {
     "@nuxt/eslint-config": "^0.2.0",
-    "@nuxtjs/i18n": "npm:@nuxtjs/i18n-edge",
+    "@nuxtjs/i18n": "9.3.3",
     "eslint": "^8.56.0",
     "lodash": "^4.17.21",
     "nuxt-aos": "^1.2.4",
