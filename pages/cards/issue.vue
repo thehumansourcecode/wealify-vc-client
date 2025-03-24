@@ -249,7 +249,7 @@ watch(
             name="card_name"
             class="mt-5"
             :ui="{
-              error: 'ml-[128px] mt-2 text-red-500 dark:text-red-400',
+              error: 'ml-[156px] mt-2 text-red-500 dark:text-red-400',
             }"
             v-slot="{ error }"
           >
@@ -276,7 +276,7 @@ watch(
             name="email"
             class="mt-5"
             :ui="{
-              error: 'ml-[128px] mt-2 text-red-500 dark:text-red-400',
+              error: 'ml-[156px] mt-2 text-red-500 dark:text-red-400',
             }"
             v-slot="{ error }"
           >
@@ -436,7 +436,7 @@ watch(
             name="category"
             class="mt-5"
             :ui="{
-              error: 'ml-[128px] mt-2 text-red-500 dark:text-red-400',
+              error: 'ml-[156px] mt-2 text-red-500 dark:text-red-400',
             }"
             v-slot="{ error }"
           >

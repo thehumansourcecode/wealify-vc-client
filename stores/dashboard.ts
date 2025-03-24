@@ -1,9 +1,9 @@
-import type { IUserProfileData } from '~/types/profile'
+import type { IUserProfile } from '~/types/user'
 
 export const useDashboardStore = defineStore('dashboard', () => {
   const authStore = useAuthStore()
   const commonStore = useCommonStore()
-  const userProfile = ref<IUserProfileData>()
+  const userProfile = ref<IUserProfile>()
   const toast = useToast()
   const nuxtApp = useNuxtApp()
   const i18n = nuxtApp.$i18n

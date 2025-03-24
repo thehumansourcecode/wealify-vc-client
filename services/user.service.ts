@@ -1,6 +1,7 @@
 import type { LoginCredentials, LoginResponse } from '~/types/auth'
 import { BaseService } from './base.service'
 import type { ICommonListResponse, ICommonResponse } from '~/types/common'
+import type { IUserBalance, IUserProfile } from '~/types/user'
 
 export class UserService extends BaseService {
   private static _instance: UserService
@@ -17,8 +18,12 @@ export class UserService extends BaseService {
     super(config.public.baseUrl + '/users')
   }
 
-  async getProfile(): Promise<ICommonResponse<any>> {
+  async getProfile(): Promise<ICommonResponse<IUserProfile>> {
     return this.get('/profile')
+  }
+
+  async getBalance(): Promise<ICommonResponse<IUserBalance>> {
+    return this.get('/balance')
   }
 }
 
