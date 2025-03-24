@@ -34,6 +34,7 @@ const cardSensitiveDetail = ref({
   card_number: '1231 1232 1233 9998',
 })
 
+const cardNumberArray = cardSensitiveDetail.value.card_number.split(' ')
 const balanceRate = computed(() =>
   cardDetail.value?.balance
     ? roundNumber(
@@ -101,8 +102,18 @@ function handleUnfreeze() {}
             </div>
           </div>
           <img class="mt-auto mb-3 w-[110px]" src="~/assets/img/cards/add-to-apple.png" alt="" />
-          <div class="flex flex-row justify-between karla tracking-[3px] text-24-400 text-[#D7D9E5] w-full">
-            <div v-for="(part, index) in cardNumberArray" :key="index">{{ part }}</div>
+          <div class="karla tracking-[3px] text-24-400 text-[#D7D9E5] w-full">
+            <div class="flex flex-row justify-between w-full" v-if="isShowCardSensitiveDetail">
+              <div v-for="(part, index) in cardNumberArray" :key="index">
+                {{ part }}
+              </div>
+            </div>
+            <div class="flex flex-row justify-between w-full" v-else>
+              <div>XXXX</div>
+              <div>XXXX</div>
+              <div>XXXX</div>
+              <div>{{ cardDetail?.last_four }}</div>
+            </div>
           </div>
         </div>
         <!-- Information -->
