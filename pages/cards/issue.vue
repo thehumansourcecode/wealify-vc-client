@@ -207,7 +207,7 @@ watch(
 </script>
 
 <template>
-  <div class="pl-10 pr-[60px] pt-3 pb-8 overflow-y-auto">
+  <div class="pl-10 pr-[60px] pt-3 pb-[60px] overflow-y-auto">
     <div class="flex flex-row gap-20 justify-between">
       <div class="flex flex-col flex-1 max-w-[720px]">
         <!-- Card information -->
@@ -629,7 +629,6 @@ watch(
             </div>
           </div>
         </div>
-        {{ form.spend_limit < totalBalance - issueCardFee }}
         <BaseSubmitButton
           @click="handleIssue"
           :loading="loading.issueCard"
