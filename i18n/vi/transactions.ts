@@ -1,10 +1,5 @@
-import {
-  TransactionCryptocurrency,
-  TransactionMethod,
-  TransactionNetwork,
-  TransactionStatus,
-  TransactionType,
-} from '~/types/dashboard'
+import { TransactionCryptocurrency, TransactionMethod, TransactionNetwork } from '~/types/dashboard'
+import { TransactionStatus, TransactionType } from '~/types/transactions'
 
 export default {
   button: {
@@ -35,16 +30,17 @@ export default {
       action: 'Action',
     },
     type: {
-      [TransactionType.PAYMENT]: 'Payment',
-      [TransactionType.TOPUP]: 'Top-up',
-      [TransactionType.WITHDRAW]: 'Withdraw',
-      [TransactionMethod.CRYPTO]: 'Crypto Transfer',
-      [TransactionMethod.CARD]: 'Card',
+      [TransactionType.INTERNAL]: 'Spend',
+      [TransactionType.TOP_UP]: 'Top-up',
+      [TransactionType.WITHDRAWAL]: 'Withdraw',
     },
     status: {
-      [TransactionStatus.FAILED]: 'Failed',
-      [TransactionStatus.SUCCESS]: 'Success',
-      [TransactionStatus.PROCESSING]: 'Processing',
+      [TransactionStatus.PENDING]: 'Processing',
+      [TransactionStatus.PROCESS]: 'Processing',
+      [TransactionStatus.APPROVED]: 'Success',
+      [TransactionStatus.REJECTED]: 'Failed',
+      [TransactionStatus.WAITING]: 'Processing',
+      [TransactionStatus.CANCELLED]: 'Failed',
     },
     action: {
       viewDetail: 'View Detail',
@@ -72,29 +68,27 @@ export default {
       },
     },
   },
-  slideovers: {
-    transaction: {
-      to: 'to {destination}',
-      topupAmount: 'Top up amount',
-      amount: '{amount} USDT',
-      rate: 'Rate',
-      fee: 'Fee',
-      rateValue: '{rateUSDT} USDT = {rateUSD} USD',
-      feeValue: 'USD {fee}',
-      account: 'Top up account',
-      address: 'Received address',
-      txhash: 'TxHash',
-      id: 'Top up ID',
-      created_at: 'Created at',
-      successAt: 'Success at',
-      newTopup: 'Create new top up',
-      contact:
-        'If you find any errors or omissions in this statement, please contact Wealify’s customer service emailing at ',
-      label: {
-        [TransactionType.PAYMENT]: 'Wallet Payment',
-        [TransactionType.TOPUP]: 'Wallet Top up',
-        [TransactionType.WITHDRAW]: 'Wallet Withdraw',
-      },
+  detail: {
+    to: 'to {destination}',
+    topupAmount: 'Top up amount',
+    amount: '{amount} USDT',
+    rate: 'Rate',
+    fee: 'Fee',
+    rateValue: '{rateUSDT} USDT = {rateUSD} USD',
+    feeValue: '{fee} USD',
+    account: 'Top up account',
+    address: 'Received address',
+    txhash: 'TxHash',
+    id: 'Top up ID',
+    created_at: 'Created at',
+    successAt: 'Success at',
+    newTopup: 'Create new top up',
+    contact:
+      'If you find any errors or omissions in this statement, please contact Wealify’s customer service emailing at ',
+    label: {
+      [TransactionType.INTERNAL]: 'Wallet Payment',
+      [TransactionType.TOP_UP]: 'Wallet Top up',
+      [TransactionType.WITHDRAWAL]: 'Wallet Withdraw',
     },
   },
 }

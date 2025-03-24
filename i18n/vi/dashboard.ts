@@ -72,29 +72,4 @@ export default {
       },
     },
   },
-  slideovers: {
-    transaction: {
-      to: 'to {destination}',
-      topupAmount: 'Top up amount',
-      amount: '{amount} USDT',
-      rate: 'Rate',
-      fee: 'Fee',
-      rateValue: '{rateUSDT} USDT = {rateUSD} USD',
-      feeValue: 'USD {fee}',
-      account: 'Top up account',
-      address: 'Received address',
-      txhash: 'TxHash',
-      id: 'Top up ID',
-      created_at: 'Created at',
-      successAt: 'Success at',
-      newTopup: 'Create new top up',
-      contact:
-        'If you find any errors or omissions in this statement, please contact Wealify’s customer service emailing at ',
-      label: {
-        [TransactionType.PAYMENT]: 'Wallet Payment',
-        [TransactionType.TOPUP]: 'Wallet Top up',
-        [TransactionType.WITHDRAW]: 'Wallet Withdraw',
-      },
-    },
-  },
 }

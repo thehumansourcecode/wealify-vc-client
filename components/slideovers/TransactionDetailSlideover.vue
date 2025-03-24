@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { TransactionStatus, TransactionType } from '~/types/dashboard'
 import { formatMoney, shortenAddress } from '~/common/functions'
 import { formatYYYYMMDDhmmA } from '~/common/functions'
 import { formatAmount } from '~/utils/amount.util'
@@ -10,18 +9,17 @@ const toast = useToast()
 
 const dayjs = useDayjs()
 
-const dashboardStore = useDashboardStore()
-const isOpenTransactionDetailSlideover = computed(() => dashboardStore.isOpenTransactionDetailSlideover)
-
-function onClosePrevented() {
-  dashboardStore.toggleTransactionDetailSlideover(false)
-}
-
 const copyIndex = ref(0)
 
+const transactionStore = useTransactionStore()
+const isOpenTransactionDetailSlideover = computed(() => transactionStore.isOpenTransactionDetailSlideover)
+const transactionDetail = computed(() => transactionStore.selectedTransactionDetail)
+
 function copyTransactionId() {
-  copy(transactionDetail.value.id)
+  if (!transactionDetail.value) return
+  copy(transactionDetail.value.transaction_id)
   copyIndex.value = 0
+
   toast.clear()
   toast.add({
     title: t('common.toast.copy'),
@@ -31,8 +29,9 @@ function copyTransactionId() {
 }
 
 function copyTransactionAddress() {
-  copy(transactionDetail.value.address)
+  // copy(transactionDetail.value.address)
   copyIndex.value = 1
+
   toast.clear()
   toast.add({
     title: t('common.toast.copy'),
@@ -41,58 +40,14 @@ function copyTransactionAddress() {
   })
 }
 
-function getStatusColor(status: TransactionStatus) {
-  if (status === TransactionStatus.FAILED) {
-    return '#ED2C38'
-  }
-  if (status === TransactionStatus.SUCCESS) {
-    return '#2EA518'
-  }
-  if (status === TransactionStatus.PROCESSING) {
-    return '#02076F'
-  }
-}
-
-function getBackgroundStatusColor(status: TransactionStatus) {
-  if (status === TransactionStatus.FAILED) {
-    return '#EBF6EE'
-  }
-  if (status === TransactionStatus.SUCCESS) {
-    return '#EBF6EE'
-  }
-  if (status === TransactionStatus.PROCESSING) {
-    return '#EBF6EE'
-  }
-}
-
-const transactionDetail = computed(() => {
-  return {
-    type: TransactionType.TOPUP,
-    amount: 1000,
-    status: TransactionStatus.SUCCESS,
-    rate: {
-      usd: 1,
-      usdt: 1,
-    },
-    to: 'Wallet',
-    fee: 0,
-    id: 'P12345678958254',
-    created_at: '2025-03-11T13:36:41.718Z',
-    updatedAt: '2025-03-11T13:36:41.718Z',
-    account: 'Wealify Balance',
-    address: '0x1437bEbAa45MfA88Dc9C6CFeB6e0bAAeDCD6eCdb',
-    txhash: 'http://bscscan.com',
-  }
-})
-
-function createNewTopup() {
-  dashboardStore.toggleTransactionDetailSlideover(false)
-  dashboardStore.toggleTopupModal(true)
+function onClosePrevented() {
+  transactionStore.toggleTransactionDetailSlideover(false)
 }
 </script>
 
 <template>
   <USlideover
+    v-if="transactionDetail"
     v-model="isOpenTransactionDetailSlideover"
     :ui="{
       overlay: {
@@ -105,7 +60,7 @@ function createNewTopup() {
     <div class="flex flex-col items-center">
       <div class="w-full flex flex-row justify-between items-center py-6 px-8">
         <div class="text-20-600-32 text-[#1C1D23]">
-          {{ t(`dashboard.slideovers.transaction.label.${transactionDetail.type}`) }}
+          {{ t(`transactions.detail.label.${transactionDetail.transaction_type}`) }}
         </div>
         <img
           class="cursor-pointer hover:opacity-70"
@@ -116,30 +71,30 @@ function createNewTopup() {
       </div>
 
       <div class="flex flex-col items-center slideover-content overflow-y-auto px-8">
-        <img class="w-[180px]" src="~/assets/img/dashboard/slideover-topup.svg" alt="" />
+        <img class="w-[180px]" src="/images/transactions/slideover-banner.svg" alt="" />
         <div class="pt-5 flex flex-row justify-between items-end w-full">
           <div class="flex-col gap-[6px]">
             <div class="uppercase text-[#1C1D23] text-14-500-20">
-              {{ t(`dashboard.slideovers.transaction.label.${transactionDetail.type}`) }}
+              {{ t(`transactions.detail.label.${transactionDetail.transaction_type}`) }}
             </div>
             <div class="text-32-700-44 text-[#FF5524]">{{ formatMoney(transactionDetail.amount, 'USD') }}</div>
             <div class="text-12-500-20 text-[#7A7D89]">
-              {{ t(`dashboard.slideovers.transaction.to`, { destination: transactionDetail.to }) }}
+              <!-- {{ t(`transactions.detail.to`, { destination: transactionDetail.to }) }} -->
             </div>
           </div>
           <div
             class="flex flex-row gap-[6px] items-center px-[14px] py-[6px] rounded-[8px]"
             :style="{
-              color: getStatusColor(transactionDetail?.status),
-              background: getBackgroundStatusColor(transactionDetail?.status),
+              color: getStatusColor(transactionDetail?.transaction_status),
+              background: '#EBF6EE',
             }"
           >
             <div class="text-12-600-20">
-              {{ t(`dashboard.transactions.table.status.${transactionDetail.status}`) }}
+              {{ t(`transactions.detail.status.${transactionDetail.transaction_status}`) }}
             </div>
             <div
               class="w-[6px] h-[6px] rounded-[1px]"
-              :style="{ background: getStatusColor(transactionDetail?.status) }"
+              :style="{ background: getStatusColor(transactionDetail?.transaction_status) }"
             ></div>
           </div>
         </div>
@@ -147,31 +102,31 @@ function createNewTopup() {
         <div class="px-5 py-3 mt-5 bg-[#F0F2F5] rounded-[18px] flex flex-col gap-5 w-full">
           <div class="flex flex-row justify-between items-center">
             <div class="text-12-500-20 text-[#1C1D23]">
-              {{ t('dashboard.slideovers.transaction.topupAmount') }}
+              {{ t(`transactions.detail.amountLabel.${transactionDetail.transaction_type}`) }}
             </div>
             <div class="text-16-700-24 text-[#1C1D23]">
-              {{ t(`dashboard.slideovers.transaction.amount`, { amount: formatAmount(transactionDetail.amount) }) }}
+              {{ t(`transactions.detail.amount`, { amount: formatAmount(transactionDetail.amount) }) }}
             </div>
           </div>
           <div class="flex flex-row justify-between">
             <div class="text-12-500-20 text-[#7A7D89]">
-              {{ t('dashboard.slideovers.transaction.rate') }}
+              {{ t('transactions.detail.rate') }}
             </div>
             <div class="text-14-500-20 text-[#1C1D23]">
               {{
-                t(`dashboard.slideovers.transaction.rateValue`, {
-                  rateUSDT: formatAmount(transactionDetail.rate.usdt),
-                  rateUSD: formatAmount(transactionDetail.rate.usd),
+                t(`transactions.detail.rateValue`, {
+                  rateUSDT: formatAmount(transactionDetail.rate.value),
+                  rateUSD: formatAmount(transactionDetail.rate.value),
                 })
               }}
             </div>
           </div>
           <div class="flex flex-row justify-between">
             <div class="text-12-500-20 text-[#7A7D89]">
-              {{ t('dashboard.slideovers.transaction.fee') }}
+              {{ t('transactions.detail.fee') }}
             </div>
             <div class="text-14-500-20 text-[#1C1D23]">
-              {{ t(`dashboard.slideovers.transaction.feeValue`, { fee: formatAmount(transactionDetail.fee) }) }}
+              {{ t(`transactions.detail.feeValue`, { fee: formatAmount(transactionDetail.fee.value) }) }}
             </div>
           </div>
         </div>
@@ -179,11 +134,11 @@ function createNewTopup() {
         <div class="p-2 mt-2 flex flex-col w-full">
           <div class="flex flex-row justify-between items-center pb-4">
             <div class="text-12-500-20 text-[#7A7D89]">
-              {{ t('dashboard.slideovers.transaction.id') }}
+              {{ t('transactions.detail.id') }}
             </div>
             <div class="flex flex-row gap-2 items-center">
               <div class="text-14-500-20 text-[#1C1D23]">
-                {{ transactionDetail.id }}
+                {{ transactionDetail.transaction_id }}
               </div>
               <img
                 class="cursor-pointer"
@@ -195,7 +150,7 @@ function createNewTopup() {
           </div>
           <div class="flex flex-row justify-between items-center pb-5">
             <div class="text-12-500-20 text-[#7A7D89]">
-              {{ t('dashboard.slideovers.transaction.created_at') }}
+              {{ t('transactions.detail.created_at') }}
             </div>
             <div class="text-14-500-20 text-[#1C1D23]">
               {{ formatYYYYMMDDhmmA(dayjs.utc(transactionDetail.created_at).local()) }}
@@ -203,10 +158,10 @@ function createNewTopup() {
           </div>
           <div class="flex flex-row justify-between items-center mb-1">
             <div class="text-12-500-20 text-[#7A7D89]">
-              {{ t('dashboard.slideovers.transaction.successAt') }}
+              {{ t('transactions.detail.successAt') }}
             </div>
             <div class="text-14-500-20 text-[#1C1D23]">
-              {{ formatYYYYMMDDhmmA(dayjs.utc(transactionDetail.updatedAt).local()) }}
+              {{ formatYYYYMMDDhmmA(dayjs.utc(transactionDetail.updated_at).local()) }}
             </div>
           </div>
         </div>
@@ -214,19 +169,19 @@ function createNewTopup() {
         <div class="px-5 py-3 mt-2 bg-[#F0F2F5] rounded-[18px] flex flex-col gap-5 w-full">
           <div class="flex flex-row justify-between">
             <div class="text-12-500-20 text-[#7A7D89]">
-              {{ t('dashboard.slideovers.transaction.account') }}
+              {{ t('transactions.detail.account') }}
             </div>
             <div class="text-14-500-20 text-[#1C1D23]">
-              {{ transactionDetail.account }}
+              <!-- {{ transactionDetail.account }} -->
             </div>
           </div>
           <div class="flex flex-row justify-between items-center">
             <div class="text-12-500-20 text-[#7A7D89]">
-              {{ t('dashboard.slideovers.transaction.address') }}
+              {{ t('transactions.detail.address') }}
             </div>
             <div class="flex flex-row gap-2 items-center">
               <div class="text-14-500-20 text-[#1C1D23]">
-                {{ shortenAddress(transactionDetail.address) }}
+                <!-- {{ shortenAddress(transactionDetail.address) }} -->
               </div>
               <img
                 class="cursor-pointer"
@@ -238,27 +193,24 @@ function createNewTopup() {
           </div>
           <div class="flex flex-row justify-between">
             <div class="text-12-500-20 text-[#7A7D89]">
-              {{ t('dashboard.slideovers.transaction.txhash') }}
+              {{ t('transactions.detail.txhash') }}
             </div>
-            <ULink :to="transactionDetail.txhash" target="_blank" class="text-14-500-20 text-[#1C1D23]">
+            <!-- <ULink :to="transactionDetail.txhash" target="_blank" class="text-14-500-20 text-[#1C1D23]">
               {{ transactionDetail.txhash }}
-            </ULink>
+            </ULink> -->
           </div>
         </div>
 
         <div class="text-12-500-20 mt-5">
           <span class="text-[#7A7D89]">
-            {{ t('dashboard.slideovers.transaction.contact') }}
+            {{ t('transactions.detail.contact') }}
           </span>
           <ULink class="text-[#FF5524]"> support@wealify.com </ULink>
         </div>
 
-        <UButton
-          @click="createNewTopup()"
-          class="flex items-center justify-center w-[400px] bg-[#1C1D23] hover:bg-[#3D3E34] my-8 rounded-[49px]"
-        >
+        <UButton class="flex items-center justify-center w-[400px] bg-[#1C1D23] hover:bg-[#3D3E34] my-8 rounded-[49px]">
           <div class="text-white text-14-600-20 px-4 py-[14px]">
-            {{ t('dashboard.slideovers.transaction.newTopup') }}
+            {{ t(`transactions.detail.createNew.${transactionDetail.transaction_type}`) }}
           </div>
         </UButton>
       </div>

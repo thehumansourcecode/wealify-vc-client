@@ -30,6 +30,10 @@ const open = () => {
   styleHeaders()
 }
 
+const close = () => {
+  datepicker.value?.handleClose()
+}
+
 const styleHeaders = () => {
   const headers = document.querySelectorAll('.el-date-range-picker__header > div')
   headers.forEach((header: any) => {
