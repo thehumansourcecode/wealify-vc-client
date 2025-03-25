@@ -14,7 +14,6 @@ body {
   font-family: Karla, sans-serif;
 }
 
-
 .i-copy {
   background: url('../img/icons/copy.svg') no-repeat;
 }
@@ -277,6 +276,13 @@ input[type='number'] {
   font-size: 20px;
   font-style: normal;
   font-weight: 600;
+  line-height: 32px;
+}
+
+.text-20-700-32 {
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
   line-height: 32px;
 }
 

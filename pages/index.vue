@@ -26,7 +26,7 @@ onMounted(async () => {
 const userBalance = computed(() => userStore.userBalance)
 
 function onClickTopup() {
-  dashboardStore.toggleTopupModal(true)
+  dashboardStore.toggleWalletTopupModal(true)
 }
 
 function onClickWithdraw() {

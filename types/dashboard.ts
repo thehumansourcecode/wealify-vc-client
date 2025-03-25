@@ -1,4 +1,4 @@
-import type { ICardData } from './cards'
+import type { ICardDetail } from './cards'
 import type { CommonCurrency } from './common'
 
 export enum TransactionType {
@@ -37,6 +37,6 @@ export interface ITransactionData {
   transactionId: string
   amount: number
   currency: CommonCurrency
-  card: Partial<ICardData> | null
+  card: Partial<ICardDetail> | null
   status: TransactionStatus
 }

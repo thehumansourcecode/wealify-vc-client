@@ -1,4 +1,4 @@
-import { TransactionsService } from '~/services/transactions.service'
+import { TransactionService } from '~/services/transactions.service'
 import { HTTP_STATUS_CODE } from '~/types/common'
 import { type ITransactionData, type IGetTransactionListParams } from '~/types/transactions'
 
@@ -44,7 +44,7 @@ export const useTransactionStore = defineStore('transaction', () => {
   async function getTransactionList(payload: IGetTransactionListParams) {
     isLoading.value.transactionTable = true
     try {
-      const response = await TransactionsService.instance.getTransactionList(payload)
+      const response = await TransactionService.instance.getTransactionList(payload)
       if (response.code == HTTP_STATUS_CODE.OK) {
         transactionList.value = response.data.items
         transactionCount.value = response.data.total_items

@@ -1,11 +1,9 @@
 import { normalize, showToast, ToastType } from '~/common/functions'
-import { cardsService } from '~/services/cards.service'
+import { cardService } from '~/services/cards.service'
 import { commonService } from '~/services/common.service'
 import {
   CardCategory,
   CardStatus,
-  CardType,
-  type ICardData,
   type IIssueCardParams,
   type IGetCardListParams,
   type ICardDetail,
@@ -13,6 +11,12 @@ import {
 
 export const useCardStore = defineStore('card', () => {
   const cardCount = ref(0)
+
+  const isOpenCardTopupModal = ref(false)
+
+  function toggleCardTopupModal(state: boolean) {
+    isOpenCardTopupModal.value = state
+  }
 
   const isLoading = ref({
     issueCard: false,
@@ -39,7 +43,7 @@ export const useCardStore = defineStore('card', () => {
   }
 
   const selectedCardDetail = ref<ICardDetail>()
-  
+
   function setSelectedCardDetail(card?: ICardDetail) {
     selectedCardDetail.value = card
   }
@@ -50,16 +54,16 @@ export const useCardStore = defineStore('card', () => {
     isOpenCardDetailSlideover.value = state
   }
 
-  const cardList = ref<ICardData[]>([])
+  const cardList = ref<ICardDetail[]>([])
 
   const activeCardList = computed(() =>
-    cardList.value.filter((card: ICardData) => card.card_status === CardStatus.ACTIVE),
+    cardList.value.filter((card: ICardDetail) => card.card_status === CardStatus.ACTIVE),
   )
 
   async function getCardList(payload: IGetCardListParams) {
     isLoading.value.cardTable = true
     cardList.value = []
-    const response = await cardsService.getCardList(payload)
+    const response = await cardService.getCardList(payload)
     if (response.success) {
       cardList.value = response.data.items
       cardCount.value = response.data.total_items
@@ -68,21 +72,11 @@ export const useCardStore = defineStore('card', () => {
     return response
   }
 
-  const categoryList = ref<CardCategory[]>([])
-
-  async function getDropdownCategoryList() {
-    const response = await commonService.getDropdownCategoryList()
-    if (response.success) {
-      categoryList.value = response.data as CardCategory[]
-    }
-    return response
-  }
-
   async function issueCard(params: IIssueCardParams) {
     isLoading.value.issueCard = true
     console.log(isLoading.value)
     console.log(isLoading.value.issueCard)
-    const response = await commonService.issueCard(params)
+    const response = await cardService.issueCard(params)
     if (response.success) {
       navigateTo('/cards')
       payload.value = { ...payload.value, card_status: [CardStatus.ACTIVE] }
@@ -95,7 +89,7 @@ export const useCardStore = defineStore('card', () => {
   }
 
   async function getCardDetailById(id: string) {
-    const response = await cardsService.getCardDetailById(id)
+    const response = await cardService.getCardDetailById(id)
     if (response.success) {
       selectedCardDetail.value = response.data
     }
@@ -111,13 +105,13 @@ export const useCardStore = defineStore('card', () => {
     cardCount,
     getCardList,
     activeCardList,
-    categoryList,
-    getDropdownCategoryList,
     issueCard,
     isOpenCardDetailSlideover,
     toggleCardDetailSlideover,
     selectedCardDetail,
     setSelectedCardDetail,
     getCardDetailById,
+    isOpenCardTopupModal,
+    toggleCardTopupModal,
   }
 })

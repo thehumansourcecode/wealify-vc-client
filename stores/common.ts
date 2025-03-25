@@ -1,4 +1,6 @@
-import { CommonCurrency, PanelChildTab, PanelTab } from '~/types/common'
+import { commonService } from '~/services/common.service'
+import { CardStatus, type CardCategory, type ICardDetail, type IDropdownCardDetail } from '~/types/cards'
+import { CommonCurrency, FeeType, PanelChildTab, PanelTab } from '~/types/common'
 
 export const useCommonStore = defineStore('common', () => {
   const config = useRuntimeConfig()
@@ -35,6 +37,34 @@ export const useCommonStore = defineStore('common', () => {
     isHeaderBackLayout.value = state
   }
 
+  const categoryList = ref<CardCategory[]>([])
+
+  async function getDropdownCategoryList() {
+    const response = await commonService.getDropdownCategoryList()
+    if (response.success) {
+      categoryList.value = response.data as CardCategory[]
+    }
+    return response
+  }
+
+  const dropdownCardList = ref<IDropdownCardDetail[]>()
+
+  async function getDropdownCardList() {
+    const response = await commonService.getDropdownCardList({ card_status: [CardStatus.ACTIVE] })
+    if (response.success) {
+      dropdownCardList.value = response.data as IDropdownCardDetail[]
+    }
+    return response
+  }
+
+  async function getFeeByType(type: FeeType) {
+    const response = await commonService.getFeeByType(type)
+    if (response.success) {
+      dropdownCardList.value = response.data as IDropdownCardDetail[]
+    }
+    return response
+  }
+
   return {
     config,
     loading,
@@ -47,5 +77,10 @@ export const useCommonStore = defineStore('common', () => {
     setHeaderBackLayout,
     activeChildTab,
     setActiveChildTab,
+    categoryList,
+    getDropdownCategoryList,
+    dropdownCardList,
+    getDropdownCardList,
+    getFeeByType,
   }
 })

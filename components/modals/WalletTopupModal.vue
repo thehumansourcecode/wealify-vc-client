@@ -3,7 +3,6 @@ import { TransactionCryptocurrency, TransactionNetwork } from '~/types/dashboard
 const { copy, copied } = useClipboard()
 const toast = useToast()
 
-const commonStore = useCommonStore()
 const dashboardStore = useDashboardStore()
 
 const { t } = useI18n()
@@ -57,7 +56,7 @@ function handleCopy(value: string) {
 </script>
 
 <template>
-  <BaseModal :label="t('dashboard.modals.topup.title')" @close-prevented="dashboardStore.toggleTopupModal(false)">
+  <BaseModal :label="t('dashboard.modals.topup.title')" @close-prevented="dashboardStore.toggleWalletTopupModal(false)">
     <div class="flex flex-row items-start gap-7">
       <div>
         <!-- Network -->

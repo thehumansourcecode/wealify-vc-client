@@ -3,13 +3,14 @@ definePageMeta({
   layout: 'home',
 })
 import { formatDDMMYYYY, formatMoney } from '~/common/functions'
-import { CardCategory, CardStatus, CardType, type ICardData } from '~/types/cards'
+import { CardCategory, CardStatus, CardType, type ICardDetail } from '~/types/cards'
 
 const { t } = useI18n()
 const dayjs = useDayjs()
 
 const loading = computed(() => cardStore.isLoading)
 const cardStore = useCardStore()
+const commonStore = useCommonStore()
 const selectedCardList = ref([])
 const payload = computed(() => cardStore.payload)
 const tempKeyword = ref<string | undefined>(payload.value.keyword)
@@ -20,8 +21,8 @@ const limitOptions = ref([10, 30, 50])
 const page = computed(() => payload.value.page)
 const limit = computed(() => payload.value.limit)
 
-function isCardSelected(card: ICardData) {
-  return selectedCardList.value.some((selectedCard: ICardData) => selectedCard.id === card.id)
+function isCardSelected(card: ICardDetail) {
+  return selectedCardList.value.some((selectedCard: ICardDetail) => selectedCard.id === card.id)
 }
 
 async function getCardList() {
@@ -29,20 +30,20 @@ async function getCardList() {
 }
 
 const activeCardList = computed(
-  () => cardList.value?.filter((card: ICardData) => card.card_status === CardStatus.ACTIVE) || [],
+  () => cardList.value?.filter((card: ICardDetail) => card.card_status === CardStatus.ACTIVE) || [],
 )
 
 const totalSelectedAmount = computed(() => {
-  const cardListAmount = selectedCardList.value.map((selectedCard: ICardData) => selectedCard.balance)
+  const cardListAmount = selectedCardList.value.map((selectedCard: ICardDetail) => selectedCard.balance)
   return cardListAmount.reduce((a: number, b: number) => a + b, 0)
 })
 const totalActiveAmount = computed(() => {
-  const cardListAmount = activeCardList.value.map((activeCard: ICardData) => activeCard.balance)
+  const cardListAmount = activeCardList.value.map((activeCard: ICardDetail) => activeCard.balance)
   return cardListAmount.reduce((a: number, b: number) => a + b, 0)
 })
 
 const typeOptions = Object.values(CardType)
-const categoryOptions = computed(() => cardStore.categoryList)
+const categoryOptions = computed(() => commonStore.categoryList)
 const statusOptions = Object.values(CardStatus)
 
 function isCategorySelected(category: CardCategory) {
@@ -57,7 +58,7 @@ const cardTableColumns = [
   {
     key: 'card',
     label: t('cards.list.header.card'),
-    class: 'mr-5 w-[240px]',
+    class: 'mr-5 min-w-[240px]',
   },
   {
     key: 'type',
@@ -114,7 +115,7 @@ function getStatusColor(status: CardStatus) {
 }
 
 function onClickTopup() {
-  console.log('click topup')
+  cardStore.toggleCardTopupModal(true)
 }
 
 function clearSelected() {
@@ -135,7 +136,7 @@ async function onChangePage(page: number) {
 
 async function handleClickCard(row) {
   const id = row.id
-  const selectedCardDetail = cardList.value.find((card: ICardData) => card.id === id)
+  const selectedCardDetail = cardList.value.find((card: ICardDetail) => card.id === id)
   if (selectedCardDetail) {
     await cardStore.getCardDetailById(id)
     cardStore.toggleCardDetailSlideover(true)
@@ -185,7 +186,7 @@ async function onEnterKeyword() {
 onMounted(() => initPage())
 
 async function initPage() {
-  await Promise.all([getCardList(), cardStore.getDropdownCategoryList()])
+  await Promise.all([getCardList(), commonStore.getDropdownCategoryList()])
 }
 
 onUnmounted(() =>
@@ -512,7 +513,7 @@ onUnmounted(() =>
         class="table-wrapper grow"
       >
         <template #card-data="{ row }">
-          <div class="flex flex-row items-center gap-[14px] w-[240px]">
+          <div class="flex flex-row items-center gap-[14px] min-w-[240px]">
             <img src="/icons/dashboard/mastercard.svg" alt="" />
             <div class="flex flex-col gap-1">
               <UTooltip
@@ -527,7 +528,7 @@ onUnmounted(() =>
                 <span class="text-14-600-20 text-[#1C1D23] max-w-[180px] truncate">{{ row?.card_name }}</span>
               </UTooltip>
               <span class="text-12-500-20 text-[#7A7D89]">
-                {{ t(`cards.list.cardNumber`, { value: row?.last_four }) }}</span
+                {{ t(`cards.list.card_number`, { value: row?.last_four }) }}</span
               >
             </div>
           </div>

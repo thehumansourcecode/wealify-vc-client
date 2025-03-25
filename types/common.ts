@@ -126,3 +126,10 @@ export interface IDropdownCardData {
   id: string
   last_four: string
 }
+
+export enum FeeType {
+  TOP_UP_CARD = 'TOP_UP_CARD',
+  ISSUE_CARD = 'ISSUE_CARD',
+  WITHDRAWAL_CARD = 'WITHDRAWAL_CARD',
+  TOP_UP_WALLET = 'TOP_UP_WALLET',
+}

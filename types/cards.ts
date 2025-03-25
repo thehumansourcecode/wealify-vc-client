@@ -30,34 +30,24 @@ export enum CardStatus {
   FROZEN = 'FROZEN',
   CANCELLED = 'CANCELLED',
 }
-export interface ICardData {
-  id?: string
+export interface ICardDetail {
+  id: string
+  email: string
+  balance: number
   card_name: string
-  cardNumber: string
+  card_number: string
+  card_purpose: string
   card_type: CardType
   card_status: CardStatus
-  expiry_date: string
   category: CardCategory
-  balance: number
-  total_top_up: number
-  total_withdraw: number
-  created_at: string
-}
-
-export interface ICardDetail {
-  balance: number
-  card_name: string
-  card_purpose: string
-  card_status: string
-  category: string
-  email: string
   expiry_date: string
-  id: string
   last_four: string
   phone_number: string
   total_top_up: number
   total_withdraw: number
 }
+
+export interface IDropdownCardDetail {}
 
 export interface IIssueCardParams {
   card_name: string
@@ -73,14 +63,14 @@ export interface IIssueCardParams {
 // Request - Response
 
 export interface IGetDropdownCardListParams {
-  page: number
-  limit: number
+  page?: number
+  limit?: number
   start_date?: string
   end_date?: string
   keyword?: string
-  card_status: CardStatus[]
+  card_status?: CardStatus[]
   card_type?: CardType
-  category: CardCategory[]
+  category?: CardCategory[]
 }
 
 export interface IGetCardListParams {

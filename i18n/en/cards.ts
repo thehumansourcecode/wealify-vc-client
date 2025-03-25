@@ -23,7 +23,7 @@ export default {
     },
   },
   list: {
-    cardNumber: 'xxxx xxxx xxxx {value}',
+    card_number: 'xxxx xxxx xxxx {value}',
     type: {
       [CardType.VIRTUAL]: 'Virtual Card',
       [CardType.PHYSICAL]: 'Physical Card',
@@ -133,7 +133,7 @@ export default {
     detail: {
       label: 'Card detail',
       info: {
-        cardNumber: 'Card number',
+        card_number: 'Card number',
         CVV: 'CVV',
         expired: 'Expired date',
         cardBalance: 'Card balance',
@@ -151,6 +151,11 @@ export default {
         withdraw: 'Withdraw',
         unfreeze: 'Unfreeze',
       },
+    },
+  },
+  modals: {
+    topup: {
+      title: 'Top up card',
     },
   },
 }

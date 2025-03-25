@@ -8,10 +8,10 @@ export const useDashboardStore = defineStore('dashboard', () => {
   const nuxtApp = useNuxtApp()
   const i18n = nuxtApp.$i18n
 
-  const isOpenTopupModal = ref(false)
+  const isOpenWalletTopupModal = ref(false)
 
-  function toggleTopupModal(state: boolean) {
-    isOpenTopupModal.value = state
+  function toggleWalletTopupModal(state: boolean) {
+    isOpenWalletTopupModal.value = state
   }
 
   const isOpenTransactionDetailSlideover = ref(false)
@@ -30,8 +30,8 @@ export const useDashboardStore = defineStore('dashboard', () => {
     userProfile,
     resetUser,
     getProfile,
-    isOpenTopupModal,
-    toggleTopupModal,
+    isOpenWalletTopupModal,
+    toggleWalletTopupModal,
     isOpenTransactionDetailSlideover,
     toggleTransactionDetailSlideover,
   }

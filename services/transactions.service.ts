@@ -2,14 +2,14 @@ import { BaseService } from './base.service'
 import type { ITransactionData, IGetTransactionListParams } from '~/types/transactions'
 import type { ICommonListResponse } from '~/types/common'
 
-export class TransactionsService extends BaseService {
-  private static _instance: TransactionsService
+export class TransactionService extends BaseService {
+  private static _instance: TransactionService
 
-  public static get instance(): TransactionsService {
-    if (!TransactionsService._instance) {
-      TransactionsService._instance = new TransactionsService()
+  public static get instance(): TransactionService {
+    if (!TransactionService._instance) {
+      TransactionService._instance = new TransactionService()
     }
-    return TransactionsService._instance
+    return TransactionService._instance
   }
 
   constructor() {
@@ -24,4 +24,4 @@ export class TransactionsService extends BaseService {
   }
 }
 
-export const cardsService = new TransactionsService()
+export const transactionService = new TransactionService()

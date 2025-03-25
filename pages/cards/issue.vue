@@ -22,7 +22,7 @@ onMounted(async () => {
   commonStore.setHeaderBackLayout(true)
   commonStore.setActiveTab(PanelTab.CARD_LIST)
   commonStore.setActiveChildTab(PanelChildTab.CARD_ISSUE)
-  await Promise.all([cardStore.getDropdownCategoryList(), userStore.getBalance()])
+  await Promise.all([commonStore.getDropdownCategoryList(), userStore.getBalance()])
 })
 
 const totalBalance = computed(() => userStore.userBalance?.wallet_balance?.balance)
@@ -33,7 +33,7 @@ onUnmounted(() => {
 })
 
 const isPolicyChecked = ref(true)
-const cardCategoryOptions = computed(() => cardStore.categoryList)
+const cardCategoryOptions = computed(() => commonStore.categoryList)
 
 const issueCardFee = computed(() => 1.75)
 
@@ -59,7 +59,7 @@ const issueCardSchema = object({
   phone_number: string().required(t('common.validator.empty.issueCard.phoneNumber')),
   category: string().required(t('common.validator.empty.issueCard.category')),
   spend_limit: number()
-    .test('min-threshold', t('common.validator.invalid.issueCard.zeroStartingBalance'), (value) => {
+    .test('min-threshold', t('common.validator.invalid.issueCard.zeroStartingBalance'), value => {
       return value >= 1
     })
     .test('max-threshold', t('common.validator.invalid.issueCard.insufficientBalance'), value => {

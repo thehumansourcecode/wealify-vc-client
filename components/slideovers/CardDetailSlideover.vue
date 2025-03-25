@@ -218,7 +218,7 @@ function handleUnfreeze() {}
               </div>
             </transition>
             <div class="flex flex-row justify-between text-14-500-20 text-[#1C1D23]">
-              <div>{{ t(`cards.slideovers.detail.info.cardNumber`) }}</div>
+              <div>{{ t(`cards.slideovers.detail.info.card_number`) }}</div>
               <div v-if="isShowCardSensitiveDetail" class="flex flex-row gap-2 items-center">
                 <span>{{ cardSensitiveDetail?.card_number }}</span>
                 <img

@@ -1,16 +1,16 @@
 import type { LoginCredentials, LoginResponse } from '~/types/auth'
 import { BaseService } from './base.service'
-import type { CardCategory, ICardData, ICardDetail, IGetCardListParams, IIssueCardParams } from '~/types/cards'
+import type { CardCategory, ICardDetail, IGetCardListParams, IIssueCardParams } from '~/types/cards'
 import type { ICommonListResponse, ICommonResponse } from '~/types/common'
 
-export class CardsService extends BaseService {
-  private static _instance: CardsService
+export class CardService extends BaseService {
+  private static _instance: CardService
 
-  public static get instance(): CardsService {
-    if (!CardsService._instance) {
-      CardsService._instance = new CardsService()
+  public static get instance(): CardService {
+    if (!CardService._instance) {
+      CardService._instance = new CardService()
     }
-    return CardsService._instance
+    return CardService._instance
   }
 
   constructor() {
@@ -18,7 +18,7 @@ export class CardsService extends BaseService {
     super(config.public.baseUrl + '/cards')
   }
 
-  async getCardList(payload: IGetCardListParams): Promise<ICommonListResponse<ICardData>> {
+  async getCardList(payload: IGetCardListParams): Promise<ICommonListResponse<ICardDetail>> {
     return this.get('/', {
       params: payload,
     })
@@ -26,6 +26,12 @@ export class CardsService extends BaseService {
   async getCardDetailById(id: string): Promise<ICommonResponse<ICardDetail>> {
     return this.get(`/${id}`)
   }
+
+  async issueCard(params: IIssueCardParams): Promise<ICommonResponse<any>> {
+    return this.post('/issue', {
+      ...params,
+    })
+  }
 }
 
-export const cardsService = new CardsService()
+export const cardService = new CardService()
