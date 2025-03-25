@@ -19,7 +19,7 @@ const dropdownCardList = computed(() => commonStore.dropdownCardList)
 const topupFee = computed(() => cardStore.topupFee)
 const loading = computed(() => cardStore.isLoading.topupCard)
 
-const originalNumericValue = ref<number>()
+const currencyInputRef = ref()
 
 const form = reactive({
   amount: 0,
@@ -27,8 +27,36 @@ const form = reactive({
 
 const isFormValid = ref(false)
 
+const presetAmounts = computed(() => {
+  const balance = form.amount
+  if (!balance || balance == 0) {
+    return [500, 1000, 2000, 5000]
+  }
+  if (+balance >= 100000000) {
+    return []
+  }
+  if (+balance >= 10000000) {
+    return [balance, balance * 10]
+  }
+  if (+balance >= 1000000) {
+    return [balance, balance * 10, balance * 100]
+  } else {
+    return [balance, balance * 10, balance * 100, balance * 1000]
+  }
+})
+
+const setAmount = amount => {
+  form.amount = amount > MAX_SPEND_LIMIT ? MAX_SPEND_LIMIT : amount
+  if (currencyInputRef?.value) {
+    setTimeout(() => {
+      currencyInputRef.value.focusInput()
+      currencyInputRef.value.blurInput()
+    })
+  }
+}
+
 watch(
-  form,
+  () => form.amount,
   async () => {
     try {
       // Validate the entire form, don't stop at the first error
@@ -42,7 +70,6 @@ watch(
 )
 
 const threshold = computed(() => +(walletBalance.value || 0) - (topupFee.value?.value || 0))
-
 const topupCardSchema = object({
   amount: number()
     .test('min-threshold', t('common.validator.invalid.topupCard.zeroTopup'), value => {
@@ -53,84 +80,7 @@ const topupCardSchema = object({
     }),
 })
 
-const formattedAmount = computed({
-  get: () => {
-    const formatted = new Intl.NumberFormat('en-US')
-    return formatted.format(form.amount)
-  },
-  set: value => {
-    // Remove commas and parse to integer
-    form.amount = Number(value.replace(/,/g, '')) || 0
-  },
-})
-
-const formatAmount = (target: HTMLInputElement) => {
-  const rawValue = Number(target.value.split(',').join(''))
-
-  if (Number.isNaN(Number(rawValue))) {
-    target.value = formattedAmount.value
-    return
-  }
-  if (+rawValue === +formattedAmount.value) {
-    const formatted = new Intl.NumberFormat('en-US')
-    target.value = formatted.format(+formattedAmount.value)
-    return
-  }
-  if (+rawValue > MAX_SPEND_LIMIT) {
-    const formatted = new Intl.NumberFormat('en-US')
-    target.value = formatted.format(form.amount)
-    return
-  }
-  target.value = target.value.trim()
-  originalNumericValue.value = rawValue
-}
-
-const removeDots = event => {
-  console.log(event)
-  if (event.key === '.' || event.key === ',') {
-    event.preventDefault()
-  }
-}
-
-// Handle manual input updates
-const handleInputAmount = async event => {
-  const target = event.target as HTMLInputElement
-  // value = value.replace(/[^0-9]+/g, '')
-  let caretPosition = target.selectionStart || 0
-  const originalPositionRight = target.value.length - caretPosition
-  try {
-    formatAmount(target)
-    setTimeout(() => {
-      caretPosition = target.value.length === 1 ? 1 : target.value.length - originalPositionRight
-      target.setSelectionRange(caretPosition, caretPosition)
-    }, 0)
-  } catch (error) {
-    console.log(error)
-  }
-}
-
-const presetAmounts = computed(() => {
-  const balance = form.amount
-  if (!balance || balance == 0) {
-    return [500, 1000, 2000, 5000]
-  }
-  if (+balance >= 100000000) {
-    return []
-  }
-  if (+balance >= 10000000) {
-    return [balance, balance * 10]
-  }
-  if (+balance > 1000000) {
-    return [balance, balance * 10, balance * 100]
-  } else {
-    return [balance, balance * 10, balance * 100, balance * 1000]
-  }
-})
-
-const setAmount = amount => {
-  formattedAmount.value =
-    amount > MAX_SPEND_LIMIT ? formatMoneyWithoutDecimals(MAX_SPEND_LIMIT) : formatMoneyWithoutDecimals(amount)
-}
+const finalAmount = computed(() => form.amount * (1 + (topupFee.value?.value || 0) / 100))
 
 async function handleTopup() {
   if (selectedCard.value?.id) {
@@ -138,8 +88,6 @@ async function handleTopup() {
     await cardStore.topupCard(payload)
   }
 }
-
-const finalAmount = computed(() => form.amount * (1 + (topupFee.value?.value || 0) / 100))
 </script>
 
 <template>
@@ -246,7 +194,7 @@ const finalAmount = computed(() => form.amount * (1 + (topupFee.value?.value || 
           name="amount"
           v-slot="{ error }"
           :ui="{
-            error: 'mt-2 text-red-500 dark:text-red-400',
+            error: 'absolute mt-2 text-red-500 dark:text-red-400',
           }"
         >
           <div
@@ -277,20 +225,7 @@ const finalAmount = computed(() => form.amount * (1 + (topupFee.value?.value || 
               </div>
             </div>
             <div class="flex flex-row justify-between mt-4 w-full">
-              <UInput
-                class="w-full text-20-700-32 items-center flex"
-                autocomplete="off"
-                variant="none"
-                v-model="formattedAmount"
-                @input="handleInputAmount"
-                @keydown="removeDots"
-                :ui="{
-                  padding: {
-                    sm: 'p-0 text-[20px]',
-                  },
-                }"
-              >
-              </UInput>
+              <BaseFormattedCurrencyInput v-model="form.amount" ref="currencyInputRef" />
               <div class="flex flex-row gap-[6px] py-1 pr-3 pl-[6px] bg-[#F0F2F5] rounded-[44px]">
                 <img src="~/assets/img/flags/us.svg" alt="" />
                 <div class="text-[#1C1D23] text-12-500-20">USD</div>
@@ -309,7 +244,7 @@ const finalAmount = computed(() => form.amount * (1 + (topupFee.value?.value || 
           </div>
         </UFormGroup>
       </UForm>
-      <div class="my-6 flex flex-row justify-between items-center">
+      <div class="mb-6 mt-8 flex flex-row justify-between items-center">
         <div class="text-12-500-20 text-[#7A7D89]">{{ t('cards.modals.topup.label.fee') }}</div>
         <div class="text-14-500-20">{{ topupFee?.value || 0 }}%</div>
       </div>
