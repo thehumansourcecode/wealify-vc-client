@@ -33,11 +33,26 @@ export class CardService extends BaseService {
     })
   }
 
+
+  async freezeCard(id: string): Promise<ICommonResponse<any>> {
+    return this.put(`/${id}/freeze`, )
+  }
+
+  async cancelCard(id: string): Promise<ICommonResponse<any>> {
+    return this.put(`/${id}/cancel`, )
+  }
+
+  async unfreezeCard(id: string): Promise<ICommonResponse<any>> {
+    return this.put(`/${id}/unfreeze`, )
+  }
+
+
   async topup(params: ITopupCardParams): Promise<ICommonResponse<any>> {
     return this.post(`${params.id}/top-up`, {
       amount: params.amount,
     })
   }
+
 }
 
 export const cardService = new CardService()

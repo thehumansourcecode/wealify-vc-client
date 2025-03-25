@@ -113,6 +113,45 @@ export const useCardStore = defineStore('card', () => {
     return response
   }
 
+
+  async function freezeCard(id: string) {
+    const response = await cardService.freezeCard(id)
+    if (!response.success) {
+      return {
+        success:false,
+        message:response.message
+      }
+    }
+     return {
+      success:true
+    }
+  }
+
+  async function cancelCard(id: string) {
+    const response = await cardService.cancelCard(id)
+    if (!response.success) {
+      return {
+        success:false,
+        message:response.message
+      }
+    }
+     return {
+      success:true
+    }
+  }
+
+  async function unfreezeCard(id: string) {
+    const response = await cardService.unfreezeCard(id)
+    if (!response.success) {
+      return {
+        success:false,
+        message:response.message
+      }
+    }
+     return {
+      success:true
+    }
+
   const topupFee = ref<IFeeData>()
 
   async function getTopupFee() {
@@ -134,6 +173,7 @@ export const useCardStore = defineStore('card', () => {
     }
     isLoading.value.topupCard = false
     return response
+
   }
 
   return {
@@ -153,6 +193,9 @@ export const useCardStore = defineStore('card', () => {
     getCardDetailById,
     isOpenCardTopupModal,
     toggleCardTopupModal,
+    freezeCard,
+    cancelCard,
+    unfreezeCard,
     selectedCardForTopup,
     setSelectedCardForTopup,
     topupFee,
