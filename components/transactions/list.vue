@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { formatMoney } from '~/common/functions'
-import { type ITransactionData, TransactionType } from '~/types/transactions'
+import { type ITransactionData, TransactionVCType } from '~/types/transactions'
 
 const { t } = useI18n()
 const transactionStore = useTransactionStore()
@@ -99,10 +99,10 @@ function handleClickTransaction(row: ITransactionData) {
   >
     <template #type-data="{ row }">
       <div class="flex flex-row items-center gap-[14px] w-[165px]">
-        <img :src="`/images/transactions/${row.transaction_type}.svg`" alt="" />
+        <img :src="`/images/transactions/${row.transaction_vc_type}.svg`" alt="" />
         <div class="flex flex-col gap-1">
           <span class="text-14-600-20 text-[#1b1c23] text-sm font-semibold font-['Manrope'] leading-tight">{{
-            t(`transactions.list.type.${row.transaction_type}`)
+            t(`transactions.list.type.${row.transaction_vc_type}`)
           }}</span>
           <span class="text-12-500-20 text-[#7A7D89]">{{
             row.virtual_card ? t(`transactions.list.card`) : t(`transactions.list.cryptoTransfer`)
@@ -117,7 +117,7 @@ function handleClickTransaction(row: ITransactionData) {
       <div class="text-16-700-24 w-[150px] text-[#1C1D23] text-center">
         {{
           row.amount
-            ? row.transaction_type === TransactionType.TOP_UP
+            ? row.transaction_vc_type === TransactionVCType.TOP_UP
               ? `+${formatMoney(row.amount)}`
               : `-${formatMoney(row.amount)}`
             : ''
@@ -131,22 +131,22 @@ function handleClickTransaction(row: ITransactionData) {
       <div v-if="row.virtual_card" class="flex flex-row items-center gap-[14px] w-[218px]">
         <img src="/images/transactions/mastercard.svg" alt="" />
         <div class="flex flex-col gap-1">
-          <span class="text-14-600-20 text-[#1C1D23]">{{ row.virtual_card.cardName }}</span>
-          <span class="text-12-500-20 text-[#7A7D89]"> {{ row.virtual_card.cardNumber }}</span>
+          <span class="text-14-600-20 text-[#1C1D23]">{{ row.virtual_card.card_name }}</span>
+          <span class="text-12-500-20 text-[#7A7D89]"> {{ row.virtual_card.card_number }}</span>
         </div>
       </div>
     </template>
     <template #status-data="{ row }">
       <div
         class="flex flex-row gap-[6px] w-[120px] items-center justify-center mx-auto px-3 py-[2px] bg-[#F0F2F5] rounded-[110px]"
-        :style="{ color: getStatusColor(row?.transaction_status) }"
+        :style="{ color: getStatusColor(row?.transaction_vc_status) }"
       >
         <div class="text-12-500-20">
-          {{ t(`transactions.list.status.${row.transaction_status}`) }}
+          {{ t(`transactions.list.status.${row.transaction_vc_status}`) }}
         </div>
         <div
           class="w-[6px] h-[6px] rounded-[1px]"
-          :style="{ background: getStatusColor(row?.transaction_status) }"
+          :style="{ background: getStatusColor(row?.transaction_vc_status) }"
         ></div>
       </div>
     </template>

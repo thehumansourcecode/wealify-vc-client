@@ -1,5 +1,5 @@
 import { TransactionCryptocurrency, TransactionNetwork } from '~/types/dashboard'
-import { TransactionStatus, TransactionType } from '~/types/transactions'
+import { TransactionVCStatus, TransactionVCType } from '~/types/transactions'
 
 export default {
   button: {
@@ -32,17 +32,14 @@ export default {
       action: 'Action',
     },
     type: {
-      [TransactionType.INTERNAL]: 'Spend',
-      [TransactionType.TOP_UP]: 'Top-up',
-      [TransactionType.WITHDRAWAL]: 'Withdraw',
+      [TransactionVCType.PAYMENT]: 'Spend',
+      [TransactionVCType.TOP_UP]: 'Top-up',
+      [TransactionVCType.WITHDRAWAL]: 'Withdraw',
     },
     status: {
-      [TransactionStatus.PENDING]: 'Processing',
-      [TransactionStatus.PROCESS]: 'Processing',
-      [TransactionStatus.APPROVED]: 'Success',
-      [TransactionStatus.REJECTED]: 'Failed',
-      [TransactionStatus.WAITING]: 'Processing',
-      [TransactionStatus.CANCELLED]: 'Failed',
+      [TransactionVCStatus.PROCESSING]: 'Processing',
+      [TransactionVCStatus.SUCCESS]: 'Success',
+      [TransactionVCStatus.FAILURE]: 'Failed',
     },
     card: 'Card',
     cryptoTransfer: 'Crypto Transfer',
@@ -75,9 +72,9 @@ export default {
   detail: {
     to: 'to {destination}',
     amountLabel: {
-      [TransactionType.INTERNAL]: 'Payment Amount',
-      [TransactionType.TOP_UP]: 'Top up Amount',
-      [TransactionType.WITHDRAWAL]: 'Withdraw Amount',
+      [TransactionVCType.PAYMENT]: 'Payment Amount',
+      [TransactionVCType.TOP_UP]: 'Top up Amount',
+      [TransactionVCType.WITHDRAWAL]: 'Withdraw Amount',
     },
     amount: '{amount} USDT',
     rate: 'Rate',
@@ -91,24 +88,21 @@ export default {
     created_at: 'Created at',
     successAt: 'Success at',
     createNew: {
-      [TransactionType.INTERNAL]: 'Create new payment',
-      [TransactionType.TOP_UP]: 'Create new top up',
-      [TransactionType.WITHDRAWAL]: 'Create new withdraw',
+      [TransactionVCType.PAYMENT]: 'Create new payment',
+      [TransactionVCType.TOP_UP]: 'Create new top up',
+      [TransactionVCType.WITHDRAWAL]: 'Create new withdraw',
     },
     contact:
       'If you find any errors or omissions in this statement, please contact Wealify’s customer service emailing at ',
     label: {
-      [TransactionType.INTERNAL]: 'Wallet Payment',
-      [TransactionType.TOP_UP]: 'Wallet Top up',
-      [TransactionType.WITHDRAWAL]: 'Wallet Withdraw',
+      [TransactionVCType.PAYMENT]: 'Wallet Payment',
+      [TransactionVCType.TOP_UP]: 'Wallet Top up',
+      [TransactionVCType.WITHDRAWAL]: 'Wallet Withdraw',
     },
     status: {
-      [TransactionStatus.PENDING]: 'Processing',
-      [TransactionStatus.PROCESS]: 'Processing',
-      [TransactionStatus.APPROVED]: 'Success',
-      [TransactionStatus.REJECTED]: 'Failed',
-      [TransactionStatus.WAITING]: 'Processing',
-      [TransactionStatus.CANCELLED]: 'Failed',
+      [TransactionVCStatus.PROCESSING]: 'Processing',
+      [TransactionVCStatus.SUCCESS]: 'Success',
+      [TransactionVCStatus.FAILURE]: 'Failed',
     },
   },
 }

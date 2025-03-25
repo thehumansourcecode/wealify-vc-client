@@ -9,6 +9,15 @@ async function onEnterKeyword() {
   await transactionStore.setPayload({ ...payload.value, page: 1, keyword: tempKeyword.value })
   transactionStore.getTransactionList(payload.value)
 }
+
+async function loadData() {
+  if (payload.value.page !== 1) {
+    await transactionStore.setPayloadPage(1)
+  }
+  transactionStore.getTransactionList(payload.value)
+}
+
+watch(() => [payload.value.keyword], loadData, { deep: true })
 </script>
 <template>
   <!-- Cards not selected -->

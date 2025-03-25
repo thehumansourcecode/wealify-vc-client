@@ -1,17 +1,13 @@
-import { TransactionStatus } from '~/types/transactions'
+import { TransactionVCStatus } from '~/types/transactions'
 
-export function getStatusColor(status: TransactionStatus) {
-  if (status === TransactionStatus.CANCELLED || status == TransactionStatus.REJECTED) {
+export function getStatusColor(status: TransactionVCStatus) {
+  if (status === TransactionVCStatus.FAILURE) {
     return '#ED2C38'
   }
-  if (status === TransactionStatus.APPROVED) {
+  if (status === TransactionVCStatus.SUCCESS) {
     return '#2EA518'
   }
-  if (
-    status === TransactionStatus.PENDING ||
-    status == TransactionStatus.PROCESS ||
-    status == TransactionStatus.WAITING
-  ) {
+  if (status === TransactionVCStatus.PROCESSING) {
     return '#02076F'
   }
 }

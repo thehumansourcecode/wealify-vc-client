@@ -1,26 +1,26 @@
 <script setup lang="ts">
 import { shortenString } from '~/common/functions'
-import { TransactionStatus } from '~/types/transactions'
+import { TransactionVCStatus } from '~/types/transactions'
 
 interface Option {
   title: string
-  value: Array<TransactionStatus>
+  value: Array<TransactionVCStatus>
 }
 
-const model = defineModel<Array<TransactionStatus>>({ default: [] })
+const model = defineModel<Array<TransactionVCStatus>>({ default: [] })
 const open = ref<boolean>(false)
 const options = computed<Array<Option>>(() => [
   {
     title: 'Process',
-    value: [TransactionStatus.PENDING, TransactionStatus.PROCESS, TransactionStatus.WAITING],
+    value: [TransactionVCStatus.PROCESSING],
   },
   {
     title: 'Success',
-    value: [TransactionStatus.APPROVED],
+    value: [TransactionVCStatus.SUCCESS],
   },
   {
     title: 'Failed',
-    value: [TransactionStatus.REJECTED, TransactionStatus.CANCELLED],
+    value: [TransactionVCStatus.FAILURE],
   },
 ])
 
