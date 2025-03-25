@@ -153,6 +153,9 @@ export default {
       },
     },
   },
+  message:{
+    freeze:'Freeze card success'
+  },
   modals: {
     topup: {
       title: 'Top up card',

@@ -45,4 +45,7 @@ export default {
       [CardStatus.FROZEN]: 'Freeze',
     },
   },
+  message:{
+    freeze:'Freeze card success'
+  },
 }

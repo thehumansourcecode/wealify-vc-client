@@ -3,8 +3,14 @@ import { TransactionStatus, TransactionType } from '~/types/dashboard'
 import { formatMMYYYY, formatMoney, shortenAddress, formatMoneyWithoutDecimals, roundNumber } from '~/common/functions'
 import { CardStatus } from '~/types/cards'
 import { CommonCurrency } from '~/types/common'
-
+import { showToast, ToastType } from '~/common/functions'
 const { copy, copied } = useClipboard()
+const {
+  freezeCard,
+  cancelCard,
+  getCardDetailById
+} = useCardStore()
+
 const { t } = useI18n()
 const toast = useToast()
 
@@ -28,6 +34,10 @@ const isOpenCardDetailSlideover = computed(() => cardStore.isOpenCardDetailSlide
 const cardDetail = computed(() => cardStore.selectedCardDetail)
 const isShowCardSensitiveDetail = ref(false)
 const isShowCardSensitiveDetailOverlay = ref(false)
+const loading = ref({
+  freeze:false,
+  cancel:false,
+})
 
 const cardSensitiveDetail = ref({
   CVV: '888',
@@ -73,7 +83,6 @@ const handleMouseMove = event => {
 }
 
 function handleShowSensitiveDetail() {
-  // OTP, PIN ...
   isShowCardSensitiveDetail.value = true
   isShowCardSensitiveDetailOverlay.value = false
 }
@@ -84,16 +93,44 @@ function onClosePrevented() {
 
 function handleViewTransaction() {
   cardStore.toggleCardDetailSlideover(false)
-  // Set payload => filter transactions only current card
   navigateTo('/transactions')
 }
 
 // Actions
-function handleTopup() {}
-function handleFreeze() {}
-function handleCancel() {}
-function handleWithdraw() {}
-function handleUnfreeze() {}
+function handleTopup() {
+
+}
+
+const handleFreeze = async() => {
+  loading.value.freeze = true
+  const result = await freezeCard(cardDetail.value.id)
+  loading.value.freeze = false
+  if (!result.success){
+    showToast(ToastType.FAILED, result.message)
+    return
+  }
+  showToast(ToastType.SUCCESS, t('cards.message.freeze'))
+  await getCardDetailById(cardDetail.value.id)
+}
+
+const handleCancel = async() => {
+  loading.value.cancel = true
+  const result = await cancelCard(cardDetail.value.id)
+  loading.value.cancel = false
+  if (!result.success){
+    showToast(ToastType.FAILED, result.message)
+    return
+  }
+  showToast(ToastType.SUCCESS, t('cards.message.freeze'))
+  await getCardDetailById(cardDetail.value.id)
+}
+
+function handleWithdraw() {
+
+}
+function handleUnfreeze() {
+
+}
 </script>
 
 <template>
@@ -167,22 +204,11 @@ function handleUnfreeze() {}
             v-if="cardDetail?.card_status === CardStatus.ACTIVE"
             class="mt-7 flex flex-row w-full justify-around text-[#1C1D23] text-14-500-20"
           >
-            <div @click="handleTopup" class="flex flex-col gap-3 items-center cursor-pointer hover:opacity-90">
-              <img class="w-10" src="~/assets/img/cards/topup.svg" alt="" />
-              <div>{{ t(`cards.slideovers.detail.button.topup`) }}</div>
-            </div>
-            <div @click="handleFreeze" class="flex flex-col gap-3 items-center cursor-pointer hover:opacity-90">
-              <img class="w-10" src="~/assets/img/cards/freeze.svg" alt="" />
-              <div>{{ t(`cards.slideovers.detail.button.freeze`) }}</div>
-            </div>
-            <div @click="handleCancel" class="flex flex-col gap-3 items-center cursor-pointer hover:opacity-90">
-              <img class="w-10" src="~/assets/img/cards/cancel.svg" alt="" />
-              <div>{{ t(`cards.slideovers.detail.button.cancel`) }}</div>
-            </div>
-            <div @click="handleWithdraw" class="flex flex-col gap-3 items-center cursor-pointer hover:opacity-90">
-              <img class="w-10" src="~/assets/img/cards/withdraw.svg" alt="" />
-              <div>{{ t(`cards.slideovers.detail.button.withdraw`) }}</div>
-            </div>
+            <ButtonsCardDetail :type='`topup`'/>
+            <ButtonsCardDetail :type='`freeze`'  @click='handleFreeze' :loading='loading.freeze' />
+            <ButtonsCardDetail :type='`cancel`' @click='handleCancel' :loading='loading.cancel' />
+            <ButtonsCardDetail :type='`withdraw`' />
+            
           </div>
           <div v-if="cardDetail?.card_status === CardStatus.FROZEN" class="mt-7 flex flex-row w-full justify-between">
             <div

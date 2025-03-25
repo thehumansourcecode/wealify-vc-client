@@ -96,6 +96,32 @@ export const useCardStore = defineStore('card', () => {
     return response
   }
 
+  async function freezeCard(id: string) {
+    const response = await cardService.freezeCard(id)
+    if (!response.success) {
+      return {
+        success:false,
+        message:response.message
+      }
+    }
+     return {
+      success:true
+    }
+  }
+
+  async function cancelCard(id: string) {
+    const response = await cardService.cancelCard(id)
+    if (!response.success) {
+      return {
+        success:false,
+        message:response.message
+      }
+    }
+     return {
+      success:true
+    }
+  }
+
   return {
     isLoading,
     payload,
@@ -113,5 +139,7 @@ export const useCardStore = defineStore('card', () => {
     getCardDetailById,
     isOpenCardTopupModal,
     toggleCardTopupModal,
+    freezeCard,
+    cancelCard,
   }
 })
