@@ -25,6 +25,8 @@ onMounted(async () => {
   await Promise.all([commonStore.getDropdownCategoryList(), userStore.getBalance()])
 })
 
+const currencyInputRef = ref()
+
 const totalBalance = computed(() => userStore.userBalance?.wallet_balance?.balance)
 
 onUnmounted(() => {
@@ -112,64 +114,6 @@ const handleInputName = event => {
   event.target.value = inputValue
 }
 
-const originalNumericValue = ref<number>()
-
-const formattedBalance = computed({
-  get: () => {
-    const formatted = new Intl.NumberFormat('en-US')
-    return formatted.format(form.spend_limit)
-  },
-  set: value => {
-    // Remove commas and parse to integer
-    form.spend_limit = Number(value.replace(/,/g, '')) || 0
-  },
-})
-
-const formatBalance = (target: HTMLInputElement) => {
-  const rawValue = Number(target.value.split(',').join(''))
-
-  if (Number.isNaN(Number(rawValue))) {
-    target.value = formattedBalance.value
-    return
-  }
-  if (+rawValue === +formattedBalance.value) {
-    const formatted = new Intl.NumberFormat('en-US')
-    target.value = formatted.format(+formattedBalance.value)
-    return
-  }
-  if (+rawValue > MAX_SPEND_LIMIT) {
-    const formatted = new Intl.NumberFormat('en-US')
-    target.value = formatted.format(form.spend_limit)
-    return
-  }
-  target.value = target.value.trim()
-  originalNumericValue.value = rawValue
-}
-
-const removeDots = event => {
-  console.log(event)
-  if (event.key === '.' || event.key === ',') {
-    event.preventDefault()
-  }
-}
-
-// Handle manual input updates
-const handleInputBalance = async event => {
-  const target = event.target as HTMLInputElement
-  // value = value.replace(/[^0-9]+/g, '')
-  let caretPosition = target.selectionStart || 0
-  const originalPositionRight = target.value.length - caretPosition
-  try {
-    formatBalance(target)
-    setTimeout(() => {
-      caretPosition = target.value.length === 1 ? 1 : target.value.length - originalPositionRight
-      target.setSelectionRange(caretPosition, caretPosition)
-    }, 0)
-  } catch (error) {
-    console.log(error)
-  }
-}
-
 const presetAmounts = computed(() => {
   const balance = form.spend_limit
   if (!balance || balance == 0) {
@@ -181,7 +125,7 @@ const presetAmounts = computed(() => {
   if (+balance >= 10000000) {
     return [balance, balance * 10]
   }
-  if (+balance > 1000000) {
+  if (+balance >= 1000000) {
     return [balance, balance * 10, balance * 100]
   } else {
     return [balance, balance * 10, balance * 100, balance * 1000]
@@ -189,8 +133,13 @@ const presetAmounts = computed(() => {
 })
 
 const setAmount = amount => {
-  formattedBalance.value =
-    amount > MAX_SPEND_LIMIT ? formatMoneyWithoutDecimals(MAX_SPEND_LIMIT) : formatMoneyWithoutDecimals(amount)
+  form.spend_limit = amount > MAX_SPEND_LIMIT ? MAX_SPEND_LIMIT : amount
+  if (currencyInputRef?.value) {
+    setTimeout(() => {
+      currencyInputRef.value.focusInput()
+      currencyInputRef.value.blurInput()
+    })
+  }
 }
 
 async function handleIssue() {
@@ -551,20 +500,7 @@ watch(
                 </div>
               </div>
               <div class="flex flex-row justify-between mt-4">
-                <UInput
-                  class="w-full text-20-700-32 items-center flex"
-                  autocomplete="off"
-                  variant="none"
-                  v-model="formattedBalance"
-                  @input="handleInputBalance"
-                  @keydown="removeDots"
-                  :ui="{
-                    padding: {
-                      sm: 'p-0 text-[20px]',
-                    },
-                  }"
-                >
-                </UInput>
+                <BaseFormattedCurrencyInput v-model="form.spend_limit" ref="currencyInputRef" />
                 <div class="flex flex-row gap-[6px] py-1 pr-3 pl-[6px] bg-[#F0F2F5] rounded-[44px]">
                   <img src="~/assets/img/flags/us.svg" alt="" />
                   <div class="text-[#1C1D23] text-12-500-20">USD</div>

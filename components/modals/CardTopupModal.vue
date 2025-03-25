@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { formatMoney, formatMoneyWithoutDecimals } from '~/common/functions'
-import { CommonCurrency, FeeType } from '~/types/common'
+import { CommonCurrency, FeeAmountType, FeeType } from '~/types/common'
 import { MAX_SPEND_LIMIT } from '../cards/constants'
 import { number, object, string } from 'yup'
 const { t } = useI18n()
@@ -69,7 +69,31 @@ watch(
   { deep: true }, // Watch nested object changes
 )
 
-const threshold = computed(() => +(walletBalance.value || 0) - (topupFee.value?.value || 0))
+const threshold = computed(() => {
+  const balance = walletBalance.value || 0
+  if (!topupFee.value) {
+    return balance
+  } else {
+    if (topupFee.value.type === FeeAmountType.FIXED) {
+      return balance - topupFee.value?.value
+    } else {
+      return balance * (1 - topupFee.value.value)
+    }
+  }
+})
+
+const finalAmount = computed(() => {
+  if (!topupFee.value) {
+    return form.amount
+  } else {
+    if (topupFee.value.type === FeeAmountType.FIXED) {
+      return form.amount + topupFee.value?.value
+    } else {
+      return form.amount * (1 + topupFee.value?.value)
+    }
+  }
+})
+
 const topupCardSchema = object({
   amount: number()
     .test('min-threshold', t('common.validator.invalid.topupCard.zeroTopup'), value => {
@@ -79,8 +103,6 @@ const topupCardSchema = object({
       return value <= +threshold.value
     }),
 })
-
-const finalAmount = computed(() => form.amount * (1 + (topupFee.value?.value || 0) / 100))
 
 async function handleTopup() {
   if (selectedCard.value?.id) {
@@ -246,7 +268,12 @@ async function handleTopup() {
       </UForm>
       <div class="mb-6 mt-8 flex flex-row justify-between items-center">
         <div class="text-12-500-20 text-[#7A7D89]">{{ t('cards.modals.topup.label.fee') }}</div>
-        <div class="text-14-500-20">{{ topupFee?.value || 0 }}%</div>
+        <div v-if="topupFee?.type === FeeAmountType.PERCENT" class="text-14-500-20">
+          {{ topupFee?.value * 100 || 0 }}%
+        </div>
+        <div v-else-if="topupFee?.type === FeeAmountType.FIXED" class="text-14-500-20">
+          {{ formatMoney(topupFee?.value || 0, CommonCurrency.USD) }}
+        </div>
       </div>
       <div class="flex flex-row justify-between items-center">
         <div class="text-12-500-20">{{ t('cards.modals.topup.label.topup') }}</div>
@@ -255,9 +282,9 @@ async function handleTopup() {
       <div class="mt-4">
         <BaseSubmitButton
           @click="handleTopup"
-          :loading="loading.topupCard"
+          :loading="loading"
           :is-submit-enabled="isFormValid"
-          :title="t('cards.button.issue')"
+          :title="t('cards.button.topupCard')"
         />
       </div>
     </div>

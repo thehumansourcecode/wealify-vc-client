@@ -13,7 +13,7 @@ import { FeeType, type IDropdownCardData, type IFeeData } from '~/types/common'
 
 export const useCardStore = defineStore('card', () => {
   const cardCount = ref(0)
-
+  const { t } = useI18n()
   const isOpenCardTopupModal = ref(false)
 
   function toggleCardTopupModal(state: boolean) {
@@ -91,12 +91,10 @@ export const useCardStore = defineStore('card', () => {
 
   async function issueCard(params: IIssueCardParams) {
     isLoading.value.issueCard = true
-    console.log(isLoading.value)
-    console.log(isLoading.value.issueCard)
     const response = await cardService.issueCard(params)
     if (response.success) {
       navigateTo('/cards')
-      payload.value = { ...payload.value, card_status: [CardStatus.ACTIVE] }
+      setPayload({ ...payload.value, card_status: [CardStatus.ACTIVE] })
       await getCardList(payload.value)
     } else {
       showToast(ToastType.FAILED, response.message)
@@ -167,12 +165,18 @@ export const useCardStore = defineStore('card', () => {
     isLoading.value.topupCard = true
     const response = await cardService.topup(params)
     if (response.success) {
-      payload.value = { ...payload.value, card_status: [CardStatus.ACTIVE] }
-      await getCardList(payload.value)
+      showToast(ToastType.SUCCESS, t('common.toast.success.topupCard'))
+      // On change status => call API. Avoid duplicate API calls
+      if (payload.value.card_status.length !== 1 || payload.value.card_status[0] !== CardStatus.ACTIVE) {
+        setPayload({ ...payload.value, card_status: [CardStatus.ACTIVE] })
+      } else {
+        await getCardList(payload.value)
+      }
     } else {
-      showToast(ToastType.FAILED, response.message)
+      showToast(ToastType.FAILED, t('common.toast.failed.topupCard'))
     }
     isLoading.value.topupCard = false
+    toggleCardTopupModal(false)
     return response
 
   }

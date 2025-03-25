@@ -18,6 +18,12 @@ export default {
   },
   toast: {
     copy: 'Copied to clipboard!',
+    success: {
+      topupCard: 'Successful Card Top-up',
+    },
+    failed: {
+      topupCard: 'Fail to Top up virtual card. Please try again',
+    },
   },
   validator: {
     empty: {

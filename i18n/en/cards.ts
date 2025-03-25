@@ -8,6 +8,7 @@ export default {
     freeze: 'Freeze',
     unfreeze: 'Unfreeze',
     cancel: 'Cancel cards',
+    topupCard: 'Top up card',
   },
   filter: {
     placeholder: {
