@@ -20,6 +20,7 @@ const cardCount = computed(() => cardStore.cardCount)
 const limitOptions = ref([10, 30, 50])
 const page = computed(() => payload.value.page)
 const limit = computed(() => payload.value.limit)
+const filterType = ref(undefined)
 
 function isCardSelected(card: ICardDetail) {
   return selectedCardList.value.some((selectedCard: ICardDetail) => selectedCard.id === card.id)
@@ -42,7 +43,7 @@ const totalActiveAmount = computed(() => {
   return cardListAmount.reduce((a: number, b: number) => a + b, 0)
 })
 
-const typeOptions = Object.values(CardType)
+const typeOptions = Object.values(CardType).map((value, index) => ({ type: value ,disabled : index == 0}))
 const categoryOptions = computed(() => commonStore.categoryList)
 const statusOptions = Object.values(CardStatus)
 
@@ -176,6 +177,18 @@ watch(
   { deep: true },
 )
 
+watch(
+  filterType,
+   (value) => {
+    if(value){
+      payload.value.card_type = value.type
+      return 
+    }
+    payload.value.card_type = value
+  },
+)
+
+
 async function onEnterKeyword() {
   if (tempKeyword.value !== payload.value.keyword) {
     cardStore.setPayload({ ...payload.value, keyword: tempKeyword.value })
@@ -190,7 +203,6 @@ async function initPage() {
 }
 
 onUnmounted(() =>
-  // Reset payload
   cardStore.setPayload({
     page: 1,
     limit: 10,
@@ -226,8 +238,9 @@ onUnmounted(() =>
           <BaseSingleSelect
             class="w-[150px]"
             :options="typeOptions"
-            v-model="payload.card_type"
+            v-model="filterType"
             :selected-icon="'i-selected'"
+            :option-attribute="`label`"
           >
             <template #default="{ open: open }">
               <div
@@ -235,31 +248,30 @@ onUnmounted(() =>
                 :class="open ? 'border-[#FF5524]' : 'border-[f0f2f5]'"
               >
                 <div class="text-12-500-20 text-[#7A7D89]">
-                  <span v-if="payload.card_type">
-                    {{ t(`cards.list.type.${payload.card_type}`) }}
+                  <span v-if="filterType">
+                    {{ t(`cards.list.type.${filterType.type}`) }}
                   </span>
                   <span v-else>
                     {{ t('cards.filter.label.type') }}
                   </span>
                 </div>
                 <img
-                  v-if="!payload.card_type"
+                  v-if="!filterType"
                   src="/assets/img/icons/dropdown.svg"
                   class="transition-transform"
                   :class="[open && 'transform rotate-180']"
                 />
                 <img
-                  @click.prevent="payload.card_type = undefined"
+                  @click.prevent="filterType = undefined"
                   v-else
                   class="cursor-pointer"
                   src="/assets/img/icons/clear.svg"
-                  alt=""
                 />
               </div>
             </template>
-            <template #option="{ option: type }">
+            <template #option="{ option }">
               <span class="text-[#1C1D23] text-14-500-20">
-                {{ t(`cards.list.type.${type}`) }}
+                {{ t(`cards.list.type.${option.type}`) }}
               </span>
             </template>
           </BaseSingleSelect>

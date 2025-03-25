@@ -1,5 +1,6 @@
 <template>
   <USelectMenu
+    :option-attribute="optionAttribute"
     :searchable="searchable"
     :searchable-placeholder="searchablePlaceholder"
     :options="options"
@@ -59,6 +60,7 @@ import { defineProps, defineEmits, ref, watch } from 'vue'
 const props = defineProps({
   multiple: Boolean,
   searchable: Boolean,
+  optionAttribute: String,
   searchablePlaceholder: String,
   trailingIcon: {
     type: String,
@@ -87,16 +89,16 @@ const emit = defineEmits(['update:modelValue'])
 const internalValue = ref(props.modelValue)
 
 function onSelectChange(newValue) {
-  console.log(newValue, 'new')
-  console.log(internalValue.value, 'internal')
+  // console.log(newValue, 'new')
+  // console.log(internalValue.value, 'internal')
 
   if (internalValue.value === newValue) {
-    console.log('Deselecting:', newValue)
+    // console.log('Deselecting:', newValue)
 
     internalValue.value = null
     emit('update:modelValue', null)
   } else {
-    console.log('Selecting:', newValue)
+    // console.log('Selecting:', newValue)
     internalValue.value = newValue
     emit('update:modelValue', newValue)
   }
