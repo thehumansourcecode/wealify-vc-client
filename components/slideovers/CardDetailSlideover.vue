@@ -26,23 +26,51 @@ function handleCopy(index: number, value: string) {
 const cardStore = useCardStore()
 const isOpenCardDetailSlideover = computed(() => cardStore.isOpenCardDetailSlideover)
 const cardDetail = computed(() => cardStore.selectedCardDetail)
-const cardNumberArray = computed(() => cardDetail.value?.cardNumber?.split(' '))
 const isShowCardSensitiveDetail = ref(false)
 const isShowCardSensitiveDetailOverlay = ref(false)
 
+const cardSensitiveDetail = ref({
+  CVV: '888',
+  card_number: '1231 1232 1233 9998',
+})
+
+const cardNumberArray = cardSensitiveDetail.value.card_number.split(' ')
+
 const balanceRate = computed(() =>
-  cardDetail.value?.balance
-    ? roundNumber(
-        ((cardDetail.value?.total_top_up || 0 + (cardDetail.value?.total_withdraw || 0)) / cardDetail.value?.balance) *
-          100,
-        1,
-      )
+  cardDetail.value?.total_top_up
+    ? roundNumber(((cardDetail.value?.total_withdraw || 120) / cardDetail.value?.total_top_up) * 100, 1)
     : 0,
 )
 
 const chartClass = computed(() => {
   return `background: conic-gradient(#FF5524 0% ${balanceRate.value}%, #D7D9E5 ${balanceRate.value}% 100%)`
 })
+
+const chartContainer = ref(null)
+const isWithdrawTooltipVisible = ref(false)
+const isBalanceTooltipVisible = ref(false)
+
+// Handle mouse movement to detect hover over total_withdraw section
+const handleMouseMove = event => {
+  const rect = chartContainer.value?.getBoundingClientRect()
+  const x = event.clientX - rect.left - 64 // Center at (64, 64)
+  const y = event.clientY - rect.top - 64
+  const distance = Math.sqrt(x * x + y * y)
+  const angle = (Math.atan2(y, x) * (180 / Math.PI) + 360) % 360 // Convert to degrees, 0-360
+  const adjusted_angle = (angle + 90) % 360 // Shift to start from north
+  const theta = (balanceRate?.value || 0) * 3.6 // Convert percentage to degrees (100% = 360°)
+  // Check if mouse is within the ring (r_inner=54, r_outer=64) and total_withdraw angle
+  if (distance >= 54 && distance <= 64 && adjusted_angle <= theta) {
+    isWithdrawTooltipVisible.value = true
+  } else {
+    isWithdrawTooltipVisible.value = false
+  }
+  if (distance >= 54 && distance <= 64 && adjusted_angle >= theta) {
+    isBalanceTooltipVisible.value = true
+  } else {
+    isBalanceTooltipVisible.value = false
+  }
+}
 
 function handleShowSensitiveDetail() {
   // OTP, PIN ...
@@ -69,7 +97,17 @@ function handleUnfreeze() {}
 </script>
 
 <template>
-  <USlideover v-model="isOpenCardDetailSlideover" :prevent-close="true" @close-prevented="onClosePrevented()">
+  <USlideover
+    v-model="isOpenCardDetailSlideover"
+    :prevent-close="true"
+    @close-prevented="onClosePrevented()"
+    :ui="{
+      width: 'w-screen max-w-[464px]',
+      overlay: {
+        background: 'bg-[#1c1d23]/30',
+      },
+    }"
+  >
     <div class="flex flex-col items-center bg-[#1C1D23]">
       <div class="w-full flex flex-row items-center py-6 px-8 gap-4">
         <img
@@ -97,8 +135,18 @@ function handleUnfreeze() {}
             </div>
           </div>
           <img class="mt-auto mb-3 w-[110px]" src="~/assets/img/cards/add-to-apple.png" alt="" />
-          <div class="flex flex-row justify-between karla tracking-[3px] text-24-400 text-[#D7D9E5] w-full">
-            <div v-for="(part, index) in cardNumberArray" :key="index">{{ part }}</div>
+          <div class="karla tracking-[3px] text-24-400 text-[#D7D9E5] w-full">
+            <div class="flex flex-row justify-between w-full" v-if="isShowCardSensitiveDetail">
+              <div v-for="(part, index) in cardNumberArray" :key="index">
+                {{ part }}
+              </div>
+            </div>
+            <div class="flex flex-row justify-between w-full" v-else>
+              <div>XXXX</div>
+              <div>XXXX</div>
+              <div>XXXX</div>
+              <div>{{ cardDetail?.last_four }}</div>
+            </div>
           </div>
         </div>
         <!-- Information -->
@@ -107,16 +155,16 @@ function handleUnfreeze() {}
           <div class="mt-2 flex flex-row gap-8">
             <div class="flex flex-row gap-2">
               <img src="~/assets/img/icons/mail.svg" alt="" />
-              <div class="text-[#7A7D89] text-14-500-20">ota@gmail.com</div>
+              <div class="text-[#7A7D89] text-14-500-20">{{ cardDetail?.email }}</div>
             </div>
             <div class="flex flex-row gap-2">
               <img src="~/assets/img/icons/phone.svg" alt="" />
-              <div class="text-[#7A7D89] text-14-500-20">024 657 7891</div>
+              <div class="text-[#7A7D89] text-14-500-20">{{ cardDetail?.phone_number }}</div>
             </div>
           </div>
           <!-- Buttons -->
           <div
-            v-if="cardDetail?.status === CardStatus.ACTIVE"
+            v-if="cardDetail?.card_status === CardStatus.ACTIVE"
             class="mt-7 flex flex-row w-full justify-around text-[#1C1D23] text-14-500-20"
           >
             <div @click="handleTopup" class="flex flex-col gap-3 items-center cursor-pointer hover:opacity-90">
@@ -136,7 +184,7 @@ function handleUnfreeze() {}
               <div>{{ t(`cards.slideovers.detail.button.withdraw`) }}</div>
             </div>
           </div>
-          <div v-if="cardDetail?.status === CardStatus.FREEZE" class="mt-7 flex flex-row w-full justify-between">
+          <div v-if="cardDetail?.card_status === CardStatus.FROZEN" class="mt-7 flex flex-row w-full justify-between">
             <div
               @click="handleUnfreeze"
               class="flex flex-col gap-3 w-[50%] items-center cursor-pointer hover:opacity-90"
@@ -172,25 +220,25 @@ function handleUnfreeze() {}
             <div class="flex flex-row justify-between text-14-500-20 text-[#1C1D23]">
               <div>{{ t(`cards.slideovers.detail.info.cardNumber`) }}</div>
               <div v-if="isShowCardSensitiveDetail" class="flex flex-row gap-2 items-center">
-                <span>**** **** **** {{ cardNumberArray?.[3] }}</span>
+                <span>{{ cardSensitiveDetail?.card_number }}</span>
                 <img
                   class="cursor-pointer"
-                  @click="handleCopy(0, cardDetail?.cardNumber || '')"
+                  @click="handleCopy(0, cardSensitiveDetail?.card_number || '')"
                   :src="
                     copied && copyIndex === 0 ? `/icons/common/copied-bordered.svg` : `/icons/common/copy-bordered.svg`
                   "
                   alt=""
                 />
               </div>
-              <div v-else>{{ cardDetail?.cardNumber }}</div>
+              <div v-else>**** **** **** {{ cardDetail?.last_four }}</div>
             </div>
             <div class="flex flex-row justify-between text-14-500-20">
               <div class="text-[#7A7D89]">{{ t(`cards.slideovers.detail.info.CVV`) }}</div>
               <div v-if="isShowCardSensitiveDetail" class="flex flex-row gap-2 items-center">
-                <span>{{ cardDetail?.CVV || 'CVV' }}</span>
+                <span>{{ cardSensitiveDetail?.CVV || 'CVV' }}</span>
                 <img
                   class="cursor-pointer"
-                  @click="handleCopy(1, cardDetail?.CVV || 'CVV')"
+                  @click="handleCopy(1, cardSensitiveDetail?.CVV || 'CVV')"
                   :src="
                     copied && copyIndex === 1 ? `/icons/common/copied-bordered.svg` : `/icons/common/copy-bordered.svg`
                   "
@@ -202,11 +250,11 @@ function handleUnfreeze() {}
             <div class="flex flex-row justify-between text-14-500-20">
               <div class="text-[#7A7D89]">{{ t(`cards.slideovers.detail.info.expired`) }}</div>
               <div class="flex flex-row gap-2 items-center">
-                <div>{{ formatMMYYYY(dayjs.utc(cardDetail?.created_at).local()) }}</div>
+                <div>{{ cardDetail?.expiry_date }}</div>
                 <img
-                  v-if="isShowCardSensitiveDetail"
+                  v-if="isShowCardSensitiveDetail && cardDetail?.expiry_date"
                   class="cursor-pointer"
-                  @click="handleCopy(2, formatMMYYYY(dayjs.utc(cardDetail?.created_at).local()))"
+                  @click="handleCopy(2, cardDetail?.expiry_date)"
                   :src="
                     copied && copyIndex === 2 ? `/icons/common/copied-bordered.svg` : `/icons/common/copy-bordered.svg`
                   "
@@ -221,27 +269,58 @@ function handleUnfreeze() {}
           </div>
           <!-- Analysis -->
           <div class="flex flex-row justify-between items-center mt-7 gap-8 mb-12">
-            <div class="w-[128px] h-[128px]">
+            <div
+              class="w-[128px] h-[128px] relative flex-none"
+              ref="chartContainer"
+              @mousemove="handleMouseMove"
+              @mouseleave="isWithdrawTooltipVisible = false"
+            >
               <div class="chart flex items-center justify-center z-100" :style="chartClass">
                 <div class="balance-rate">{{ balanceRate }}%</div>
               </div>
+              <div
+                v-if="isWithdrawTooltipVisible && cardDetail?.total_withdraw"
+                class="absolute top-[50%] -translate-y-1/2 left-[103%] bg-[#1C1D23] py-2 px-3 flex flex-row items-center gap-[6px] rounded-[8px]"
+              >
+                <div class="bg-[#FF5524] w-2 h-2 mx-[3px] rounded-full"></div>
+                <div class="w-[85px] text-[#A5A8B8] text-10-500-14">
+                  {{ t(`cards.slideovers.detail.info.total_withdraw`) }}
+                </div>
+                <div class="ml-auto text-[#FFF] text-14-500-20">
+                  ${{ formatMoneyWithoutDecimals(cardDetail?.total_withdraw) }}
+                </div>
+              </div>
+              <div
+                v-if="isBalanceTooltipVisible"
+                class="absolute -top-10 bg-[#1C1D23] py-2 px-3 flex flex-row items-center gap-[6px] rounded-[8px]"
+              >
+                <div class="bg-[#D7D9E5] w-2 h-2 mx-[3px] rounded-full"></div>
+                <div class="w-[85px] text-[#A5A8B8] text-10-500-14">
+                  {{ t(`cards.slideovers.detail.info.balance`) }}
+                </div>
+                <div class="ml-auto text-[#FFF] text-14-500-20">
+                  ${{ formatMoneyWithoutDecimals(cardDetail?.balance) }}
+                </div>
+              </div>
             </div>
             <div class="flex flex-col gap-4 text-[#7A7D89] text-12-500-20 grow">
-              <div class="flex flex-row">
-                <span class="text-[#ff5c5c] w-2">*</span>
-                <div class="ml-3">{{ t(`cards.slideovers.detail.info.purpose`) }}</div>
-                <div class="ml-auto">Travel Spending</div>
+              <div class="flex flex-row gap-4">
+                <img src="~/assets/img/cards/purpose.svg" alt="" />
+                <div class="ml-1.5 w-[85px] flex-none">{{ t(`cards.slideovers.detail.info.purpose`) }}</div>
+                <div class="ml-auto truncate text-right max-w-[100px]">{{ cardDetail?.card_purpose }}</div>
               </div>
-              <div class="flex flex-row items-center">
-                <div class="bg-[#D7D9E5] w-2 h-2 rounded-full"></div>
-                <div class="ml-3">{{ t(`cards.slideovers.detail.info.total_top_up`) }}</div>
-                <div class="ml-auto">{{ formatMoneyWithoutDecimals(cardDetail?.total_top_up, CommonCurrency.USD) }}</div>
+              <div class="flex flex-row items-center gap-4">
+                <div class="bg-[#D7D9E5] w-2 h-2 mx-[3px] rounded-full"></div>
+                <div class="ml-1.5 w-[85px]">{{ t(`cards.slideovers.detail.info.total_top_up`) }}</div>
+                <div class="ml-auto text-[#1C1D23] text-14-500-20">
+                  ${{ formatMoneyWithoutDecimals(cardDetail?.total_top_up) }}
+                </div>
               </div>
-              <div class="flex flex-row items-center">
-                <div class="bg-[#FF5524] w-2 h-2 rounded-full"></div>
-                <div class="ml-3">{{ t(`cards.slideovers.detail.info.total_withdraw`) }}</div>
-                <div class="ml-auto">
-                  {{ formatMoneyWithoutDecimals(cardDetail?.total_withdraw, CommonCurrency.USD) }}
+              <div class="flex flex-row items-center gap-4">
+                <div class="bg-[#FF5524] w-2 h-2 mx-[3px] rounded-full"></div>
+                <div class="ml-1.5 w-[85px]">{{ t(`cards.slideovers.detail.info.total_withdraw`) }}</div>
+                <div class="ml-auto text-[#1C1D23] text-14-500-20">
+                  ${{ formatMoneyWithoutDecimals(cardDetail?.total_withdraw) }}
                 </div>
               </div>
             </div>

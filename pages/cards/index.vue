@@ -102,13 +102,13 @@ const cardTableColumns = [
 ]
 
 function getStatusColor(status: CardStatus) {
-  if (status === CardStatus.CANCEL) {
+  if (status === CardStatus.CANCELLED) {
     return '#ED2C38'
   }
   if (status === CardStatus.ACTIVE) {
     return '#2EA518'
   }
-  if (status === CardStatus.FREEZE) {
+  if (status === CardStatus.FROZEN) {
     return '#7A7D89'
   }
 }
@@ -128,23 +128,16 @@ watch(
   },
 )
 
-async function onChangeLimit(limit: number) {
-  cardStore.setPayload({ ...payload.value, limit: limit })
-  if (page.value !== 1) {
-    cardStore.setPayloadPage(1)
-  }
-}
-
 async function onChangePage(page: number) {
   cardStore.setPayloadPage(page)
   await getCardList()
 }
 
-function handleClickCard(row) {
+async function handleClickCard(row) {
   const id = row.id
   const selectedCardDetail = cardList.value.find((card: ICardData) => card.id === id)
   if (selectedCardDetail) {
-    cardStore.setSelectedCardDetail(selectedCardDetail)
+    await cardStore.getCardDetailById(id)
     cardStore.toggleCardDetailSlideover(true)
   }
 }
@@ -393,7 +386,7 @@ onUnmounted(() =>
       </div>
       <div class="flex flex-row gap-[10px]">
         <UButton
-          class="flex items-center justify-center rounded-[49px] bg-[#F0F2F5] hover:bg-[#E1E3E6] px-4 py-3 w-[168px]"
+          class="flex items-center justify-center rounded-[49px] bg-[#F0F2F5] hover:bg-[#E1E3E6] px-4 py-3 w-[168px] cursor-not-allowed"
         >
           <div class="text-[#1C1D23] text-16-600-24">
             {{ t('cards.button.withdraw') }}

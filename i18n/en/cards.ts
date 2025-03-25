@@ -31,8 +31,8 @@ export default {
 
     status: {
       [CardStatus.ACTIVE]: 'Active',
-      [CardStatus.CANCEL]: 'Cancel',
-      [CardStatus.FREEZE]: 'Freeze',
+      [CardStatus.CANCELLED]: 'Cancel',
+      [CardStatus.FROZEN]: 'Freeze',
     },
 
     category: {
@@ -140,6 +140,7 @@ export default {
         purpose: 'Card purpose',
         total_top_up: 'Total Top-up',
         total_withdraw: 'Total Withdraw',
+        balance: 'Balance',
       },
       button: {
         transaction: 'View Transaction',
@@ -153,4 +154,3 @@ export default {
     },
   },
 }
-

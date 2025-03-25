@@ -1,4 +1,4 @@
-import type { CommonCountry } from "./common"
+import type { CommonCountry } from './common'
 
 export enum CardType {
   PHYSICAL = 'PHYSICAL',
@@ -27,8 +27,8 @@ export enum CardCategory {
 
 export enum CardStatus {
   ACTIVE = 'ACTIVE',
-  FREEZE = 'FREEZE',
-  CANCEL = 'CANCEL',
+  FROZEN = 'FROZEN',
+  CANCELLED = 'CANCELLED',
 }
 export interface ICardData {
   id?: string
@@ -42,7 +42,21 @@ export interface ICardData {
   total_top_up: number
   total_withdraw: number
   created_at: string
+}
 
+export interface ICardDetail {
+  balance: number
+  card_name: string
+  card_purpose: string
+  card_status: string
+  category: string
+  email: string
+  expiry_date: string
+  id: string
+  last_four: string
+  phone_number: string
+  total_top_up: number
+  total_withdraw: number
 }
 
 export interface IIssueCardParams {
