@@ -14,8 +14,8 @@ import { FeeType, type IDropdownCardData, type IFeeData } from '~/types/common'
 export const useCardStore = defineStore('card', () => {
   const cardCount = ref(0)
   const { t } = useI18n()
+  const commonStore = useCommonStore()
   const isOpenCardTopupModal = ref(false)
-
   function toggleCardTopupModal(state: boolean) {
     isOpenCardTopupModal.value = state
   }
@@ -111,17 +111,16 @@ export const useCardStore = defineStore('card', () => {
     return response
   }
 
-
   async function freezeCard(id: string) {
     const response = await cardService.freezeCard(id)
     if (!response.success) {
       return {
-        success:false,
-        message:response.message
+        success: false,
+        message: response.message,
       }
     }
-     return {
-      success:true
+    return {
+      success: true,
     }
   }
 
@@ -129,12 +128,12 @@ export const useCardStore = defineStore('card', () => {
     const response = await cardService.cancelCard(id)
     if (!response.success) {
       return {
-        success:false,
-        message:response.message
+        success: false,
+        message: response.message,
       }
     }
-     return {
-      success:true
+    return {
+      success: true,
     }
   }
 
@@ -142,15 +141,15 @@ export const useCardStore = defineStore('card', () => {
     const response = await cardService.unfreezeCard(id)
     if (!response.success) {
       return {
-        success:false,
-        message:response.message
+        success: false,
+        message: response.message,
       }
     }
-     return {
-      success:true
+    return {
+      success: true,
     }
   }
-  
+
   const topupFee = ref<IFeeData>()
 
   async function getTopupFee() {
@@ -163,6 +162,8 @@ export const useCardStore = defineStore('card', () => {
 
   async function topupCard(params: ITopupCardParams) {
     isLoading.value.topupCard = true
+    toggleCardTopupModal(false)
+    commonStore.toggleProcessingModal(true)
     const response = await cardService.topup(params)
     if (response.success) {
       showToast(ToastType.SUCCESS, t('common.toast.success.topupCard'))
@@ -176,9 +177,8 @@ export const useCardStore = defineStore('card', () => {
       showToast(ToastType.FAILED, t('common.toast.failed.topupCard'))
     }
     isLoading.value.topupCard = false
-    toggleCardTopupModal(false)
+    commonStore.toggleProcessingModal(false)
     return response
-
   }
 
   return {
