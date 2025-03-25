@@ -5,12 +5,7 @@ import { CardStatus } from '~/types/cards'
 import { CommonCurrency } from '~/types/common'
 import { showToast, ToastType } from '~/common/functions'
 const { copy, copied } = useClipboard()
-const {
-  freezeCard,
-  cancelCard,
-  getCardDetailById,
-  unfreezeCard,
-} = useCardStore()
+const { freezeCard, cancelCard, getCardDetailById, unfreezeCard } = useCardStore()
 
 const { t } = useI18n()
 const toast = useToast()
@@ -36,9 +31,9 @@ const cardDetail = computed(() => cardStore.selectedCardDetail)
 const isShowCardSensitiveDetail = ref(false)
 const isShowCardSensitiveDetailOverlay = ref(false)
 const loading = ref({
-  freeze:false,
-  unfreeze:false,
-  cancel:false,
+  freeze: false,
+  unfreeze: false,
+  cancel: false,
 })
 
 const cardSensitiveDetail = ref({
@@ -100,14 +95,15 @@ function handleViewTransaction() {
 
 // Actions
 function handleTopup() {
-
+  cardStore.toggleCardDetailSlideover(false)
+  cardStore.toggleCardTopupModal(true)
 }
 
-const handleFreeze = async() => {
+const handleFreeze = async () => {
   loading.value.freeze = true
   const result = await freezeCard(cardDetail.value.id)
   loading.value.freeze = false
-  if (!result.success){
+  if (!result.success) {
     showToast(ToastType.FAILED, result.message)
     return
   }
@@ -115,11 +111,11 @@ const handleFreeze = async() => {
   await getCardDetailById(cardDetail.value.id)
 }
 
-const handleCancel = async() => {
+const handleCancel = async () => {
   loading.value.cancel = true
   const result = await cancelCard(cardDetail.value.id)
   loading.value.cancel = false
-  if (!result.success){
+  if (!result.success) {
     showToast(ToastType.FAILED, result.message)
     return
   }
@@ -127,27 +123,25 @@ const handleCancel = async() => {
   await getCardDetailById(cardDetail.value.id)
 }
 
-function handleWithdraw() {
-
-}
-const handleUnfreeze = async() => {
+function handleWithdraw() {}
+const handleUnfreeze = async () => {
   loading.value.unfreeze = true
   const result = await unfreezeCard(cardDetail.value.id)
   loading.value.unfreeze = false
-  if (!result.success){
+  if (!result.success) {
     showToast(ToastType.FAILED, result.message)
     return
   }
   showToast(ToastType.SUCCESS, t('cards.message.unfreeze'))
   await getCardDetailById(cardDetail.value.id)
 }
-
 </script>
 
 <template>
   <USlideover
     v-model="isOpenCardDetailSlideover"
     :prevent-close="true"
+    :transition="true"
     @close-prevented="onClosePrevented()"
     :ui="{
       width: 'w-screen max-w-[464px]',
@@ -215,15 +209,14 @@ const handleUnfreeze = async() => {
             v-if="cardDetail?.card_status === CardStatus.ACTIVE"
             class="mt-7 flex flex-row w-full justify-around text-[#1C1D23] text-14-500-20"
           >
-            <ButtonsCardDetail :type='`topup`'/>
-            <ButtonsCardDetail :type='`freeze`'  @click='handleFreeze' :loading='loading.freeze' />
-            <ButtonsCardDetail :type='`cancel`' @click='handleCancel' :loading='loading.cancel' />
-            <ButtonsCardDetail :type='`withdraw`' />
-            
+            <ButtonsCardDetail :type="`topup`" @click="handleTopup" />
+            <ButtonsCardDetail :type="`freeze`" @click="handleFreeze" :loading="loading.freeze" />
+            <ButtonsCardDetail :type="`cancel`" @click="handleCancel" :loading="loading.cancel" />
+            <ButtonsCardDetail :type="`withdraw`" />
           </div>
           <div v-if="cardDetail?.card_status === CardStatus.FROZEN" class="mt-7 flex flex-row w-full justify-between">
-            <ButtonsCardDetail :type='`unfreeze`' @click='handleUnfreeze' :loading='loading.unfreeze' />
-            <ButtonsCardDetail :type='`cancel`' @click='handleCancel' :loading='loading.cancel' />
+            <ButtonsCardDetail :type="`unfreeze`" @click="handleUnfreeze" :loading="loading.unfreeze" />
+            <ButtonsCardDetail :type="`cancel`" @click="handleCancel" :loading="loading.cancel" />
           </div>
           <!-- Detail -->
           <div
