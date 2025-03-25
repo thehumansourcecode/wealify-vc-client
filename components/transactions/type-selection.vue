@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { shortenString } from '~/common/functions'
-import { TransactionType, WalletType } from '~/types/transactions'
+import { TransactionVCType, WalletType } from '~/types/transactions'
 
 interface Option {
   title: string
-  value: WalletType | TransactionType
+  value: WalletType | TransactionVCType
 }
 
 interface OptionGroup {
@@ -12,7 +12,7 @@ interface OptionGroup {
   options: Array<Option>
 }
 
-const model = defineModel<Array<WalletType | TransactionType>>({ default: [] })
+const model = defineModel<Array<WalletType | TransactionVCType>>({ default: [] })
 const open = ref<boolean>(false)
 const groups = ref<Array<OptionGroup>>([
   {
@@ -33,15 +33,15 @@ const groups = ref<Array<OptionGroup>>([
     options: [
       {
         title: 'Top-up',
-        value: TransactionType.TOP_UP,
+        value: TransactionVCType.TOP_UP,
       },
       {
         title: 'Withdraw',
-        value: TransactionType.WITHDRAWAL,
+        value: TransactionVCType.WITHDRAWAL,
       },
       {
         title: 'Spend',
-        value: TransactionType.INTERNAL,
+        value: TransactionVCType.PAYMENT,
       },
     ],
   },
@@ -64,10 +64,10 @@ const isVCCardEnabled = computed<boolean>(() => {
   return model.value.includes(WalletType.VC)
 })
 
-const onSelect = (value: WalletType | TransactionType) => {
+const onSelect = (value: WalletType | TransactionVCType) => {
   if (model.value.includes(value)) {
     model.value = model.value.filter(val => {
-      if (value == WalletType.VC) return val != TransactionType.INTERNAL && val != value
+      if (value == WalletType.VC) return val != TransactionVCType.PAYMENT && val != value
       return val != value
     })
   } else {
@@ -111,7 +111,7 @@ const onSelect = (value: WalletType | TransactionType) => {
                 >
                   <UCheckbox
                     @click="onSelect(option.value)"
-                    :disabled="!isVCCardEnabled && option.value == TransactionType.INTERNAL"
+                    :disabled="!isVCCardEnabled && option.value == TransactionVCType.PAYMENT"
                     :model-value="model.includes(option.value)"
                     :ui="{
                       base: 'cursor-pointer',
@@ -119,7 +119,7 @@ const onSelect = (value: WalletType | TransactionType) => {
                   />
                   <div
                     class="justify-center text-[#1b1c23] text-sm font-semibold font-['Manrope'] leading-tight"
-                    :class="!isVCCardEnabled && option.value == TransactionType.INTERNAL ? 'opacity-50' : ''"
+                    :class="!isVCCardEnabled && option.value == TransactionVCType.PAYMENT ? 'opacity-50' : ''"
                   >
                     {{ option.title }}
                   </div>

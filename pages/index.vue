@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { formatMoney } from '~/common/functions'
 import { useDashboardStore } from '~/stores/dashboard'
 import { PanelTab } from '~/types/common'
 
