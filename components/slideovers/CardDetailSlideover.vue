@@ -8,7 +8,8 @@ const { copy, copied } = useClipboard()
 const {
   freezeCard,
   cancelCard,
-  getCardDetailById
+  getCardDetailById,
+  unfreezeCard,
 } = useCardStore()
 
 const { t } = useI18n()
@@ -36,6 +37,7 @@ const isShowCardSensitiveDetail = ref(false)
 const isShowCardSensitiveDetailOverlay = ref(false)
 const loading = ref({
   freeze:false,
+  unfreeze:false,
   cancel:false,
 })
 
@@ -121,16 +123,25 @@ const handleCancel = async() => {
     showToast(ToastType.FAILED, result.message)
     return
   }
-  showToast(ToastType.SUCCESS, t('cards.message.freeze'))
+  showToast(ToastType.SUCCESS, t('cards.message.cancel'))
   await getCardDetailById(cardDetail.value.id)
 }
 
 function handleWithdraw() {
 
 }
-function handleUnfreeze() {
-
+const handleUnfreeze = async() => {
+  loading.value.unfreeze = true
+  const result = await unfreezeCard(cardDetail.value.id)
+  loading.value.unfreeze = false
+  if (!result.success){
+    showToast(ToastType.FAILED, result.message)
+    return
+  }
+  showToast(ToastType.SUCCESS, t('cards.message.unfreeze'))
+  await getCardDetailById(cardDetail.value.id)
 }
+
 </script>
 
 <template>
@@ -211,17 +222,8 @@ function handleUnfreeze() {
             
           </div>
           <div v-if="cardDetail?.card_status === CardStatus.FROZEN" class="mt-7 flex flex-row w-full justify-between">
-            <div
-              @click="handleUnfreeze"
-              class="flex flex-col gap-3 w-[50%] items-center cursor-pointer hover:opacity-90"
-            >
-              <img class="w-10" src="~/assets/img/cards/unfreeze.svg" alt="" />
-              <div>{{ t(`cards.slideovers.detail.button.unfreeze`) }}</div>
-            </div>
-            <div @click="handleCancel" class="flex flex-col gap-3 w-[50%] items-center cursor-pointer hover:opacity-90">
-              <img class="w-10" src="~/assets/img/cards/cancel.svg" alt="" />
-              <div>{{ t(`cards.slideovers.detail.button.cancel`) }}</div>
-            </div>
+            <ButtonsCardDetail :type='`unfreeze`' @click='handleUnfreeze' :loading='loading.unfreeze' />
+            <ButtonsCardDetail :type='`cancel`' @click='handleCancel' :loading='loading.cancel' />
           </div>
           <!-- Detail -->
           <div

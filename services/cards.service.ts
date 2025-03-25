@@ -41,6 +41,10 @@ export class CardService extends BaseService {
     return this.put(`/${id}/cancel`, )
   }
 
+  async unfreezeCard(id: string): Promise<ICommonResponse<any>> {
+    return this.put(`/${id}/unfreeze`, )
+  }
+
 }
 
 export const cardService = new CardService()
