@@ -1,6 +1,5 @@
 import type { Dayjs } from 'dayjs'
-import { CommonCountry, CommonCurrency, PanelTab } from '~/types/common'
-import { ItemExterior, ItemQuality } from '~/types/market'
+import { PanelTab } from '~/types/common'
 
 export const trimNumber = (input: number, precision: number) => {
   return input.toPrecision(precision)
@@ -20,7 +19,6 @@ export const ceilNumber = (input: number, toFixed: number) => {
 }
 
 export const formatMoney = (amount: number | undefined, currency?: string) => {
-  if (!amount) return 0
   return (
     Number(amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) +
     (currency ? ` ${currency}` : '')
@@ -106,7 +104,6 @@ export const getTabRoute = (tab: PanelTab) => {
 export const normalize = (val: string) => {
   return val.toLocaleLowerCase()
 }
-
 
 export enum ToastType {
   SUCCESS = 'SUCCESS',

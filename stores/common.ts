@@ -1,6 +1,6 @@
 import { commonService } from '~/services/common.service'
-import { CardStatus, type CardCategory, type ICardDetail, type IDropdownCardDetail } from '~/types/cards'
-import { CommonCurrency, FeeType, PanelChildTab, PanelTab } from '~/types/common'
+import { CardStatus, type CardCategory } from '~/types/cards'
+import { CommonCurrency, FeeType, PanelChildTab, PanelTab, type IDropdownCardData } from '~/types/common'
 
 export const useCommonStore = defineStore('common', () => {
   const config = useRuntimeConfig()
@@ -47,21 +47,18 @@ export const useCommonStore = defineStore('common', () => {
     return response
   }
 
-  const dropdownCardList = ref<IDropdownCardDetail[]>()
+  const dropdownCardList = ref<IDropdownCardData[]>()
 
   async function getDropdownCardList() {
     const response = await commonService.getDropdownCardList({ card_status: [CardStatus.ACTIVE] })
     if (response.success) {
-      dropdownCardList.value = response.data as IDropdownCardDetail[]
+      dropdownCardList.value = response.data as IDropdownCardData[]
     }
     return response
   }
 
   async function getFeeByType(type: FeeType) {
     const response = await commonService.getFeeByType(type)
-    if (response.success) {
-      dropdownCardList.value = response.data as IDropdownCardDetail[]
-    }
     return response
   }
 

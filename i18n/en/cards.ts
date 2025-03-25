@@ -161,6 +161,13 @@ export default {
   modals: {
     topup: {
       title: 'Top up card',
+      label: {
+        balance: 'Your Balance:',
+        select: 'Top up card:',
+        amount: 'Your amount',
+        fee: 'Fee',
+        topup: 'Top up amount',
+      },
     },
   },
 }
