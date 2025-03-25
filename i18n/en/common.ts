@@ -15,7 +15,7 @@ export default {
     resetPassword: 'Reset Password',
     lastReset: 'Last edit: {date}',
     logout: 'Logout',
-},
+  },
   toast: {
     copy: 'Copied to clipboard!',
   },
@@ -25,7 +25,7 @@ export default {
         name: 'Card name is mandatory. Please enter your card name',
         phoneNumber: 'Phone number is mandatory. Please enter your phone number',
         email: 'Email is mandatory. Please enter your email',
-        category: "Category is mandatory. Please choose your category"
+        category: 'Category is mandatory. Please choose your category',
       },
     },
     invalid: {
@@ -33,6 +33,11 @@ export default {
         email: 'Invalid email address',
         zeroStartingBalance: 'Please enter an amount greater than 0',
         limitStartingBalance: 'The maximum amount is 999,999,999',
+        insufficientBalance: 'Insufficient balance',
+      },
+      topupCard: {
+        zeroTopup: 'Please enter an amount greater than 0',
+        limitTopup: 'The maximum amount is 999,999,999',
         insufficientBalance: 'Insufficient balance',
       },
     },

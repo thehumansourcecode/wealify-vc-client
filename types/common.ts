@@ -133,3 +133,8 @@ export enum FeeType {
   WITHDRAWAL_CARD = 'WITHDRAWAL_CARD',
   TOP_UP_WALLET = 'TOP_UP_WALLET',
 }
+
+export interface IFeeData {
+  type: string
+  value: number
+}

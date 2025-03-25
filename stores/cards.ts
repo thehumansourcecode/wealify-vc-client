@@ -7,7 +7,9 @@ import {
   type IIssueCardParams,
   type IGetCardListParams,
   type ICardDetail,
+  type ITopupCardParams,
 } from '~/types/cards'
+import { FeeType, type IDropdownCardData, type IFeeData } from '~/types/common'
 
 export const useCardStore = defineStore('card', () => {
   const cardCount = ref(0)
@@ -21,6 +23,7 @@ export const useCardStore = defineStore('card', () => {
   const isLoading = ref({
     issueCard: false,
     cardTable: false,
+    topupCard: false,
   })
 
   const payload = ref<IGetCardListParams>({
@@ -46,6 +49,20 @@ export const useCardStore = defineStore('card', () => {
 
   function setSelectedCardDetail(card?: ICardDetail) {
     selectedCardDetail.value = card
+  }
+
+  const selectedCardForTopup = ref<IDropdownCardData | undefined>()
+
+  function setSelectedCardForTopup(card?: ICardDetail) {
+    if (card?.id) {
+      selectedCardForTopup.value = {
+        id: card.id,
+        card_name: card?.card_name,
+        last_four: card?.last_four,
+      }
+    } else {
+      selectedCardForTopup.value = undefined
+    }
   }
 
   const isOpenCardDetailSlideover = ref(false)
@@ -96,6 +113,29 @@ export const useCardStore = defineStore('card', () => {
     return response
   }
 
+  const topupFee = ref<IFeeData>()
+
+  async function getTopupFee() {
+    const response = await commonService.getFeeByType(FeeType.TOP_UP_CARD)
+    if (response.success) {
+      topupFee.value = response.data
+    }
+    return response
+  }
+
+  async function topupCard(params: ITopupCardParams) {
+    isLoading.value.topupCard = true
+    const response = await cardService.topup(params)
+    if (response.success) {
+      payload.value = { ...payload.value, card_status: [CardStatus.ACTIVE] }
+      await getCardList(payload.value)
+    } else {
+      showToast(ToastType.FAILED, response.message)
+    }
+    isLoading.value.topupCard = false
+    return response
+  }
+
   return {
     isLoading,
     payload,
@@ -113,5 +153,10 @@ export const useCardStore = defineStore('card', () => {
     getCardDetailById,
     isOpenCardTopupModal,
     toggleCardTopupModal,
+    selectedCardForTopup,
+    setSelectedCardForTopup,
+    topupFee,
+    getTopupFee,
+    topupCard,
   }
 })

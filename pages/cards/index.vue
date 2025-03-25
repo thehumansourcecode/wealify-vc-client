@@ -114,8 +114,11 @@ function getStatusColor(status: CardStatus) {
   }
 }
 
-function onClickTopup() {
-  cardStore.toggleCardTopupModal(true)
+function onClickTopup(card: ICardDetail) {
+  if (card?.id) {
+    cardStore.toggleCardTopupModal(true)
+    cardStore.setSelectedCardForTopup(card)
+  }
 }
 
 function clearSelected() {
@@ -579,7 +582,7 @@ onUnmounted(() =>
         <template #action-data="{ row }">
           <UButton
             v-if="row.card_status === CardStatus.ACTIVE"
-            @click.stop="onClickTopup"
+            @click.stop="onClickTopup(row)"
             class="flex items-center py-[6px] px-4 mx-4 bg-[#1C1D23] hover:bg-[#3D3E34] rounded-[6px]"
           >
             <div class="text-12-600-20 text-white">

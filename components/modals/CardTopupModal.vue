@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { formatMoney } from '~/common/functions'
+import { formatMoney, formatMoneyWithoutDecimals } from '~/common/functions'
 import { CommonCurrency, FeeType } from '~/types/common'
-import { TransactionCryptocurrency, TransactionNetwork } from '~/types/dashboard'
-import type { IUserBalance } from '~/types/user'
+import { MAX_SPEND_LIMIT } from '../cards/constants'
+import { number, object, string } from 'yup'
+const { t } = useI18n()
+
 const { copy, copied } = useClipboard()
 const toast = useToast()
 
@@ -10,27 +12,318 @@ const cardStore = useCardStore()
 const commonStore = useCommonStore()
 const userStore = useUserStore()
 
-onMounted(async () =>
-  Promise.all([
-    commonStore.getDropdownCardList(),
-    commonStore.getFeeByType(FeeType.TOP_UP_CARD),
-    userStore.getBalance(),
-  ]),
+onMounted(async () => Promise.all([commonStore.getDropdownCardList(), cardStore.getTopupFee(), userStore.getBalance()]))
+const selectedCard = ref(cardStore.selectedCardForTopup)
+const walletBalance = computed(() => userStore.userBalance?.wallet_balance?.balance)
+const dropdownCardList = computed(() => commonStore.dropdownCardList)
+const topupFee = computed(() => cardStore.topupFee)
+const loading = computed(() => cardStore.isLoading.topupCard)
+
+const originalNumericValue = ref<number>()
+
+const form = reactive({
+  amount: 0,
+})
+
+const isFormValid = ref(false)
+
+watch(
+  form,
+  async () => {
+    try {
+      // Validate the entire form, don't stop at the first error
+      await topupCardSchema.validate(form, { abortEarly: false })
+      isFormValid.value = true // No errors, enable the button
+    } catch (error) {
+      isFormValid.value = false // Errors found, disable the button
+    }
+  },
+  { deep: true }, // Watch nested object changes
 )
 
-const walletBalance = computed(() => userStore.userBalance?.wallet_balance?.balance)
+const threshold = computed(() => +(walletBalance.value || 0) - (topupFee.value?.value || 0))
 
-const { t } = useI18n()
+const topupCardSchema = object({
+  amount: number()
+    .test('min-threshold', t('common.validator.invalid.topupCard.zeroTopup'), value => {
+      return value >= 1
+    })
+    .test('max-threshold', t('common.validator.invalid.topupCard.insufficientBalance'), value => {
+      return value <= +threshold.value
+    }),
+})
+
+const formattedAmount = computed({
+  get: () => {
+    const formatted = new Intl.NumberFormat('en-US')
+    return formatted.format(form.amount)
+  },
+  set: value => {
+    // Remove commas and parse to integer
+    form.amount = Number(value.replace(/,/g, '')) || 0
+  },
+})
+
+const formatAmount = (target: HTMLInputElement) => {
+  const rawValue = Number(target.value.split(',').join(''))
+
+  if (Number.isNaN(Number(rawValue))) {
+    target.value = formattedAmount.value
+    return
+  }
+  if (+rawValue === +formattedAmount.value) {
+    const formatted = new Intl.NumberFormat('en-US')
+    target.value = formatted.format(+formattedAmount.value)
+    return
+  }
+  if (+rawValue > MAX_SPEND_LIMIT) {
+    const formatted = new Intl.NumberFormat('en-US')
+    target.value = formatted.format(form.amount)
+    return
+  }
+  target.value = target.value.trim()
+  originalNumericValue.value = rawValue
+}
+
+const removeDots = event => {
+  console.log(event)
+  if (event.key === '.' || event.key === ',') {
+    event.preventDefault()
+  }
+}
+
+// Handle manual input updates
+const handleInputAmount = async event => {
+  const target = event.target as HTMLInputElement
+  // value = value.replace(/[^0-9]+/g, '')
+  let caretPosition = target.selectionStart || 0
+  const originalPositionRight = target.value.length - caretPosition
+  try {
+    formatAmount(target)
+    setTimeout(() => {
+      caretPosition = target.value.length === 1 ? 1 : target.value.length - originalPositionRight
+      target.setSelectionRange(caretPosition, caretPosition)
+    }, 0)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const presetAmounts = computed(() => {
+  const balance = form.amount
+  if (!balance || balance == 0) {
+    return [500, 1000, 2000, 5000]
+  }
+  if (+balance >= 100000000) {
+    return []
+  }
+  if (+balance >= 10000000) {
+    return [balance, balance * 10]
+  }
+  if (+balance > 1000000) {
+    return [balance, balance * 10, balance * 100]
+  } else {
+    return [balance, balance * 10, balance * 100, balance * 1000]
+  }
+})
+
+const setAmount = amount => {
+  formattedAmount.value =
+    amount > MAX_SPEND_LIMIT ? formatMoneyWithoutDecimals(MAX_SPEND_LIMIT) : formatMoneyWithoutDecimals(amount)
+}
+
+async function handleTopup() {
+  if (selectedCard.value?.id) {
+    const payload = { amount: form.amount, id: selectedCard.value.id }
+    await cardStore.topupCard(payload)
+  }
+}
+
+const finalAmount = computed(() => form.amount * (1 + (topupFee.value?.value || 0) / 100))
 </script>
 
 <template>
   <BaseModal :label="t('cards.modals.topup.title')" @close-prevented="cardStore.toggleCardTopupModal(false)">
     <div class="flex flex-col">
-      <div class="flex flex-row gap-16 items-center">
-        <div class="text-14-500-20 text-[#7A7D89]">
-          {{ t('cards.modals.topup.balance.label') }}
+      <!-- Balance -->
+      <div class="flex flex-row gap-3 items-center">
+        <div class="text-14-500-20 text-[#7A7D89] w-[92px] flex-none">
+          {{ t('cards.modals.topup.label.balance') }}
         </div>
         <div class="w-full text-[#FF5524] text-20-700-32">{{ formatMoney(walletBalance, CommonCurrency.USD) }}</div>
+      </div>
+      <USelectMenu
+        class="mt-4"
+        v-model="selectedCard"
+        :options="dropdownCardList"
+        searchable
+        :searchable-placeholder="t('cards.filter.placeholder.search')"
+        :selected-icon="'i-selected'"
+        :search-attributes="['card_name', 'last_four']"
+        :ui-menu="{
+          select: 'cursor-pointer',
+          base: 'relative focus:outline-none overflow-y-auto max-h-[360px] scroll-py-1',
+          padding: 'p-0',
+          rounded: 'rounded-l-[16px]',
+          width: 'w-[max-content] min-w-full',
+          option: {
+            base: 'cursor-pointer text-14-500-20',
+            selected: 'bg-[#F0F2F5]',
+            active: 'bg-[#F0F2F5]',
+            inactive: 'cursor-pointer',
+            padding: 'px-3 py-[10px]',
+            rounded: 'rounded-none',
+            selectedIcon: {
+              base: 'h-[18px] w-[18px]',
+            },
+            empty: 'text-sm',
+          },
+          empty: 'text-sm',
+          input: 'px-3 py-[10px] w-full text-[#7A7D89] icon-search font-medium text-sm leading-5 m-0 bg-white',
+        }"
+      >
+        <template #option="{ option }">
+          <div class="flex flex-row gap-3">
+            <img src="/icons/dashboard/mastercard.svg" alt="" />
+            <div class="flex flex-col gap-1">
+              <UTooltip
+                :text="option?.card_name"
+                :ui="{
+                  background: 'bg-white',
+                  base: 'h-8 px-2.5 py-1.5 text-sm font-medium',
+                  shadow: '',
+                }"
+                :popper="{ placement: 'top' }"
+              >
+                <span class="text-14-600-20 text-[#1C1D23] max-w-[180px] truncate">{{ option?.card_name }}</span>
+              </UTooltip>
+              <span class="text-12-500-20 text-[#7A7D89]">
+                {{ t(`cards.list.card_number`, { value: option?.last_four }) }}</span
+              >
+            </div>
+          </div>
+        </template>
+        <template #default="{ open: open }">
+          <div
+            class="px-3 py-[10px] rounded-[13px] bg-[#F0F2F5] border flex items-center justify-between gap-[64px] w-[500px]"
+          >
+            <div class="text-14-500-20 text-[#7A7D89] w-[92px] flex-none">
+              {{ t('cards.modals.topup.label.select') }}
+            </div>
+            <div class="flex flex-row gap-3 items-center">
+              <div class="flex flex-row gap-3">
+                <img src="/icons/dashboard/mastercard.svg" alt="" />
+                <div class="flex flex-col gap-1">
+                  <UTooltip
+                    :text="selectedCard?.card_name"
+                    :ui="{
+                      background: 'bg-white',
+                      base: 'h-8 px-2.5 py-1.5 text-sm font-medium',
+                      shadow: '',
+                    }"
+                    :popper="{ placement: 'top' }"
+                  >
+                    <span class="text-14-600-20 text-[#1C1D23] max-w-[180px] truncate">
+                      {{ selectedCard?.card_name }}
+                    </span>
+                  </UTooltip>
+                  <span class="text-12-500-20 text-[#7A7D89]">
+                    {{ t(`cards.list.card_number`, { value: selectedCard?.last_four }) }}</span
+                  >
+                </div>
+              </div>
+              <img
+                src="/assets/img/icons/dropdown.svg"
+                class="transition-transform"
+                :class="[open && 'transform rotate-180']"
+              />
+            </div>
+          </div>
+        </template>
+      </USelectMenu>
+      <UForm :schema="topupCardSchema" :state="form">
+        <UFormGroup
+          name="amount"
+          v-slot="{ error }"
+          :ui="{
+            error: 'mt-2 text-red-500 dark:text-red-400',
+          }"
+        >
+          <div
+            class="px-6 py-[22px] border rounded-[16px] flex flex-col mt-5"
+            :class="error ? 'border-[#ED2C38]' : 'border-[#5268E1]'"
+          >
+            <div class="flex flex-row justify-between">
+              <div class="flex flex-row gap-1">
+                <div class="text-[#1C1D23] text-14-500-20">
+                  {{ t('cards.modals.topup.label.amount') }}
+                </div>
+                <UTooltip
+                  text="The maximum amount is 999,999,999"
+                  :popper="{ arrow: true, placement: 'top' }"
+                  :ui="{
+                    background: 'bg-[#1C1D23]',
+                    color: 'text-[#FFF]',
+                    base: 'px-3 py-2 h-8 text-xs font-medium',
+                    ring: 'ring-0',
+                    arrow: { background: 'before:bg-[#1C1D23]' },
+                  }"
+                >
+                  <img src="~/assets/img/icons/tooltip.svg" alt="" />
+                </UTooltip>
+              </div>
+              <div class="text-12-500-20 text-[#7A7D89]">
+                {{ t('cards.issue.balance.form.available', { amount: formatMoney(walletBalance) }) }}
+              </div>
+            </div>
+            <div class="flex flex-row justify-between mt-4 w-full">
+              <UInput
+                class="w-full text-20-700-32 items-center flex"
+                autocomplete="off"
+                variant="none"
+                v-model="formattedAmount"
+                @input="handleInputAmount"
+                @keydown="removeDots"
+                :ui="{
+                  padding: {
+                    sm: 'p-0 text-[20px]',
+                  },
+                }"
+              >
+              </UInput>
+              <div class="flex flex-row gap-[6px] py-1 pr-3 pl-[6px] bg-[#F0F2F5] rounded-[44px]">
+                <img src="~/assets/img/flags/us.svg" alt="" />
+                <div class="text-[#1C1D23] text-12-500-20">USD</div>
+              </div>
+            </div>
+            <div class="flex flex-row gap-[5px] mt-[14px] justify-start">
+              <UButton
+                v-for="(amount, index) in presetAmounts"
+                :key="index"
+                @click="setAmount(amount)"
+                class="flex items-center py-[4px] px-3 bg-[#EDEFFF] hover:bg-[#DCDEEE] rounded-[44px] mx-auto w-[min-content] m-0"
+              >
+                <div class="text-[#1C1D23] text-12-500-20">{{ formatMoneyWithoutDecimals(amount) }}</div>
+              </UButton>
+            </div>
+          </div>
+        </UFormGroup>
+      </UForm>
+      <div class="my-6 flex flex-row justify-between items-center">
+        <div class="text-12-500-20 text-[#7A7D89]">{{ t('cards.modals.topup.label.fee') }}</div>
+        <div class="text-14-500-20">{{ topupFee?.value || 0 }}%</div>
+      </div>
+      <div class="flex flex-row justify-between items-center">
+        <div class="text-12-500-20">{{ t('cards.modals.topup.label.topup') }}</div>
+        <div class="text-16-700-24">{{ formatMoney(finalAmount, CommonCurrency.USD) }}</div>
+      </div>
+      <div class="mt-4">
+        <BaseSubmitButton
+          @click="handleTopup"
+          :loading="loading.topupCard"
+          :is-submit-enabled="isFormValid"
+          :title="t('cards.button.issue')"
+        />
       </div>
     </div>
   </BaseModal>

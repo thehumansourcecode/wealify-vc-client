@@ -46,9 +46,6 @@ export interface ICardDetail {
   total_top_up: number
   total_withdraw: number
 }
-
-export interface IDropdownCardDetail {}
-
 export interface IIssueCardParams {
   card_name: string
   email: string
@@ -58,6 +55,11 @@ export interface IIssueCardParams {
   card_purpose?: string
   card_type: string
   spend_limit: number
+}
+
+export interface ITopupCardParams {
+  id: string
+  amount: number
 }
 
 // Request - Response
