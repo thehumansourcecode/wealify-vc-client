@@ -108,7 +108,7 @@ export default {
       title: 'Balance',
       form: {
         starting: 'Starting balance of the card',
-        available: 'Available: {amount} USD',
+        available: 'Wealify Balance: {amount} USD',
       },
     },
     preview: {
