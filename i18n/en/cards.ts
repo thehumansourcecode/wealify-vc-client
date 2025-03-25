@@ -108,7 +108,8 @@ export default {
       title: 'Balance',
       form: {
         starting: 'Starting balance of the card',
-        available: 'Wealify Balance: {amount} USD',
+        availableCard: 'Card Balance: {amount} USD',
+        availableWealify: 'Wealify Balance: {amount} USD',
       },
     },
     preview: {
@@ -163,7 +164,7 @@ export default {
     topup: {
       title: 'Top up card',
       label: {
-        balance: 'Your Balance:',
+        balance: 'Wealify Balance:',
         select: 'Top up card:',
         amount: 'Your amount',
         fee: 'Fee',

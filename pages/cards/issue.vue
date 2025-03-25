@@ -496,7 +496,7 @@ watch(
                   </UTooltip>
                 </div>
                 <div class="text-12-500-20 text-[#7A7D89]">
-                  {{ t('cards.issue.balance.form.available', { amount: formatMoney(totalBalance) }) }}
+                  {{ t('cards.issue.balance.form.availableWealify', { amount: formatMoney(totalBalance) }) }}
                 </div>
               </div>
               <div class="flex flex-row justify-between mt-4">

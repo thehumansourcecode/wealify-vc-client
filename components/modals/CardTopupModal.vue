@@ -117,7 +117,7 @@ async function handleTopup() {
     <div class="flex flex-col">
       <!-- Balance -->
       <div class="flex flex-row gap-3 items-center">
-        <div class="text-14-500-20 text-[#7A7D89] w-[92px] flex-none">
+        <div class="text-14-500-20 text-[#7A7D89] w-[120px] flex-none">
           {{ t('cards.modals.topup.label.balance') }}
         </div>
         <div class="w-full text-[#FF5524] text-20-700-32">{{ formatMoney(walletBalance, CommonCurrency.USD) }}</div>
@@ -243,7 +243,7 @@ async function handleTopup() {
                 </UTooltip>
               </div>
               <div class="text-12-500-20 text-[#7A7D89]">
-                {{ t('cards.issue.balance.form.available', { amount: formatMoney(walletBalance) }) }}
+                {{ t('cards.issue.balance.form.availableCard', { amount: formatMoney(walletBalance) }) }}
               </div>
             </div>
             <div class="flex flex-row justify-between mt-4 w-full">
