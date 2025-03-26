@@ -198,15 +198,35 @@ function handleEdit() {
             v-if="cardDetail?.card_status === CardStatus.ACTIVE"
             class="mt-7 flex flex-row w-full justify-around text-[#1C1D23] text-14-500-20"
           >
-            <ButtonsCardDetail :type='`topup`'/>
-            <ButtonsCardDetail :type='`freeze`'  @click='handleFreeze'/>
-            <ButtonsCardDetail :type='`cancel`' @click='handleCancel'/>
-            <ButtonsCardDetail :type='`withdraw`' />
-            
+            <div @click="handleTopup" class="flex flex-col gap-3 items-center cursor-pointer hover:opacity-90">
+              <img class="w-10" src="~/assets/img/cards/topup.svg" alt="" />
+              <div>{{ t(`cards.slideovers.detail.button.topup`) }}</div>
+            </div>
+            <div @click="handleFreeze" class="flex flex-col gap-3 items-center cursor-pointer hover:opacity-90">
+              <img class="w-10" src="~/assets/img/cards/freeze.svg" alt="" />
+              <div>{{ t(`cards.slideovers.detail.button.freeze`) }}</div>
+            </div>
+            <div @click="handleCancel" class="flex flex-col gap-3 items-center cursor-pointer hover:opacity-90">
+              <img class="w-10" src="~/assets/img/cards/cancel.svg" alt="" />
+              <div>{{ t(`cards.slideovers.detail.button.cancel`) }}</div>
+            </div>
+            <div @click="handleWithdraw" class="flex flex-col gap-3 items-center cursor-pointer hover:opacity-90">
+              <img class="w-10" src="~/assets/img/cards/withdraw.svg" alt="" />
+              <div>{{ t(`cards.slideovers.detail.button.withdraw`) }}</div>
+            </div>
           </div>
           <div v-if="cardDetail?.card_status === CardStatus.FROZEN" class="mt-7 flex flex-row w-full justify-between">
-            <ButtonsCardDetail :type='`unfreeze`' @click='handleUnfreeze'/>
-            <ButtonsCardDetail :type='`cancel`' @click='handleCancel'/>
+            <div
+                @click="handleUnfreeze"
+                class="flex flex-col gap-3 w-[50%] items-center cursor-pointer hover:opacity-90"
+            >
+              <img class="w-10" src="~/assets/img/cards/unfreeze.svg" alt="" />
+              <div>{{ t(`cards.slideovers.detail.button.unfreeze`) }}</div>
+            </div>
+            <div @click="handleCancel" class="flex flex-col gap-3 w-[50%] items-center cursor-pointer hover:opacity-90">
+              <img class="w-10" src="~/assets/img/cards/cancel.svg" alt="" />
+              <div>{{ t(`cards.slideovers.detail.button.cancel`) }}</div>
+            </div>
           </div>
           <!-- Detail -->
           <div

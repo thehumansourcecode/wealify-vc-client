@@ -247,7 +247,7 @@ const handleUnfreeze = async() => {
     return
   }
   showToast(ToastType.SUCCESS, t('cards.message.unfreeze.success'))
-  await cardDetail.getCardDetailById(selected.value.id)
+  await cardStore.getCardDetailById(selected.value.id)
   cardStore.toggleCardUnFreeze(false)
   cardStore.toggleCardDetailSlideover(true)
 }
@@ -723,7 +723,7 @@ onUnmounted(() =>
       />
       <ConfirmModal
           v-model="isVisibleConfirmUnfreeze"
-          @confirm="handleCancel"
+          @confirm="handleUnfreeze"
           :title="t('cards.modals.unfreeze.title')"
           :message="t('cards.modals.unfreeze.message')"
           :confirm-label="t('cards.modals.unfreeze.label.confirm')"
