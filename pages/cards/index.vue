@@ -23,11 +23,7 @@ const page = computed(() => payload.value.page)
 const limit = computed(() => payload.value.limit)
 const filterType = ref(undefined)
 const selected = ref(undefined)
-const {
-  isVisibleConfirmFreeze,
-  isVisibleConfirmCancel,
-  isVisibleConfirmUnfreeze
-} = storeToRefs(cardStore)
+const { isVisibleConfirmFreeze, isVisibleConfirmCancel, isVisibleConfirmUnfreeze } = storeToRefs(cardStore)
 
 function isCardSelected(card: ICardDetail) {
   return selectedCardList.value.some((selectedCard: ICardDetail) => selectedCard.id === card.id)
@@ -211,11 +207,11 @@ async function initPage() {
   await Promise.all([getCardList(), commonStore.getDropdownCategoryList()])
 }
 
-const handleFreeze = async() => {
+const handleFreeze = async () => {
   cardStore.isLoading.freezeCard = true
   const result = await cardStore.freezeCard(selected.value.id)
   cardStore.isLoading.freezeCard = false
-  if (!result.success){
+  if (!result.success) {
     showToast(ToastType.FAILED, t('cards.message.freeze.error'))
     return
   }
@@ -225,11 +221,11 @@ const handleFreeze = async() => {
   cardStore.toggleCardDetailSlideover(true)
 }
 
-const handleCancel = async() => {
+const handleCancel = async () => {
   cardStore.isLoading.cancelCard = true
   const result = await cardStore.cancelCard(selected.value.id)
   cardStore.isLoading.cancelCard = false
-  if (!result.success){
+  if (!result.success) {
     showToast(ToastType.FAILED, t('cards.message.cancel.error'))
     return
   }
@@ -238,11 +234,11 @@ const handleCancel = async() => {
   cardStore.toggleCardDetailSlideover(true)
 }
 
-const handleUnfreeze = async() => {
+const handleUnfreeze = async () => {
   cardStore.isLoading.unfreezeCard = true
   const result = await cardStore.unfreezeCard(cardDetail.value.id)
   cardStore.isLoading.unfreezeCard = true
-  if (!result.success){
+  if (!result.success) {
     showToast(ToastType.FAILED, t('cards.message.unfreeze.error'))
     return
   }
@@ -578,17 +574,7 @@ onUnmounted(() =>
           <div class="flex flex-row items-center gap-[14px] min-w-[240px]">
             <img src="/icons/dashboard/mastercard.svg" alt="" />
             <div class="flex flex-col gap-1">
-              <UTooltip
-                :text="row?.card_name"
-                :ui="{
-                  background: 'bg-white',
-                  base: 'h-8 px-2.5 py-1.5 text-sm font-medium',
-                  shadow: '',
-                }"
-                :popper="{ placement: 'top' }"
-              >
-                <span class="text-14-600-20 text-[#1C1D23] max-w-[180px] truncate">{{ row?.card_name }}</span>
-              </UTooltip>
+              <BaseTruncatedTooltip class="text-14-600-20 text-[#1C1D23] max-w-[180px]" :text="row?.card_name" />
               <span class="text-12-500-20 text-[#7A7D89]">
                 {{ t(`cards.list.card_number`, { value: row?.last_four }) }}</span
               >
@@ -702,33 +688,33 @@ onUnmounted(() =>
         />
       </div>
       <ConfirmModal
-          v-model.sync="isVisibleConfirmFreeze"
-          @confirm="handleFreeze"
-          :title="t('cards.modals.freeze.title')"
-          :message="t('cards.modals.freeze.message')"
-          :confirm-label="t('cards.modals.freeze.label.confirm')"
-          :cancel-label="t('cards.modals.freeze.label.cancel')"
-          :loading="cardStore.isLoading.freezeCard"
+        v-model.sync="isVisibleConfirmFreeze"
+        @confirm="handleFreeze"
+        :title="t('cards.modals.freeze.title')"
+        :message="t('cards.modals.freeze.message')"
+        :confirm-label="t('cards.modals.freeze.label.confirm')"
+        :cancel-label="t('cards.modals.freeze.label.cancel')"
+        :loading="cardStore.isLoading.freezeCard"
       />
 
       <ConfirmModal
-          v-model="isVisibleConfirmCancel"
-          @confirm="handleCancel"
-          :title="t('cards.modals.cancel.title')"
-          :message="t('cards.modals.cancel.message')"
-          :confirm-label="t('cards.modals.cancel.label.confirm')"
-          :cancel-label="t('cards.modals.cancel.label.cancel')"
-          :bg-confirm="`bg-[#ED2C38] hover:bg-[#ED2C38]`"
-          :loading="cardStore.isLoading.cancelCard"
+        v-model="isVisibleConfirmCancel"
+        @confirm="handleCancel"
+        :title="t('cards.modals.cancel.title')"
+        :message="t('cards.modals.cancel.message')"
+        :confirm-label="t('cards.modals.cancel.label.confirm')"
+        :cancel-label="t('cards.modals.cancel.label.cancel')"
+        :bg-confirm="`bg-[#ED2C38] hover:bg-[#ED2C38]`"
+        :loading="cardStore.isLoading.cancelCard"
       />
       <ConfirmModal
-          v-model="isVisibleConfirmUnfreeze"
-          @confirm="handleUnfreeze"
-          :title="t('cards.modals.unfreeze.title')"
-          :message="t('cards.modals.unfreeze.message')"
-          :confirm-label="t('cards.modals.unfreeze.label.confirm')"
-          :cancel-label="t('cards.modals.unfreeze.label.cancel')"
-          :loading="cardStore.isLoading.unfreezeCard"
+        v-model="isVisibleConfirmUnfreeze"
+        @confirm="handleUnfreeze"
+        :title="t('cards.modals.unfreeze.title')"
+        :message="t('cards.modals.unfreeze.message')"
+        :confirm-label="t('cards.modals.unfreeze.label.confirm')"
+        :cancel-label="t('cards.modals.unfreeze.label.cancel')"
+        :loading="cardStore.isLoading.unfreezeCard"
       />
     </div>
   </div>

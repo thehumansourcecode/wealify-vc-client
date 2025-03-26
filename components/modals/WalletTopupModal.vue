@@ -1,9 +1,17 @@
 <script setup lang="ts">
+import { formatMoneyWithoutDecimals } from '~/common/functions'
+import { CommonCurrency, FeeAmountType } from '~/types/common'
 import { TransactionCryptocurrency, TransactionNetwork } from '~/types/dashboard'
 const { copy, copied } = useClipboard()
 const toast = useToast()
 
 const dashboardStore = useDashboardStore()
+const commonStore = useCommonStore()
+
+onMounted(async () => await Promise.all([commonStore.getFee()]))
+
+const walletTopupFeeValue = computed(() => commonStore.feeList?.TOP_UP_WALLET.value || 0)
+const walletTopupFeeType = computed(() => commonStore.feeList?.TOP_UP_WALLET.type)
 
 const { t } = useI18n()
 
@@ -207,7 +215,16 @@ function handleCopy(value: string) {
           </div>
         </div>
         <div class="text-12-500-20 text-[#7A7D89] mt-4 w-[400px]">{{ t(`dashboard.modals.topup.note`) }}</div>
-        <div class="text-16-600-20 text-[#FF5524] mt-4">{{ t(`dashboard.modals.topup.fee`, { fee: '0' }) }}</div>
+        <div v-if="walletTopupFeeType === FeeAmountType.PERCENT" class="text-16-600-20 text-[#FF5524] mt-4">
+          {{ t(`dashboard.modals.topup.feePercent`, { fee: walletTopupFeeValue * 100 }) }}
+        </div>
+        <div v-else-if="walletTopupFeeType === FeeAmountType.FIXED" class="text-16-600-20 text-[#FF5524] mt-4">
+          {{
+            t(`dashboard.modals.topup.feePercent`, {
+              fee: formatMoneyWithoutDecimals(walletTopupFeeValue, CommonCurrency.USD),
+            })
+          }}
+        </div>
       </div>
       <img src="~/assets/img/dashboard/topup-qr.svg" alt="" />
     </div>

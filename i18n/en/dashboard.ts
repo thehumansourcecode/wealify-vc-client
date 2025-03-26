@@ -57,7 +57,8 @@ export default {
     topup: {
       title: 'Top up',
       note: 'Send only USDT/USDC to this deposit address. Sending any other asset to this address may result in the loss of your deposit',
-      fee: 'Fee: {fee}%',
+      feePercent: 'Fee: {fee}%',
+      feeFlat: 'Fee: {fee}',
       label: {
         network: 'Network',
         [TransactionNetwork.SOLANA]: 'Solana (SOL)',

@@ -1,4 +1,4 @@
-import type { CommonCountry } from './common'
+import type { CommonCountry, FeeType } from './common'
 
 export enum CardType {
   PHYSICAL = 'PHYSICAL',

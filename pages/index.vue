@@ -20,7 +20,7 @@ function toggleBalance() {
 
 onMounted(async () => {
   commonStore.setActiveTab(PanelTab.DASHBOARD)
-  await Promise.all([userStore.getProfile(), userStore.getBalance()])
+  await Promise.all([userStore.getBalance()])
 })
 
 const userBalance = computed(() => userStore.userBalance)

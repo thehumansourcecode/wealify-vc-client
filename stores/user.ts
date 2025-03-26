@@ -1,5 +1,5 @@
 import { userService } from '~/services/user.service'
-import { IUserBalance, type IUserProfile } from '~/types/user'
+import { type IUserBalance, type IUserProfile } from '~/types/user'
 
 export const useUserStore = defineStore('user', () => {
   const authStore = useAuthStore()

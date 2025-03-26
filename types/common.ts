@@ -139,7 +139,15 @@ export enum FeeAmountType {
   PERCENT = 'PERCENT',
 }
 
-export interface IFeeData {
-  type: string
+export enum FeeKey {
+  ISSUE_CARD = 'ISSUE_CARD',
+  TOP_UP_CARD = 'TOP_UP_CARD',
+  TOP_UP_WALLET = 'TOP_UP_WALLET',
+  WITHDRAWAL_CARD = 'WITHDRAWAL_CARD',
+}
+export interface FeeDetail {
+  type: FeeAmountType
   value: number
 }
+
+export type Fees = Record<FeeKey, FeeDetail>
