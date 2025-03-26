@@ -126,9 +126,9 @@ async function handleEdit() {
             <BaseInput
               @input="handleInputName"
               @paste="handlePasteName"
+              disabled
               :error="error"
               v-model="form.card_name"
-              :clearable="!!form.card_name"
               :limit="50"
               leading
               :leading-img="'/icons/cards/issue-card/name.svg'"

@@ -22,6 +22,7 @@ function clearInput() {
     :maxlength="limit"
     :input-class="[`input-field rounded-49`, `${error ? 'error' : ''}`].join(' ')"
     :ui="{
+      base: 'disabled:cursor-not-allowed disabled:opacity-75 disabled:bg-[#c6c8d4] disabled:text-[#1C1D23]',
       padding: {
         sm: 'pr-9 pl-1.5 py-1.5',
       },
