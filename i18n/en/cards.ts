@@ -160,21 +160,29 @@ export default {
       },
     },
   },
-  message:{
-    freeze:{
-      success:'The card is frozen. You will not be able to perform any actions on this card, including making transactions',
-      error:'Fail to Freeze card. Please contact Wealify supports'
+  message: {
+    freeze: {
+      success:
+        'The card is frozen. You will not be able to perform any actions on this card, including making transactions',
+      error: 'Fail to Freeze card. Please contact Wealify supports',
     },
-    cancel:{
-      success:'cancel card success !',
-      error:"Fail to Cancel card. Please contact Wealify supports."
+    cancel: {
+      success: 'cancel card success !',
+      error: 'Fail to Cancel card. Please contact Wealify supports.',
     },
-    unfreeze:{
-      success:'Card is unfrozen and you can continue to make card transactions',
-      error:'Fail to Unfreeze card. Please contact Wealify supports'
-    }
+    unfreeze: {
+      success: 'Card is unfrozen and you can continue to make card transactions',
+      error: 'Fail to Unfreeze card. Please contact Wealify supports',
+    },
   },
   modals: {
+    otp: {
+      title: 'OTP',
+      description: 'Please enter the verification code sent to ',
+      timeout: 'Your verification code will expire in ',
+      notReceived: 'Did not receive OTP? ',
+      resend: 'Resend OTP in ',
+    },
     topup: {
       title: 'Top up card',
       label: {
@@ -187,7 +195,7 @@ export default {
     },
     freeze: {
       title: 'Freeze the card',
-      message:'This card will be reactivated and ready for use. Are you sure you want to continue?',
+      message: 'This card will be reactivated and ready for use. Are you sure you want to continue?',
       label: {
         cancel: 'Cancel',
         confirm: 'Unfreeze',
@@ -195,7 +203,8 @@ export default {
     },
     cancel: {
       title: 'Cancel this card?',
-      message:'Wealify will cancel this card and you cannot use it to make payment. Your remaining balance will be automatically refunded to your Wealify account.',
+      message:
+        'Wealify will cancel this card and you cannot use it to make payment. Your remaining balance will be automatically refunded to your Wealify account.',
       label: {
         cancel: 'Back',
         confirm: 'Cancel',
@@ -203,7 +212,7 @@ export default {
     },
     unfreeze: {
       title: 'Unfreeze the card',
-      message:'This card will be reactivated and ready for use. Are you sure you want to continue?',
+      message: 'This card will be reactivated and ready for use. Are you sure you want to continue?',
       label: {
         cancel: 'Cancel',
         confirm: 'Unfreeze',

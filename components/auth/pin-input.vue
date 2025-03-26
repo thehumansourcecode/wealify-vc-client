@@ -17,11 +17,11 @@ const props = defineProps<{
     input-type="letter-numeric"
     input-mode="numeric"
     :num-inputs="6"
-    v-model:value="pin"
     :should-auto-focus="true"
     :should-focus-order="true"
     :placeholder="[]"
     @on-complete="() => props.onComplete(pin)"
+    v-model:value="pin"
     @update:value="pin = $event"
   />
 </template>

@@ -24,12 +24,9 @@ export const useDashboardStore = defineStore('dashboard', () => {
     userProfile.value = undefined
   }
 
-  async function getProfile() {}
-
   return {
     userProfile,
     resetUser,
-    getProfile,
     isOpenWalletTopupModal,
     toggleWalletTopupModal,
     isOpenTransactionDetailSlideover,

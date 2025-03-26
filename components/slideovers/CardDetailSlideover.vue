@@ -27,7 +27,7 @@ function handleCopy(index: number, value: string) {
 const cardStore = useCardStore()
 const isOpenCardDetailSlideover = computed(() => cardStore.isOpenCardDetailSlideover)
 const cardDetail = computed(() => cardStore.selectedCardDetail)
-const isShowCardSensitiveDetail = ref(false)
+const isShowCardSensitiveDetail = computed(() => cardStore.isShowCardSensitiveDetail)
 const isShowCardSensitiveDetailOverlay = ref(false)
 
 const cardSensitiveDetail = ref({
@@ -73,9 +73,11 @@ const handleMouseMove = event => {
   }
 }
 
-function handleShowSensitiveDetail() {
-  isShowCardSensitiveDetail.value = true
-  isShowCardSensitiveDetailOverlay.value = false
+async function handleShowSensitiveDetail() {
+  // isShowCardSensitiveDetail.value = true
+  // isShowCardSensitiveDetailOverlay.value = false
+  await cardStore.sendOTPSensitiveDetail()
+  cardStore.toggleSensitiveOTPModal(true)
 }
 
 function onClosePrevented() {
@@ -119,7 +121,6 @@ function handleEdit() {
   <USlideover
     v-model="isOpenCardDetailSlideover"
     :prevent-close="true"
-    @close-prevented="onClosePrevented()"
     :ui="{
       width: 'w-screen max-w-[464px]',
       overlay: {

@@ -6,11 +6,13 @@ const isOpenWalletTopupModal = computed(() => dashboardStore.isOpenWalletTopupMo
 const isOpenCardTopupModal = computed(() => cardStore.isOpenCardTopupModal)
 const isOpenProcessingModal = computed(() => commonStore.isOpenProcessingModal)
 const isOpenCardEditModal = computed(() => cardStore.isOpenCardEditModal)
+const isOpenSensitiveOTPModal = computed(() => cardStore.isOpenSensitiveOTPModal)
 </script>
 
 <template>
-  <CardTopupModal v-if="isOpenCardTopupModal" v-model="isOpenCardTopupModal" />
-  <WalletTopupModal v-if="isOpenWalletTopupModal" v-model="isOpenWalletTopupModal" />
-  <ProcessingModal v-if="isOpenProcessingModal" v-model="isOpenProcessingModal" />
-  <CardEditModal v-if="isOpenCardEditModal" v-model="isOpenCardEditModal" />
+  <CardTopupModal v-model="isOpenCardTopupModal" v-if="isOpenCardTopupModal" />
+  <WalletTopupModal v-model="isOpenWalletTopupModal" v-if="isOpenWalletTopupModal" />
+  <ProcessingModal v-model="isOpenProcessingModal" v-if="isOpenProcessingModal" />
+  <CardEditModal v-model="isOpenCardEditModal" v-if="isOpenCardEditModal" />
+  <SensitiveOTPModal v-model="isOpenSensitiveOTPModal" v-if="isOpenSensitiveOTPModal" />
 </template>
