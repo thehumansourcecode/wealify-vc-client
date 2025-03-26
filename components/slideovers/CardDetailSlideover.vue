@@ -146,7 +146,6 @@ function handleEdit() {
   <USlideover
     v-model="isOpenCardDetailSlideover"
     :prevent-close="true"
-    :transition="true"
     @close-prevented="onClosePrevented()"
     :ui="{
       width: 'w-screen max-w-[464px]',

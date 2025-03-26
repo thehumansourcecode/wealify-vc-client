@@ -6,6 +6,6 @@ const isOpenCardDetailSlideover = computed(() => cardStore.isOpenCardDetailSlide
 </script>
 
 <template>
-  <TransactionDetailSlideover v-if="isOpenTransactionDetailSlideover" v-model="isOpenTransactionDetailSlideover" />
-  <CardDetailSlideover v-if="isOpenCardDetailSlideover" v-model="isOpenCardDetailSlideover" />
+  <TransactionDetailSlideover />
+  <CardDetailSlideover />
 </template>
