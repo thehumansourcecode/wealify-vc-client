@@ -7,7 +7,15 @@ const dashboardStore = useDashboardStore()
 
 const { t } = useI18n()
 
-const topupAddress = computed(() => '0xb2f28c019362a57285424e39ab795d8c82afbfb6')
+const topupAddress = computed(() => {
+  if (selectedNetworkOption.value.value === TransactionNetwork.SOLANA) {
+    return '2YzStCUvA2MaDxcuW8dJc4in1DY45GfwEzUnkPC87EA9'
+  } else if (selectedNetworkOption.value.value === TransactionNetwork.ETHEREUM) {
+    return '0x922cE1a5310DcEBe7CBF9eC1AcC16694b7007Fba'
+  } else if (selectedNetworkOption.value.value === TransactionNetwork.TRON) {
+    return 'TCJK2XuDrGd7BD8hxqS9PtsGYDFw9XJP8Z'
+  } else return ''
+})
 
 const networkOptions = ref([
   {
@@ -188,7 +196,7 @@ function handleCopy(value: string) {
         <div
           class="border border-[#D7D9E5] rounded-[48px] py-[10px] px-4 flex flex-row items-center justify-between gap-4"
         >
-          <div class="text-[#7A7D89] text-14-500-20">{{ topupAddress }}</div>
+          <div class="text-[#7A7D89] text-14-500-20 w-[400px]">{{ topupAddress }}</div>
           <div class="relative">
             <img
               class="cursor-pointer"
