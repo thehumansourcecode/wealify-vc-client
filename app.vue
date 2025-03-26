@@ -59,6 +59,5 @@ setLocale(CommonLanguage.EN)
       </template>
     </UNotifications>
     <UModals />
-    <USlideovers />
   </div>
 </template>

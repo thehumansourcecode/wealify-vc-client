@@ -62,6 +62,11 @@ export const useCommonStore = defineStore('common', () => {
     return response
   }
 
+  const isOpenProcessingModal = ref(false)
+  function toggleProcessingModal(state: boolean) {
+    isOpenProcessingModal.value = state
+  }
+
   return {
     config,
     loading,
@@ -79,5 +84,7 @@ export const useCommonStore = defineStore('common', () => {
     dropdownCardList,
     getDropdownCardList,
     getFeeByType,
+    isOpenProcessingModal,
+    toggleProcessingModal,
   }
 })

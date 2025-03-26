@@ -8,6 +8,8 @@ export default {
     freeze: 'Freeze',
     unfreeze: 'Unfreeze',
     cancel: 'Cancel cards',
+    topupCard: 'Top up card',
+    editCard: 'Save',
   },
   filter: {
     placeholder: {
@@ -37,11 +39,15 @@ export default {
 
     category: {
       [CardCategory.ENTERTAINMENT]: 'Entertainment',
+      [CardCategory.INVESTMENT_DIVIDEND]: 'Investment / Dividend',
       [CardCategory.FOOD_BEVERAGES]: 'Food & Beverages',
+      [CardCategory.GOVERNMENT_SERVICES]: 'Government Services',
       [CardCategory.INVENTORY]: 'Inventory',
       [CardCategory.MARKETING]: 'Marketing',
       [CardCategory.OFFICE]: 'Office',
       [CardCategory.SALARY]: 'Salary',
+      [CardCategory.SOFTWARE]: 'Software',
+      [CardCategory.RETAIL]: 'Retail',
       [CardCategory.SALES]: 'Sales',
       [CardCategory.SERVICE_PROVIDER]: 'Service Provider',
       [CardCategory.TRAVEL]: 'Travel',
@@ -107,7 +113,8 @@ export default {
       title: 'Balance',
       form: {
         starting: 'Starting balance of the card',
-        available: 'Available: {amount} USD',
+        availableCard: 'Card Balance: {amount} USD',
+        availableWealify: 'Wealify Balance: {amount} USD',
       },
     },
     preview: {
@@ -115,7 +122,7 @@ export default {
       namePlaceholder: 'Card holder name',
       fee: 'Issue card fee',
       starting: 'Starting balance of the card',
-      total_top_up: 'Total top up',
+      total_top_up: 'Top up amount',
       button: 'Issue card',
     },
     policy: 'I agree with Terms of Use and Policy',
@@ -171,7 +178,7 @@ export default {
     topup: {
       title: 'Top up card',
       label: {
-        balance: 'Your Balance:',
+        balance: 'Wealify Balance:',
         select: 'Top up card:',
         amount: 'Your amount',
         fee: 'Fee',
@@ -200,6 +207,23 @@ export default {
       label: {
         cancel: 'Cancel',
         confirm: 'Unfreeze',
+      },
+    },
+    edit: {
+      title: 'Edit card',
+      label: {
+        cardName: 'Card name',
+        email: 'Email',
+        phoneNumber: 'Phone number',
+        category: 'Card category',
+        purpose: 'Card purpose',
+      },
+      placeholder: {
+        name: 'Enter your card name',
+        email: `Enter cardholder's email`,
+        phoneNumber: `Enter cardholder's phone number`,
+        category: 'Choose card category',
+        purpose: 'Enter your card purpose',
       },
     },
   },

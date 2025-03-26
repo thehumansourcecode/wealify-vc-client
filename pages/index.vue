@@ -114,7 +114,7 @@ function onClickWithdraw() {
         <div
           class="bg-[#FFF5F2] text-[#000] border border-[#E1E5EB] rounded-[12px] flex flex-row pl-7 pr-12 pt-4 pb-6 justify-between items-center bg-[url(~/assets/img/card-pattern.svg)] bg-no-repeat bg-right"
         >
-          <div class="flex flex-col z-10">
+          <div class="flex flex-col z-10 w-full">
             <span class="text-[#A5A8B8] text-14-600-20">
               {{ t('dashboard.balance.card.balance') }}
             </span>
@@ -122,9 +122,9 @@ function onClickWithdraw() {
               <span class="">{{ isShowBalance ? formatMoney(userBalance?.card_balance?.total) : '*' }}</span>
               <span class="pl-1 text-[#7A7D89]">USD</span>
             </div>
-            <div class="pt-4 flex flex-col w-[220px] gap-2">
-              <div class="flex flex-row justify-between w-full">
-                <div class="flex flex-row gap-2 items-center">
+            <div class="pt-4 flex flex-col w-full gap-2">
+              <div class="flex flex-row w-full">
+                <div class="flex flex-row gap-2 items-center w-[130px]">
                   <img src="~/assets/img/dashboard/money-in.svg" alt="" />
                   <span class="text-[#A5A8B8] text-12-500-20">
                     {{ t('dashboard.balance.card.topup') }}
@@ -137,8 +137,8 @@ function onClickWithdraw() {
                   </span>
                 </div>
               </div>
-              <div class="flex flex-row justify-between w-full">
-                <div class="flex flex-row gap-2 items-center">
+              <div class="flex flex-row w-full">
+                <div class="flex flex-row gap-2 items-center w-[130px]">
                   <img src="~/assets/img/dashboard/money-out.svg" alt="" />
                   <span class="text-[#A5A8B8] text-12-500-20">
                     {{ t('dashboard.balance.card.withdraw') }}
@@ -147,9 +147,7 @@ function onClickWithdraw() {
                 <div class="flex flex-row gap-[2px] items-center">
                   <img src="~/assets/img/dashboard/red-arrow.svg" alt="" />
                   <span class="text-xs font-semibold leading-5">
-                    -{{
-                      isShowBalance ? formatMoney(userBalance?.card_balance?.total_withdraw) : '*'
-                    }}
+                    -{{ isShowBalance ? formatMoney(userBalance?.card_balance?.total_withdraw) : '*' }}
                     USD
                   </span>
                 </div>

@@ -50,7 +50,7 @@ const totalActiveAmount = computed(() => {
   return cardListAmount.reduce((a: number, b: number) => a + b, 0)
 })
 
-const typeOptions = Object.values(CardType).map((value, index) => ({ type: value ,disabled : index == 0}))
+const typeOptions = Object.values(CardType).map((value, index) => ({ type: value, disabled: index == 0 }))
 const categoryOptions = computed(() => commonStore.categoryList)
 const statusOptions = Object.values(CardStatus)
 
@@ -150,6 +150,7 @@ async function handleClickCard(row) {
   const selectedCardDetail = cardList.value.find((card: ICardDetail) => card.id === id)
   if (selectedCardDetail) {
     selected.value = selectedCardDetail
+    cardStore.setSelectedCardForTopup(row)
     await cardStore.getCardDetailById(id)
     cardStore.toggleCardDetailSlideover(true)
   }
@@ -188,20 +189,17 @@ watch(
   { deep: true },
 )
 
-watch(
-  filterType,
-   (value) => {
-    if(value){
-      payload.value.card_type = value.type
-      return 
-    }
-    payload.value.card_type = value
-  },
-)
-
+watch(filterType, value => {
+  if (value) {
+    payload.value.card_type = value.type
+    return
+  }
+  payload.value.card_type = value
+})
 
 async function onEnterKeyword() {
   if (tempKeyword.value !== payload.value.keyword) {
+    tempKeyword.value = tempKeyword.value?.trim()
     cardStore.setPayload({ ...payload.value, keyword: tempKeyword.value })
     await getCardList()
   }

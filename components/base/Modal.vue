@@ -20,14 +20,19 @@ function onClosePrevented() {
       },
       rounded: 'rounded-xl',
       background: '',
-      width: 'w-[max-content] sm:max-w-[800px]',
+      width: 'w-[max-content] sm:max-w-[1000px]',
       margin: 'sm:my-0',
     }"
   >
     <div class="p-8 bg-white rounded-[20px] flex flex-col gap-7">
-      <div class="w-full flex flex-row justify-between items-center">
+      <div v-if="label" class="w-full flex flex-row justify-between items-center">
         <div class="text-20-600-32">{{ label }}</div>
-        <img class="cursor-pointer hover:opacity-70" src="~/assets/img/common/close.svg" alt="" @click="onClosePrevented()" />
+        <img
+          class="cursor-pointer hover:opacity-70"
+          src="~/assets/img/common/close.svg"
+          alt=""
+          @click="onClosePrevented()"
+        />
       </div>
       <slot></slot>
     </div>

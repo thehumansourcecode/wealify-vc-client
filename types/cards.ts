@@ -7,9 +7,13 @@ export enum CardType {
 
 export enum CardCategory {
   INVENTORY = 'Inventory',
+  INVESTMENT_DIVIDEND = 'Investment/Dividend',
   MARKETING = 'Marketing',
   SALARY = 'Salary',
   EQUIPMENT = 'Equipment',
+  GOVERNMENT_SERVICES = 'Government Services',
+  SOFTWARE = 'Software',
+  RETAIL = 'Retail',
   SERVICE_PROVIDER = 'Service Provider',
   TAXES = 'Taxes',
   TRAVEL = 'Travel',
@@ -45,6 +49,7 @@ export interface ICardDetail {
   phone_number: string
   total_top_up: number
   total_withdraw: number
+  country_code: CommonCountry
 }
 export interface IIssueCardParams {
   card_name: string
@@ -55,6 +60,15 @@ export interface IIssueCardParams {
   card_purpose?: string
   card_type: string
   spend_limit: number
+}
+
+export interface IEditCardParams {
+  card_name: string
+  email: string
+  phone_number: string
+  country_code: CommonCountry
+  category?: CardCategory
+  card_purpose?: string
 }
 
 export interface ITopupCardParams {

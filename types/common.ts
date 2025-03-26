@@ -134,6 +134,11 @@ export enum FeeType {
   TOP_UP_WALLET = 'TOP_UP_WALLET',
 }
 
+export enum FeeAmountType {
+  FIXED = 'FIXED',
+  PERCENT = 'PERCENT',
+}
+
 export interface IFeeData {
   type: string
   value: number

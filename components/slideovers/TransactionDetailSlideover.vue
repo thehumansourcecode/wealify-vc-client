@@ -55,12 +55,13 @@ function onClosePrevented() {
       },
     }"
     :prevent-close="true"
+    :transition="true"
     @close-prevented="onClosePrevented()"
   >
     <div class="flex flex-col items-center">
       <div class="w-full flex flex-row justify-between items-center py-6 px-8">
         <div class="text-20-600-32 text-[#1C1D23]">
-          {{ t(`transactions.detail.label.${transactionDetail.transaction_type}`) }}
+          {{ t(`transactions.detail.label.${transactionDetail.transaction_vc_type}`) }}
         </div>
         <img
           class="cursor-pointer hover:opacity-70"
@@ -75,7 +76,7 @@ function onClosePrevented() {
         <div class="pt-5 flex flex-row justify-between items-end w-full">
           <div class="flex-col gap-[6px]">
             <div class="uppercase text-[#1C1D23] text-14-500-20">
-              {{ t(`transactions.detail.label.${transactionDetail.transaction_type}`) }}
+              {{ t(`transactions.detail.label.${transactionDetail.transaction_vc_type}`) }}
             </div>
             <div class="text-32-700-44 text-[#FF5524]">{{ formatMoney(transactionDetail.amount, 'USD') }}</div>
             <div class="text-12-500-20 text-[#7A7D89]">
@@ -85,16 +86,16 @@ function onClosePrevented() {
           <div
             class="flex flex-row gap-[6px] items-center px-[14px] py-[6px] rounded-[8px]"
             :style="{
-              color: getStatusColor(transactionDetail?.transaction_status),
+              color: getStatusColor(transactionDetail?.transaction_vc_status),
               background: '#EBF6EE',
             }"
           >
             <div class="text-12-600-20">
-              {{ t(`transactions.detail.status.${transactionDetail.transaction_status}`) }}
+              {{ t(`transactions.detail.status.${transactionDetail.transaction_vc_status}`) }}
             </div>
             <div
               class="w-[6px] h-[6px] rounded-[1px]"
-              :style="{ background: getStatusColor(transactionDetail?.transaction_status) }"
+              :style="{ background: getStatusColor(transactionDetail?.transaction_vc_status) }"
             ></div>
           </div>
         </div>
@@ -102,7 +103,7 @@ function onClosePrevented() {
         <div class="px-5 py-3 mt-5 bg-[#F0F2F5] rounded-[18px] flex flex-col gap-5 w-full">
           <div class="flex flex-row justify-between items-center">
             <div class="text-12-500-20 text-[#1C1D23]">
-              {{ t(`transactions.detail.amountLabel.${transactionDetail.transaction_type}`) }}
+              {{ t(`transactions.detail.amountLabel.${transactionDetail.transaction_vc_type}`) }}
             </div>
             <div class="text-16-700-24 text-[#1C1D23]">
               {{ t(`transactions.detail.amount`, { amount: formatAmount(transactionDetail.amount) }) }}
@@ -210,7 +211,7 @@ function onClosePrevented() {
 
         <UButton class="flex items-center justify-center w-[400px] bg-[#1C1D23] hover:bg-[#3D3E34] my-8 rounded-[49px]">
           <div class="text-white text-14-600-20 px-4 py-[14px]">
-            {{ t(`transactions.detail.createNew.${transactionDetail.transaction_type}`) }}
+            {{ t(`transactions.detail.createNew.${transactionDetail.transaction_vc_type}`) }}
           </div>
         </UButton>
       </div>

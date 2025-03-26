@@ -132,7 +132,9 @@ function handleClickTransaction(row: ITransactionData) {
         <img src="/images/transactions/mastercard.svg" alt="" />
         <div class="flex flex-col gap-1">
           <span class="text-14-600-20 text-[#1C1D23]">{{ row.virtual_card.card_name }}</span>
-          <span class="text-12-500-20 text-[#7A7D89]"> {{ row.virtual_card.card_number }}</span>
+          <span class="text-12-500-20 text-[#7A7D89]">
+            {{ t(`cards.list.card_number`, { value: row.virtual_card?.last_four }) }}</span
+          >
         </div>
       </div>
     </template>
