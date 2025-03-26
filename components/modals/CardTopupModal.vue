@@ -16,7 +16,7 @@ onMounted(async () => Promise.all([commonStore.getDropdownCardList(), commonStor
 const selectedCard = ref(cardStore.selectedCardForTopup)
 const walletBalance = computed(() => userStore.userBalance?.wallet_balance?.balance)
 const dropdownCardList = computed(() => commonStore.dropdownCardList)
-const topupFee = computed(() => cardStore.topupFee)
+const topupCardFees = computed(() => commonStore.feeList?.TOP_UP_CARD)
 const loading = computed(() => cardStore.isLoading.topupCard)
 
 const currencyInputRef = ref()
@@ -71,25 +71,29 @@ watch(
 
 const threshold = computed(() => {
   const balance = walletBalance.value || 0
-  if (!topupFee.value) {
+  const feeAmountType = commonStore.feeList?.TOP_UP_CARD.type
+  const feeValue = commonStore.feeList?.TOP_UP_CARD.value
+  if (!feeValue) {
     return balance
   } else {
-    if (topupFee.value.type === FeeAmountType.FIXED) {
-      return balance - topupFee.value?.value
+    if (feeAmountType === FeeAmountType.FIXED) {
+      return balance - feeValue
     } else {
-      return balance * (1 - topupFee.value.value)
+      return balance * (1 - feeValue)
     }
   }
 })
 
 const finalAmount = computed(() => {
-  if (!topupFee.value) {
+  const feeAmountType = commonStore.feeList?.TOP_UP_CARD.type
+  const feeValue = commonStore.feeList?.TOP_UP_CARD.value
+  if (!feeValue) {
     return form.amount
   } else {
-    if (topupFee.value.type === FeeAmountType.FIXED) {
-      return form.amount + topupFee.value?.value
+    if (feeAmountType === FeeAmountType.FIXED) {
+      return form.amount + feeValue
     } else {
-      return form.amount * (1 + topupFee.value?.value)
+      return form.amount * (1 + feeValue)
     }
   }
 })
@@ -268,11 +272,11 @@ async function handleTopup() {
       </UForm>
       <div class="mb-6 mt-8 flex flex-row justify-between items-center">
         <div class="text-12-500-20 text-[#7A7D89]">{{ t('cards.modals.topup.label.fee') }}</div>
-        <div v-if="topupFee?.type === FeeAmountType.PERCENT" class="text-14-500-20">
-          {{ topupFee?.value * 100 || 0 }}%
+        <div v-if="topupCardFees?.type === FeeAmountType.PERCENT" class="text-14-500-20">
+          {{ topupCardFees?.value * 100 || 0 }}%
         </div>
-        <div v-else-if="topupFee?.type === FeeAmountType.FIXED" class="text-14-500-20">
-          {{ formatMoney(topupFee?.value || 0, CommonCurrency.USD) }}
+        <div v-else-if="topupCardFees?.type === FeeAmountType.FIXED" class="text-14-500-20">
+          {{ formatMoney(topupCardFees?.value || 0, CommonCurrency.USD) }}
         </div>
       </div>
       <div class="flex flex-row justify-between items-center">
