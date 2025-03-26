@@ -7,9 +7,13 @@ export enum CardType {
 
 export enum CardCategory {
   INVENTORY = 'Inventory',
+  INVESTMENT_DIVIDEND = 'Investment/Dividend',
   MARKETING = 'Marketing',
   SALARY = 'Salary',
   EQUIPMENT = 'Equipment',
+  GOVERNMENT_SERVICES = 'Government Services',
+  SOFTWARE = 'Software',
+  RETAIL = 'Retail',
   SERVICE_PROVIDER = 'Service Provider',
   TAXES = 'Taxes',
   TRAVEL = 'Travel',

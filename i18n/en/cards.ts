@@ -39,11 +39,15 @@ export default {
 
     category: {
       [CardCategory.ENTERTAINMENT]: 'Entertainment',
+      [CardCategory.INVESTMENT_DIVIDEND]: 'Investment / Dividend',
       [CardCategory.FOOD_BEVERAGES]: 'Food & Beverages',
+      [CardCategory.GOVERNMENT_SERVICES]: 'Government Services',
       [CardCategory.INVENTORY]: 'Inventory',
       [CardCategory.MARKETING]: 'Marketing',
       [CardCategory.OFFICE]: 'Office',
       [CardCategory.SALARY]: 'Salary',
+      [CardCategory.SOFTWARE]: 'Software',
+      [CardCategory.RETAIL]: 'Retail',
       [CardCategory.SALES]: 'Sales',
       [CardCategory.SERVICE_PROVIDER]: 'Service Provider',
       [CardCategory.TRAVEL]: 'Travel',

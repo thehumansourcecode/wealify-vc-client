@@ -92,15 +92,31 @@ export const useCardStore = defineStore('card', () => {
   }
 
   async function issueCard(params: IIssueCardParams) {
+    // Flow: issue card => get id from response => back to card list page => call API to get card data from id => Show card detail
     isLoading.value.issueCard = true
+    commonStore.toggleProcessingModal(true)
     const response = await cardService.issueCard(params)
     if (response.success) {
+      const id = response.data.id
       navigateTo('/cards')
+      showToast(ToastType.SUCCESS, t('common.toast.success.issueCard'))
+      // Fetch newly created card
       setPayload({ ...payload.value, card_status: [CardStatus.ACTIVE] })
       await getCardList(payload.value)
+      // Open card detail slideover logic
+      const selectedCardDetail = cardList.value.find((card: ICardDetail) => card.id === id)
+      if (selectedCardDetail) {
+        const getCardDetailResponse = await getCardDetailById(id)
+        if (getCardDetailResponse.success) {
+          const cardDetail = getCardDetailResponse.data
+          setSelectedCardForTopup(cardDetail)
+          toggleCardDetailSlideover(true)
+        }
+      }
     } else {
       showToast(ToastType.FAILED, response.message)
     }
+    commonStore.toggleProcessingModal(false)
     isLoading.value.issueCard = false
     return response
   }

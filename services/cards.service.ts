@@ -34,7 +34,7 @@ export class CardService extends BaseService {
     return this.get(`/${id}`)
   }
 
-  async issueCard(params: IIssueCardParams): Promise<ICommonResponse<any>> {
+  async issueCard(params: IIssueCardParams): Promise<ICommonResponse<{ id: string }>> {
     return this.post('/issue', {
       ...params,
     })

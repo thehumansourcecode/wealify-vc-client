@@ -21,6 +21,7 @@ export default {
     success: {
       topupCard: 'Successful Card Top-up',
       editCard: 'Successful Card Edit',
+      issueCard: 'Issued Card Successfully',
     },
     failed: {
       topupCard: 'Fail to Top up virtual card. Please try again',
