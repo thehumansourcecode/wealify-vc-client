@@ -118,7 +118,7 @@ export default {
       namePlaceholder: 'Card holder name',
       fee: 'Issue card fee',
       starting: 'Starting balance of the card',
-      total_top_up: 'Total top up',
+      total_top_up: 'Top up amount',
       button: 'Issue card',
     },
     policy: 'I agree with Terms of Use and Policy',
