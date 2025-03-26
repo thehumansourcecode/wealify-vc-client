@@ -4,6 +4,7 @@ definePageMeta({
 })
 import { formatDDMMYYYY, formatMoney } from '~/common/functions'
 import { CardCategory, CardStatus, CardType, type ICardDetail } from '~/types/cards'
+import { showToast, ToastType } from '~/common/functions'
 
 const { t } = useI18n()
 const dayjs = useDayjs()
@@ -21,6 +22,12 @@ const limitOptions = ref([10, 30, 50])
 const page = computed(() => payload.value.page)
 const limit = computed(() => payload.value.limit)
 const filterType = ref(undefined)
+const selected = ref(undefined)
+const {
+  isVisibleConfirmFreeze,
+  isVisibleConfirmCancel,
+  isVisibleConfirmUnfreeze
+} = storeToRefs(cardStore)
 
 function isCardSelected(card: ICardDetail) {
   return selectedCardList.value.some((selectedCard: ICardDetail) => selectedCard.id === card.id)
@@ -142,6 +149,7 @@ async function handleClickCard(row) {
   const id = row.id
   const selectedCardDetail = cardList.value.find((card: ICardDetail) => card.id === id)
   if (selectedCardDetail) {
+    selected.value = selectedCardDetail
     await cardStore.getCardDetailById(id)
     cardStore.toggleCardDetailSlideover(true)
   }
@@ -203,6 +211,47 @@ onMounted(() => initPage())
 
 async function initPage() {
   await Promise.all([getCardList(), commonStore.getDropdownCategoryList()])
+}
+
+const handleFreeze = async() => {
+  cardStore.isLoading.freezeCard = true
+  const result = await cardStore.freezeCard(selected.value.id)
+  cardStore.isLoading.freezeCard = false
+  if (!result.success){
+    showToast(ToastType.FAILED, t('cards.message.freeze.error'))
+    return
+  }
+  showToast(ToastType.SUCCESS, t('cards.message.freeze.success'))
+  await getCardDetailById(selected.value.id)
+  cardStore.toggleCardFreeze(false)
+  cardStore.toggleCardDetailSlideover(true)
+}
+
+const handleCancel = async() => {
+  cardStore.isLoading.cancelCard = true
+  const result = await cardStore.cancelCard(selected.value.id)
+  cardStore.isLoading.cancelCard = false
+  if (!result.success){
+    showToast(ToastType.FAILED, t('cards.message.cancel.error'))
+    return
+  }
+  await cardStore.getCardDetailById(selected.value.id)
+  cardStore.toggleCardCancel(false)
+  cardStore.toggleCardDetailSlideover(true)
+}
+
+const handleUnfreeze = async() => {
+  cardStore.isLoading.unfreezeCard = true
+  const result = await cardStore.unfreezeCard(cardDetail.value.id)
+  cardStore.isLoading.unfreezeCard = true
+  if (!result.success){
+    showToast(ToastType.FAILED, t('cards.message.unfreeze.error'))
+    return
+  }
+  showToast(ToastType.SUCCESS, t('cards.message.unfreeze.success'))
+  await cardDetail.getCardDetailById(selected.value.id)
+  cardStore.toggleCardUnFreeze(false)
+  cardStore.toggleCardDetailSlideover(true)
 }
 
 onUnmounted(() =>
@@ -604,7 +653,6 @@ onUnmounted(() =>
           <div v-else class="w-[104px]"></div>
         </template>
       </UTable>
-
       <div class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700 gap-10 items-center">
         <USelectMenu
           v-model="payload.limit"
@@ -655,6 +703,35 @@ onUnmounted(() =>
           :total="cardCount"
         />
       </div>
+      <ConfirmModal
+          v-model.sync="isVisibleConfirmFreeze"
+          @confirm="handleFreeze"
+          :title="t('cards.modals.freeze.title')"
+          :message="t('cards.modals.freeze.message')"
+          :confirm-label="t('cards.modals.freeze.label.confirm')"
+          :cancel-label="t('cards.modals.freeze.label.cancel')"
+          :loading="cardStore.isLoading.freezeCard"
+      />
+
+      <ConfirmModal
+          v-model="isVisibleConfirmCancel"
+          @confirm="handleCancel"
+          :title="t('cards.modals.cancel.title')"
+          :message="t('cards.modals.cancel.message')"
+          :confirm-label="t('cards.modals.cancel.label.confirm')"
+          :cancel-label="t('cards.modals.cancel.label.cancel')"
+          :bg-confirm="`bg-[#ED2C38] hover:bg-[#ED2C38]`"
+          :loading="cardStore.isLoading.cancelCard"
+      />
+      <ConfirmModal
+          v-model="isVisibleConfirmUnfreeze"
+          @confirm="handleCancel"
+          :title="t('cards.modals.unfreeze.title')"
+          :message="t('cards.modals.unfreeze.message')"
+          :confirm-label="t('cards.modals.unfreeze.label.confirm')"
+          :cancel-label="t('cards.modals.unfreeze.label.cancel')"
+          :loading="cardStore.isLoading.unfreezeCard"
+      />
     </div>
   </div>
 </template>

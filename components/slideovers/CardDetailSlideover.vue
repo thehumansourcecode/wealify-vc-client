@@ -35,11 +35,6 @@ const isOpenCardDetailSlideover = computed(() => cardStore.isOpenCardDetailSlide
 const cardDetail = computed(() => cardStore.selectedCardDetail)
 const isShowCardSensitiveDetail = ref(false)
 const isShowCardSensitiveDetailOverlay = ref(false)
-const loading = ref({
-  freeze:false,
-  unfreeze:false,
-  cancel:false,
-})
 
 const cardSensitiveDetail = ref({
   CVV: '888',
@@ -104,42 +99,21 @@ function handleTopup() {
 }
 
 const handleFreeze = async() => {
-  loading.value.freeze = true
-  const result = await freezeCard(cardDetail.value.id)
-  loading.value.freeze = false
-  if (!result.success){
-    showToast(ToastType.FAILED, result.message)
-    return
-  }
-  showToast(ToastType.SUCCESS, t('cards.message.freeze'))
-  await getCardDetailById(cardDetail.value.id)
+  cardStore.toggleCardDetailSlideover(false)
+  cardStore.toggleCardFreeze(true)
 }
 
 const handleCancel = async() => {
-  loading.value.cancel = true
-  const result = await cancelCard(cardDetail.value.id)
-  loading.value.cancel = false
-  if (!result.success){
-    showToast(ToastType.FAILED, result.message)
-    return
-  }
-  showToast(ToastType.SUCCESS, t('cards.message.cancel'))
-  await getCardDetailById(cardDetail.value.id)
+  cardStore.toggleCardDetailSlideover(false)
+  cardStore.toggleCardCancel(true)
 }
 
 function handleWithdraw() {
 
 }
 const handleUnfreeze = async() => {
-  loading.value.unfreeze = true
-  const result = await unfreezeCard(cardDetail.value.id)
-  loading.value.unfreeze = false
-  if (!result.success){
-    showToast(ToastType.FAILED, result.message)
-    return
-  }
-  showToast(ToastType.SUCCESS, t('cards.message.unfreeze'))
-  await getCardDetailById(cardDetail.value.id)
+  cardStore.toggleCardDetailSlideover(false)
+  cardStore.toggleCardUnFreeze(true)
 }
 
 </script>
@@ -216,14 +190,14 @@ const handleUnfreeze = async() => {
             class="mt-7 flex flex-row w-full justify-around text-[#1C1D23] text-14-500-20"
           >
             <ButtonsCardDetail :type='`topup`'/>
-            <ButtonsCardDetail :type='`freeze`'  @click='handleFreeze' :loading='loading.freeze' />
-            <ButtonsCardDetail :type='`cancel`' @click='handleCancel' :loading='loading.cancel' />
+            <ButtonsCardDetail :type='`freeze`'  @click='handleFreeze'/>
+            <ButtonsCardDetail :type='`cancel`' @click='handleCancel'/>
             <ButtonsCardDetail :type='`withdraw`' />
             
           </div>
           <div v-if="cardDetail?.card_status === CardStatus.FROZEN" class="mt-7 flex flex-row w-full justify-between">
-            <ButtonsCardDetail :type='`unfreeze`' @click='handleUnfreeze' :loading='loading.unfreeze' />
-            <ButtonsCardDetail :type='`cancel`' @click='handleCancel' :loading='loading.cancel' />
+            <ButtonsCardDetail :type='`unfreeze`' @click='handleUnfreeze'/>
+            <ButtonsCardDetail :type='`cancel`' @click='handleCancel'/>
           </div>
           <!-- Detail -->
           <div

@@ -15,15 +15,33 @@ export const useCardStore = defineStore('card', () => {
   const cardCount = ref(0)
 
   const isOpenCardTopupModal = ref(false)
+  const isVisibleConfirmFreeze = ref(false)
+  const isVisibleConfirmCancel = ref(false)
+  const isVisibleConfirmUnfreeze = ref(false)
 
   function toggleCardTopupModal(state: boolean) {
     isOpenCardTopupModal.value = state
+  }
+
+  function toggleCardFreeze(state: boolean) {
+    isVisibleConfirmFreeze.value = state
+  }
+
+  function toggleCardUnFreeze(state: boolean) {
+    isVisibleConfirmUnfreeze.value = state
+  }
+
+  function toggleCardCancel(state: boolean) {
+    isVisibleConfirmCancel.value = state
   }
 
   const isLoading = ref({
     issueCard: false,
     cardTable: false,
     topupCard: false,
+    freezeCard:false,
+    cancelCard:false,
+    unfreezeCard:false,
   })
 
   const payload = ref<IGetCardListParams>({
@@ -178,6 +196,12 @@ export const useCardStore = defineStore('card', () => {
   }
 
   return {
+    isVisibleConfirmFreeze,
+    isVisibleConfirmCancel,
+    isVisibleConfirmUnfreeze,
+    toggleCardUnFreeze,
+    toggleCardFreeze,
+    toggleCardCancel,
     isLoading,
     payload,
     setPayload,
