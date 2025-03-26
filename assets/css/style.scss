@@ -315,3 +315,17 @@ input[type='number'] {
     background-color: #ff5524;
   }
 }
+
+.notify .group{
+  min-width: 380px;
+}
+
+.notify .group.w-48 > div > div{
+  border-radius: 20px;
+  box-shadow: 0px 0px 12.7px 0px rgba(0, 0, 0, 0.15);
+}
+
+.notify .p-1{padding: 0;}
+.notify .p-1 .group{padding: 0; display: block; border-radius: 0}
+.notify .p-1:first-child .group:hover,.notifi .p-1:last-child .group:hover{background: none !important;}
+.notify .p-1:last-child{border: none;}
