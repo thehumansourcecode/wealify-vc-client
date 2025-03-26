@@ -20,7 +20,7 @@ function onClosePrevented() {
       },
       rounded: 'rounded-xl',
       background: '',
-      width: 'w-[max-content] sm:max-w-[800px]',
+      width: 'w-[max-content] sm:max-w-[1000px]',
       margin: 'sm:my-0',
     }"
   >

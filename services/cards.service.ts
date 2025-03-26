@@ -1,6 +1,13 @@
 import type { LoginCredentials, LoginResponse } from '~/types/auth'
 import { BaseService } from './base.service'
-import type { CardCategory, ICardDetail, IGetCardListParams, IIssueCardParams, ITopupCardParams } from '~/types/cards'
+import type {
+  CardCategory,
+  ICardDetail,
+  IEditCardParams,
+  IGetCardListParams,
+  IIssueCardParams,
+  ITopupCardParams,
+} from '~/types/cards'
 import type { ICommonListResponse, ICommonResponse } from '~/types/common'
 
 export class CardService extends BaseService {
@@ -33,26 +40,29 @@ export class CardService extends BaseService {
     })
   }
 
+  async editCard(params: IEditCardParams, id: string): Promise<ICommonResponse<any>> {
+    return this.put(`/${id}`, {
+      ...params,
+    })
+  }
 
   async freezeCard(id: string): Promise<ICommonResponse<any>> {
-    return this.put(`/${id}/freeze`, )
+    return this.put(`/${id}/freeze`)
   }
 
   async cancelCard(id: string): Promise<ICommonResponse<any>> {
-    return this.put(`/${id}/cancel`, )
+    return this.put(`/${id}/cancel`)
   }
 
   async unfreezeCard(id: string): Promise<ICommonResponse<any>> {
-    return this.put(`/${id}/unfreeze`, )
+    return this.put(`/${id}/unfreeze`)
   }
-
 
   async topup(params: ITopupCardParams): Promise<ICommonResponse<any>> {
     return this.post(`${params.id}/top-up`, {
       amount: params.amount,
     })
   }
-
 }
 
 export const cardService = new CardService()

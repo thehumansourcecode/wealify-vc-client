@@ -135,6 +135,11 @@ const handleUnfreeze = async () => {
   showToast(ToastType.SUCCESS, t('cards.message.unfreeze'))
   await getCardDetailById(cardDetail.value.id)
 }
+
+function handleEdit() {
+  cardStore.toggleCardDetailSlideover(false)
+  cardStore.toggleCardEditModal(true)
+}
 </script>
 
 <template>
@@ -151,16 +156,25 @@ const handleUnfreeze = async () => {
     }"
   >
     <div class="flex flex-col items-center bg-[#1C1D23]">
-      <div class="w-full flex flex-row items-center py-6 px-8 gap-4">
-        <img
-          class="cursor-pointer hover:opacity-80"
-          src="~/assets/img/icons/back-dark.svg"
-          alt=""
-          @click="onClosePrevented()"
-        />
-        <div class="text-20-600-32 text-[#FFF]">
-          {{ t(`cards.slideovers.detail.label`) }}
+      <div class="w-full flex flex-row items-center py-6 px-8 justify-between">
+        <div class="flex flex-row gap-4 items-center">
+          <img
+            class="cursor-pointer hover:opacity-80"
+            src="~/assets/img/icons/back-dark.svg"
+            alt=""
+            @click="onClosePrevented()"
+          />
+          <div class="text-20-600-32 text-[#FFF]">
+            {{ t(`cards.slideovers.detail.label`) }}
+          </div>
         </div>
+        <img
+          v-if="cardDetail?.card_status === CardStatus.ACTIVE"
+          class="cursor-pointer hover:opacity-80"
+          src="~/assets/img/icons/edit.svg"
+          alt=""
+          @click="handleEdit()"
+        />
       </div>
       <div class="flex flex-col slideover-content overflow-y-auto w-full">
         <!-- Card -->

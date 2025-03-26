@@ -8,6 +8,7 @@ import {
   type IGetCardListParams,
   type ICardDetail,
   type ITopupCardParams,
+  type IEditCardParams,
 } from '~/types/cards'
 import { FeeType, type IDropdownCardData, type IFeeData } from '~/types/common'
 
@@ -24,6 +25,7 @@ export const useCardStore = defineStore('card', () => {
     issueCard: false,
     cardTable: false,
     topupCard: false,
+    editCard: false,
   })
 
   const payload = ref<IGetCardListParams>({
@@ -181,6 +183,29 @@ export const useCardStore = defineStore('card', () => {
     return response
   }
 
+  const isOpenCardEditModal = ref(false)
+  function toggleCardEditModal(state: boolean) {
+    isOpenCardEditModal.value = state
+  }
+
+  async function editCard(params: IEditCardParams, id: string) {
+    isLoading.value.editCard = true
+    const response = await cardService.editCard(params, id)
+    if (response.success) {
+      showToast(ToastType.SUCCESS, t('common.toast.success.editCard'))
+      // On change status => call API. Avoid duplicate API calls
+      if (payload.value.card_status.length !== 1 || payload.value.card_status[0] !== CardStatus.ACTIVE) {
+        setPayload({ ...payload.value, card_status: [CardStatus.ACTIVE] })
+      } else {
+        await getCardList(payload.value)
+      }
+    } else {
+      showToast(ToastType.FAILED, response.message)
+    }
+    isLoading.value.editCard = false
+    return response
+  }
+
   return {
     isLoading,
     payload,
@@ -206,5 +231,8 @@ export const useCardStore = defineStore('card', () => {
     topupFee,
     getTopupFee,
     topupCard,
+    isOpenCardEditModal,
+    toggleCardEditModal,
+    editCard,
   }
 })

@@ -155,10 +155,10 @@ export default {
       },
     },
   },
-  message:{
-    freeze:'Freeze card success !',
-    cancel:'Cancel card success !',
-    unfreeze:'Unfreeze card success !'
+  message: {
+    freeze: 'Freeze card success !',
+    cancel: 'Cancel card success !',
+    unfreeze: 'Unfreeze card success !',
   },
   modals: {
     topup: {
@@ -169,6 +169,23 @@ export default {
         amount: 'Your amount',
         fee: 'Fee',
         topup: 'Top up amount',
+      },
+    },
+    edit: {
+      title: 'Edit card',
+      label: {
+        cardName: 'Card name',
+        email: 'Email',
+        phoneNumber: 'Phone number',
+        category: 'Card category',
+        purpose: 'Card purpose',
+      },
+      placeholder: {
+        name: 'Enter your card name',
+        email: `Enter cardholder's email`,
+        phoneNumber: `Enter cardholder's phone number`,
+        category: 'Choose card category',
+        purpose: 'Enter your card purpose',
       },
     },
   },
