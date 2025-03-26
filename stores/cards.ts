@@ -245,23 +245,26 @@ export const useCardStore = defineStore('card', () => {
   }
 
   // Sensitive details OTP handling
+  const isShowCardSensitiveDetail = ref(false)
+
   async function sendOTPSensitiveDetail() {
+    commonStore.toggleProcessingModal(true)
     const response = await otpService.sendOTPSensitiveDetail()
-    console.log(response)
+    commonStore.toggleProcessingModal(false)
     return response
   }
 
   async function verifyOTPSensitiveDetail(code: string) {
+    commonStore.toggleProcessingModal(true)
+
     const response = await otpService.verifyOTPSensitiveDetail(code)
-    console.log(response)
     if (response.success) {
       toggleSensitiveOTPModal(false)
       isShowCardSensitiveDetail.value = true
     }
+    commonStore.toggleProcessingModal(false)
     return response
   }
-
-  const isShowCardSensitiveDetail = ref(false)
 
   return {
     isLoading,
