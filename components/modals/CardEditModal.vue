@@ -95,7 +95,7 @@ watch(
       isFormValid.value = false // Errors found, disable the button
     }
   },
-  { deep: true }, // Watch nested object changes
+  { deep: true, immediate: true }, // Watch nested object changes
 )
 
 async function handleEdit() {
@@ -369,7 +369,7 @@ async function handleEdit() {
         @click="handleEdit"
         :loading="loading"
         :is-submit-enabled="isFormValid"
-        :title="t('cards.button.topupCard')"
+        :title="t('cards.button.editCard')"
       />
     </div>
   </BaseModal>
