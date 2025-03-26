@@ -12,7 +12,7 @@ const cardStore = useCardStore()
 const commonStore = useCommonStore()
 const userStore = useUserStore()
 
-onMounted(async () => Promise.all([commonStore.getDropdownCardList(), cardStore.getTopupFee(), userStore.getBalance()]))
+onMounted(async () => Promise.all([commonStore.getDropdownCardList(), commonStore.getFee(), userStore.getBalance()]))
 const selectedCard = ref(cardStore.selectedCardForTopup)
 const walletBalance = computed(() => userStore.userBalance?.wallet_balance?.balance)
 const dropdownCardList = computed(() => commonStore.dropdownCardList)

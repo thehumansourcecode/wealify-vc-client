@@ -10,7 +10,7 @@ import {
   type ITopupCardParams,
   type IEditCardParams,
 } from '~/types/cards'
-import { FeeType, type IDropdownCardData, type IFeeData } from '~/types/common'
+import { FeeType, type IDropdownCardData } from '~/types/common'
 
 export const useCardStore = defineStore('card', () => {
   const cardCount = ref(0)
@@ -41,9 +41,9 @@ export const useCardStore = defineStore('card', () => {
     issueCard: false,
     cardTable: false,
     topupCard: false,
-    freezeCard:false,
-    cancelCard:false,
-    unfreezeCard:false,
+    freezeCard: false,
+    cancelCard: false,
+    unfreezeCard: false,
     editCard: false,
   })
 
@@ -187,16 +187,6 @@ export const useCardStore = defineStore('card', () => {
     }
   }
 
-  const topupFee = ref<IFeeData>()
-
-  async function getTopupFee() {
-    const response = await commonService.getFeeByType(FeeType.TOP_UP_CARD)
-    if (response.success) {
-      topupFee.value = response.data
-    }
-    return response
-  }
-
   async function topupCard(params: ITopupCardParams) {
     isLoading.value.topupCard = true
     toggleCardTopupModal(false)
@@ -269,8 +259,6 @@ export const useCardStore = defineStore('card', () => {
     unfreezeCard,
     selectedCardForTopup,
     setSelectedCardForTopup,
-    topupFee,
-    getTopupFee,
     topupCard,
     isOpenCardEditModal,
     toggleCardEditModal,

@@ -2,7 +2,7 @@
 import { formatMoney, formatMoneyWithoutDecimals } from '~/common/functions'
 import { getCountryCode, getCountryFlag } from '~/components/cards/functions'
 import { CardCategory, CardType, type IIssueCardParams } from '~/types/cards'
-import { CommonCountry, CommonCurrency, PanelChildTab, PanelTab } from '~/types/common'
+import { CommonCountry, CommonCurrency, FeeAmountType, FeeType, PanelChildTab, PanelTab } from '~/types/common'
 import { accentedCharactersRegex, emailRegex, removedAccentMap } from '~/common/constants'
 import { MAX_SPEND_LIMIT, countryCodeOptions } from '~/components/cards/constants'
 import { number, object, string } from 'yup'
@@ -18,11 +18,22 @@ const cardStore = useCardStore()
 const userStore = useUserStore()
 const loading = computed(() => cardStore.isLoading)
 
+const issueCardFees = computed(() => {
+  const feeAmountType = commonStore.feeList?.ISSUE_CARD.type
+  const feeValue = commonStore.feeList?.ISSUE_CARD.value
+  if (feeAmountType === FeeAmountType.FIXED) {
+    return feeValue || 0
+  }
+  if (feeAmountType === FeeAmountType.PERCENT) {
+    return form.spend_limit * (feeValue || 0) || 0
+  } else return 0
+})
+
 onMounted(async () => {
   commonStore.setHeaderBackLayout(true)
   commonStore.setActiveTab(PanelTab.CARD_LIST)
   commonStore.setActiveChildTab(PanelChildTab.CARD_ISSUE)
-  await Promise.all([commonStore.getDropdownCategoryList(), userStore.getBalance()])
+  await Promise.all([commonStore.getDropdownCategoryList(), commonStore.getFee(), userStore.getBalance()])
 })
 
 const currencyInputRef = ref()
@@ -37,8 +48,6 @@ onUnmounted(() => {
 const isPolicyChecked = ref(true)
 const cardCategoryOptions = computed(() => commonStore.categoryList)
 
-const issueCardFee = computed(() => 1.75)
-
 const form = reactive<IIssueCardParams>({
   card_type: CardType.VIRTUAL,
   card_name: '', //req, max 50 char, ko dấu
@@ -50,7 +59,7 @@ const form = reactive<IIssueCardParams>({
   spend_limit: 0, // nhập số nguyên dương. nếu = 0 hiển inline msg
 })
 
-const threshold = computed(() => +(totalBalance.value || 0) - issueCardFee.value)
+const threshold = computed(() => +(totalBalance.value || 0) - issueCardFees.value)
 
 const issueCardSchema = object({
   card_name: string().required(t('common.validator.empty.issueCard.name')),
@@ -562,7 +571,7 @@ watch(
               {{ t('cards.issue.preview.fee') }}
             </div>
             <div class="text-14-600-20 text-[#1C1D23]">
-              {{ formatMoneyWithoutDecimals(issueCardFee, CommonCurrency.USD) || '0 USD' }}
+              {{ formatMoneyWithoutDecimals(issueCardFees, CommonCurrency.USD) || '0 USD' }}
             </div>
           </div>
           <img src="~/assets/img/cards/line.svg" class="mt-4" alt="" />
@@ -571,7 +580,7 @@ watch(
               {{ t('cards.issue.preview.total_top_up') }}
             </div>
             <div class="text-16-600-25 text-[#FF5524]">
-              {{ formatMoneyWithoutDecimals((form.spend_limit || 0) + issueCardFee, CommonCurrency.USD) }}
+              {{ formatMoneyWithoutDecimals((form.spend_limit || 0) + issueCardFees, CommonCurrency.USD) }}
             </div>
           </div>
         </div>
