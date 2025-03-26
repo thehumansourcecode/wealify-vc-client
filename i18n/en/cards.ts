@@ -160,10 +160,19 @@ export default {
       },
     },
   },
-  message: {
-    freeze: 'Freeze card success !',
-    cancel: 'Cancel card success !',
-    unfreeze: 'Unfreeze card success !',
+  message:{
+    freeze:{
+      success:'The card is frozen. You will not be able to perform any actions on this card, including making transactions',
+      error:'Fail to Freeze card. Please contact Wealify supports'
+    },
+    cancel:{
+      success:'cancel card success !',
+      error:"Fail to Cancel card. Please contact Wealify supports."
+    },
+    unfreeze:{
+      success:'Card is unfrozen and you can continue to make card transactions',
+      error:'Fail to Unfreeze card. Please contact Wealify supports'
+    }
   },
   modals: {
     topup: {
@@ -174,6 +183,30 @@ export default {
         amount: 'Your amount',
         fee: 'Fee',
         topup: 'Top up amount',
+      },
+    },
+    freeze: {
+      title: 'Freeze the card',
+      message:'This card will be reactivated and ready for use. Are you sure you want to continue?',
+      label: {
+        cancel: 'Cancel',
+        confirm: 'Unfreeze',
+      },
+    },
+    cancel: {
+      title: 'Cancel this card?',
+      message:'Wealify will cancel this card and you cannot use it to make payment. Your remaining balance will be automatically refunded to your Wealify account.',
+      label: {
+        cancel: 'Back',
+        confirm: 'Cancel',
+      },
+    },
+    unfreeze: {
+      title: 'Unfreeze the card',
+      message:'This card will be reactivated and ready for use. Are you sure you want to continue?',
+      label: {
+        cancel: 'Cancel',
+        confirm: 'Unfreeze',
       },
     },
     edit: {

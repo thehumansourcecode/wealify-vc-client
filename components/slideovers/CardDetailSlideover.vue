@@ -5,7 +5,7 @@ import { CardStatus } from '~/types/cards'
 import { CommonCurrency } from '~/types/common'
 import { showToast, ToastType } from '~/common/functions'
 const { copy, copied } = useClipboard()
-const { freezeCard, cancelCard, getCardDetailById, unfreezeCard } = useCardStore()
+
 
 const { t } = useI18n()
 const toast = useToast()
@@ -30,11 +30,6 @@ const isOpenCardDetailSlideover = computed(() => cardStore.isOpenCardDetailSlide
 const cardDetail = computed(() => cardStore.selectedCardDetail)
 const isShowCardSensitiveDetail = ref(false)
 const isShowCardSensitiveDetailOverlay = ref(false)
-const loading = ref({
-  freeze: false,
-  unfreeze: false,
-  cancel: false,
-})
 
 const cardSensitiveDetail = ref({
   CVV: '888',
@@ -99,41 +94,22 @@ function handleTopup() {
   cardStore.toggleCardTopupModal(true)
 }
 
-const handleFreeze = async () => {
-  loading.value.freeze = true
-  const result = await freezeCard(cardDetail.value.id)
-  loading.value.freeze = false
-  if (!result.success) {
-    showToast(ToastType.FAILED, result.message)
-    return
-  }
-  showToast(ToastType.SUCCESS, t('cards.message.freeze'))
-  await getCardDetailById(cardDetail.value.id)
+const handleFreeze = async() => {
+  cardStore.toggleCardDetailSlideover(false)
+  cardStore.toggleCardFreeze(true)
 }
 
-const handleCancel = async () => {
-  loading.value.cancel = true
-  const result = await cancelCard(cardDetail.value.id)
-  loading.value.cancel = false
-  if (!result.success) {
-    showToast(ToastType.FAILED, result.message)
-    return
-  }
-  showToast(ToastType.SUCCESS, t('cards.message.cancel'))
-  await getCardDetailById(cardDetail.value.id)
+const handleCancel = async() => {
+  cardStore.toggleCardDetailSlideover(false)
+  cardStore.toggleCardCancel(true)
 }
 
-function handleWithdraw() {}
-const handleUnfreeze = async () => {
-  loading.value.unfreeze = true
-  const result = await unfreezeCard(cardDetail.value.id)
-  loading.value.unfreeze = false
-  if (!result.success) {
-    showToast(ToastType.FAILED, result.message)
-    return
-  }
-  showToast(ToastType.SUCCESS, t('cards.message.unfreeze'))
-  await getCardDetailById(cardDetail.value.id)
+function handleWithdraw() {
+
+}
+const handleUnfreeze = async() => {
+  cardStore.toggleCardDetailSlideover(false)
+  cardStore.toggleCardUnFreeze(true)
 }
 
 function handleEdit() {
@@ -222,14 +198,35 @@ function handleEdit() {
             v-if="cardDetail?.card_status === CardStatus.ACTIVE"
             class="mt-7 flex flex-row w-full justify-around text-[#1C1D23] text-14-500-20"
           >
-            <ButtonsCardDetail :type="`topup`" @click="handleTopup" />
-            <ButtonsCardDetail :type="`freeze`" @click="handleFreeze" :loading="loading.freeze" />
-            <ButtonsCardDetail :type="`cancel`" @click="handleCancel" :loading="loading.cancel" />
-            <ButtonsCardDetail :type="`withdraw`" />
+            <div @click="handleTopup" class="flex flex-col gap-3 items-center cursor-pointer hover:opacity-90">
+              <img class="w-10" src="~/assets/img/cards/topup.svg" alt="" />
+              <div>{{ t(`cards.slideovers.detail.button.topup`) }}</div>
+            </div>
+            <div @click="handleFreeze" class="flex flex-col gap-3 items-center cursor-pointer hover:opacity-90">
+              <img class="w-10" src="~/assets/img/cards/freeze.svg" alt="" />
+              <div>{{ t(`cards.slideovers.detail.button.freeze`) }}</div>
+            </div>
+            <div @click="handleCancel" class="flex flex-col gap-3 items-center cursor-pointer hover:opacity-90">
+              <img class="w-10" src="~/assets/img/cards/cancel.svg" alt="" />
+              <div>{{ t(`cards.slideovers.detail.button.cancel`) }}</div>
+            </div>
+            <div @click="handleWithdraw" class="flex flex-col gap-3 items-center cursor-pointer hover:opacity-90">
+              <img class="w-10" src="~/assets/img/cards/withdraw.svg" alt="" />
+              <div>{{ t(`cards.slideovers.detail.button.withdraw`) }}</div>
+            </div>
           </div>
           <div v-if="cardDetail?.card_status === CardStatus.FROZEN" class="mt-7 flex flex-row w-full justify-between">
-            <ButtonsCardDetail :type="`unfreeze`" @click="handleUnfreeze" :loading="loading.unfreeze" />
-            <ButtonsCardDetail :type="`cancel`" @click="handleCancel" :loading="loading.cancel" />
+            <div
+                @click="handleUnfreeze"
+                class="flex flex-col gap-3 w-[50%] items-center cursor-pointer hover:opacity-90"
+            >
+              <img class="w-10" src="~/assets/img/cards/unfreeze.svg" alt="" />
+              <div>{{ t(`cards.slideovers.detail.button.unfreeze`) }}</div>
+            </div>
+            <div @click="handleCancel" class="flex flex-col gap-3 w-[50%] items-center cursor-pointer hover:opacity-90">
+              <img class="w-10" src="~/assets/img/cards/cancel.svg" alt="" />
+              <div>{{ t(`cards.slideovers.detail.button.cancel`) }}</div>
+            </div>
           </div>
           <!-- Detail -->
           <div
