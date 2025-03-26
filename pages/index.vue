@@ -59,7 +59,7 @@ function onClickWithdraw() {
             </span>
             <div class="text-[18px] font-bold leading-7 mt-1">
               <span class="text-[#FFF]">{{
-                isShowBalance ? formatMoney(userBalance?.wallet_balance?.balance) : '*'
+                isShowBalance ? formatMoney(userBalance?.wallet_balance?.balance || 0) : '*'
               }}</span>
               <span class="pl-1 text-[#7A7D89]">USD</span>
             </div>
@@ -74,7 +74,7 @@ function onClickWithdraw() {
                 <div class="flex flex-row gap-[2px] items-center">
                   <img src="~/assets/img/dashboard/green-arrow.svg" alt="" />
                   <span class="text-[#FFF] text-xs font-semibold leading-5">
-                    +{{ isShowBalance ? formatMoney(userBalance?.wallet_balance?.money_in) : '*' }} USD
+                    +{{ isShowBalance ? formatMoney(userBalance?.wallet_balance?.money_in || 0) : '*' }} USD
                   </span>
                 </div>
               </div>
@@ -88,7 +88,7 @@ function onClickWithdraw() {
                 <div class="flex flex-row gap-[2px] items-center">
                   <img src="~/assets/img/dashboard/red-arrow.svg" alt="" />
                   <span class="text-[#FFF] text-xs font-semibold leading-5">
-                    -{{ isShowBalance ? formatMoney(userBalance?.wallet_balance?.money_out) : '*' }} USD
+                    -{{ isShowBalance ? formatMoney(userBalance?.wallet_balance?.money_out || 0) : '*' }} USD
                   </span>
                 </div>
               </div>
@@ -119,7 +119,7 @@ function onClickWithdraw() {
               {{ t('dashboard.balance.card.balance') }}
             </span>
             <div class="text-[18px] font-bold leading-7 mt-1">
-              <span class="">{{ isShowBalance ? formatMoney(userBalance?.card_balance?.total) : '*' }}</span>
+              <span class="">{{ isShowBalance ? formatMoney(userBalance?.card_balance?.total || 0) : '*' }}</span>
               <span class="pl-1 text-[#7A7D89]">USD</span>
             </div>
             <div class="pt-4 flex flex-col w-full gap-2">
@@ -133,7 +133,7 @@ function onClickWithdraw() {
                 <div class="flex flex-row gap-[2px] items-center">
                   <img src="~/assets/img/dashboard/green-arrow.svg" alt="" />
                   <span class="text-xs font-semibold leading-5">
-                    +{{ isShowBalance ? formatMoney(userBalance?.card_balance?.total_top_up) : '*' }} USD
+                    +{{ isShowBalance ? formatMoney(userBalance?.card_balance?.total_top_up || 0) : '*' }} USD
                   </span>
                 </div>
               </div>
@@ -147,7 +147,7 @@ function onClickWithdraw() {
                 <div class="flex flex-row gap-[2px] items-center">
                   <img src="~/assets/img/dashboard/red-arrow.svg" alt="" />
                   <span class="text-xs font-semibold leading-5">
-                    -{{ isShowBalance ? formatMoney(userBalance?.card_balance?.total_withdraw) : '*' }}
+                    -{{ isShowBalance ? formatMoney(userBalance?.card_balance?.total_withdraw || 0) : '*' }}
                     USD
                   </span>
                 </div>

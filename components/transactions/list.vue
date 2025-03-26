@@ -53,7 +53,7 @@ function handleClickTransaction(row: ITransactionData) {
 }
 </script>
 <template>
-  <div v-if="!transactionList.length" class="flex flex-col items-center justify-center gap-4 p-10 h-full">
+  <div v-if="!transactionList.length" class="flex flex-col items-center justify-center gap-4 p-10 pt-0 h-full">
     <img class="min-w-[200px] min-h-[200px]" src="/images/transactions/no-transaction.svg" alt="" />
     <div class="text-14-500-20 text-[#A5A8B8]">{{ t('transactions.list.empty') }}</div>
   </div>

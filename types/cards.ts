@@ -6,7 +6,7 @@ export enum CardType {
 }
 
 export enum CardCategory {
-  INVENTORY = 'Inventory',
+  INVENTORY = 'Iventory',
   INVESTMENT_DIVIDEND = 'Investment/Dividend',
   MARKETING = 'Marketing',
   SALARY = 'Salary',
@@ -14,19 +14,19 @@ export enum CardCategory {
   GOVERNMENT_SERVICES = 'Government Services',
   SOFTWARE = 'Software',
   RETAIL = 'Retail',
-  SERVICE_PROVIDER = 'Service Provider',
+  SERVICE_PROVIDER = 'Service provider',
   TAXES = 'Taxes',
   TRAVEL = 'Travel',
   OFFICE = 'Office',
   UTILITIES = 'Utilities',
   SALES = 'Sales',
-  FOOD_BEVERAGES = 'Food & Beverages',
+  FOOD_BEVERAGES = 'Food & Beverage',
   ENTERTAINMENT = 'Entertainment',
   API_PAYMENTS = 'API Payments',
   CLIMATE_CHANGE = 'Climate Change',
   FOOD = 'Food',
   ADS_SERVICE = 'Ads Service',
-  OTHER = 'Other',
+  OTHER = 'Others',
 }
 
 export enum CardStatus {
