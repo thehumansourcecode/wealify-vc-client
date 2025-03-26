@@ -6,7 +6,6 @@ import { CommonCurrency } from '~/types/common'
 import { showToast, ToastType } from '~/common/functions'
 const { copy, copied } = useClipboard()
 
-
 const { t } = useI18n()
 const toast = useToast()
 
@@ -94,20 +93,18 @@ function handleTopup() {
   cardStore.toggleCardTopupModal(true)
 }
 
-const handleFreeze = async() => {
+const handleFreeze = async () => {
   cardStore.toggleCardDetailSlideover(false)
   cardStore.toggleCardFreeze(true)
 }
 
-const handleCancel = async() => {
+const handleCancel = async () => {
   cardStore.toggleCardDetailSlideover(false)
   cardStore.toggleCardCancel(true)
 }
 
-function handleWithdraw() {
-
-}
-const handleUnfreeze = async() => {
+function handleWithdraw() {}
+const handleUnfreeze = async () => {
   cardStore.toggleCardDetailSlideover(false)
   cardStore.toggleCardUnFreeze(true)
 }
@@ -217,8 +214,8 @@ function handleEdit() {
           </div>
           <div v-if="cardDetail?.card_status === CardStatus.FROZEN" class="mt-7 flex flex-row w-full justify-between">
             <div
-                @click="handleUnfreeze"
-                class="flex flex-col gap-3 w-[50%] items-center cursor-pointer hover:opacity-90"
+              @click="handleUnfreeze"
+              class="flex flex-col gap-3 w-[50%] items-center cursor-pointer hover:opacity-90"
             >
               <img class="w-10" src="~/assets/img/cards/unfreeze.svg" alt="" />
               <div>{{ t(`cards.slideovers.detail.button.unfreeze`) }}</div>
@@ -338,7 +335,7 @@ function handleEdit() {
               <div class="flex flex-row gap-4">
                 <img src="~/assets/img/cards/purpose.svg" alt="" />
                 <div class="ml-1.5 w-[85px] flex-none">{{ t(`cards.slideovers.detail.info.purpose`) }}</div>
-                <div class="ml-auto truncate text-right max-w-[100px]">{{ cardDetail?.card_purpose }}</div>
+                <BaseTruncatedTooltip class="ml-auto text-right max-w-[100px]" :text="cardDetail?.card_purpose" />
               </div>
               <div class="flex flex-row items-center gap-4">
                 <div class="bg-[#D7D9E5] w-2 h-2 mx-[3px] rounded-full"></div>

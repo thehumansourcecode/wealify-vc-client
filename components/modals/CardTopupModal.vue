@@ -160,17 +160,7 @@ async function handleTopup() {
           <div class="flex flex-row gap-3">
             <img src="/icons/dashboard/mastercard.svg" alt="" />
             <div class="flex flex-col gap-1">
-              <UTooltip
-                :text="option?.card_name"
-                :ui="{
-                  background: 'bg-white',
-                  base: 'h-8 px-2.5 py-1.5 text-sm font-medium',
-                  shadow: '',
-                }"
-                :popper="{ placement: 'top' }"
-              >
-                <span class="text-14-600-20 text-[#1C1D23] max-w-[180px] truncate">{{ option?.card_name }}</span>
-              </UTooltip>
+              <BaseTruncatedTooltip class="text-14-600-20 text-[#1C1D23] max-w-[500px]" :text="option?.card_name" />
               <span class="text-12-500-20 text-[#7A7D89]">
                 {{ t(`cards.list.card_number`, { value: option?.last_four }) }}</span
               >
@@ -188,19 +178,10 @@ async function handleTopup() {
               <div class="flex flex-row gap-3">
                 <img src="/icons/dashboard/mastercard.svg" alt="" />
                 <div class="flex flex-col gap-1">
-                  <UTooltip
+                  <BaseTruncatedTooltip
+                    class="text-14-600-20 text-[#1C1D23] max-w-[180px]"
                     :text="selectedCard?.card_name"
-                    :ui="{
-                      background: 'bg-white',
-                      base: 'h-8 px-2.5 py-1.5 text-sm font-medium',
-                      shadow: '',
-                    }"
-                    :popper="{ placement: 'top' }"
-                  >
-                    <span class="text-14-600-20 text-[#1C1D23] max-w-[180px] truncate">
-                      {{ selectedCard?.card_name }}
-                    </span>
-                  </UTooltip>
+                  />
                   <span class="text-12-500-20 text-[#7A7D89]">
                     {{ t(`cards.list.card_number`, { value: selectedCard?.last_four }) }}</span
                   >
