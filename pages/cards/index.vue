@@ -191,7 +191,8 @@ watch(filterType, value => {
 
 async function onEnterKeyword() {
   if (tempKeyword.value !== payload.value.keyword) {
-    cardStore.setPayload({ ...payload.value, keyword: tempKeyword.value?.trim() })
+    tempKeyword.value = tempKeyword.value?.trim()
+    cardStore.setPayload({ ...payload.value, keyword: tempKeyword.value })
     await getCardList()
   }
 }
