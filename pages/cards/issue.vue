@@ -3,7 +3,7 @@ import { formatMoney, formatMoneyWithoutDecimals } from '~/common/functions'
 import { getCountryCode, getCountryFlag } from '~/components/cards/functions'
 import { CardCategory, CardType, type IIssueCardParams } from '~/types/cards'
 import { CommonCountry, CommonCurrency, FeeAmountType, FeeType, PanelChildTab, PanelTab } from '~/types/common'
-import { accentedCharactersRegex, emailRegex, removedAccentMap } from '~/common/constants'
+import { accentedCharactersRegex, emailRegex, onlyEnglishCharacters, removedAccentMap } from '~/common/constants'
 import { MAX_SPEND_LIMIT, countryCodeOptions } from '~/components/cards/constants'
 import { number, object, string } from 'yup'
 
@@ -62,7 +62,9 @@ const form = reactive<IIssueCardParams>({
 const threshold = computed(() => +(totalBalance.value || 0) - issueCardFees.value)
 
 const issueCardSchema = object({
-  card_name: string().required(t('common.validator.empty.issueCard.name')),
+  card_name: string()
+    .required(t('common.validator.empty.issueCard.name'))
+    .matches(onlyEnglishCharacters, t('common.validator.invalid.issueCard.name')),
   email: string()
     .required(t('common.validator.empty.issueCard.email'))
     .matches(emailRegex, t('common.validator.invalid.issueCard.email')),
