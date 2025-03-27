@@ -171,7 +171,21 @@ onMounted(async () => {
 
       <UPopover mode="click" :ui="{ background: 'bg-white', ring: 'ring-0' }">
         <div class="flex items-center justify-between">
-          <img src="~/assets/img/common/avatar.svg" alt="" />
+          <UTooltip
+                class="ml-1"
+                :text="userProfile?.email"
+                :popper="{ arrow: true, placement: 'top' }"
+                :ui="{
+                  background: 'bg-[#1C1D23]',
+                  width: 'max-w-[252px]',
+                  color: 'text-[#FFF]',
+                  base: 'px-3 py-2 h-[max-content]  text-xs font-medium text-clip text-center',
+                  ring: 'ring-0',
+                  arrow: { background: 'before:bg-[#1C1D23]' },
+                }"
+              >
+              <img src="~/assets/img/common/avatar.svg"/>
+              </UTooltip>
           <div class="font-semibold mb-1.5 text-[#17171E] ml-[9px]">{{userProfile?.full_name}} </div>
           <UButton  class="w-[20px h-[20px] ml-[6px] p-0 flex items-center justify-center shadow-none bg-white hover:bg-white">
             <img src="/assets/img/icons/dropdown.svg"/>
