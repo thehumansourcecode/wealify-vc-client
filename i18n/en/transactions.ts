@@ -96,7 +96,7 @@ export default {
       'If you find any errors or omissions in this statement, please contact Wealify’s customer service emailing at ',
     label: {
       [TransactionVCType.PAYMENT]: 'Wallet Payment',
-      [TransactionVCType.TOP_UP]: 'Wallet Top up',
+      [TransactionVCType.TOP_UP]: 'Card Top up',
       [TransactionVCType.WITHDRAWAL]: 'Wallet Withdraw',
     },
     status: {
