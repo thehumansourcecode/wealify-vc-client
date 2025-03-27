@@ -16,7 +16,9 @@ export const useUserStore = defineStore('user', () => {
 
   async function getProfile() {
     const response = await userService.getProfile()
-    console.log(response)
+    if (response.success) {
+      userProfile.value = response.data
+    }
   }
 
   async function getBalance() {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { AUTH_DATA_STORED_KEY } from '~/common/constants'
 import { formatDDMMYYYY, getTabRoute } from '~/common/functions'
-import { PanelTab } from '~/types/common'
+import { PanelTab,CommonLanguage } from '~/types/common'
 
 const { t } = useI18n()
 const dayjs = useDayjs()
@@ -10,14 +10,19 @@ const userStore = useUserStore()
 const authStore = useAuthStore()
 const commonStore = useCommonStore()
 
-const userProfile = computed(() => userStore.userProfile)
+const { getProfile } = useUserStore()
+
+
+
+const {userProfile} = storeToRefs(userStore)
+
 const activeTab = computed(() => commonStore.activeTab)
 const isHeaderBackLayout = computed(() => commonStore.isHeaderBackLayout)
 const activeChildTab = computed(() => commonStore.activeChildTab)
-
 const hoveredTab = ref()
-
 const lastResetDate = computed(() => '2025-03-11T13:36:41.718Z')
+const languages = Object.values(CommonLanguage).filter((item,index)=>index !== 0)
+const language = ref(languages[0])
 
 const links = computed(() => [
   {
@@ -48,18 +53,18 @@ const items = [
   [{
     label: 'Your Virtual Card is Ready! ',
     content:` You've added 1000 USD to your Wealify wallet. 💳 Transfer to your card now to start spending!`,
-    icon: '/_nuxt/assets/img/icons/withdraw.svg',
+    icon: '/icons/header/withdraw.svg',
     time_since: '2 hours ago',
     unread: true
   }, {
     label: 'Wallet Top-Up Successful! ',
     content:` You've added 1000 USD to your Wealify wallet. 💳 Transfer to your card now to start spending!`,
-    icon: '/_nuxt/assets/img/icons/ready.svg',
+    icon: '/icons/header/ready.svg',
     time_since: '2 hours ago',
   }, {
     label: 'Your Virtual Card is Ready! 🎉',
     content:`Your Wealify Card ••••2354 is now active! 🚀 \n 💳 Start making transactions now.`,
-    icon: '/_nuxt/assets/img/icons/withdraw.svg',
+    icon: '/icons/header/withdraw.svg',
     time_since: '2 hours ago',
   }]
 ]
@@ -68,6 +73,10 @@ async function logout() {
   await authStore.logout()
   navigateTo('/auth/sign-in')
 }
+
+onMounted(async () => {
+ await getProfile()
+})
 </script>
 
 <template>
@@ -83,8 +92,55 @@ async function logout() {
       <div class="text-[20px] leading-8">{{ t(`common.title.${activeChildTab}`) }}</div>
     </div>
     <div class="flex flex-row items-center">
-      <div class="mr-4">EN</div>
-      <UDropdown :items="items"  class="sm:mx-6 mx-4 notify" :content="{align: 'end',side: 'bottom'}">
+      <USelectMenu
+        v-model="language"
+        :options="languages"
+        :selected-icon="'i-selected'"
+        :ui-menu="{
+          select: 'cursor-pointer',
+          base: 'relative focus:outline-none overflow-y-auto max-h-[360px] scroll-py-1',
+          padding: 'p-0',
+          width: 'w-[max-content] min-w-full',
+          option: {
+            base: 'cursor-pointer text-14-500-20',
+            selected: 'bg-[#F0F2F5]',
+            active: 'bg-[#F0F2F5]',
+            inactive: 'cursor-pointer',
+            padding: 'px-1 py-1',
+            rounded: 'rounded-none',
+            selectedIcon: {
+              base: 'h-[18px] w-[18px]',
+            },
+          },
+          input: 'px-3 py-[10px] w-full text-[#7A7D89] icon-search font-medium text-sm leading-5 m-0 bg-white',
+        }"
+      >
+        <template #option="{ option }">
+          <div class="px-[2px] py-[2px] flex items-center justify-between w-[60px] ">
+            <div class="flex flex-row gap-1">
+              <img src="~/assets/img/flags/en.svg"/>
+              <div class="text-center uppercase text-[#1C1D23] leading-7">
+                {{ option }}
+              </div>
+            </div>
+          </div>
+        </template>
+        <template #default="{}">
+          <div class="px-[2px] py-[2px] rounded-[50px] bg-[#F0F2F5] flex items-center justify-between w-[58px] ">
+            <div class="flex flex-row gap-1 items-center">
+              <div class="flex flex-row gap-1">
+                <img src="~/assets/img/flags/en.svg"/>
+                <div class="flex flex-col gap-1 text-[#1C1D23] leading-7">
+                  <div class="text-center uppercase">
+                    {{ language }}
+                  </div>
+              </div>
+            </div>
+          </div>
+          </div>
+        </template>
+      </USelectMenu>
+      <UDropdown :items="items"  class="sm:mr-7 mr-7 ml-4 notify" :content="{align: 'end',side: 'bottom'}">
         <UButton class="w-10 h-10 p-0 rounded-full border border-[#D7D9E5] bg-[#fff] hover:bg-[#fff] flex items-center justify-center">
           <img src="~/assets/img/icons/ring.svg" />
           <span class="h-[17px] w-[27px] bg-[#FF5524] text-[10px] rounded-[48px] absolute top-[-4px] right-[-4px] leading-4">99+</span>
@@ -112,9 +168,14 @@ async function logout() {
           </div>
         </template>
       </UDropdown>
-      <UPopover mode="hover" :ui="{ background: 'bg-white', ring: 'ring-0' }">
+
+      <UPopover mode="click" :ui="{ background: 'bg-white', ring: 'ring-0' }">
         <div class="flex items-center justify-between">
           <img src="~/assets/img/common/avatar.svg" alt="" />
+          <div class="font-semibold mb-1.5 text-[#17171E] ml-[9px]">{{userProfile?.full_name}} </div>
+          <UButton  class="w-[20px h-[20px] ml-[6px] p-0 flex items-center justify-center shadow-none bg-white hover:bg-white">
+            <img src="/assets/img/icons/dropdown.svg"/>
+          </UButton>
         </div>
         <template #panel>
           <div class="w-[200px] flex flex-col">
@@ -140,6 +201,7 @@ async function logout() {
           </div>
         </template>
       </UPopover>
+
     </div>
   </div>
 </template>
