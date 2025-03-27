@@ -2,6 +2,7 @@
 import { formatMoneyWithoutDecimals } from '~/common/functions'
 import { CommonCurrency, FeeAmountType } from '~/types/common'
 import { TransactionCryptocurrency, TransactionNetwork } from '~/types/dashboard'
+import VueQr from 'vue-qr/src/packages/vue-qr.vue'
 const { copy, copied } = useClipboard()
 const toast = useToast()
 
@@ -226,7 +227,9 @@ function handleCopy(value: string) {
           }}
         </div>
       </div>
-      <img src="~/assets/img/dashboard/topup-qr.svg" alt="" />
+      <div class="py-[22px] px-[19px] rounded-[20px] border border-[#D7D9E5]">
+        <VueQr v-if="topupAddress" :text="topupAddress" :size="200" :margin="0" />
+      </div>
     </div>
   </BaseModal>
 </template>
