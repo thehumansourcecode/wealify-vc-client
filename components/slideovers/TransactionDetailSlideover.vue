@@ -168,14 +168,6 @@ function onClosePrevented() {
         </div>
 
         <div class="px-5 py-3 mt-2 bg-[#F0F2F5] rounded-[18px] flex flex-col gap-5 w-full">
-          <div class="flex flex-row justify-between">
-            <div class="text-12-500-20 text-[#7A7D89]">
-              {{ t('transactions.detail.account') }}
-            </div>
-            <div class="text-14-500-20 text-[#1C1D23]">
-              <!-- {{ transactionDetail.account }} -->
-            </div>
-          </div>
           <div class="flex flex-row justify-between items-center">
             <div class="text-12-500-20 text-[#7A7D89]">
               {{ t('transactions.detail.address') }}
