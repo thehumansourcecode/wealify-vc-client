@@ -80,7 +80,7 @@ function onClosePrevented() {
             </div>
             <div class="text-32-700-44 text-[#FF5524]">{{ formatMoney(transactionDetail.amount, 'USD') }}</div>
             <div class="text-12-500-20 text-[#7A7D89]">
-              <!-- {{ t(`transactions.detail.to`, { destination: transactionDetail.to }) }} -->
+              {{ t(`transactions.detail.to`, { destination: transactionDetail?.to || 'Wealify Balance' }) }}
             </div>
           </div>
           <div
