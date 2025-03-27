@@ -136,7 +136,7 @@ function handleNewTransaction() {
               {{ t('transactions.detail.fee') }}
             </div>
             <div class="text-14-500-20 text-[#1C1D23]">
-              {{ t(`transactions.detail.feeValue`, { fee: formatAmount(transactionDetail?.fee?.value) }) }}
+              {{ t(`transactions.detail.feeValue`, { fee: formatAmount(transactionDetail?.fee?.value || 0) }) }}
             </div>
           </div>
         </div>
