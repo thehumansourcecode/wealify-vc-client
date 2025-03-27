@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { formatMoney, shortenAddress } from '~/common/functions'
 import { formatYYYYMMDDhmmA } from '~/common/functions'
+import { TransactionVCType } from '~/types/transactions'
 import { formatAmount } from '~/utils/amount.util'
 
 const { copy, copied } = useClipboard()
 const { t } = useI18n()
 const toast = useToast()
+
+const dashboardStore = useDashboardStore()
 
 const dayjs = useDayjs()
 
@@ -42,6 +45,17 @@ function copyTransactionAddress() {
 
 function onClosePrevented() {
   transactionStore.toggleTransactionDetailSlideover(false)
+}
+
+function handleNewTransaction() {
+  transactionStore.toggleTransactionDetailSlideover(false)
+  navigateTo('/')
+  if (transactionDetail.value?.transaction_vc_type === TransactionVCType.TOP_UP) {
+    dashboardStore.toggleWalletTopupModal(true)
+  } else if (transactionDetail.value?.transaction_vc_type === TransactionVCType.WITHDRAWAL) {
+    // TODO
+    // dashboardStore.toggleWalletWithdrawModal(true)
+  }
 }
 </script>
 
@@ -201,7 +215,17 @@ function onClosePrevented() {
           <ULink class="text-[#FF5524]"> support@wealify.com </ULink>
         </div>
 
-        <UButton class="flex items-center justify-center w-[400px] bg-[#1C1D23] hover:bg-[#3D3E34] my-8 rounded-[49px]">
+        <UButton
+          @click="handleNewTransaction()"
+          v-if="transactionDetail.transaction_vc_type !== TransactionVCType.PAYMENT"
+          class="flex items-center styled-button justify-center w-[400px] my-8 rounded-[49px]"
+          :disabled="transactionDetail.transaction_vc_type !== TransactionVCType.TOP_UP"
+          :class="
+            transactionDetail.transaction_vc_type === TransactionVCType.TOP_UP
+              ? 'bg-[#1C1D23] hover:bg-[#3D3E34]'
+              : 'bg-[#A5A8B8] text-[#D7D9E5] hover:bg-[#B6B9C9] cursor-not-allowed'
+          "
+        >
           <div class="text-white text-14-600-20 px-4 py-[14px]">
             {{ t(`transactions.detail.createNew.${transactionDetail.transaction_vc_type}`) }}
           </div>
@@ -214,5 +238,9 @@ function onClosePrevented() {
 <style lang="scss" scoped>
 .slideover-content {
   max-height: calc(100vh - 80px);
+}
+
+.styled-button:disabled {
+  background-color: #a4a8b8 !important;
 }
 </style>
