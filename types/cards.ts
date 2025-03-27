@@ -51,6 +51,12 @@ export interface ICardDetail {
   total_withdraw: number
   country_code: CommonCountry
 }
+
+export interface ICardSensitiveDetail {
+  id: string
+  card_number: string
+  cvv: string
+}
 export interface IIssueCardParams {
   card_name: string
   email: string

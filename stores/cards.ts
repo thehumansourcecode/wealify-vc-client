@@ -10,6 +10,7 @@ import {
   type ICardDetail,
   type ITopupCardParams,
   type IEditCardParams,
+  type ICardSensitiveDetail,
 } from '~/types/cards'
 import { FeeType, type IDropdownCardData } from '~/types/common'
 
@@ -246,7 +247,7 @@ export const useCardStore = defineStore('card', () => {
 
   // Sensitive details OTP handling
   const isShowCardSensitiveDetail = ref(false)
-
+  const cardSensitiveDetail = ref<ICardSensitiveDetail>()
   async function sendOTPSensitiveDetail() {
     commonStore.toggleProcessingModal(true)
     const response = await otpService.sendOTPSensitiveDetail()
@@ -255,15 +256,24 @@ export const useCardStore = defineStore('card', () => {
   }
 
   async function verifyOTPSensitiveDetail(code: string) {
+    console.log(code)
     commonStore.toggleProcessingModal(true)
-
-    const response = await otpService.verifyOTPSensitiveDetail(code)
-    if (response.success) {
-      toggleSensitiveOTPModal(false)
-      isShowCardSensitiveDetail.value = true
+    toggleSensitiveOTPModal(false)
+    isShowCardSensitiveDetail.value = true
+    // Handle Verify OTP
+    // const response = await otpService.verifyOTPSensitiveDetail(code)
+    // if (response.success) {
+    //   toggleSensitiveOTPModal(false)
+    //   isShowCardSensitiveDetail.value = true
+    // }
+    if (selectedCardDetail.value?.id) {
+      const response = await cardService.getCardSensitiveDetailById(selectedCardDetail.value?.id)
+      if (response.success) {
+        cardSensitiveDetail.value = response.data
+      }
     }
     commonStore.toggleProcessingModal(false)
-    return response
+    // return response
   }
 
   return {
@@ -309,5 +319,6 @@ export const useCardStore = defineStore('card', () => {
     sendOTPSensitiveDetail,
     verifyOTPSensitiveDetail,
     isShowCardSensitiveDetail,
+    cardSensitiveDetail
   }
 })

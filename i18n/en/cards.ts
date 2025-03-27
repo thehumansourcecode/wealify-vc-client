@@ -13,7 +13,7 @@ export default {
   },
   filter: {
     placeholder: {
-      search: 'Search card number, card name',
+      search: 'Search card number, card name, or last 4 digits',
     },
     label: {
       type: 'Type',
