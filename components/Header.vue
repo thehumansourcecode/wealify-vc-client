@@ -53,18 +53,18 @@ const items = [
   [{
     label: 'Your Virtual Card is Ready! ',
     content:` You've added 1000 USD to your Wealify wallet. 💳 Transfer to your card now to start spending!`,
-    icon: '/_nuxt/assets/img/icons/withdraw.svg',
+    icon: '/icons/header/withdraw.svg',
     time_since: '2 hours ago',
     unread: true
   }, {
     label: 'Wallet Top-Up Successful! ',
     content:` You've added 1000 USD to your Wealify wallet. 💳 Transfer to your card now to start spending!`,
-    icon: '/_nuxt/assets/img/icons/ready.svg',
+    icon: '/icons/header/ready.svg',
     time_since: '2 hours ago',
   }, {
     label: 'Your Virtual Card is Ready! 🎉',
     content:`Your Wealify Card ••••2354 is now active! 🚀 \n 💳 Start making transactions now.`,
-    icon: '/_nuxt/assets/img/icons/withdraw.svg',
+    icon: '/icons/header/withdraw.svg',
     time_since: '2 hours ago',
   }]
 ]
