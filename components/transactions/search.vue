@@ -6,8 +6,7 @@ const tempKeyword = ref<string | undefined>(payload.value.keyword)
 
 async function onEnterKeyword() {
   if (tempKeyword.value == payload.value.keyword) return
-  await transactionStore.setPayload({ ...payload.value, page: 1, keyword: tempKeyword.value })
-  transactionStore.getTransactionList(payload.value)
+  transactionStore.setPayload({ ...payload.value, page: 1, keyword: tempKeyword.value })
 }
 
 async function loadData() {

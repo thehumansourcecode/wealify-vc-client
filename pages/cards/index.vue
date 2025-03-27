@@ -2,7 +2,7 @@
 definePageMeta({
   layout: 'home',
 })
-import { formatDDMMYYYY, formatMoney } from '~/common/functions'
+import { formatDDMMYYYY, formatDDMMYYYYHHMM, formatMoney } from '~/common/functions'
 import { CardCategory, CardStatus, CardType, type ICardDetail } from '~/types/cards'
 import { showToast, ToastType } from '~/common/functions'
 
@@ -168,6 +168,23 @@ watch(
   { immediate: true, flush: 'sync' },
 )
 
+const dateRange = ref<[Date | undefined, Date | undefined]>([undefined, undefined])
+
+watch(dateRange, () => {
+  const start_date = dateRange.value[0] ? dayjs(dateRange.value[0]).utc().toISOString() : undefined
+  const end_date = dateRange.value[1] ? dayjs(dateRange.value[1]).utc().toISOString() : undefined
+
+  if (payload.value.start_date == start_date && payload.value.end_date == end_date) {
+    return
+  }
+
+  cardStore.setPayload({
+    ...payload.value,
+    start_date,
+    end_date,
+  })
+})
+
 watch(
   () => [
     payload.value.card_status,
@@ -175,6 +192,8 @@ watch(
     payload.value.category,
     payload.value.keyword,
     payload.value.limit,
+    payload.value.start_date,
+    payload.value.end_date,
   ],
   async () => {
     if (page.value !== 1) {
@@ -197,7 +216,6 @@ async function onEnterKeyword() {
   if (tempKeyword.value !== payload.value.keyword) {
     tempKeyword.value = tempKeyword.value?.trim()
     cardStore.setPayload({ ...payload.value, keyword: tempKeyword.value })
-    await getCardList()
   }
 }
 
@@ -298,6 +316,10 @@ onUnmounted(() =>
       </div>
       <!-- Filters -->
       <div class="flex flex-row gap-5 items-center">
+        <DatePicker v-model="dateRange" />
+
+        <img src="~/assets/img/common/line.svg" alt="" />
+
         <!-- Type -->
         <BaseSingleSelect
           class="w-[150px]"
