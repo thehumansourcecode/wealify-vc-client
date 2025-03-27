@@ -227,7 +227,10 @@ function handleCopy(value: string) {
           }}
         </div>
       </div>
-      <div class="py-[22px] px-[19px] rounded-[20px] border border-[#D7D9E5]">
+      <div
+        class="py-[22px] px-[19px] rounded-[20px] border border-[#D7D9E5] relative w-[240px] h-[246px] flex items-center justify-center"
+      >
+        <img class="absolute" style="scale: 0.75" src="~/assets/img/dashboard/qr-logo.svg" alt="" />
         <VueQr v-if="topupAddress" :text="topupAddress" :size="200" :margin="0" />
       </div>
     </div>
