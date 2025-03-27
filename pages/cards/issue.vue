@@ -115,6 +115,10 @@ const handlePasteName = event => {
   }
 }
 
+const handleKeydownName = event => {
+  const key = event.key
+}
+
 const handleInputName = event => {
   // Skip processing if the input is being composed (e.g., via IME)
   if (event.isComposing) {
@@ -233,6 +237,7 @@ watch(
               <BaseInput
                 @input="handleInputName"
                 @paste="handlePasteName"
+                @keydown="handleKeydownName"
                 :error="error"
                 v-model="form.card_name"
                 :clearable="!!form.card_name"
