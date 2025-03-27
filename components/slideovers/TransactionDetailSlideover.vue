@@ -87,7 +87,7 @@ function handleNewTransaction() {
             <div class="uppercase text-[#1C1D23] text-14-500-20">
               {{ t(`transactions.detail.label.${transactionDetail.transaction_vc_type}`) }}
             </div>
-            <div class="text-32-700-44 text-[#FF5524]">{{ formatMoney(transactionDetail.amount, 'USD') }}</div>
+            <div class="text-32-700-44 text-[#FF5524]">{{ formatMoney(transactionDetail.received_amount, 'USD') }}</div>
             <div class="text-12-500-20 text-[#7A7D89]">
               {{ t(`transactions.detail.to`, { destination: transactionDetail?.to || 'Wealify Balance' }) }}
             </div>
@@ -136,7 +136,11 @@ function handleNewTransaction() {
               {{ t('transactions.detail.fee') }}
             </div>
             <div class="text-14-500-20 text-[#1C1D23]">
-              {{ t(`transactions.detail.feeValue`, { fee: formatAmount(transactionDetail?.fee?.value || 0) }) }}
+              {{
+                t(`transactions.detail.feeValue`, {
+                  fee: formatAmount(transactionDetail?.amount - transactionDetail?.received_amount || 0),
+                })
+              }}
             </div>
           </div>
         </div>

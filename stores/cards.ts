@@ -103,6 +103,7 @@ export const useCardStore = defineStore('card', () => {
         id: card.id,
         card_name: card?.card_name,
         last_four: card?.last_four,
+        balance: card?.balance,
       }
     } else {
       selectedCardForTopup.value = undefined
@@ -319,6 +320,6 @@ export const useCardStore = defineStore('card', () => {
     sendOTPSensitiveDetail,
     verifyOTPSensitiveDetail,
     isShowCardSensitiveDetail,
-    cardSensitiveDetail
+    cardSensitiveDetail,
   }
 })

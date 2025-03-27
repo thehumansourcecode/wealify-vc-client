@@ -118,8 +118,8 @@ function handleClickTransaction(row: ITransactionData) {
         {{
           row.amount
             ? row.transaction_vc_type === TransactionVCType.TOP_UP
-              ? `+${formatMoney(row.amount)}`
-              : `-${formatMoney(row.amount)}`
+              ? `+${formatMoney(row?.received_amount)}`
+              : `-${formatMoney(row?.received_amount)}`
             : ''
         }}
       </div>
