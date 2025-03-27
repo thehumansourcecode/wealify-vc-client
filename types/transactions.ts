@@ -62,6 +62,7 @@ export interface ITransactionData {
   fee: Fee
   rate: Rate
   amount: number
+  received_amount: number // Amount after fees
   transaction_type: TransactionType // Added string as a fallback for other possible types
   transaction_status: TransactionStatus // Added string as a fallback for other possible types
   transaction_vc_status: TransactionVCStatus // Added string as a fallback for other possible types

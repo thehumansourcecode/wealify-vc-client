@@ -3,6 +3,7 @@ import { BaseService } from './base.service'
 import type {
   CardCategory,
   ICardDetail,
+  ICardSensitiveDetail,
   IEditCardParams,
   IGetCardListParams,
   IIssueCardParams,
@@ -32,6 +33,10 @@ export class CardService extends BaseService {
   }
   async getCardDetailById(id: string): Promise<ICommonResponse<ICardDetail>> {
     return this.get(`/${id}`)
+  }
+
+  async getCardSensitiveDetailById(id: string): Promise<ICommonResponse<ICardSensitiveDetail>> {
+    return this.get(`/${id}/sensitive`)
   }
 
   async issueCard(params: IIssueCardParams): Promise<ICommonResponse<{ id: string }>> {

@@ -58,7 +58,7 @@ export const useCommonStore = defineStore('common', () => {
   const dropdownCardList = ref<IDropdownCardData[]>()
 
   async function getDropdownCardList() {
-    const response = await commonService.getDropdownCardList({ card_status: [CardStatus.ACTIVE] })
+    const response = await commonService.getDropdownCardList({ card_status: [CardStatus.ACTIVE], page: 1, limit: 100 })
     if (response.success) {
       dropdownCardList.value = response.data as IDropdownCardData[]
     }

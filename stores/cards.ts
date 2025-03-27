@@ -10,6 +10,7 @@ import {
   type ICardDetail,
   type ITopupCardParams,
   type IEditCardParams,
+  type ICardSensitiveDetail,
 } from '~/types/cards'
 import { FeeType, type IDropdownCardData } from '~/types/common'
 
@@ -102,6 +103,7 @@ export const useCardStore = defineStore('card', () => {
         id: card.id,
         card_name: card?.card_name,
         last_four: card?.last_four,
+        balance: card?.balance,
       }
     } else {
       selectedCardForTopup.value = undefined
@@ -245,23 +247,35 @@ export const useCardStore = defineStore('card', () => {
   }
 
   // Sensitive details OTP handling
+  const isShowCardSensitiveDetail = ref(false)
+  const cardSensitiveDetail = ref<ICardSensitiveDetail>()
   async function sendOTPSensitiveDetail() {
+    commonStore.toggleProcessingModal(true)
     const response = await otpService.sendOTPSensitiveDetail()
-    console.log(response)
+    commonStore.toggleProcessingModal(false)
     return response
   }
 
   async function verifyOTPSensitiveDetail(code: string) {
-    const response = await otpService.verifyOTPSensitiveDetail(code)
-    console.log(response)
-    if (response.success) {
-      toggleSensitiveOTPModal(false)
-      isShowCardSensitiveDetail.value = true
+    console.log(code)
+    commonStore.toggleProcessingModal(true)
+    toggleSensitiveOTPModal(false)
+    isShowCardSensitiveDetail.value = true
+    // Handle Verify OTP
+    // const response = await otpService.verifyOTPSensitiveDetail(code)
+    // if (response.success) {
+    //   toggleSensitiveOTPModal(false)
+    //   isShowCardSensitiveDetail.value = true
+    // }
+    if (selectedCardDetail.value?.id) {
+      const response = await cardService.getCardSensitiveDetailById(selectedCardDetail.value?.id)
+      if (response.success) {
+        cardSensitiveDetail.value = response.data
+      }
     }
-    return response
+    commonStore.toggleProcessingModal(false)
+    // return response
   }
-
-  const isShowCardSensitiveDetail = ref(false)
 
   return {
     isLoading,
@@ -306,5 +320,6 @@ export const useCardStore = defineStore('card', () => {
     sendOTPSensitiveDetail,
     verifyOTPSensitiveDetail,
     isShowCardSensitiveDetail,
+    cardSensitiveDetail,
   }
 })

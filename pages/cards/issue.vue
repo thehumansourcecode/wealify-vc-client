@@ -116,10 +116,15 @@ const handlePasteName = event => {
 }
 
 const handleInputName = event => {
-  // Remove all non-Viet/English characters
-  let inputValue = event.target.value
+  // Skip processing if the input is being composed (e.g., via IME)
+  if (event.isComposing) {
+    return
+  }
+  // Normalize the input to NFC (composed form)
+  let inputValue = event.target.value.normalize('NFC')
+  // Remove all non-allowed characters
   inputValue = inputValue.replace(accentedCharactersRegex, '')
-  // Update the value
+  // Update the input value
   event.target.value = inputValue
 }
 
@@ -268,7 +273,7 @@ watch(
                 </UTooltip>
               </div>
               <BaseInput
-                v-model="form.email"
+                v-model.trim="form.email"
                 :clearable="!!form.email"
                 :error="error"
                 :limit="128"
@@ -551,7 +556,7 @@ watch(
             class="w-[399px] h-[219px] rounded-[21px] flex flex-col items-start overflow-hidden bg-[url(~/assets/img/cards/card-bg.svg)] bg-left pt-5 pb-6 pl-4 pr-6"
           >
             <img src="~/assets/img/cards/card-logo.svg" alt="" />
-            <div class="text-20-500-32 text-[#FFFFFF] mt-5 w-[360px]" :class="{ uppercase: form.name }">
+            <div class="text-20-500-32 text-[#FFFFFF] mt-5 w-[360px]" :class="{ uppercase: form.card_name }">
               {{ form.card_name ? formattedCardName : t('cards.issue.preview.namePlaceholder') }}
             </div>
             <img class="mt-auto" src="~/assets/img/cards/card-number.svg" alt="" />

@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import { formatMoney, shortenAddress } from '~/common/functions'
 import { formatYYYYMMDDhmmA } from '~/common/functions'
+import { CommonCurrency } from '~/types/common'
+import { TransactionVCType } from '~/types/transactions'
 import { formatAmount } from '~/utils/amount.util'
 
 const { copy, copied } = useClipboard()
 const { t } = useI18n()
 const toast = useToast()
+
+const dashboardStore = useDashboardStore()
 
 const dayjs = useDayjs()
 
@@ -43,6 +47,12 @@ function copyTransactionAddress() {
 function onClosePrevented() {
   transactionStore.toggleTransactionDetailSlideover(false)
 }
+
+function handleNewTransaction() {
+  transactionStore.toggleTransactionDetailSlideover(false)
+  navigateTo('/')
+  dashboardStore.toggleWalletTopupModal(true)
+}
 </script>
 
 <template>
@@ -78,9 +88,9 @@ function onClosePrevented() {
             <div class="uppercase text-[#1C1D23] text-14-500-20">
               {{ t(`transactions.detail.label.${transactionDetail.transaction_vc_type}`) }}
             </div>
-            <div class="text-32-700-44 text-[#FF5524]">{{ formatMoney(transactionDetail.amount, 'USD') }}</div>
+            <div class="text-32-700-44 text-[#FF5524]">{{ formatMoney(transactionDetail.received_amount, CommonCurrency.USD) }}</div>
             <div class="text-12-500-20 text-[#7A7D89]">
-              <!-- {{ t(`transactions.detail.to`, { destination: transactionDetail.to }) }} -->
+              {{ t(`transactions.detail.to`, { destination: transactionDetail?.to || 'Wealify Balance' }) }}
             </div>
           </div>
           <div
@@ -127,7 +137,7 @@ function onClosePrevented() {
               {{ t('transactions.detail.fee') }}
             </div>
             <div class="text-14-500-20 text-[#1C1D23]">
-              {{ t(`transactions.detail.feeValue`, { fee: formatAmount(transactionDetail.fee.value) }) }}
+              {{ formatMoney(transactionDetail?.amount - transactionDetail?.received_amount || 0, CommonCurrency.USD) }}
             </div>
           </div>
         </div>
@@ -168,14 +178,6 @@ function onClosePrevented() {
         </div>
 
         <div class="px-5 py-3 mt-2 bg-[#F0F2F5] rounded-[18px] flex flex-col gap-5 w-full">
-          <div class="flex flex-row justify-between">
-            <div class="text-12-500-20 text-[#7A7D89]">
-              {{ t('transactions.detail.account') }}
-            </div>
-            <div class="text-14-500-20 text-[#1C1D23]">
-              <!-- {{ transactionDetail.account }} -->
-            </div>
-          </div>
           <div class="flex flex-row justify-between items-center">
             <div class="text-12-500-20 text-[#7A7D89]">
               {{ t('transactions.detail.address') }}
@@ -209,7 +211,11 @@ function onClosePrevented() {
           <ULink class="text-[#FF5524]"> support@wealify.com </ULink>
         </div>
 
-        <UButton class="flex items-center justify-center w-[400px] bg-[#1C1D23] hover:bg-[#3D3E34] my-8 rounded-[49px]">
+        <UButton
+          @click="handleNewTransaction()"
+          v-if="transactionDetail.transaction_vc_type === TransactionVCType.TOP_UP"
+          class="flex items-center bg-[#1C1D23] hover:bg-[#3D3E34] justify-center w-[400px] my-8 rounded-[49px]"
+        >
           <div class="text-white text-14-600-20 px-4 py-[14px]">
             {{ t(`transactions.detail.createNew.${transactionDetail.transaction_vc_type}`) }}
           </div>
@@ -222,5 +228,9 @@ function onClosePrevented() {
 <style lang="scss" scoped>
 .slideover-content {
   max-height: calc(100vh - 80px);
+}
+
+.styled-button:disabled {
+  background-color: #a4a8b8 !important;
 }
 </style>

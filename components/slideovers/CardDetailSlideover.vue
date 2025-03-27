@@ -25,17 +25,15 @@ function handleCopy(index: number, value: string) {
 }
 
 const cardStore = useCardStore()
+const transactionStore = useTransactionStore()
 const isOpenCardDetailSlideover = computed(() => cardStore.isOpenCardDetailSlideover)
 const cardDetail = computed(() => cardStore.selectedCardDetail)
 const isShowCardSensitiveDetail = computed(() => cardStore.isShowCardSensitiveDetail)
 const isShowCardSensitiveDetailOverlay = ref(false)
 
-const cardSensitiveDetail = ref({
-  CVV: '888',
-  card_number: '1231 1232 1233 9998',
-})
+const cardSensitiveDetail = computed(() => cardStore.cardSensitiveDetail)
 
-const cardNumberArray = cardSensitiveDetail.value.card_number.split(' ')
+const cardNumberArray = computed(() => cardSensitiveDetail.value?.card_number?.match(/.{1,4}/g))
 
 const balanceRate = computed(() =>
   cardDetail.value?.total_top_up
@@ -74,9 +72,8 @@ const handleMouseMove = event => {
 }
 
 async function handleShowSensitiveDetail() {
-  // isShowCardSensitiveDetail.value = true
-  // isShowCardSensitiveDetailOverlay.value = false
-  await cardStore.sendOTPSensitiveDetail()
+  // TODO: Handle OTP send to email request
+  // await cardStore.sendOTPSensitiveDetail()
   cardStore.toggleSensitiveOTPModal(true)
 }
 
@@ -86,6 +83,8 @@ function onClosePrevented() {
 
 function handleViewTransaction() {
   cardStore.toggleCardDetailSlideover(false)
+  const payload = transactionStore.payload
+  transactionStore.setPayload({ ...payload, keyword: cardDetail.value?.last_four })
   navigateTo('/transactions')
 }
 
@@ -249,7 +248,12 @@ function handleEdit() {
             <div class="flex flex-row justify-between text-14-500-20 text-[#1C1D23]">
               <div>{{ t(`cards.slideovers.detail.info.card_number`) }}</div>
               <div v-if="isShowCardSensitiveDetail" class="flex flex-row gap-2 items-center">
-                <span>{{ cardSensitiveDetail?.card_number }}</span>
+                <div class="flex flex-row gap-1">
+                  <div v-for="(part, index) in cardNumberArray" :key="index">
+                    {{ part }}
+                  </div>
+                </div>
+
                 <img
                   class="cursor-pointer"
                   @click="handleCopy(0, cardSensitiveDetail?.card_number || '')"
@@ -264,10 +268,10 @@ function handleEdit() {
             <div class="flex flex-row justify-between text-14-500-20">
               <div class="text-[#7A7D89]">{{ t(`cards.slideovers.detail.info.CVV`) }}</div>
               <div v-if="isShowCardSensitiveDetail" class="flex flex-row gap-2 items-center">
-                <span>{{ cardSensitiveDetail?.CVV || 'CVV' }}</span>
+                <span>{{ cardSensitiveDetail?.cvv || 'CVV' }}</span>
                 <img
                   class="cursor-pointer"
-                  @click="handleCopy(1, cardSensitiveDetail?.CVV || 'CVV')"
+                  @click="handleCopy(1, cardSensitiveDetail?.cvv || 'CVV')"
                   :src="
                     copied && copyIndex === 1 ? `/icons/common/copied-bordered.svg` : `/icons/common/copy-bordered.svg`
                   "

@@ -125,6 +125,7 @@ export interface IDropdownCardData {
   card_name: string
   id: string
   last_four: string
+  balance: number
 }
 
 export enum FeeType {
