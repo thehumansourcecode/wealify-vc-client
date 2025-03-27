@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const cardStore = useCardStore()
+const profileStore = useProfileStore()
 const { t } = useI18n()
 const selectedCard = computed(() => cardStore.selectedCardDetail)
 
@@ -15,7 +16,7 @@ async function handleCompleteInput(value: string) {
     <div class="text-14-500-20 manrope">
       <div class="flex flex-row gap-0.5">
         <span class="text-[#7a7d89]">{{ t('cards.modals.otp.description') }}</span>
-        <span class="text-[#1c1d23]">{{ maskEmail(selectedCard?.email || '') }}</span>
+        <span class="text-[#1c1d23]">{{ maskEmail(profileStore.profile?.email || '') }}</span>
       </div>
       <div class="flex flex-row gap-0.5">
         <span class="text-[#7a7d89]">{{ t('cards.modals.otp.timeout') }}</span>
