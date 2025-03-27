@@ -50,12 +50,7 @@ function onClosePrevented() {
 function handleNewTransaction() {
   transactionStore.toggleTransactionDetailSlideover(false)
   navigateTo('/')
-  if (transactionDetail.value?.transaction_vc_type === TransactionVCType.TOP_UP) {
-    dashboardStore.toggleWalletTopupModal(true)
-  } else if (transactionDetail.value?.transaction_vc_type === TransactionVCType.WITHDRAWAL) {
-    // TODO
-    // dashboardStore.toggleWalletWithdrawModal(true)
-  }
+    
 }
 </script>
 
@@ -217,14 +212,8 @@ function handleNewTransaction() {
 
         <UButton
           @click="handleNewTransaction()"
-          v-if="transactionDetail.transaction_vc_type !== TransactionVCType.PAYMENT"
-          class="flex items-center styled-button justify-center w-[400px] my-8 rounded-[49px]"
-          :disabled="transactionDetail.transaction_vc_type !== TransactionVCType.TOP_UP"
-          :class="
-            transactionDetail.transaction_vc_type === TransactionVCType.TOP_UP
-              ? 'bg-[#1C1D23] hover:bg-[#3D3E34]'
-              : 'bg-[#A5A8B8] text-[#D7D9E5] hover:bg-[#B6B9C9] cursor-not-allowed'
-          "
+          v-if="transactionDetail.transaction_vc_type === TransactionVCType.TOP_UP"
+          class="flex items-center bg-[#1C1D23] hover:bg-[#3D3E34] justify-center w-[400px] my-8 rounded-[49px]"
         >
           <div class="text-white text-14-600-20 px-4 py-[14px]">
             {{ t(`transactions.detail.createNew.${transactionDetail.transaction_vc_type}`) }}
