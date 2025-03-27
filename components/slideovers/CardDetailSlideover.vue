@@ -72,9 +72,8 @@ const handleMouseMove = event => {
 }
 
 async function handleShowSensitiveDetail() {
-  // isShowCardSensitiveDetail.value = true
-  // isShowCardSensitiveDetailOverlay.value = false
-  await cardStore.sendOTPSensitiveDetail()
+  // TODO: Handle OTP send to email request
+  // await cardStore.sendOTPSensitiveDetail()
   cardStore.toggleSensitiveOTPModal(true)
 }
 
