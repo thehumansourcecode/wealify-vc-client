@@ -268,7 +268,7 @@ watch(
                 </UTooltip>
               </div>
               <BaseInput
-                v-model="form.email"
+                v-model.trim="form.email"
                 :clearable="!!form.email"
                 :error="error"
                 :limit="128"

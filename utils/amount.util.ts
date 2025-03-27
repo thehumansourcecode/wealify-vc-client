@@ -5,6 +5,7 @@ interface FormatOptions {
 }
 
 export function formatAmount(amount: number, options: FormatOptions = {}): string {
+  if (!amount) return ''
   const { decimals = undefined, decimalSeparator = '.', thousandSeparator = ',' } = options
 
   // Handle rounding if decimals is specified
