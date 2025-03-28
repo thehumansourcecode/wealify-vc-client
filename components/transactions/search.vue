@@ -27,7 +27,7 @@ watch(() => [payload.value.keyword], loadData, { deep: true })
         @keyup.enter="onEnterKeyword()"
         input-class="input-field rounded-49"
         class="w-[80%]"
-        v-model="tempKeyword"
+        v-model.trim="tempKeyword"
         leading
         :leading-img="'/icons/common/search.svg'"
         :placeholder="t('transactions.filter.placeholder.search')"
