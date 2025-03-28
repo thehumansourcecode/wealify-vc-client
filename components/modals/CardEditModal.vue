@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { number, object, string } from 'yup'
-import { accentedCharactersRegex, emailRegex, removedAccentMap } from '~/common/constants'
+import { nonAccentedCharactersRegex, emailRegex, removedAccentMap } from '~/common/constants'
 import { CardType, CardCategory, type IEditCardParams } from '~/types/cards'
 import { getCountryCode, getCountryFlag } from '~/components/cards/functions'
 import { CommonCountry } from '~/types/common'
@@ -66,7 +66,7 @@ const formattedCardName = computed(() => {
 const handlePasteName = event => {
   event.preventDefault()
   let paste = (event.clipboardData || window.clipboardData).getData('text')
-  let inputValue = paste.replace(accentedCharactersRegex, '')
+  let inputValue = paste.replace(nonAccentedCharactersRegex, '')
   const remaining = 50 - event.target.value.length
   if (remaining > 0) {
     event.target.value += inputValue.slice(0, remaining)
@@ -77,7 +77,7 @@ const handlePasteName = event => {
 const handleInputName = event => {
   // Remove all non-Viet/English characters
   let inputValue = event.target.value
-  inputValue = inputValue.replace(accentedCharactersRegex, '')
+  inputValue = inputValue.replace(nonAccentedCharactersRegex, '')
   // Update the value
   event.target.value = inputValue
 }

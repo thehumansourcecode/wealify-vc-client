@@ -3,7 +3,13 @@ import { formatMoney, formatMoneyWithoutDecimals } from '~/common/functions'
 import { getCountryCode, getCountryFlag } from '~/components/cards/functions'
 import { CardCategory, CardType, type IIssueCardParams } from '~/types/cards'
 import { CommonCountry, CommonCurrency, FeeAmountType, FeeType, PanelChildTab, PanelTab } from '~/types/common'
-import { accentedCharactersRegex, emailRegex, onlyEnglishCharacters, removedAccentMap } from '~/common/constants'
+import {
+  nonAccentedCharactersRegex,
+  emailRegex,
+  numberRegex,
+  onlyEnglishCharacters,
+  removedAccentMap,
+} from '~/common/constants'
 import { MAX_SPEND_LIMIT, countryCodeOptions } from '~/components/cards/constants'
 import { number, object, string } from 'yup'
 
@@ -109,29 +115,12 @@ const formattedCardName = computed(() => {
 const handlePasteName = event => {
   event.preventDefault()
   let paste = (event.clipboardData || window.clipboardData).getData('text')
-  let inputValue = paste.replace(accentedCharactersRegex, '')
+  let inputValue = paste.replace(nonAccentedCharactersRegex, '')
   const remaining = 50 - event.target.value.length
   if (remaining > 0) {
     event.target.value += inputValue.slice(0, remaining)
     form.card_name = event.target.value
   }
-}
-
-const handleKeydownName = event => {
-  const key = event.key
-}
-
-const handleInputName = event => {
-  // Skip processing if the input is being composed (e.g., via IME)
-  if (event.isComposing) {
-    return
-  }
-  // Normalize the input to NFC (composed form)
-  let inputValue = event.target.value.normalize('NFC')
-  // Remove all non-allowed characters
-  inputValue = inputValue.replace(accentedCharactersRegex, '')
-  // Update the input value
-  event.target.value = inputValue
 }
 
 const presetAmounts = computed(() => {
@@ -237,9 +226,7 @@ watch(
                 <span class="pl-1 text-[#ED2C38]">*</span>
               </div>
               <BaseInput
-                @input="handleInputName"
                 @paste="handlePasteName"
-                @keydown="handleKeydownName"
                 :error="error"
                 v-model="form.card_name"
                 :clearable="!!form.card_name"
