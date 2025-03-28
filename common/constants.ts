@@ -6,7 +6,7 @@ export const nonAccentedCharactersRegex =
   /[^A-Za-zÁÀẢÃẠĂẮẰẲẴẶÂẤẦẨẪẬÉÈẺẼẸÊẾỀỂỄỆÍÌỈĨỊÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢÚÙỦŨỤƯỨỪỬỮỰÝỲỶỸỴĐáàảãạăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵ\s]/g
 export const numberRegex = /[0-9]/
 export const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-export const onlyEnglishCharacters = /^[a-zA-Z]+$/
+export const onlyEnglishCharacters = /^[a-zA-Z\s]+$/
 export const removedAccentMap = {
   Á: 'A',
   À: 'A',
