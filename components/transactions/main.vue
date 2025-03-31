@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col overflow-y-auto pl-10 pr-[60px] flex-1 gap-5 mt-7">
+  <div class="flex flex-col  pl-10 pr-[60px] flex-1 gap-5 mt-7">
     <TransactionsSearch />
     <TransactionsFilter />
     <TransactionsPaginationList />

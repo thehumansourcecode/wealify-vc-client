@@ -41,7 +41,7 @@ onUnmounted(() =>
 )
 </script>
 <template>
-  <div class="rounded-[12px] flex flex-col border border-[#D7D9E5] mb-8 overflow-x-auto w-full h-full">
+  <div class="rounded-[12px] flex flex-col border border-[#D7D9E5] mb-8 overflow-x-auto w-full">
     <TransactionsList />
     <div class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700 gap-10 items-center">
       <USelectMenu v-model="payload.limit" :options="limitOptions" selected-icon="i-selected">
