@@ -127,7 +127,12 @@ const transactionDestination = computed(() => {})
               {{ t('transactions.detail.rate') }}
             </div>
             <div class="text-14-500-20 text-[#1C1D23]">
-             -
+              {{
+                t(`transactions.detail.rateValue.${transactionDetail.transaction_vc_type}`, {
+                  rateUSDT: formatAmount(transactionDetail.rate.value),
+                  rateUSD: formatAmount(transactionDetail.rate.value),
+                })
+              }}
             </div>
           </div>
           <div class="flex flex-row justify-between">
