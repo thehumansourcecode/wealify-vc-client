@@ -232,13 +232,15 @@ export const useCardStore = defineStore('card', () => {
     isLoading.value.editCard = true
     const response = await cardService.editCard(params, id)
     if (response.success) {
+      toggleCardEditModal(false)
       showToast(ToastType.SUCCESS, t('common.toast.success.editCard'))
-      // On change status => call API. Avoid duplicate API calls
       if (payload.value.card_status.length !== 1 || payload.value.card_status[0] !== CardStatus.ACTIVE) {
         setPayload({ ...payload.value, card_status: [CardStatus.ACTIVE] })
       } else {
         await getCardList(payload.value)
       }
+      await getCardDetailById(id)
+      toggleCardDetailSlideover(true)
     } else {
       showToast(ToastType.FAILED, response.message)
     }

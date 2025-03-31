@@ -20,7 +20,7 @@ export default {
     copy: 'Copied to clipboard!',
     success: {
       topupCard: 'Successful Card Top-up',
-      editCard: 'Successful Card Edit',
+      editCard: 'Edited card successfully',
       issueCard: 'Card issued successfully',
     },
     failed: {
