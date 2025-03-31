@@ -16,7 +16,7 @@ function onClosePrevented() {
     @close-prevented="onClosePrevented"
     :ui="{
       overlay: {
-        background: 'bg-gray-200/20',
+        background: 'bg-[#1c1d23]/30',
       },
       rounded: 'rounded-xl',
       background: '',
