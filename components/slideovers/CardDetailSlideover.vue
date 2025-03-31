@@ -30,6 +30,8 @@ const isOpenCardDetailSlideover = computed(() => cardStore.isOpenCardDetailSlide
 const cardDetail = computed(() => cardStore.selectedCardDetail)
 const isShowCardSensitiveDetail = computed(() => cardStore.isShowCardSensitiveDetail)
 const isShowCardSensitiveDetailOverlay = ref(false)
+const _x = ref(0)
+const _y = ref(0)
 
 const cardSensitiveDetail = computed(() => cardStore.cardSensitiveDetail)
 
@@ -55,8 +57,10 @@ const isBalanceTooltipVisible = ref(false)
 // Handle mouse movement to detect hover over total_withdraw section
 const handleMouseMove = event => {
   const rect = chartContainer.value?.getBoundingClientRect()
-  const x = event.clientX - rect.left - 64 // Center at (64, 64)
+  const x = event.clientX - rect.left - 64
   const y = event.clientY - rect.top - 64
+  _x.value = x
+  _y.value = y
   const distance = Math.sqrt(x * x + y * y)
   const angle = (Math.atan2(y, x) * (180 / Math.PI) + 360) % 360 // Convert to degrees, 0-360
   const adjusted_angle = (angle + 90) % 360 // Shift to start from north
@@ -73,6 +77,32 @@ const handleMouseMove = event => {
     isBalanceTooltipVisible.value = false
   }
 }
+
+
+const styleTooltipWithDraw =  computed(() => {
+  let top,left
+  if (isWithdrawTooltipVisible.value){
+    top = _y.value + 60
+    left = _x.value + 75
+  }else{
+    top = 64
+    left = 64
+  }
+
+  return `top:${top}px;left:${left}px;transition: all 0.1s ease-in-out;`
+})
+
+const styleTooltipBalance =  computed(() => {
+  let top,left
+  if (isBalanceTooltipVisible.value){
+    top = _y.value + 60
+    left = _x.value + 80
+  }else{
+    top = 64
+    left = 64
+  }
+  return `top:${top}px;left:${left}px; transition: all 0.1s ease-in-out;`
+})
 
 async function handleShowSensitiveDetail() {
   // TODO: Handle OTP send to email request
@@ -117,6 +147,12 @@ function handleEdit() {
   cardStore.toggleCardDetailSlideover(false)
   cardStore.toggleCardEditModal(true)
 }
+
+if (cardDetail.value){
+  console.log(4)
+  cardDetail.value.total_withdraw = 4
+}
+
 </script>
 
 <template>
@@ -316,8 +352,10 @@ function handleEdit() {
               </div>
               <div
                 v-if="isWithdrawTooltipVisible && cardDetail?.total_withdraw"
-                class="absolute top-[50%] -translate-y-1/2 left-[103%] bg-[#1C1D23] py-2 px-3 flex flex-row items-center gap-[6px] rounded-[8px]"
+                :style="styleTooltipWithDraw"
+                class="absolute -translate-y-1/2  bg-[#1C1D23] py-2 px-3 flex flex-row items-center gap-[6px] rounded-[8px]"
               >
+                <div class="absolute top-1/2 left-[-5px] transform -translate-y-1/2 w-0 h-0 border-t-[5px] border-b-[5px] border-r-[5px] border-transparent border-r-black"></div>
                 <div class="bg-[#FF5524] w-2 h-2 mx-[3px] rounded-full"></div>
                 <div class="w-[85px] text-[#A5A8B8] text-10-500-14">
                   {{ t(`cards.slideovers.detail.info.total_withdraw`) }}
@@ -326,10 +364,13 @@ function handleEdit() {
                   ${{ formatMoneyWithoutDecimals(cardDetail?.total_withdraw) }}
                 </div>
               </div>
+
               <div
                 v-if="isBalanceTooltipVisible"
-                class="absolute -top-10 bg-[#1C1D23] py-2 px-3 flex flex-row items-center gap-[6px] rounded-[8px]"
+                :style="styleTooltipBalance"
+                class="absolute  bg-[#1C1D23] py-2 px-3 flex flex-row items-center gap-[6px] rounded-[8px]"
               >
+                <div class="absolute top-1/2 left-[-5px] transform -translate-y-1/2 w-0 h-0 border-t-[5px] border-b-[5px] border-r-[5px] border-transparent border-r-black"></div>
                 <div class="bg-[#D7D9E5] w-2 h-2 mx-[3px] rounded-full"></div>
                 <div class="w-[85px] text-[#A5A8B8] text-10-500-14">
                   {{ t(`cards.slideovers.detail.info.balance`) }}
