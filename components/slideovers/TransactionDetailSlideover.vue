@@ -57,9 +57,8 @@ function copyCardName() {
 }
 
 function copyCardNumber() {
-  copy(transactionDetail.value?.virtual_card?.card_number || '')
-  copyIndex.value = 2
-
+  copy(transactionDetail.value?.virtual_card?.last_four || '')
+  copyIndex.value = 3
   toast.clear()
   toast.add({
     title: t('common.toast.copy'),
@@ -142,7 +141,11 @@ const transactionDestination = computed(() => {})
               {{ t(`transactions.detail.amountLabel.${transactionDetail?.detailType}`) }}
             </div>
             <div class="text-16-700-24 text-[#1C1D23]">
-              {{ t(`transactions.detail.amount.${transactionDetail?.detailType}`, { amount: formatMoney(transactionDetail?.amount) }) }}
+              {{
+                t(`transactions.detail.amount.${transactionDetail?.detailType}`, {
+                  amount: formatMoney(transactionDetail?.amount),
+                })
+              }}
             </div>
           </div>
           <div class="flex flex-row justify-between">
@@ -215,9 +218,11 @@ const transactionDestination = computed(() => {})
             </div>
           </div>
         </div>
-
-        <div class="px-5 py-3 mt-2 bg-[#F0F2F5] rounded-[18px] flex flex-col gap-5 w-full">
-          <div v-if="transactionDetail.detailType === TransactionDetailType.WALLET_TOP_UP">
+        <div class="px-5 py-3 mt-2 bg-[#F0F2F5] rounded-[18px] w-full">
+          <div
+            v-if="transactionDetail.detailType === TransactionDetailType.WALLET_TOP_UP"
+            class="flex flex-col gap-5 w-full"
+          >
             <div class="flex flex-row justify-between items-center">
               <div class="text-12-500-20 text-[#7A7D89]">
                 {{ t('transactions.detail.address') }}
@@ -226,15 +231,15 @@ const transactionDestination = computed(() => {})
                 <div class="text-14-500-20 text-[#1C1D23]">
                   <!-- {{ shortenAddress(transactionDetail.address) }} -->
                 </div>
-                <img
+                <!-- <img
                   class="cursor-pointer"
                   @click="copyTransactionAddress()"
                   :src="copied && copyIndex ? `/icons/common/copied-bordered.svg` : `/icons/common/copy-bordered.svg`"
                   alt=""
-                />
+                /> -->
               </div>
             </div>
-            <div class="flex flex-row justify-between">
+            <div class="flex flex-row justify-between items-center">
               <div class="text-12-500-20 text-[#7A7D89]">
                 {{ t('transactions.detail.txhash') }}
               </div>
@@ -243,29 +248,41 @@ const transactionDestination = computed(() => {})
               </ULink>
             </div>
           </div>
-          <div v-else class="flex flex-row justify-between items-center">
-            <div class="text-12-500-20 text-[#7A7D89]">
-              {{ t('transactions.detail.cardName') }}
-            </div>
-            <div class="flex flex-row gap-2 items-center">
-              <div class="text-14-500-20 text-[#1C1D23]">
-                {{ transactionDetail?.virtual_card?.card_name }}
+          <div v-else class="flex flex-col gap-5 w-full">
+            <div class="flex flex-row justify-between items-center">
+              <div class="text-12-500-20 text-[#7A7D89]">
+                {{ t('transactions.detail.cardName') }}
               </div>
-              <img
-                class="cursor-pointer"
-                @click="copyCardName()"
-                :src="copied && copyIndex ? `/icons/common/copied-bordered.svg` : `/icons/common/copy-bordered.svg`"
-                alt=""
-              />
+              <div class="flex flex-row gap-2 items-center">
+                <div class="text-14-500-20 text-[#1C1D23]">
+                  {{ transactionDetail?.virtual_card?.card_name }}
+                </div>
+                <img
+                  class="cursor-pointer"
+                  @click="copyCardName()"
+                  :src="
+                    copied && copyIndex == 2 ? `/icons/common/copied-bordered.svg` : `/icons/common/copy-bordered.svg`
+                  "
+                  alt=""
+                />
+              </div>
             </div>
-          </div>
-          <div class="flex flex-row justify-between items-center">
-            <div class="text-12-500-20 text-[#7A7D89]">
-              {{ t('transactions.detail.cardNumber') }}
-            </div>
-            <div class="flex flex-row gap-2 items-center">
-              <div class="text-14-500-20 text-[#1C1D23]">
-                {{ t(`cards.list.card_number`, { value: transactionDetail?.virtual_card?.last_four }) }}
+            <div class="flex flex-row justify-between items-center">
+              <div class="text-12-500-20 text-[#7A7D89]">
+                {{ t('transactions.detail.cardNumber') }}
+              </div>
+              <div class="flex flex-row gap-2 items-center">
+                <div class="text-14-500-20 text-[#1C1D23]">
+                  {{ t(`cards.list.card_number`, { value: transactionDetail?.virtual_card?.last_four }) }}
+                </div>
+                <img
+                  class="cursor-pointer"
+                  @click="copyCardNumber()"
+                  :src="
+                    copied && copyIndex == 3 ? `/icons/common/copied-bordered.svg` : `/icons/common/copy-bordered.svg`
+                  "
+                  alt=""
+                />
               </div>
             </div>
           </div>
