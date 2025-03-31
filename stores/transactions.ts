@@ -1,6 +1,11 @@
 import { TransactionService } from '~/services/transactions.service'
 import { HTTP_STATUS_CODE } from '~/types/common'
-import { type ITransactionData, type IGetTransactionListParams } from '~/types/transactions'
+import {
+  type ITransactionData,
+  type IGetTransactionListParams,
+  TransactionVCType,
+  TransactionDetailType,
+} from '~/types/transactions'
 
 export const useTransactionStore = defineStore('transaction', () => {
   const transactionCount = ref(0)
@@ -29,8 +34,28 @@ export const useTransactionStore = defineStore('transaction', () => {
   }
 
   const selectedTransactionDetail = ref<ITransactionData>()
-  function setSelectedTransactionDetail(transaction?: ITransactionData) {
-    selectedTransactionDetail.value = transaction
+
+  function setSelectedTransactionDetail(transaction: ITransactionData) {
+    const isCardTransaction = !!transaction.virtual_card
+    const type = transaction.transaction_vc_type
+    let detailType
+    console.log(transaction)
+    if (isCardTransaction && type === TransactionVCType.TOP_UP) {
+      detailType = TransactionDetailType.CARD_TOP_UP
+    }
+    if (isCardTransaction && type === TransactionVCType.WITHDRAWAL) {
+      detailType = TransactionDetailType.CARD_WITHDRAW
+    }
+    if (isCardTransaction && type === TransactionVCType.PAYMENT) {
+      detailType = TransactionDetailType.CARD_PAYMENT
+    }
+    if (!isCardTransaction && type === TransactionVCType.TOP_UP) {
+      detailType = TransactionDetailType.WALLET_TOP_UP
+    }
+    if (!isCardTransaction && type === TransactionVCType.WITHDRAWAL) {
+      detailType = TransactionDetailType.WALLET_WITHDRAW
+    }
+    selectedTransactionDetail.value = { ...transaction, detailType: detailType }
   }
 
   const isOpenTransactionDetailSlideover = ref(false)

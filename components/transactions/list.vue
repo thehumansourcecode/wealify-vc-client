@@ -47,7 +47,7 @@ const transactionTableColumns = [
 
 function handleClickTransaction(row: ITransactionData) {
   if (!row) return
-
+  console.log(row, 'row')
   transactionStore.setSelectedTransactionDetail(row)
   transactionStore.toggleTransactionDetailSlideover(true)
 }

@@ -2,7 +2,7 @@
 import { formatMoney, shortenAddress } from '~/common/functions'
 import { formatYYYYMMDDhmmA } from '~/common/functions'
 import { CommonCurrency } from '~/types/common'
-import { TransactionVCType } from '~/types/transactions'
+import { TransactionDetailType, TransactionVCType } from '~/types/transactions'
 import { formatAmount } from '~/utils/amount.util'
 
 const { copy, copied } = useClipboard()
@@ -50,9 +50,10 @@ function onClosePrevented() {
 
 function handleNewTransaction() {
   transactionStore.toggleTransactionDetailSlideover(false)
-  navigateTo('/')
   dashboardStore.toggleWalletTopupModal(true)
 }
+
+const transactionDestination = computed(() => {})
 </script>
 
 <template>
@@ -71,7 +72,7 @@ function handleNewTransaction() {
     <div class="flex flex-col items-center">
       <div class="w-full flex flex-row justify-between items-center py-6 px-8">
         <div class="text-20-600-32 text-[#1C1D23]">
-          {{ t(`transactions.detail.label.${transactionDetail.transaction_vc_type}`) }}
+          {{ t(`transactions.detail.label.${transactionDetail?.detailType}`) }}
         </div>
         <img
           class="cursor-pointer hover:opacity-70"
@@ -86,9 +87,11 @@ function handleNewTransaction() {
         <div class="pt-5 flex flex-row justify-between items-end w-full">
           <div class="flex-col gap-[6px]">
             <div class="uppercase text-[#1C1D23] text-14-500-20">
-              {{ t(`transactions.detail.label.${transactionDetail.transaction_vc_type}`) }}
+              {{ t(`transactions.detail.label.${transactionDetail?.detailType}`) }}
             </div>
-            <div class="text-32-700-44 text-[#FF5524]">{{ formatMoney(transactionDetail.received_amount, CommonCurrency.USD) }}</div>
+            <div class="text-32-700-44 text-[#FF5524]">
+              {{ formatMoney(transactionDetail.received_amount, CommonCurrency.USD) }}
+            </div>
             <div class="text-12-500-20 text-[#7A7D89]">
               {{ t(`transactions.detail.to`, { destination: transactionDetail?.to || 'Wealify Balance' }) }}
             </div>

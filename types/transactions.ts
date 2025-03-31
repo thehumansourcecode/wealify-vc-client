@@ -70,6 +70,7 @@ export interface ITransactionData {
   is_vc_transaction: boolean
   virtual_card: VCard
   currency: Currency
+  detailType?: TransactionDetailType
 }
 
 export interface IGetTransactionListParams {
@@ -84,4 +85,13 @@ export interface IGetTransactionListParams {
     direction?: 'ASC' | 'DESC'
     field?: string
   }
+}
+
+export enum TransactionDetailType {
+  CARD_TOP_UP = 'CARD_TOP_UP',
+  CARD_WITHDRAW = 'CARD_WITHDRAW',
+  CARD_PAYMENT = 'CARD_PAYMENT',
+  WALLET_TOP_UP = 'WALLET_TOP_UP',
+  WALLET_WITHDRAW = 'WALLET_WITHDRAW',
+  WALLET_REFUND = 'WALLET_REFUND'
 }
