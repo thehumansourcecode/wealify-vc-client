@@ -292,7 +292,7 @@ const transactionDestination = computed(() => {})
           <span class="text-[#7A7D89]">
             {{ t('transactions.detail.contact') }}
           </span>
-          <ULink class="text-[#FF5524]"> support@wealify.com </ULink>
+          <ULink target="_blank" to="mailto:support@cs2agent.com" class="text-[#FF5524]"> support@wealify.com </ULink>
         </div>
 
         <UButton
