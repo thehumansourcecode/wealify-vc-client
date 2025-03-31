@@ -105,7 +105,6 @@ const transactionDestination = computed(() => {})
           @click="onClosePrevented()"
         />
       </div>
-
       <div class="flex flex-col items-center slideover-content overflow-y-auto px-8">
         <img class="w-[180px]" src="/images/transactions/slideover-banner.svg" alt="" />
         <div class="pt-5 flex flex-row justify-between items-end w-full">
@@ -143,7 +142,7 @@ const transactionDestination = computed(() => {})
               {{ t(`transactions.detail.amountLabel.${transactionDetail?.detailType}`) }}
             </div>
             <div class="text-16-700-24 text-[#1C1D23]">
-              {{ t(`transactions.detail.amount.${transactionDetail?.transaction_vc_type}`, { amount: formatMoney(transactionDetail?.amount) }) }}
+              {{ t(`transactions.detail.amount.${transactionDetail?.detailType}`, { amount: formatMoney(transactionDetail?.amount) }) }}
             </div>
           </div>
           <div class="flex flex-row justify-between">

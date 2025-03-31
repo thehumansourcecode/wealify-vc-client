@@ -1,5 +1,5 @@
 import { TransactionCryptocurrency, TransactionNetwork } from '~/types/dashboard'
-import { TransactionVCStatus, TransactionVCType } from '~/types/transactions'
+import { TransactionVCStatus, TransactionVCType,TransactionDetailType } from '~/types/transactions'
 
 export default {
   button: {
@@ -77,9 +77,11 @@ export default {
       [TransactionVCType.WITHDRAWAL]: 'Withdraw Amount',
     },
     amount:  {
-      [TransactionVCType.PAYMENT]: '{amount} USD',
-      [TransactionVCType.TOP_UP]: '{amount} USDT',
-      [TransactionVCType.WITHDRAWAL]: '{amount} USD',
+      [TransactionDetailType.WALLET_TOP_UP]: '{amount} USDT',
+      [TransactionDetailType.WALLET_WITHDRAW]: '{amount} USD',
+      [TransactionDetailType.CARD_TOP_UP]: '{amount} USD',
+      [TransactionDetailType.CARD_WITHDRAW]: '{amount} USD',
+      [TransactionDetailType.CARD_PAYMENT]: '{amount} USD',
     },
     rate: 'Rate',
     fee: 'Fee',
