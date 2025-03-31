@@ -26,7 +26,7 @@ function handleCopy(index: number, value: string) {
 
 const cardStore = useCardStore()
 const transactionStore = useTransactionStore()
-const isOpenCardDetailSlideover = computed(() => cardStore.isOpenCardDetailSlideover)
+const {isOpenCardDetailSlideover} =  storeToRefs(cardStore)
 const cardDetail = computed(() => cardStore.selectedCardDetail)
 const isShowCardSensitiveDetail = computed(() => cardStore.isShowCardSensitiveDetail)
 const isShowCardSensitiveDetailOverlay = ref(false)
@@ -153,7 +153,6 @@ function handleEdit() {
 <template>
   <USlideover
     v-model="isOpenCardDetailSlideover"
-    :prevent-close="true"
     :ui="{
       width: 'w-screen max-w-[464px]',
       overlay: {
