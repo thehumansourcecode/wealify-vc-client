@@ -148,11 +148,6 @@ function handleEdit() {
   cardStore.toggleCardEditModal(true)
 }
 
-if (cardDetail.value){
-  console.log(4)
-  cardDetail.value.total_withdraw = 4
-}
-
 </script>
 
 <template>
