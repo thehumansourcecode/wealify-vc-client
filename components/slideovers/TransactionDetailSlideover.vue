@@ -15,9 +15,13 @@ const dayjs = useDayjs()
 
 const copyIndex = ref(0)
 
+const isShowFullCardNumber = ref(false)
+
 const transactionStore = useTransactionStore()
 const isOpenTransactionDetailSlideover = computed(() => transactionStore.isOpenTransactionDetailSlideover)
 const transactionDetail = computed(() => transactionStore.selectedTransactionDetail)
+
+const cardNumberArray = computed(() => transactionDetail.value?.virtual_card?.card_number?.match(/.{1,4}/g))
 
 function copyTransactionId() {
   if (!transactionDetail.value) return
@@ -36,29 +40,6 @@ function copyTransactionAddress() {
   // copy(transactionDetail.value.address)
   copyIndex.value = 1
 
-  toast.clear()
-  toast.add({
-    title: t('common.toast.copy'),
-    avatar: { src: '/icons/common/toast-success.svg' },
-    timeout: 5000,
-  })
-}
-
-function copyCardName() {
-  copy(transactionDetail.value?.virtual_card?.card_name || '')
-  copyIndex.value = 2
-
-  toast.clear()
-  toast.add({
-    title: t('common.toast.copy'),
-    avatar: { src: '/icons/common/toast-success.svg' },
-    timeout: 5000,
-  })
-}
-
-function copyCardNumber() {
-  copy(transactionDetail.value?.virtual_card?.last_four || '')
-  copyIndex.value = 3
   toast.clear()
   toast.add({
     title: t('common.toast.copy'),
@@ -218,7 +199,7 @@ const transactionDestination = computed(() => {})
             </div>
           </div>
         </div>
-        <div class="px-5 py-3 mt-2 bg-[#F0F2F5] rounded-[18px] w-full">
+        <div class="px-5 py-4 mt-2 bg-[#F0F2F5] rounded-[18px] w-full">
           <div
             v-if="transactionDetail.detailType === TransactionDetailType.WALLET_TOP_UP"
             class="flex flex-col gap-5 w-full"
@@ -253,18 +234,8 @@ const transactionDestination = computed(() => {})
               <div class="text-12-500-20 text-[#7A7D89]">
                 {{ t('transactions.detail.cardName') }}
               </div>
-              <div class="flex flex-row gap-2 items-center">
-                <div class="text-14-500-20 text-[#1C1D23]">
-                  {{ transactionDetail?.virtual_card?.card_name }}
-                </div>
-                <img
-                  class="cursor-pointer"
-                  @click="copyCardName()"
-                  :src="
-                    copied && copyIndex == 2 ? `/icons/common/copied-bordered.svg` : `/icons/common/copy-bordered.svg`
-                  "
-                  alt=""
-                />
+              <div class="text-14-500-20 text-[#1C1D23]">
+                {{ transactionDetail?.virtual_card?.card_name }}
               </div>
             </div>
             <div class="flex flex-row justify-between items-center">
@@ -273,16 +244,20 @@ const transactionDestination = computed(() => {})
               </div>
               <div class="flex flex-row gap-2 items-center">
                 <div class="text-14-500-20 text-[#1C1D23]">
-                  {{ t(`cards.list.card_number`, { value: transactionDetail?.virtual_card?.last_four }) }}
+                  <span v-if="!isShowFullCardNumber">
+                    {{ t(`cards.list.card_number`, { value: transactionDetail?.virtual_card?.last_four }) }}
+                  </span>
+                  <span v-else>{{ cardNumberArray }}</span>
                 </div>
-                <img
-                  class="cursor-pointer"
-                  @click="copyCardNumber()"
-                  :src="
-                    copied && copyIndex == 3 ? `/icons/common/copied-bordered.svg` : `/icons/common/copy-bordered.svg`
-                  "
-                  alt=""
-                />
+                <div class="p-[5px] bg-white rounded-[50px] border border-[#D7D9E5]">
+                  <img
+                    class="cursor-pointer w-[18px]"
+                    @click="isShowFullCardNumber = !isShowFullCardNumber"
+                    :src="
+                      !isShowFullCardNumber ? `/images/transactions/eye.svg` : `/images/transactions/eye-disabled.svg`
+                    "
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -292,7 +267,7 @@ const transactionDestination = computed(() => {})
           <span class="text-[#7A7D89]">
             {{ t('transactions.detail.contact') }}
           </span>
-          <ULink target="_blank" to="mailto:support@cs2agent.com" class="text-[#FF5524]"> support@wealify.com </ULink>
+          <ULink to="mailto:support@cs2agent.com" class="text-[#FF5524]"> support@wealify.com </ULink>
         </div>
 
         <UButton
