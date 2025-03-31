@@ -262,7 +262,6 @@ const transactionDestination = computed(() => {})
             </div>
           </div>
         </div>
-
         <div class="text-12-500-20 mt-5">
           <span class="text-[#7A7D89]">
             {{ t('transactions.detail.contact') }}
