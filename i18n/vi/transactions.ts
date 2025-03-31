@@ -76,7 +76,11 @@ export default {
       [TransactionVCType.TOP_UP]: 'Top up Amount',
       [TransactionVCType.WITHDRAWAL]: 'Withdraw Amount',
     },
-    amount: '{amount} USDT',
+    amount:  {
+      [TransactionVCType.PAYMENT]: '{amount} USD',
+      [TransactionVCType.TOP_UP]: '{amount} USDT',
+      [TransactionVCType.WITHDRAWAL]: '{amount} USD',
+    },
     rate: 'Rate',
     fee: 'Fee',
     rateValue: '{rateUSDT} USDT = {rateUSD} USD',

@@ -143,7 +143,7 @@ const transactionDestination = computed(() => {})
               {{ t(`transactions.detail.amountLabel.${transactionDetail?.detailType}`) }}
             </div>
             <div class="text-16-700-24 text-[#1C1D23]">
-              {{ t(`transactions.detail.amount`, { amount: formatMoney(transactionDetail?.amount) }) }}
+              {{ t(`transactions.detail.amount.${transactionDetail?.transaction_vc_type}`, { amount: formatMoney(transactionDetail?.amount) }) }}
             </div>
           </div>
           <div class="flex flex-row justify-between">
@@ -250,7 +250,7 @@ const transactionDestination = computed(() => {})
             </div>
             <div class="flex flex-row gap-2 items-center">
               <div class="text-14-500-20 text-[#1C1D23]">
-                {{ transactionDetail.virtual_card.card_name }}
+                {{ transactionDetail?.virtual_card?.card_name }}
               </div>
               <img
                 class="cursor-pointer"

@@ -79,7 +79,11 @@ export default {
       [TransactionDetailType.WALLET_WITHDRAW]: 'Withdraw amount',
       [TransactionDetailType.WALLET_REFUND]: 'Refund amount',
     },
-    amount: '{amount} USDT',
+    amount:  {
+      [TransactionVCType.PAYMENT]:'{amount} USD',
+      [TransactionVCType.TOP_UP]: '{amount} USDT',
+      [TransactionVCType.WITHDRAWAL]: '{amount} USD',
+    },
     rate: 'Rate',
     fee: 'Fee',
     rateValue: '{rateUSDT} USDT = {rateUSD} USD',
