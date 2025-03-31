@@ -112,15 +112,21 @@ const formattedCardName = computed(() => {
     .trim()
 })
 
+
 const handlePasteName = event => {
+  // const input = document.getElementById('name_input')
   event.preventDefault()
   let paste = (event.clipboardData || window.clipboardData).getData('text')
   let inputValue = paste.replace(nonAccentedCharactersRegex, '')
-  const remaining = 50 - event.target.value.length
-  if (remaining > 0) {
-    event.target.value += inputValue.slice(0, remaining)
-    form.card_name = event.target.value
-  }
+  // const remaining = 50 - event.target.value.length
+  const start = event.target.selectionStart
+  const end = event.target.selectionEnd
+  const newValue = event.target.value.slice(0, start) + inputValue + event.target.value.slice(end)
+  const newCursorPosition = Math.min(start + newValue.length, 50)
+  // input?.focus();
+  // input?.setSelectionRange(newCursorPosition, newCursorPosition)
+  event.target.value = newValue
+  form.card_name = event.target.value
 }
 
 const presetAmounts = computed(() => {
@@ -226,6 +232,7 @@ watch(
                 <span class="pl-1 text-[#ED2C38]">*</span>
               </div>
               <BaseInput
+                id="name_input"
                 @paste="handlePasteName"
                 :error="error"
                 v-model="form.card_name"
