@@ -72,9 +72,12 @@ export default {
   detail: {
     to: 'to {destination}',
     amountLabel: {
-      [TransactionVCType.PAYMENT]: 'Payment Amount',
-      [TransactionVCType.TOP_UP]: 'Top up Amount',
-      [TransactionVCType.WITHDRAWAL]: 'Withdraw Amount',
+      [TransactionDetailType.CARD_PAYMENT]: 'Merchant charged',
+      [TransactionDetailType.CARD_TOP_UP]: 'Top up amount',
+      [TransactionDetailType.CARD_WITHDRAW]: 'Withdraw amount',
+      [TransactionDetailType.WALLET_TOP_UP]: 'Top up amount',
+      [TransactionDetailType.WALLET_WITHDRAW]: 'Withdraw amount',
+      [TransactionDetailType.WALLET_REFUND]: 'Refund amount',
     },
     amount: '{amount} USDT',
     rate: 'Rate',
@@ -84,8 +87,10 @@ export default {
     account: 'Top up account',
     address: 'Received address',
     txhash: 'TxHash',
-    id:  {
-      [TransactionVCType.PAYMENT]: 'Top up ID',
+    cardName: 'Card name',
+    cardNumber: 'Card number',
+    id: {
+      [TransactionVCType.PAYMENT]: 'Payment ID',
       [TransactionVCType.TOP_UP]: 'Top up ID',
       [TransactionVCType.WITHDRAWAL]: 'Withdraw ID',
     },
