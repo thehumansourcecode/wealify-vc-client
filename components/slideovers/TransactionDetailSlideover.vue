@@ -249,9 +249,9 @@ const transactionDestination = computed(() => {})
                   </span>
                   <span v-else>{{ cardNumberArray }}</span>
                 </div>
-                <div class="p-[5px] bg-white rounded-[50px] border border-[#D7D9E5]">
+                <div class="p-[5px] bg-white rounded-[50px] cursor-pointer border border-[#D7D9E5]">
                   <img
-                    class="cursor-pointer w-[18px]"
+                    class="w-[18px]"
                     @click="isShowFullCardNumber = !isShowFullCardNumber"
                     :src="
                       !isShowFullCardNumber ? `/images/transactions/eye.svg` : `/images/transactions/eye-disabled.svg`
