@@ -4,6 +4,7 @@
     :searchable="searchable"
     :searchable-placeholder="searchablePlaceholder"
     :options="options"
+    v-model:query="query"
     :modelValue="internalValue"
     @update:modelValue="onSelectChange"
     :selected-icon="selectedIcon"
@@ -37,7 +38,7 @@
         empty: 'text-sm',
       },
       empty: 'text-sm',
-      input: 'px-3 py-[10px] w-full text-[#7A7D89] icon-search font-medium text-sm leading-5 m-0 bg-white',
+      input: 'px-3 py-[10px] w-full icon-search font-medium text-sm leading-5 m-0 bg-white',
     }"
     variant="none"
   >
@@ -93,6 +94,16 @@ function onSelectChange(newValue: any[]) {
   emit('update:modelValue', newValue)
 }
 
+const query = ref<String>('')
+
+const resetQuery = () => {
+    query.value = ''
+}
+
+defineExpose({
+  resetQuery
+})
+
 // 3) If the parent updates the array externally, sync changes here
 watch(
   () => props.modelValue,
@@ -101,6 +112,7 @@ watch(
   },
   { deep: true },
 )
+
 </script>
 
 <style lang="scss">

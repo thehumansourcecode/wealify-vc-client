@@ -15,6 +15,7 @@ const commonStore = useCommonStore()
 const selectedCardList = ref([])
 const payload = computed(() => cardStore.payload)
 const tempKeyword = ref<string | undefined>(payload.value.keyword)
+const filterCat = ref(null)
 
 const cardList = computed(() => cardStore.cardList)
 const cardCount = computed(() => cardStore.cardCount)
@@ -266,6 +267,11 @@ const handleUnfreeze = async () => {
   cardStore.toggleCardDetailSlideover(true)
 }
 
+const clearFilterCategory = () => {
+  filterCat.value.resetQuery()
+  payload.value.category = []
+}
+
 onUnmounted(() =>
   cardStore.setPayload({
     page: 1,
@@ -363,9 +369,9 @@ onUnmounted(() =>
         </BaseSingleSelect>
 
         <img src="~/assets/img/common/line.svg" alt="" />
-
         <!-- Category -->
         <BaseMultipleSelect
+          ref="filterCat"
           class="w-[200px]"
           multiple
           searchable
@@ -396,7 +402,7 @@ onUnmounted(() =>
                 :class="[open && 'transform rotate-180']"
               />
               <img
-                @click.prevent="payload.category = []"
+                @click.prevent="clearFilterCategory()"
                 v-else
                 class="cursor-pointer"
                 src="/assets/img/icons/clear.svg"
@@ -404,7 +410,7 @@ onUnmounted(() =>
               />
             </div>
           </template>
-          <template #option="{ option: category }">
+       <template #option="{ option: category }">
             <div class="flex flex-row gap-[9px]">
               <UCheckbox
                 @click.prevent
