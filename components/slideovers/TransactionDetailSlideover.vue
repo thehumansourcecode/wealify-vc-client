@@ -143,7 +143,7 @@ const transactionDestination = computed(() => {})
         <div class="p-2 mt-2 flex flex-col w-full">
           <div class="flex flex-row justify-between items-center pb-4">
             <div class="text-12-500-20 text-[#7A7D89]">
-              {{ t('transactions.detail.id') }}
+              {{ t(`transactions.detail.id.${transactionDetail.transaction_vc_type}`) }}
             </div>
             <div class="flex flex-row gap-2 items-center">
               <div class="text-14-500-20 text-[#1C1D23]">

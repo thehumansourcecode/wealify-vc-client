@@ -84,7 +84,11 @@ export default {
     account: 'Top up account',
     address: 'Received address',
     txhash: 'TxHash',
-    id: 'Top up ID',
+    id:  {
+      [TransactionVCType.PAYMENT]: 'Top up ID',
+      [TransactionVCType.TOP_UP]: 'Top up ID',
+      [TransactionVCType.WITHDRAWAL]: 'Withdraw ID',
+    },
     created_at: 'Created at',
     successAt: 'Success at',
     createNew: {
