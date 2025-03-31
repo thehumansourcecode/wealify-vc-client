@@ -1,5 +1,5 @@
 import { TransactionCryptocurrency, TransactionNetwork } from '~/types/dashboard'
-import { TransactionVCStatus, TransactionVCType } from '~/types/transactions'
+import { TransactionDetailType, TransactionVCStatus, TransactionVCType } from '~/types/transactions'
 
 export default {
   button: {
@@ -95,9 +95,11 @@ export default {
     contact:
       'If you find any errors or omissions in this statement, please contact Wealify’s customer service emailing at ',
     label: {
-      [TransactionVCType.PAYMENT]: 'Wallet Payment',
-      [TransactionVCType.TOP_UP]: 'Top up',
-      [TransactionVCType.WITHDRAWAL]: 'Wallet Withdraw',
+      [TransactionDetailType.WALLET_TOP_UP]: 'Wallet Top up',
+      [TransactionDetailType.WALLET_WITHDRAW]: 'Wallet withdraw',
+      [TransactionDetailType.CARD_TOP_UP]: 'Card Top up',
+      [TransactionDetailType.CARD_WITHDRAW]: 'Card withdraw',
+      [TransactionDetailType.CARD_PAYMENT]: 'Card payment',
     },
     status: {
       [TransactionVCStatus.PROCESSING]: 'Processing',
