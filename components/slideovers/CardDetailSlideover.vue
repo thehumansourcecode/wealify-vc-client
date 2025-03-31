@@ -35,11 +35,14 @@ const cardSensitiveDetail = computed(() => cardStore.cardSensitiveDetail)
 
 const cardNumberArray = computed(() => cardSensitiveDetail.value?.card_number?.match(/.{1,4}/g))
 
-const balanceRate = computed(() =>
-  cardDetail.value?.total_top_up
-    ? roundNumber(((cardDetail.value?.total_withdraw || 120) / cardDetail.value?.total_top_up) * 100, 1)
-    : 0,
-)
+const balanceRate = computed(() => {
+if (!cardDetail.value?.total_withdraw){
+  return 0
+}
+return  cardDetail.value?.total_top_up
+      ? roundNumber(((cardDetail.value?.total_withdraw) / cardDetail.value?.total_top_up) * 100, 1)
+      : 0
+})
 
 const chartClass = computed(() => {
   return `background: conic-gradient(#FF5524 0% ${balanceRate.value}%, #D7D9E5 ${balanceRate.value}% 100%)`
