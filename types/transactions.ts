@@ -52,6 +52,7 @@ export interface Currency {
 export interface VCard {
   card_name: string
   card_number: string
+  last_four: string
 }
 
 // Interface for each Transaction item

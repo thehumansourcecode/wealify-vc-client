@@ -39,7 +39,6 @@ export const useTransactionStore = defineStore('transaction', () => {
     const isCardTransaction = !!transaction.virtual_card
     const type = transaction.transaction_vc_type
     let detailType
-    console.log(transaction)
     if (isCardTransaction && type === TransactionVCType.TOP_UP) {
       detailType = TransactionDetailType.CARD_TOP_UP
     }

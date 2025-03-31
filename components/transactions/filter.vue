@@ -7,8 +7,8 @@ const payload = computed(() => transactionStore.payload)
 const dateRange = ref<[Date | undefined, Date | undefined]>([undefined, undefined])
 
 watch(dateRange, () => {
-  const start_date = dateRange.value[0] ? formatDDMMYYYYHHMM(dayjs.utc(dateRange.value[0]).local()) : undefined
-  const end_date = dateRange.value[0] ? formatDDMMYYYYHHMM(dayjs.utc(dateRange.value[1]).local()) : undefined
+  const start_date = dateRange.value[0] ? dayjs(dateRange.value[0]).utc().toISOString() : undefined
+  const end_date = dateRange.value[0] ? dayjs(dateRange.value[1]).utc().toISOString() : undefined
 
   if (payload.value.start_date == start_date && payload.value.end_date == end_date) {
     return

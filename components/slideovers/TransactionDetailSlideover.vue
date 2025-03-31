@@ -44,6 +44,30 @@ function copyTransactionAddress() {
   })
 }
 
+function copyCardName() {
+  copy(transactionDetail.value?.virtual_card?.card_name || '')
+  copyIndex.value = 2
+
+  toast.clear()
+  toast.add({
+    title: t('common.toast.copy'),
+    avatar: { src: '/icons/common/toast-success.svg' },
+    timeout: 5000,
+  })
+}
+
+function copyCardNumber() {
+  copy(transactionDetail.value?.virtual_card?.card_number || '')
+  copyIndex.value = 2
+
+  toast.clear()
+  toast.add({
+    title: t('common.toast.copy'),
+    avatar: { src: '/icons/common/toast-success.svg' },
+    timeout: 5000,
+  })
+}
+
 function onClosePrevented() {
   transactionStore.toggleTransactionDetailSlideover(false)
 }
@@ -116,10 +140,10 @@ const transactionDestination = computed(() => {})
         <div class="px-5 py-3 mt-5 bg-[#F0F2F5] rounded-[18px] flex flex-col gap-5 w-full">
           <div class="flex flex-row justify-between items-center">
             <div class="text-12-500-20 text-[#1C1D23]">
-              {{ t(`transactions.detail.amountLabel.${transactionDetail.transaction_vc_type}`) }}
+              {{ t(`transactions.detail.amountLabel.${transactionDetail?.detailType}`) }}
             </div>
             <div class="text-16-700-24 text-[#1C1D23]">
-              {{ t(`transactions.detail.amount`, { amount: formatAmount(transactionDetail.amount) }) }}
+              {{ t(`transactions.detail.amount`, { amount: formatMoney(transactionDetail?.amount) }) }}
             </div>
           </div>
           <div class="flex flex-row justify-between">
@@ -127,12 +151,20 @@ const transactionDestination = computed(() => {})
               {{ t('transactions.detail.rate') }}
             </div>
             <div class="text-14-500-20 text-[#1C1D23]">
-              {{
-                t(`transactions.detail.rateValue.${transactionDetail.transaction_vc_type}`, {
-                  rateUSDT: formatAmount(transactionDetail.rate.value),
-                  rateUSD: formatAmount(transactionDetail.rate.value),
-                })
-              }}
+              <span
+                v-if="
+                  transactionDetail?.detailType === TransactionDetailType.CARD_PAYMENT ||
+                  transactionDetail?.detailType === TransactionDetailType.WALLET_TOP_UP
+                "
+              >
+                {{
+                  t(`transactions.detail.rateValue`, {
+                    rateUSDT: formatAmount(transactionDetail?.rate.value),
+                    rateUSD: 1,
+                  })
+                }}
+              </span>
+              <span v-else> - </span>
             </div>
           </div>
           <div class="flex flex-row justify-between">
@@ -140,7 +172,12 @@ const transactionDestination = computed(() => {})
               {{ t('transactions.detail.fee') }}
             </div>
             <div class="text-14-500-20 text-[#1C1D23]">
-              {{ formatMoney(transactionDetail?.amount - transactionDetail?.received_amount || 0, CommonCurrency.USD) }}
+              {{
+                formatMoney(
+                  Math.abs(transactionDetail.amount - transactionDetail.received_amount) || 0,
+                  CommonCurrency.USD,
+                )
+              }}
             </div>
           </div>
         </div>
@@ -148,11 +185,11 @@ const transactionDestination = computed(() => {})
         <div class="p-2 mt-2 flex flex-col w-full">
           <div class="flex flex-row justify-between items-center pb-4">
             <div class="text-12-500-20 text-[#7A7D89]">
-              {{ t(`transactions.detail.id.${transactionDetail.transaction_vc_type}`) }}
+              {{ t(`transactions.detail.id.${transactionDetail?.transaction_vc_type}`) }}
             </div>
             <div class="flex flex-row gap-2 items-center">
               <div class="text-14-500-20 text-[#1C1D23]">
-                {{ transactionDetail.transaction_id }}
+                {{ transactionDetail?.transaction_id }}
               </div>
               <img
                 class="cursor-pointer"
@@ -167,7 +204,7 @@ const transactionDestination = computed(() => {})
               {{ t('transactions.detail.created_at') }}
             </div>
             <div class="text-14-500-20 text-[#1C1D23]">
-              {{ formatYYYYMMDDhmmA(dayjs.utc(transactionDetail.created_at).local()) }}
+              {{ formatYYYYMMDDhmmA(dayjs.utc(transactionDetail?.created_at).local()) }}
             </div>
           </div>
           <div class="flex flex-row justify-between items-center mb-1">
@@ -175,35 +212,63 @@ const transactionDestination = computed(() => {})
               {{ t('transactions.detail.successAt') }}
             </div>
             <div class="text-14-500-20 text-[#1C1D23]">
-              {{ formatYYYYMMDDhmmA(dayjs.utc(transactionDetail.updated_at).local()) }}
+              {{ formatYYYYMMDDhmmA(dayjs.utc(transactionDetail?.updated_at).local()) }}
             </div>
           </div>
         </div>
 
         <div class="px-5 py-3 mt-2 bg-[#F0F2F5] rounded-[18px] flex flex-col gap-5 w-full">
-          <div class="flex flex-row justify-between items-center">
+          <div v-if="transactionDetail.detailType === TransactionDetailType.WALLET_TOP_UP">
+            <div class="flex flex-row justify-between items-center">
+              <div class="text-12-500-20 text-[#7A7D89]">
+                {{ t('transactions.detail.address') }}
+              </div>
+              <div class="flex flex-row gap-2 items-center">
+                <div class="text-14-500-20 text-[#1C1D23]">
+                  <!-- {{ shortenAddress(transactionDetail.address) }} -->
+                </div>
+                <img
+                  class="cursor-pointer"
+                  @click="copyTransactionAddress()"
+                  :src="copied && copyIndex ? `/icons/common/copied-bordered.svg` : `/icons/common/copy-bordered.svg`"
+                  alt=""
+                />
+              </div>
+            </div>
+            <div class="flex flex-row justify-between">
+              <div class="text-12-500-20 text-[#7A7D89]">
+                {{ t('transactions.detail.txhash') }}
+              </div>
+              <ULink :to="transactionDetail?.txhash" target="_blank" class="text-14-500-20 text-[#1C1D23]">
+                {{ transactionDetail?.txhash }}
+              </ULink>
+            </div>
+          </div>
+          <div v-else class="flex flex-row justify-between items-center">
             <div class="text-12-500-20 text-[#7A7D89]">
-              {{ t('transactions.detail.address') }}
+              {{ t('transactions.detail.cardName') }}
             </div>
             <div class="flex flex-row gap-2 items-center">
               <div class="text-14-500-20 text-[#1C1D23]">
-                <!-- {{ shortenAddress(transactionDetail.address) }} -->
+                {{ transactionDetail.virtual_card.card_name }}
               </div>
               <img
                 class="cursor-pointer"
-                @click="copyTransactionAddress()"
+                @click="copyCardName()"
                 :src="copied && copyIndex ? `/icons/common/copied-bordered.svg` : `/icons/common/copy-bordered.svg`"
                 alt=""
               />
             </div>
           </div>
-          <div class="flex flex-row justify-between">
+          <div class="flex flex-row justify-between items-center">
             <div class="text-12-500-20 text-[#7A7D89]">
-              {{ t('transactions.detail.txhash') }}
+              {{ t('transactions.detail.cardNumber') }}
             </div>
-            <!-- <ULink :to="transactionDetail.txhash" target="_blank" class="text-14-500-20 text-[#1C1D23]">
-              {{ transactionDetail.txhash }}
-            </ULink> -->
+            <div class="flex flex-row gap-2 items-center">
+              <div class="text-14-500-20 text-[#1C1D23]">
+                {{ t(`cards.list.card_number`, { value: transactionDetail?.virtual_card?.last_four }) }}
+              </div>
+            </div>
           </div>
         </div>
 

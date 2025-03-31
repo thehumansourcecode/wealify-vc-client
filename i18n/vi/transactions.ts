@@ -79,11 +79,7 @@ export default {
     amount: '{amount} USDT',
     rate: 'Rate',
     fee: 'Fee',
-    rateValue: {
-      [TransactionVCType.PAYMENT]: '-',
-      [TransactionVCType.TOP_UP]: '{rateUSDT} USDT = {rateUSD} USD',
-      [TransactionVCType.WITHDRAWAL]: '-',
-    },
+    rateValue: '{rateUSDT} USDT = {rateUSD} USD',
     feeValue: '{fee} USD',
     account: 'Top up account',
     address: 'Received address',
