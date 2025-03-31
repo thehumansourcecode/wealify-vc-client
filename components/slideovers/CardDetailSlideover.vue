@@ -339,7 +339,7 @@ function handleEdit() {
               class="w-[128px] h-[128px] relative flex-none"
               ref="chartContainer"
               @mousemove="handleMouseMove"
-              @mouseleave="isWithdrawTooltipVisible = false"
+              @mouseleave="isWithdrawTooltipVisible = false;isBalanceTooltipVisible = false"
             >
               <div class="chart flex items-center justify-center z-100" :style="chartClass">
                 <div class="balance-rate">{{ balanceRate }}%</div>
