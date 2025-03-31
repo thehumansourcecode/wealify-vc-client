@@ -112,7 +112,7 @@ function onClickWithdraw() {
 
         <!-- Card balance -->
         <div
-          class="bg-[#FFF5F2] text-[#000] border border-[#E1E5EB] rounded-[12px] flex flex-row pl-7 pr-12 pt-4 pb-6 justify-between items-center bg-[url(~/assets/img/card-pattern.svg)] bg-no-repeat bg-right"
+          class="bg-[#FFF5F2] text-[#000] border border-[#E1E5EB] rounded-[12px] flex flex-row pl-7 pr-12 pt-4 pb-6 justify-between items-center"
         >
           <div class="flex flex-col z-10 w-full">
             <span class="text-[#A5A8B8] text-14-600-20">
