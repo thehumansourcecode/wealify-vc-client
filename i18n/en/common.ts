@@ -15,6 +15,7 @@ export default {
     resetPassword: 'Reset Password',
     lastReset: 'Last edit: {date}',
     logout: 'Logout',
+    
   },
   toast: {
     copy: 'Copied to clipboard!',
