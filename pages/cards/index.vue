@@ -255,7 +255,7 @@ const handleCancel = async () => {
 
 const handleUnfreeze = async () => {
   cardStore.isLoading.unfreezeCard = true
-  const result = await cardStore.unfreezeCard(cardDetail.value.id)
+  const result = await cardStore.unfreezeCard(selected.value.id)
   cardStore.isLoading.unfreezeCard = true
   if (!result.success) {
     showToast(ToastType.FAILED, t('cards.message.unfreeze.error'))
