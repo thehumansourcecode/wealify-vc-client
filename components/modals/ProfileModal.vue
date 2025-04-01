@@ -9,8 +9,8 @@ import { showToast, ToastType } from '~/common/functions'
 
 const { t } = useI18n()
 const profileStore = useProfileStore()
+const {fetchProfile} = profileStore
 const {profile} = storeToRefs(useProfileStore())
-const { getProfile } = useUserStore()
 const formRef = ref(null)
 
 const form = ref({
@@ -80,7 +80,7 @@ const handleClickEdit = async() =>{
   }
   showToast(ToastType.SUCCESS, t('profile.message.edit.success'))
   closeModal()
-  await getProfile()
+  await profileStore.fetchProfile()
 }
 
 watch(
