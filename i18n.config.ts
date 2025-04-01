@@ -6,6 +6,9 @@ import cardsEn from './i18n/en/cards'
 import cardsVi from './i18n/vi/cards'
 import transEn from './i18n/en/transactions'
 import transVi from './i18n/vi/transactions'
+import profileEn from './i18n/en/profile'
+import profileVi from './i18n/vi/profile'
+
 
 import { CommonLanguage } from './types/common'
 
@@ -19,12 +22,13 @@ export default defineI18nConfig(() => ({
       common: commonEn,
       cards: cardsEn,
       transactions: transEn,
+      profile: profileEn,
     },
     vi: {
       dashboard: dashboardVi,
       common: commonVi,
       cards: cardsVi,
-      transactions: transVi,
+      profile: profileVi,
     },
   },
 }))

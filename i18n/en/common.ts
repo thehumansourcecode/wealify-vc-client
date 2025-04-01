@@ -36,6 +36,11 @@ export default {
         email: 'Email is mandatory. Please enter your email',
         category: 'Category is mandatory. Please choose your category',
       },
+      profile: {
+        full_name: 'Name is mandatory. Please enter your name',
+        phone_number: 'Phone number is mandatory. Please enter your phone number',
+        email: 'Email is mandatory. Please enter your email',
+      },
     },
     invalid: {
       issueCard: {
@@ -44,6 +49,10 @@ export default {
         zeroStartingBalance: 'Please enter an amount greater than 0',
         limitStartingBalance: 'The maximum amount is 999,999,999',
         insufficientBalance: 'Insufficient balance',
+      },
+      profile: {
+        full_name: 'Please enter only valid English characters',
+        email: 'Invalid email address',
       },
       topupCard: {
         zeroTopup: 'Please enter an amount greater than 0',

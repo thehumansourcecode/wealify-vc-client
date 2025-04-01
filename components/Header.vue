@@ -12,8 +12,6 @@ const commonStore = useCommonStore()
 
 const { getProfile } = useUserStore()
 
-
-
 const {userProfile} = storeToRefs(userStore)
 
 const activeTab = computed(() => commonStore.activeTab)
@@ -23,12 +21,17 @@ const hoveredTab = ref()
 const lastResetDate = computed(() => '2025-03-11T13:36:41.718Z')
 const languages = Object.values(CommonLanguage).filter((item,index)=>index !== 0)
 const language = ref(languages[0])
+const isShowProfile = ref(false)
+
+const showProfile = () => {
+  isShowProfile.value = true
+}
 
 const links = computed(() => [
   {
     tab: 'profile',
     label: t(`common.header.profile`),
-    to: '/profile',
+    action: () => showProfile(),
     icon: hoveredTab.value === 'profile' ? '/icons/header/active-profile.svg' : '/icons/header/profile.svg',
   },
   {
@@ -217,6 +220,8 @@ onMounted(async () => {
       </UPopover>
 
     </div>
+
+    <ProfileModal v-model="isShowProfile" />
   </div>
 </template>
 

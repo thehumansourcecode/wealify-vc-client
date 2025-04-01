@@ -1,5 +1,6 @@
 import { userService } from '~/services/user.service'
 import { type IUserBalance, type IUserProfile } from '~/types/user'
+import type { ProfileParam } from '~/types/profile'
 
 export const useUserStore = defineStore('user', () => {
   const authStore = useAuthStore()
@@ -29,11 +30,25 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
+  async function updateProfile(data: Partial<ProfileParam>) {
+    const response = await userService.updateProfile(data)
+    if (!response.success) {
+      return {
+        success: false,
+        message: response.message,
+      }
+    }
+    return {
+      success: true,
+    }
+  }
+
   return {
     userProfile,
     resetUser,
     getProfile,
     userBalance,
     getBalance,
+    updateProfile,
   }
 })

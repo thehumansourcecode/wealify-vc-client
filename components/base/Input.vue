@@ -5,23 +5,10 @@ defineProps({
   clearable: Boolean,
   limit: Number,
   error: Boolean,
-})
-
-const emit = defineEmits(['clear'])
-
-function clearInput() {
-  emit('clear')
-}
-</script>
-
-<template>
-  <UInput
-    class="w-full"
-    autocomplete="off"
-    variant="none"
-    :maxlength="limit"
-    :input-class="[`input-field rounded-49`, `${error ? 'error' : ''}`].join(' ')"
-    :ui="{
+  ui:{
+    type:Object,
+    default: ()=>{
+      return {
       base: 'disabled:cursor-not-allowed disabled:opacity-75 disabled:bg-[#c6c8d4] disabled:text-[#1C1D23]',
       padding: {
         sm: 'pr-9 pl-1.5 py-1.5',
@@ -39,7 +26,26 @@ function clearInput() {
         },
         trailing: { pointer: '' },
       },
-    }"
+    }
+    }
+  }
+})
+
+const emit = defineEmits(['clear'])
+
+function clearInput() {
+  emit('clear')
+}
+</script>
+
+<template>
+  <UInput
+    class="w-full"
+    autocomplete="off"
+    variant="none"
+    :maxlength="limit"
+    :input-class="[`input-field rounded-49`, `${error ? 'error' : ''}`].join(' ')"
+    :ui="ui"
   >
     <template #leading>
       <img v-if="leading" :src="leadingImg" alt="" />
