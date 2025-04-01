@@ -235,7 +235,7 @@ const handleFreeze = async () => {
     return
   }
   showToast(ToastType.SUCCESS, t('cards.message.freeze.success'))
-  await getCardDetailById(selected.value.id)
+  await cardStore.getCardDetailById(selected.value.id)
   cardStore.toggleCardFreeze(false)
   cardStore.toggleCardDetailSlideover(true)
 }
