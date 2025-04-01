@@ -198,7 +198,7 @@ export default {
       message: 'This card will be reactivated and ready for use. Are you sure you want to continue?',
       label: {
         cancel: 'Cancel',
-        confirm: 'Unfreeze',
+        confirm: 'Freeze',
       },
     },
     cancel: {
