@@ -201,6 +201,7 @@ export default {
         confirm: 'Freeze',
       },
     },
+    
     cancel: {
       title: 'Cancel this card?',
       message:
