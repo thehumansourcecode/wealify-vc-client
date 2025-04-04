@@ -37,11 +37,6 @@ export class CommonService extends BaseService {
       params: { type },
     })
   }
-
-  async getWalletAddresses() {
-    const response = await this.get('/system-payments')
-    return response
-  }
 }
 
 export const commonService = new CommonService()

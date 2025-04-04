@@ -4,12 +4,11 @@ import { getCountryCode, getCountryFlag } from '~/components/cards/functions'
 import { countryCodeOptions } from '~/components/cards/constants'
 import { CommonCountry} from '~/types/common'
 import {type ProfileData}  from '~/types/profile'
-import {emailRegex,onlyEnglishCharacters} from '~/common/constants'
+import {emailRegex} from '~/common/constants'
 import { showToast, ToastType } from '~/common/functions'
 
 const { t } = useI18n()
 const profileStore = useProfileStore()
-const {fetchProfile} = profileStore
 const {profile} = storeToRefs(useProfileStore())
 const formRef = ref(null)
 
@@ -25,13 +24,11 @@ const isSubmitting = ref(false)
 
 const profileSchema = object({
   full_name: string()
-      .required(t('common.validator.empty.profile.full_name'))
-      .matches(onlyEnglishCharacters, t('common.validator.invalid.profile.full_name')),
+      .required(t('common.validator.empty.profile.full_name')),
   email: string()
       .required(t('common.validator.empty.profile.email'))
       .matches(emailRegex, t('common.validator.invalid.profile.email')),
   country_code: string().required(),
-  phone_number: string().required(t('common.validator.empty.profile.phone_number')),
 })
 
 const isOpen = defineModel()
@@ -126,7 +123,6 @@ watch(
             </div>
             <BaseInput
                 v-model.trim="form.full_name"
-                :clearable="!!form.full_name"
                 :error="error"
                 :limit="128"
                 leading
@@ -235,9 +231,9 @@ watch(
                 :ui="{
                   error: 'mt-2 text-red-500 dark:text-red-400',
                 }"
+               v-slot="{ error }"
             >
-            <template #default="{ error }">
-              <UInput
+            <UInput
                   :ui="{
                     rounded: 'rounded-r-[49px] rounded-l-none',
                     icon: {
@@ -268,14 +264,7 @@ watch(
                   <div v-else></div>
                 </template>
               </UInput>
-            </template>
-
-            <template #error="{ error }">
-              <span class="absolute left-0 top-[55px]">
-                {{ error }}
-              </span>
-            </template>
-              
+ 
             </UFormGroup>
           </div>
         </div>

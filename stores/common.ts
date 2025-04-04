@@ -7,7 +7,7 @@ import {
   PanelTab,
   type Fees,
   type IDropdownCardData,
-  type IWalletAddress,
+  type IFeeData,
 } from '~/types/common'
 
 export const useCommonStore = defineStore('common', () => {
@@ -80,16 +80,6 @@ export const useCommonStore = defineStore('common', () => {
     return response
   }
 
-  const walletAddresses = ref<IWalletAddress>() 
-
-  async function getWalletAddresses(){
-    const response = await commonService.get('/system-payments')
-    if (response.success) {
-      walletAddresses.value = response.data.address
-    }
-    return response
-  }
-
   return {
     config,
     loading,
@@ -110,7 +100,5 @@ export const useCommonStore = defineStore('common', () => {
     toggleProcessingModal,
     feeList,
     getFee,
-    getWalletAddresses,
-    walletAddresses
   }
 })

@@ -121,6 +121,10 @@ function handleViewTransaction() {
   navigateTo('/transactions')
 }
 
+const showCardSensitiveDetailOverlay = computed(()=>{
+  return cardDetail.value.card_status !== CardStatus.FROZEN
+})
+
 // Actions
 function handleTopup() {
   cardStore.toggleCardDetailSlideover(false)
@@ -264,7 +268,7 @@ function handleEdit() {
             @mouseenter="isShowCardSensitiveDetailOverlay = true"
             @mouseleave="isShowCardSensitiveDetailOverlay = false"
           >
-            <transition name="fade-overlay">
+            <transition name="fade-overlay" v-if="showCardSensitiveDetailOverlay">
               <div
                 v-if="!isShowCardSensitiveDetail && isShowCardSensitiveDetailOverlay"
                 class="absolute top-0 left-0 h-full w-full rounded-[12px] backdrop-blur-[2px] bg-[#f0f2f54d] flex items-center justify-center"

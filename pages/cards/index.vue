@@ -235,8 +235,7 @@ const handleFreeze = async () => {
     return
   }
   showToast(ToastType.SUCCESS, t('cards.message.freeze.success'))
-  await initPage()
-  await cardStore.getCardDetailById(selected.value.id)
+  await getCardDetailById(selected.value.id)
   cardStore.toggleCardFreeze(false)
   cardStore.toggleCardDetailSlideover(true)
 }
@@ -249,7 +248,6 @@ const handleCancel = async () => {
     showToast(ToastType.FAILED, t('cards.message.cancel.error'))
     return
   }
-  await initPage()
   await cardStore.getCardDetailById(selected.value.id)
   cardStore.toggleCardCancel(false)
   cardStore.toggleCardDetailSlideover(true)
@@ -257,14 +255,13 @@ const handleCancel = async () => {
 
 const handleUnfreeze = async () => {
   cardStore.isLoading.unfreezeCard = true
-  const result = await cardStore.unfreezeCard(selected.value.id)
-  cardStore.isLoading.unfreezeCard = false
+  const result = await cardStore.unfreezeCard(cardDetail.value.id)
+  cardStore.isLoading.unfreezeCard = true
   if (!result.success) {
     showToast(ToastType.FAILED, t('cards.message.unfreeze.error'))
     return
   }
   showToast(ToastType.SUCCESS, t('cards.message.unfreeze.success'))
-  await initPage()
   await cardStore.getCardDetailById(selected.value.id)
   cardStore.toggleCardUnFreeze(false)
   cardStore.toggleCardDetailSlideover(true)

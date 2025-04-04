@@ -37,9 +37,9 @@ export default {
         category: 'Category is mandatory. Please choose your category',
       },
       profile: {
-        full_name: 'Name is mandatory. Please enter your name',
-        phone_number: 'Phone number is mandatory. Please enter your phone number',
-        email: 'Email is mandatory. Please enter your email',
+        full_name: 'Your name is mandatory',
+        phone_number: '',
+        email: '',
       },
     },
     invalid: {

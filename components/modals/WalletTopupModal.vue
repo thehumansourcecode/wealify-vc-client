@@ -8,13 +8,8 @@ const toast = useToast()
 
 const dashboardStore = useDashboardStore()
 const commonStore = useCommonStore()
-const profileStore = useProfileStore()
 
-onMounted(async () => {
-  await commonStore.getFee()
-  await commonStore.getWalletAddresses()
-})
-
+onMounted(async () => await Promise.all([commonStore.getFee()]))
 
 const walletTopupFeeValue = computed(() => commonStore.feeList?.TOP_UP_WALLET.value || 0)
 const walletTopupFeeType = computed(() => commonStore.feeList?.TOP_UP_WALLET.type)
@@ -23,11 +18,11 @@ const { t } = useI18n()
 
 const topupAddress = computed(() => {
   if (selectedNetworkOption.value.value === TransactionNetwork.SOLANA) {
-    return commonStore.walletAddresses?.SOL || ''
+    return '2YzStCUvA2MaDxcuW8dJc4in1DY45GfwEzUnkPC87EA9'
   } else if (selectedNetworkOption.value.value === TransactionNetwork.ETHEREUM) {
-    return commonStore.walletAddresses?.ETH || ''
+    return '0x922cE1a5310DcEBe7CBF9eC1AcC16694b7007Fba'
   } else if (selectedNetworkOption.value.value === TransactionNetwork.TRON) {
-    return commonStore.walletAddresses?.TRX || ''
+    return 'TCJK2XuDrGd7BD8hxqS9PtsGYDFw9XJP8Z'
   } else return ''
 })
 
