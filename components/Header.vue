@@ -10,11 +10,10 @@ const userStore = useUserStore()
 const authStore = useAuthStore()
 const commonStore = useCommonStore()
 
-const { getProfile } = useUserStore()
+const profileStore = useProfileStore()
+const {fetchProfile} = profileStore
 
-
-
-const {userProfile} = storeToRefs(userStore)
+const {profile} = storeToRefs(profileStore)
 
 const activeTab = computed(() => commonStore.activeTab)
 const isHeaderBackLayout = computed(() => commonStore.isHeaderBackLayout)
@@ -23,12 +22,17 @@ const hoveredTab = ref()
 const lastResetDate = computed(() => '2025-03-11T13:36:41.718Z')
 const languages = Object.values(CommonLanguage).filter((item,index)=>index !== 0)
 const language = ref(languages[0])
+const isShowProfile = ref(false)
+
+const showProfile = () => {
+  isShowProfile.value = true
+}
 
 const links = computed(() => [
   {
     tab: 'profile',
     label: t(`common.header.profile`),
-    to: '/profile',
+    action: () => showProfile(),
     icon: hoveredTab.value === 'profile' ? '/icons/header/active-profile.svg' : '/icons/header/profile.svg',
   },
   {
@@ -75,7 +79,7 @@ async function logout() {
 }
 
 onMounted(async () => {
- await getProfile()
+ await fetchProfile()
 })
 </script>
 
@@ -173,7 +177,7 @@ onMounted(async () => {
         <div class="flex items-center justify-between">
           <UTooltip
                 class="ml-1"
-                :text="userProfile?.email"
+                :text="profile?.email"
                 :popper="{ arrow: true, placement: 'top' }"
                 :ui="{
                   background: 'bg-[#1C1D23]',
@@ -186,7 +190,7 @@ onMounted(async () => {
               >
               <img src="~/assets/img/common/avatar.svg"/>
               </UTooltip>
-          <div class="font-semibold mb-1.5 text-[#17171E] ml-[9px]">{{userProfile?.full_name}} </div>
+          <div class="font-semibold mb-1.5 text-[#17171E] ml-[9px]">{{profile?.full_name}} </div>
           <UButton  class="w-[20px h-[20px] ml-[6px] p-0 flex items-center justify-center shadow-none bg-white hover:bg-white">
             <img src="/assets/img/icons/dropdown.svg"/>
           </UButton>
@@ -217,6 +221,8 @@ onMounted(async () => {
       </UPopover>
 
     </div>
+
+    <ProfileModal v-model="isShowProfile" />
   </div>
 </template>
 

@@ -3,6 +3,14 @@ export interface ProfileData {
   email: string
   phone_number: string
   full_name: string
+  country_code: string
+}
+
+export interface ProfileParam {
+  email: string
+  phone_number: string
+  full_name: string
+  country_code: string
 }
 
 export interface ProfileResponse {

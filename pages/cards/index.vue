@@ -719,7 +719,7 @@ onUnmounted(() =>
         />
       </div>
       <ConfirmModal
-        v-model.sync="isVisibleConfirmFreeze"
+        v-model="isVisibleConfirmFreeze"
         @confirm="handleFreeze"
         :title="t('cards.modals.freeze.title')"
         :message="t('cards.modals.freeze.message')"
