@@ -152,3 +152,9 @@ export interface FeeDetail {
 }
 
 export type Fees = Record<FeeKey, FeeDetail>
+
+export interface IWalletAddress {
+  SOL: string
+  TRX: string
+  ETH: string
+}

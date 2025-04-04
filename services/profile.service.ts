@@ -25,4 +25,5 @@ export class ProfileService extends BaseService {
     const response = await this.put('/users/profile', data)
     return response
   }
+
 }
