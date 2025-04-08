@@ -199,7 +199,13 @@ function handleEdit() {
               <img :src="`/icons/cards/category/${cardDetail?.category}.svg`" alt="" />
             </div>
           </div>
-          <img class="mt-auto mb-3 w-[110px]" src="~/assets/img/cards/add-to-apple.png" alt="" />
+          <div v-if="cardDetail?.card_status === CardStatus.CANCELLED" class="pull-left mt-auto ml-0 mb-3 w-[76px] h-[24px] gap-[6px] bg-[#FFE3EF] items-center justify-center mx-auto px-3 py-[2px] rounded-[110px] flex flex-row">
+            <div class="text-12-500-20 text-[#ED2C38]">
+              {{ t(`cards.list.status.${cardDetail?.card_status}`) }}
+            </div>
+            <div class="w-[6px] h-[6px] rounded-[1px] bg-[#ED2C38]"></div>
+          </div>
+          <img v-else class="mt-auto mb-3 w-[110px]" src="~/assets/img/cards/add-to-apple.png" alt="" />
           <div class="karla tracking-[3px] text-24-400 text-[#D7D9E5] w-full">
             <div class="flex flex-row justify-between w-full" v-if="isShowCardSensitiveDetail">
               <div v-for="(part, index) in cardNumberArray" :key="index">
