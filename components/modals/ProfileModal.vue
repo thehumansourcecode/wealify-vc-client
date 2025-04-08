@@ -80,6 +80,16 @@ const handleClickEdit = async() =>{
   await profileStore.fetchProfile()
 }
 
+const showLastEdit = computed(()=> {
+  const date = new Date(profile.value.updated_at)
+  const formattedDate = date.toLocaleDateString('en-US', {
+    month: 'short', 
+    day: 'numeric', 
+    year: 'numeric' 
+  })
+ return formattedDate
+})
+
 watch(
   isOpen,
   (v) => {
@@ -271,7 +281,7 @@ watch(
       </UForm>
 
       <div class="flex justify-between mt-[28px]">
-        <div class="text-[#7A7D89] text-[12px] manrope font-normal leading-[20px] flex items-center justify-center">Last edit: Mar 12, 2025</div>
+        <div class="text-[#7A7D89] text-[12px] manrope font-normal leading-[20px] flex items-center justify-center">Last edit: {{showLastEdit}}</div>
         <UButton
             :loading="isSubmitting"
             :label="t('profile.button.ready.edit')"

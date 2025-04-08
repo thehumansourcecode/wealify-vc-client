@@ -124,6 +124,7 @@ const transactionDestination = computed(() => {})
             <div class="text-16-700-24 text-[#1C1D23]">
               {{
                 t(`transactions.detail.amount.${transactionDetail?.detailType}`, {
+                  currency: transactionDetail.currency.symbol ,
                   amount: formatMoney(transactionDetail?.amount),
                 })
               }}
@@ -142,6 +143,7 @@ const transactionDestination = computed(() => {})
               >
                 {{
                   t(`transactions.detail.rateValue`, {
+                    currency: transactionDetail.currency.symbol ,
                     rateUSDT: formatAmount(transactionDetail?.rate.value),
                     rateUSD: 1,
                   })
