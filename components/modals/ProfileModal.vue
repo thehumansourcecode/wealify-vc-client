@@ -193,7 +193,6 @@ watch(
           <div class="text-14-500-20 mt-8" style="flex: 0 0 156px">
             <div class="flex flex-row items-center">
               <span>{{t('profile.form.label.phone_number') }}</span>
-              <span class="pl-1 text-[#ED2C38]">*</span>
             </div>
           </div>
           <div class="flex flex-row items-start w-full mt-5 relative">
