@@ -8,7 +8,7 @@ const dateRange = ref<[Date | undefined, Date | undefined]>([undefined, undefine
 
 watch(dateRange, () => {
   const start_date = dateRange.value[0] ? dayjs(dateRange.value[0]).utc().toISOString() : undefined
-  const end_date = dateRange.value[0] ? dayjs(dateRange.value[1]).utc().toISOString() : undefined
+  const end_date = dateRange.value[0] ? dayjs(dateRange.value[1]).utc().hour(23).minute(59).second(59).millisecond(999).toISOString() : undefined
 
   if (payload.value.start_date == start_date && payload.value.end_date == end_date) {
     return
