@@ -20,13 +20,16 @@ const filterCat = ref(null)
 const cardList = computed(() => cardStore.cardList)
 const cardCount = computed(() => cardStore.cardCount)
 
-const activeCardCount = computed(() => cardStore.activeCardCount)
 const limitOptions = ref([10, 30, 50])
 const page = computed(() => payload.value.page)
 const limit = computed(() => payload.value.limit)
 const filterType = ref(undefined)
 const selected = ref(undefined)
-const { isVisibleConfirmFreeze, isVisibleConfirmCancel, isVisibleConfirmUnfreeze } = storeToRefs(cardStore)
+const { isVisibleConfirmFreeze,
+  isVisibleConfirmCancel, 
+  isVisibleConfirmUnfreeze,
+  activeCardCount 
+} = storeToRefs(cardStore)
 
 function isCardSelected(card: ICardDetail) {
   return selectedCardList.value.some((selectedCard: ICardDetail) => selectedCard.id === card.id)
