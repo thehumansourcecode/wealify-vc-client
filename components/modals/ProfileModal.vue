@@ -20,7 +20,7 @@ const form = ref({
 })
 
 const isSubmitting = ref(false)
-
+const isDisableButton = ref(false)
 
 const profileSchema = object({
   full_name: string()
@@ -57,6 +57,9 @@ const handleInputPhoneNumber = async (event: InputEvent) => {
 
 
 const handleClickEdit = async() =>{
+  if(isDisableButton.value){
+    return
+  }
   let valid = true
   try {
     await formRef.value.validate()
@@ -72,7 +75,7 @@ const handleClickEdit = async() =>{
   const result =  await profileStore.updateProfile(form.value)
   isSubmitting.value = false
   if (!result.success) {
-    showToast(ToastType.FAILED, t('profile.message.edit.fail'))
+    showToast(ToastType.FAILED,result.message)
     return
   }
   showToast(ToastType.SUCCESS, t('profile.message.edit.success'))
@@ -101,6 +104,14 @@ watch(
       country_code:profile.value?.country_code,
     }
   },
+)
+
+watch(
+  form,
+  (v) => {
+    isDisableButton.value = form.value.full_name === "" || form.value.phone_number === ""
+  },
+  { deep: true },
 )
 
 </script>
@@ -283,10 +294,12 @@ watch(
       <div class="flex justify-between mt-[28px]">
         <div class="text-[#7A7D89] text-[12px] manrope font-normal leading-[20px] flex items-center justify-center">Last edit: {{showLastEdit}}</div>
         <UButton
+            :class="isDisableButton ? 'text-[#d6d8e5] !bg-[#a4a8b8] hover:bg-[#a4a8b8]' : 'text-white !bg-[#FF5524] hover:bg-[#FF5524]'"
+            :disabled="isDisableButton"
             :loading="isSubmitting"
             :label="t('profile.button.ready.edit')"
             @click="handleClickEdit"
-            class="manrope flex justify-center rounded-[49px] p-3 xl:min-w-[223px] font-semibold bg-[#FF5524] hover:bg-[#FF5524] text-[#fff]"
+            class="manrope flex justify-center rounded-[49px] p-3 xl:min-w-[223px] font-semibold"
         ></UButton>
       </div>
     </div>
