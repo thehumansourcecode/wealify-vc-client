@@ -739,7 +739,7 @@ onUnmounted(() =>
         :message="t('cards.modals.cancel.message')"
         :confirm-label="t('cards.modals.cancel.label.confirm')"
         :cancel-label="t('cards.modals.cancel.label.cancel')"
-        :bg-confirm="`bg-[#ED2C38] hover:bg-[#ED2C38]`"
+        :bg-confirm="`!bg-[#ED2C38] hover:bg-[#ED2C38]`"
         :loading="cardStore.isLoading.cancelCard"
       />
       <ConfirmModal

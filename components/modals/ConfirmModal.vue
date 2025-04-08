@@ -9,7 +9,7 @@ defineProps({
   loading: Boolean,
   bgConfirm: {
     type: String,
-    default: 'bg-[#1C1D23] hover:bg-[#1C1D23]',
+    default: '!bg-[#1C1D23] hover:bg-[#1C1D23]',
   },
 })
 const isOpen = defineModel()
