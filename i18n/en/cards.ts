@@ -194,11 +194,11 @@ export default {
       },
     },
     freeze: {
-      title: 'Freeze the card',
-      message: 'This card will be reactivated and ready for use. Are you sure you want to continue?',
+      title: 'Freeze this card',
+      message: 'The card will be temporarily unusable until you unfreeze it again. Are you sure you want to proceed?',
       label: {
         cancel: 'Cancel',
-        confirm: 'Unfreeze',
+        confirm: 'Freeze card',
       },
     },
     cancel: {
