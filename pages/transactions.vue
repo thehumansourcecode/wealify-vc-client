@@ -11,4 +11,6 @@ onMounted(() => {
 })
 </script>
 
-<template><TransactionsMain /></template>
+<template>
+<TransactionsMain />
+</template>

@@ -29,6 +29,7 @@ export default {
       currency: 'Currency',
       card: 'Card',
       status: 'Status',
+      create_date:'Create date',
       action: 'Action',
     },
     type: {

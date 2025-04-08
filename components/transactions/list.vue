@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { formatMoney } from '~/common/functions'
 import { type ITransactionData, TransactionVCType } from '~/types/transactions'
+import { formatDDMMYYYY} from '~/common/functions'
+const dayjs = useDayjs()
 
 const { t } = useI18n()
 const transactionStore = useTransactionStore()
@@ -31,6 +33,11 @@ const transactionTableColumns = [
   {
     key: 'card',
     label: t('transactions.list.header.card'),
+    class: 'mr-5',
+  },
+  {
+    key: 'created_at',
+    label: t('transactions.list.header.create_date'),
     class: 'mr-5',
   },
   {
@@ -136,6 +143,11 @@ function handleClickTransaction(row: ITransactionData) {
             {{ t(`cards.list.card_number`, { value: row.virtual_card?.last_four }) }}</span
           >
         </div>
+      </div>
+    </template>
+    <template #created_at-data="{ row }">
+      <div class="text-[#7A7D89] text-left text-14-500-20 manrope">
+        {{ formatDDMMYYYY(dayjs.utc(row.created_at).local()) }}
       </div>
     </template>
     <template #status-data="{ row }">
