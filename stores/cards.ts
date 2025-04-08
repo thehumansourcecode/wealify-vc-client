@@ -16,6 +16,7 @@ import { FeeType, type IDropdownCardData } from '~/types/common'
 
 export const useCardStore = defineStore('card', () => {
   const cardCount = ref(0)
+  const activeCardCount  = ref(0)
   const { t } = useI18n()
   const commonStore = useCommonStore()
 
@@ -123,6 +124,7 @@ export const useCardStore = defineStore('card', () => {
     if (response.success) {
       cardList.value = response.data.items
       cardCount.value = response.data.total_items
+      activeCardCount.value =  response.data.total_active
     }
     isLoading.value.cardTable = false
     return response
@@ -303,6 +305,7 @@ export const useCardStore = defineStore('card', () => {
     setPayloadPage,
     cardList,
     cardCount,
+    activeCardCount,
     getCardList,
     activeCardList,
     // Card detail slideover

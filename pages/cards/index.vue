@@ -19,6 +19,8 @@ const filterCat = ref(null)
 
 const cardList = computed(() => cardStore.cardList)
 const cardCount = computed(() => cardStore.cardCount)
+
+const activeCardCount = computed(() => cardStore.activeCardCount)
 const limitOptions = ref([10, 30, 50])
 const page = computed(() => payload.value.page)
 const limit = computed(() => payload.value.limit)
@@ -483,7 +485,7 @@ onUnmounted(() =>
 
         <!-- Active / Total -->
         <div class="text-[#7A7D89] text-12-500-20">
-          {{ t('cards.filter.label.amount', { active: activeCardList?.length, total: cardCount }) }}
+          {{ t('cards.filter.label.amount', { active: activeCardCount, total: cardCount }) }}
         </div>
         <img src="~/assets/img/common/line.svg" alt="" />
         <div class="text-[#1C1D23] text-12-600-20">
