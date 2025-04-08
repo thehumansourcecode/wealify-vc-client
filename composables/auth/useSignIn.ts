@@ -1,5 +1,6 @@
 import { CommonLogger } from '~/common/logger'
 import { useHandleRequest } from '../common/useHandleRequest'
+import { showToast, ToastType } from '~/common/functions'
 
 interface SignInFields {
   email: string
@@ -13,8 +14,8 @@ interface SignInFieldErrors {
 
 export const useSignIn = () => {
   const { login } = useAuthStore()
-  const { fetchProfile } = useProfileStore();
-  const router = useRouter();
+  const { fetchProfile } = useProfileStore()
+  const router = useRouter()
 
   const fields = ref<SignInFields>({
     email: '',
@@ -27,14 +28,14 @@ export const useSignIn = () => {
   })
 
   const { isLoading, handleRequest } = useHandleRequest(async () => {
-    try {
-      await login(fields.value)
-      await fetchProfile();
-      router.push('/');
-    } catch (error) {
-      CommonLogger.instance.error('useSignIn + error', error)
-      errors.value.password = 'Email or password is incorrect'
-    }
+      const result = await login(fields.value)
+      if (result.success){
+        await fetchProfile()
+        router.push('/')
+      }else{
+        showToast(ToastType.FAILED,result.message)
+        return
+      }
   })
 
   const isValidate = computed(

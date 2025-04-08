@@ -57,18 +57,18 @@ export const useAuthStore = defineStore('auth', {
       }
       this.$reset();
     },
-    async login(credentials: LoginCredentials): Promise<LoginResponse> {
-      try {
-        const response = await AuthService.instance.login(credentials)
-        if (response.code === 200) {
-          this.setTokens(response.data.access_token, response.data.access_token) //! Server is not returned refresh_token, so use access_token
-        } else {
-          throw new Error(`Login failed with code: ${response.code}`)
-        }
-        return response
-      } catch (error) {
-        CommonLogger.instance.error('Login failed:', error)
-        throw error
+    async login(credentials: LoginCredentials) {
+      const result = {
+        success:true,
+      }
+      const response = await AuthService.instance.login(credentials)
+      if (response.success) {
+        this.setTokens(response.data.access_token, response.data.access_token)
+        return result
+      }
+      return {
+        success:false,
+        message:response.message || ""
       }
     },
     logout() {
