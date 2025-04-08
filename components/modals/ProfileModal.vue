@@ -16,7 +16,7 @@ const form = ref({
   full_name: profile.value?.full_name,
   email: profile.value?.email,
   phone_number: profile.value?.phone_number,
-  country_code:profile.value?.country_code,
+  country_code:profile.value?.country_code ? profile.value?.country_code:  CommonCountry.VIETNAM,
 })
 
 const isSubmitting = ref(false)
