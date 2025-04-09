@@ -25,6 +25,7 @@ function handleCopy(index: number, value: string) {
 }
 
 const cardStore = useCardStore()
+const { isPreventClose } = storeToRefs(cardStore)
 const transactionStore = useTransactionStore()
 const {isOpenCardDetailSlideover} =  storeToRefs(cardStore)
 const cardDetail = computed(() => cardStore.selectedCardDetail)
@@ -54,7 +55,7 @@ const chartContainer = ref(null)
 const isWithdrawTooltipVisible = ref(false)
 const isBalanceTooltipVisible = ref(false)
 
-// Handle mouse movement to detect hover over total_withdraw section
+//  mouse movement to detect hover over total_withdraw section
 const handleMouseMove = event => {
   const rect = chartContainer.value?.getBoundingClientRect()
   const x = event.clientX - rect.left - 64
@@ -132,19 +133,19 @@ function handleTopup() {
 }
 
 const handleFreeze = async () => {
-  // cardStore.toggleCardDetailSlideover(false)
+  isPreventClose.value = true
   cardStore.toggleCardFreeze(true)
 }
 
 const handleCancel = async () => {
-  // cardStore.toggleCardDetailSlideover(false)
+  isPreventClose.value = true
   cardStore.toggleCardCancel(true)
 }
 
 function handleWithdraw() {}
 
 const handleUnfreeze = async () => {
-  // cardStore.toggleCardDetailSlideover(false)
+  isPreventClose.value = true
   cardStore.toggleCardUnFreeze(true)
 }
 
@@ -157,6 +158,7 @@ function handleEdit() {
 
 <template>
   <USlideover
+   :preventClose="isPreventClose"
     v-model="isOpenCardDetailSlideover"
     :ui="{
       width: 'w-screen max-w-[464px]',

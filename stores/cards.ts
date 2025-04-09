@@ -46,6 +46,7 @@ export const useCardStore = defineStore('card', () => {
   const isVisibleConfirmFreeze = ref(false)
   const isVisibleConfirmCancel = ref(false)
   const isVisibleConfirmUnfreeze = ref(false)
+  const isPreventClose = ref(false)
 
   function toggleCardTopupModal(state: boolean) {
     isOpenCardTopupModal.value = state
@@ -314,6 +315,7 @@ export const useCardStore = defineStore('card', () => {
     selectedCardDetail,
     setSelectedCardDetail,
     getCardDetailById,
+    isPreventClose,
     // Card actions
     issueCard,
     freezeCard,

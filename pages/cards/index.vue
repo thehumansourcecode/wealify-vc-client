@@ -28,7 +28,8 @@ const selected = ref(undefined)
 const { isVisibleConfirmFreeze,
   isVisibleConfirmCancel, 
   isVisibleConfirmUnfreeze,
-  activeCardCount 
+  activeCardCount,
+  isPreventClose
 } = storeToRefs(cardStore)
 
 function isCardSelected(card: ICardDetail) {
@@ -241,8 +242,8 @@ const handleFreeze = async () => {
   showToast(ToastType.SUCCESS, t('cards.message.freeze.success'))
   await cardStore.getCardDetailById(selected.value.id)
   cardStore.toggleCardFreeze(false)
+  isPreventClose.value = false
   initPage()
-  cardStore.toggleCardDetailSlideover(true)
 }
 
 const handleCancel = async () => {
@@ -255,14 +256,14 @@ const handleCancel = async () => {
   }
   await cardStore.getCardDetailById(selected.value.id)
   cardStore.toggleCardCancel(false)
+  isPreventClose.value = false
   initPage()
-  cardStore.toggleCardDetailSlideover(true)
 }
 
 const handleUnfreeze = async () => {
   cardStore.isLoading.unfreezeCard = true
   const result = await cardStore.unfreezeCard(selected.value.id)
-  cardStore.isLoading.unfreezeCard = true
+  cardStore.isLoading.unfreezeCard = false
   if (!result.success) {
     showToast(ToastType.FAILED, t('cards.message.unfreeze.error'))
     return
@@ -270,8 +271,8 @@ const handleUnfreeze = async () => {
   showToast(ToastType.SUCCESS, t('cards.message.unfreeze.success'))
   await cardStore.getCardDetailById(selected.value.id)
   cardStore.toggleCardUnFreeze(false)
+  isPreventClose.value = false
   initPage()
-  cardStore.toggleCardDetailSlideover(true)
 }
 
 const clearFilterCategory = () => {
