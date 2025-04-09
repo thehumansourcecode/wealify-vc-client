@@ -354,7 +354,7 @@ const showIconCard = computed(()=>{
           </div>
           <!-- Analysis -->
           <div class="text-[#1C1D23] font-semibold mt-8 text-[16px] leading-[24px]">{{ t(`cards.slideovers.detail.analysis.tilte`) }}</div>
-          <div class="flex flex-row justify-between items-center mt-[14px] gap-8 mb-12">
+          <div class="flex flex-row justify-between items-center mt-[14px] gap-8 mb-[30px]">
             <div
               class="w-[128px] h-[128px] relative flex-none"
               ref="chartContainer"
