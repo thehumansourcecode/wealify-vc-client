@@ -87,9 +87,10 @@ const issueCardSchema = object({
 })
 
 const formatPhoneNumber = (target: HTMLInputElement) => {
+  target.value = target.value.replace(/\s+/g, '')
   const rawValue = Number(target.value)
   if (Number.isNaN(Number(rawValue))) {
-    target.value = ''
+    target.value = target.value.replace(/\D/g, '')
     return
   }
 }
