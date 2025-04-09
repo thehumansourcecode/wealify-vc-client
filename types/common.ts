@@ -116,6 +116,7 @@ export interface ICommonListResponse<T> {
     total_items: number
     total_page: number
     total_active: number
+    total_created: number
   }
   message: string
   success: boolean
