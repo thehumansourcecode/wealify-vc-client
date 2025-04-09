@@ -270,10 +270,9 @@ const transactionDestination = computed(() => {})
           </span>
           <ULink to="mailto:support@cs2agent.com" class="text-[#FF5524]"> support@wealify.com </ULink>
         </div>
-
         <UButton
           @click="handleNewTransaction()"
-          v-if="transactionDetail.transaction_vc_type === TransactionVCType.TOP_UP"
+          v-if=" transactionDetail?.detailType === TransactionDetailType.WALLET_TOP_UP"
           class="flex items-center bg-[#1C1D23] hover:bg-[#3D3E34] justify-center w-[400px] my-8 rounded-[49px]"
         >
           <div class="text-white text-14-600-20 px-4 py-[14px]">
