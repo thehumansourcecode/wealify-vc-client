@@ -109,7 +109,7 @@ watch(
 watch(
   form,
   (v) => {
-    isDisableButton.value = form.value.full_name === "" || form.value.phone_number === ""
+    isDisableButton.value = form.value.full_name === ""
   },
   { deep: true },
 )
