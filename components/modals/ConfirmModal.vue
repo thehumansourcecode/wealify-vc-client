@@ -1,6 +1,10 @@
 <script setup lang="ts">
 const { t } = useI18n()
 const cardStore = useCardStore()
+
+const { 
+  isPreventClose
+} = storeToRefs(cardStore)
 defineProps({
   title: String,
   message: String,
@@ -22,6 +26,16 @@ const closeModal = () => {
 const confirmModal = () => {
   emit('confirm')
 }
+
+watch(
+  isOpen,
+  (v) => {
+    if(!v){
+      isPreventClose.value = false
+    }
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
