@@ -154,6 +154,10 @@ function handleEdit() {
   cardStore.toggleCardEditModal(true)
 }
 
+const showIconCard = computed(()=>{
+  return cardDetail.value?.card_status !== CardStatus.CANCELLED
+})
+
 </script>
 
 <template>
@@ -192,6 +196,7 @@ function handleEdit() {
         <!-- Card -->
         <div
           class="w-[400px] h-[220px] rounded-[21px] flex flex-none flex-col items-start bg-[url(~/assets/img/cards/card-bg.svg)] bg-right pt-[18px] pb-6 pl-5 pr-10 mx-8 mb-8"
+          :class="{'!bg-[url(~/assets/img/cards/card-bg-canceled.svg)]':cardDetail?.card_status === CardStatus.CANCELLED,'!bg-[url(~/assets/img/cards/card-bg-freeze.svg)]':cardDetail?.card_status === CardStatus.FROZEN,}"
         >
           <div class="flex flex-row gap-3">
             <img src="~/assets/img/cards/card-logo.svg" alt="" />
@@ -208,6 +213,7 @@ function handleEdit() {
             </div>
             <div class="w-[6px] h-[6px] rounded-[1px] bg-[#ED2C38]"></div>
           </div>
+          <div v-else-if="cardDetail?.card_status === CardStatus.FROZEN" class="pull-left mt-auto ml-0 mb-3 w-[76px] h-[24px]"></div>
           <img v-else class="mt-auto mb-3 w-[110px]" src="~/assets/img/cards/add-to-apple.png" alt="" />
           <div class="karla tracking-[3px] text-24-400 text-[#D7D9E5] w-full">
             <div class="flex flex-row justify-between w-full" v-if="isShowCardSensitiveDetail">
