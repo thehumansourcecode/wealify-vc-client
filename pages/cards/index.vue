@@ -247,7 +247,7 @@ const handleFreeze = async () => {
   initPage()
 }
 
-const getIconCategory = (category: string): string =>{
+const getIconCategory = ({ category }: any): string =>{
   const name = category.replace(/[\/\s]/g, '-')
   return `/icons/cards/category/${name}.svg`;
 }
