@@ -5,6 +5,7 @@ definePageMeta({
 import { formatDDMMYYYY, formatDDMMYYYYHHMM, formatMoney } from '~/common/functions'
 import { CardCategory, CardStatus, CardType, type ICardDetail } from '~/types/cards'
 import { showToast, ToastType } from '~/common/functions'
+import {datetime} from '@/utils/datetime.utils'
 
 const { t } = useI18n()
 const dayjs = useDayjs()
@@ -179,8 +180,8 @@ watch(
 const dateRange = ref<[Date | undefined, Date | undefined]>([undefined, undefined])
 
 watch(dateRange, () => {
-  const start_date = dateRange.value[0] ? dayjs(dateRange.value[0]).utc().toISOString() : undefined
-  const end_date = dateRange.value[1] ? dayjs(dateRange.value[1]).utc().hour(23).minute(59).second(59).millisecond(999).toISOString() : undefined
+  const start_date = dateRange.value[0] ? dateFormat(dateRange.value[0],'yyyy-MM-dd') : undefined
+  const end_date = dateRange.value[1] ? dateFormat(dateRange.value[1],'yyyy-MM-dd') : undefined
   if (payload.value.start_date == start_date && payload.value.end_date == end_date) {
     return
   }
