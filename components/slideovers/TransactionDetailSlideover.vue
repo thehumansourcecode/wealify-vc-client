@@ -273,7 +273,8 @@ const transactionDestination = computed(() => {})
 
         <div  v-if=" transactionDetail?.detailType === TransactionDetailType.CARD_PAYMENT" class="flex items-center mt-8 gap-[10px] mb-12">
           <UButton
-          class="flex items-center bg-[#F0F2F5] hover:bg-[#F0F2F5] h-[48px] justify-center w-[195px] rounded-[49px]"
+          disabled
+          class="flex items-center !bg-[#F0F2F5] hover:bg-[#F0F2F5] h-[48px] justify-center w-[195px] rounded-[49px]"
         >
         <img
           class="cursor-pointer hover:opacity-70"
@@ -287,7 +288,8 @@ const transactionDestination = computed(() => {})
         </UButton>
 
           <UButton
-          class="flex items-center bg-[#1C1D23] hover:bg-[#3D3E34]  h-[48px] justify-center w-[195px] rounded-[49px]"
+          disabled
+          class="flex items-center !bg-[#1C1D23] hover:bg-[#3D3E34]  h-[48px] justify-center w-[195px] rounded-[49px]"
         >
           <div class="text-white text-14-600-20 manrope">
             {{ t(`transactions.detail.downloadInvoice.${transactionDetail?.detailType}`) }}
