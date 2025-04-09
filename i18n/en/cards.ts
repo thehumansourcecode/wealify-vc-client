@@ -149,6 +149,9 @@ export default {
         total_withdraw: 'Total Withdraw',
         balance: 'Balance',
       },
+      analysis:{
+        tilte:'Cash-out Report'
+      },
       button: {
         transaction: 'View Transaction',
         viewInfo: 'View card information',
