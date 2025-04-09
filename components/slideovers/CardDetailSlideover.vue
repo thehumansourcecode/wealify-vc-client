@@ -132,18 +132,19 @@ function handleTopup() {
 }
 
 const handleFreeze = async () => {
-  cardStore.toggleCardDetailSlideover(false)
+  // cardStore.toggleCardDetailSlideover(false)
   cardStore.toggleCardFreeze(true)
 }
 
 const handleCancel = async () => {
-  cardStore.toggleCardDetailSlideover(false)
+  // cardStore.toggleCardDetailSlideover(false)
   cardStore.toggleCardCancel(true)
 }
 
 function handleWithdraw() {}
+
 const handleUnfreeze = async () => {
-  cardStore.toggleCardDetailSlideover(false)
+  // cardStore.toggleCardDetailSlideover(false)
   cardStore.toggleCardUnFreeze(true)
 }
 
