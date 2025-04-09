@@ -123,7 +123,7 @@ function handleViewTransaction() {
 }
 
 const showCardSensitiveDetailOverlay = computed(()=>{
-  return cardDetail.value.card_status !== CardStatus.FROZEN
+  return cardDetail.value?.card_status !== CardStatus.FROZEN && cardDetail.value?.card_status !== CardStatus.CANCELLED
 })
 
 // Actions
