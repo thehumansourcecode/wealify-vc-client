@@ -190,7 +190,7 @@ onMounted(async () => {
               >
               <img src="~/assets/img/common/avatar.svg"/>
               </UTooltip>
-          <div class="font-semibold mb-1.5 text-[#17171E] ml-[9px] max-w-[80px] overflow-hidden text-ellipsis whitespace-nowrap" :title="profile?.full_name">{{profile?.full_name}} </div>
+          <div class="font-semibold mb-1.5 text-[#17171E] ml-[9px] max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap" :title="profile?.full_name">{{profile?.full_name}} </div>
           <UButton  class="w-[20px h-[20px] ml-[6px] p-0 flex items-center justify-center shadow-none bg-white hover:bg-white">
             <img src="/assets/img/icons/dropdown.svg"/>
           </UButton>
