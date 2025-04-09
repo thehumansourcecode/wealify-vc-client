@@ -270,13 +270,39 @@ const transactionDestination = computed(() => {})
           </span>
           <ULink to="mailto:support@cs2agent.com" class="text-[#FF5524]"> support@wealify.com </ULink>
         </div>
+
+        <div  v-if=" transactionDetail?.detailType === TransactionDetailType.CARD_PAYMENT" class="flex items-center mt-8 gap-[10px] mb-12">
+          <UButton
+          class="flex items-center bg-[#F0F2F5] hover:bg-[#F0F2F5] h-[48px] justify-center w-[195px] rounded-[49px]"
+        >
+        <img
+          class="cursor-pointer hover:opacity-70"
+          src="~/assets/img/flags/flag.svg"
+          alt=""
+          @click="onClosePrevented()"
+        />
+          <div class="text-[#1C1D23] text-14-600-20 manrope">
+            {{ t(`transactions.detail.disputeTransaction.${transactionDetail?.detailType}`) }}
+          </div>
+        </UButton>
+
+          <UButton
+          class="flex items-center bg-[#1C1D23] hover:bg-[#3D3E34]  h-[48px] justify-center w-[195px] rounded-[49px]"
+        >
+          <div class="text-white text-14-600-20 manrope">
+            {{ t(`transactions.detail.downloadInvoice.${transactionDetail?.detailType}`) }}
+          </div>
+        </UButton>
+        </div>
+        
+
         <UButton
           @click="handleNewTransaction()"
           v-if=" transactionDetail?.detailType === TransactionDetailType.WALLET_TOP_UP"
           class="flex items-center bg-[#1C1D23] hover:bg-[#3D3E34] justify-center w-[400px] my-8 rounded-[49px]"
         >
           <div class="text-white text-14-600-20 px-4 py-[14px]">
-            {{ t(`transactions.detail.createNew.${transactionDetail.transaction_vc_type}`) }}
+            {{ t(`transactions.detail.createNew.${transactionDetail.detailType}`) }}
           </div>
         </UButton>
       </div>

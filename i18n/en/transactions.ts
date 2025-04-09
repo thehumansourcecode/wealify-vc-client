@@ -104,9 +104,13 @@ export default {
     created_at: 'Created at',
     successAt: 'Success at',
     createNew: {
-      [TransactionVCType.PAYMENT]: 'Create new payment',
-      [TransactionVCType.TOP_UP]: 'Create new top up',
-      [TransactionVCType.WITHDRAWAL]: 'Create new withdraw',
+      [TransactionDetailType.WALLET_TOP_UP]: 'Create new top up',
+    },
+    downloadInvoice: {
+      [TransactionDetailType.CARD_PAYMENT]: 'Download Invoice',
+    },
+    disputeTransaction: {
+      [TransactionDetailType.CARD_PAYMENT]: 'Dispute transaction',
     },
     contact:
       'If you find any errors or omissions in this statement, please contact Wealify’s customer service emailing at ',
