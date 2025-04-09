@@ -247,6 +247,11 @@ const handleFreeze = async () => {
   initPage()
 }
 
+const getIconCategory = (category: string): string =>{
+  const name = category.replace(/[\/\s]/g, '-')
+  return `/icons/cards/category/${name}.svg`;
+}
+
 const handleCancel = async () => {
   cardStore.isLoading.cancelCard = true
   const result = await cardStore.cancelCard(selected.value.id)
@@ -630,7 +635,7 @@ onUnmounted(() =>
               :style="{ background: isCardSelected(row) ? 'white' : '#F0F2F5' }"
             >
               <div class="text-[#1C1D23] text-12-500-20">{{ t(`cards.list.category.${row.category}`) }}</div>
-              <img :src="`/icons/cards/category/${row.category}.svg`" alt="" />
+              <img :src="getIconCategory(row)"/>
             </div>
           </div>
         </template>
