@@ -18,6 +18,9 @@ const walletBalance = computed(() => userStore.userBalance?.wallet_balance?.bala
 const dropdownCardList = computed(() => commonStore.dropdownCardList)
 const topupCardFees = computed(() => commonStore.feeList?.TOP_UP_CARD)
 const loading = computed(() => cardStore.isLoading.topupCard)
+const { 
+  isPreventClose
+} = storeToRefs(cardStore)
 
 const currencyInputRef = ref()
 
@@ -114,10 +117,14 @@ async function handleTopup() {
     await cardStore.topupCard(payload)
   }
 }
+const handleClose = () =>{
+  cardStore.toggleCardTopupModal(false)
+  isPreventClose.value = false
+}
 </script>
 
 <template>
-  <BaseModal :label="t('cards.modals.topup.title')" @close-prevented="cardStore.toggleCardTopupModal(false)">
+  <BaseModal :label="t('cards.modals.topup.title')" @close-prevented="handleClose">
     <div class="flex flex-col">
       <!-- Balance -->
       <div class="flex flex-row gap-3 items-center">
