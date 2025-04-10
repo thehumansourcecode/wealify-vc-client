@@ -106,8 +106,7 @@ const styleTooltipBalance =  computed(() => {
 })
 
 async function handleShowSensitiveDetail() {
-  // TODO: Handle OTP send to email request
-  // await cardStore.sendOTPSensitiveDetail()
+  isPreventClose.value = true
   cardStore.toggleSensitiveOTPModal(true)
 }
 

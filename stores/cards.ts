@@ -264,24 +264,22 @@ export const useCardStore = defineStore('card', () => {
   }
 
   async function verifyOTPSensitiveDetail(code: string) {
-    console.log(code)
     commonStore.toggleProcessingModal(true)
+    // Handle Verify OTP
+    const response = await otpService.verifyOTPSensitiveDetail(code)
+    commonStore.toggleProcessingModal(false)
+    if (!response.success) {
+      showToast(ToastType.FAILED, response.message)
+      return
+    }
     toggleSensitiveOTPModal(false)
     isShowCardSensitiveDetail.value = true
-    // Handle Verify OTP
-    // const response = await otpService.verifyOTPSensitiveDetail(code)
-    // if (response.success) {
-    //   toggleSensitiveOTPModal(false)
-    //   isShowCardSensitiveDetail.value = true
-    // }
     if (selectedCardDetail.value?.id) {
       const response = await cardService.getCardSensitiveDetailById(selectedCardDetail.value?.id)
       if (response.success) {
         cardSensitiveDetail.value = response.data
       }
     }
-    commonStore.toggleProcessingModal(false)
-    // return response
   }
 
   return {
