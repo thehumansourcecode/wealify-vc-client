@@ -17,6 +17,7 @@ const userStore = useUserStore()
 const {balance_histories} = storeToRefs(dashboardStore)
 const x_axis = ref([])
 const y_axis = ref([])
+const color_fill = ref('#2ea518')
 const chartOptions = ref(null)
 const chartSeries = ref(null)
 const history_balance_type = ref("MAIN")
@@ -43,8 +44,9 @@ function onClickWithdraw() {
   // Todo
 }
 
-const setBalanceHistoryType = async(type:string) =>{
+const setBalanceHistoryType = async(type:string,color:string) =>{
   history_balance_type.value  = type
+  color_fill.value = color
   await fetchBalanceHistory()
 }
 
@@ -83,17 +85,17 @@ const fetchBalanceHistory = async () =>{
       toolbar: { show: false },
       parentHeightOffset:0
     },
-    colors: ['#2ea518'],
+    colors: [color_fill.value],
     stroke: {
       curve: 'smooth',
       width:1,
-      colors:['#2EA518'],
+      colors:[color_fill.value],
     },
     dataLabels: {
       enabled: false
     },
     grid: {
-      borderColor: '#2EA518',
+      borderColor: color_fill.value,
       show: true,
       position: "back",
       xaxis: {
@@ -177,7 +179,7 @@ onMounted(fetchBalanceHistory)
       <div class="flex flex-col gap-3 w-[45%]">
         <!-- Wealify Balance -->
         <div
-          @mouseenter="setBalanceHistoryType('MAIN')"
+          @mouseenter="setBalanceHistoryType('MAIN','#2ea518')"
             class="bg-[#1C1D23] cursor-pointer rounded-[12px] flex flex-row pl-7 pr-12 pt-4 pb-6 justify-between gap-12 items-center bg-[url(~/assets/img/wealify-pattern.svg)] bg-no-repeat bg-right"
         >
           <div class="flex flex-col z-10">
@@ -239,7 +241,7 @@ onMounted(fetchBalanceHistory)
 
         <!-- Card balance -->
         <div
-         @mouseenter="setBalanceHistoryType('VC_CARD')"
+         @mouseenter="setBalanceHistoryType('VC_CARD','#5268E1')"
             class="bg-[#FFF5F2] cursor-pointer text-[#000] border border-[#E1E5EB] rounded-[12px] flex flex-row pl-7 pr-12 pt-4 pb-6 justify-between items-center"
         >
           <div class="flex flex-col z-10 w-full">
