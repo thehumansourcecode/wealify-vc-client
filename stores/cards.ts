@@ -265,7 +265,6 @@ export const useCardStore = defineStore('card', () => {
 
   async function verifyOTPSensitiveDetail(code: string) {
     commonStore.toggleProcessingModal(true)
-    // Handle Verify OTP
     const response = await otpService.verifyOTPSensitiveDetail(code)
     commonStore.toggleProcessingModal(false)
     if (!response.success) {
@@ -274,6 +273,7 @@ export const useCardStore = defineStore('card', () => {
     }
     toggleSensitiveOTPModal(false)
     isShowCardSensitiveDetail.value = true
+    isPreventClose.value = false
     if (selectedCardDetail.value?.id) {
       const response = await cardService.getCardSensitiveDetailById(selectedCardDetail.value?.id)
       if (response.success) {

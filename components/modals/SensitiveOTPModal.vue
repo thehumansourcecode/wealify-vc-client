@@ -1,5 +1,8 @@
 <script setup lang="ts">
 const cardStore = useCardStore()
+const {
+  isPreventClose
+} = storeToRefs(cardStore)
 const profileStore = useProfileStore()
 const { t } = useI18n()
 const selectedCard = computed(() => cardStore.selectedCardDetail)
@@ -9,10 +12,15 @@ async function handleCompleteInput(value: string) {
     await cardStore.verifyOTPSensitiveDetail(value)
   }
 }
+
+const handleClose = () =>{
+  cardStore.toggleSensitiveOTPModal(false)
+  isPreventClose.value = false
+}
 </script>
 
 <template>
-  <BaseModal :label="t('cards.modals.otp.title')" @close-prevented="cardStore.toggleSensitiveOTPModal(false)">
+  <BaseModal :label="t('cards.modals.otp.title')" @close-prevented="handleClose">
     <div class="text-14-500-20 manrope">
       <div class="flex flex-row gap-0.5">
         <span class="text-[#7a7d89]">{{ t('cards.modals.otp.description') }}</span>
