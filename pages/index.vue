@@ -2,6 +2,7 @@
 import { formatMoney } from '~/common/functions'
 import { useDashboardStore } from '~/stores/dashboard'
 import { PanelTab } from '~/types/common'
+import { showToast, ToastType } from '~/common/functions'
 
 definePageMeta({
   layout: 'home',
@@ -18,6 +19,8 @@ const x_axis = ref([])
 const y_axis = ref([])
 const chartOptions = ref(null)
 const chartSeries = ref(null)
+const history_balance_type = ref("MAIN")
+const isLoading = ref(false)
 
 
 const isShowBalance = ref(true)
@@ -40,14 +43,37 @@ function onClickWithdraw() {
   // Todo
 }
 
+const setBalanceHistoryType = async(type:string) =>{
+  history_balance_type.value  = type
+  await fetchBalanceHistory()
+}
+
 const fetchBalanceHistory = async () =>{
-  const result = await dashboardStore.fetchBalanceHistory()
+  if(isLoading.value){
+    return
+  }
+ 
+  const payload = {
+    wallet:history_balance_type.value
+  }
+  isLoading.value = true
+  const result = await dashboardStore.fetchBalanceHistory(payload)
+  isLoading.value = false
+
+  if (!result.success) {
+    showToast(ToastType.FAILED, result.success)
+    return
+
+  }
+
   x_axis.value = balance_histories.value.map(({date,balance} : any)=>{
     return dateFormat(date,'yyyy-MM-dd')
   })
+
   y_axis.value = balance_histories.value.map(({date,balance} : any)=>{
     return formatMoney(balance)
   })
+  
   chartOptions.value = {
     chart: {
       type: 'area',
@@ -151,7 +177,8 @@ onMounted(fetchBalanceHistory)
       <div class="flex flex-col gap-3 w-[45%]">
         <!-- Wealify Balance -->
         <div
-            class="bg-[#1C1D23] rounded-[12px] flex flex-row pl-7 pr-12 pt-4 pb-6 justify-between gap-12 items-center bg-[url(~/assets/img/wealify-pattern.svg)] bg-no-repeat bg-right"
+          @mouseenter="setBalanceHistoryType('MAIN')"
+            class="bg-[#1C1D23] cursor-pointer rounded-[12px] flex flex-row pl-7 pr-12 pt-4 pb-6 justify-between gap-12 items-center bg-[url(~/assets/img/wealify-pattern.svg)] bg-no-repeat bg-right"
         >
           <div class="flex flex-col z-10">
             <span class="text-[#A5A8B8] text-14-600-20">
@@ -212,7 +239,8 @@ onMounted(fetchBalanceHistory)
 
         <!-- Card balance -->
         <div
-            class="bg-[#FFF5F2] text-[#000] border border-[#E1E5EB] rounded-[12px] flex flex-row pl-7 pr-12 pt-4 pb-6 justify-between items-center"
+         @mouseenter="setBalanceHistoryType('VC_CARD')"
+            class="bg-[#FFF5F2] cursor-pointer text-[#000] border border-[#E1E5EB] rounded-[12px] flex flex-row pl-7 pr-12 pt-4 pb-6 justify-between items-center"
         >
           <div class="flex flex-col z-10 w-full">
             <span class="text-[#A5A8B8] text-14-600-20">

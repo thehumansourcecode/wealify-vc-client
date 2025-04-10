@@ -22,11 +22,11 @@ export const useDashboardStore = defineStore('dashboard', () => {
     isOpenTransactionDetailSlideover.value = state
   }
 
-  const fetchBalanceHistory = async()=>{
+  const fetchBalanceHistory = async(payload : any)=>{
     let result = {
       success:true
     }
-    const response = await userService.getBalanceHistory(null)
+    const response = await userService.getBalanceHistory(payload)
     if (response.success) {
       balance_histories.value = response.data.items
       return result
