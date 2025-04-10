@@ -1,3 +1,14 @@
+import { HTTP_STATUS_CODE } from './common'
+
+export interface UserBalanceHistoryResponse {
+  code: HTTP_STATUS_CODE
+  data:{
+    items: BalanceData[]
+  }
+  message: string
+  success: boolean
+}
+
 export interface IUserProfile {
   email: string
   full_name: string
@@ -17,3 +28,11 @@ export interface IUserBalance {
     total_withdraw: number
   }
 }
+
+
+
+export interface BalanceData {
+  date: string
+  balance: number
+}
+

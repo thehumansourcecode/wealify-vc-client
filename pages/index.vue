@@ -13,6 +13,13 @@ const dashboardStore = useDashboardStore()
 const commonStore = useCommonStore()
 const userStore = useUserStore()
 
+const {balance_histories} = storeToRefs(dashboardStore)
+const x_axis = ref([])
+const y_axis = ref([])
+const chartOptions = ref(null)
+const chartSeries = ref(null)
+
+
 const isShowBalance = ref(true)
 function toggleBalance() {
   isShowBalance.value = !isShowBalance.value
@@ -32,6 +39,93 @@ function onClickTopup() {
 function onClickWithdraw() {
   // Todo
 }
+
+const fetchBalanceHistory = async () =>{
+  const result = await dashboardStore.fetchBalanceHistory()
+  x_axis.value = balance_histories.value.map(({date,balance} : any)=>{
+    return dateFormat(date,'yyyy-MM-dd')
+  })
+  y_axis.value = balance_histories.value.map(({date,balance} : any)=>{
+    return formatMoney(balance)
+  })
+  chartOptions.value = {
+    chart: {
+      type: 'area',
+      zoom: {
+        enabled: false
+      },
+      toolbar: { show: false }
+    },
+    colors: ['#2ea518'],
+    stroke: {
+      curve: 'smooth',
+      width:1,
+      colors:['#2EA518'],
+    },
+    dataLabels: {
+      enabled: false
+    },
+    grid: {
+      borderColor: '#2EA518',
+      show: true,
+      position: "back",
+      xaxis: {
+        lines: {
+          show: false
+        }
+      },
+      yaxis: {
+        lines: {
+          show: false
+        }
+      },
+      padding: {
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0
+      }
+    },
+    xaxis: {
+      categories: x_axis,
+      labels:{
+        show: false,
+      },
+      axisBorder:{
+        show: false,
+      },
+      axisTicks:{
+        show: false,
+      }
+    },
+    yaxis:{
+      show: false,
+    },
+    tooltip: {
+      x: {
+        format: 'dd/MM/yy'
+      }
+    },
+    fill: {
+      type: 'gradient',
+      gradient: {
+        opacityFrom: 0.5,
+        opacityTo: 0.2,
+      }
+    }
+  }
+
+  chartSeries.value = [
+    {
+      name: 'Balance',
+      data: y_axis
+    },
+  ]
+
+}
+
+onMounted(fetchBalanceHistory)
+
 </script>
 <template>
   <div class="flex flex-col overflow-y-auto pl-10 pr-[60px] flex-1">
@@ -40,18 +134,18 @@ function onClickWithdraw() {
         {{ t('dashboard.balance.title') }}
       </span>
       <img
-        class="cursor-pointer hover:opacity-90"
-        @click="toggleBalance()"
-        :src="isShowBalance ? '/icons/dashboard/toggle-balance-disabled.svg' : '/icons/dashboard/toggle-balance.svg'"
-        alt=""
+          class="cursor-pointer hover:opacity-90"
+          @click="toggleBalance()"
+          :src="isShowBalance ? '/icons/dashboard/toggle-balance-disabled.svg' : '/icons/dashboard/toggle-balance.svg'"
+          alt=""
       />
     </div>
-    <div class="flex flex-row justify-between w-full mb-5">
+    <div class="flex flex-row justify-between w-full gap-7">
       <!-- Balances -->
       <div class="flex flex-col gap-3 w-[45%]">
         <!-- Wealify Balance -->
         <div
-          class="bg-[#1C1D23] rounded-[12px] flex flex-row pl-7 pr-12 pt-4 pb-6 justify-between gap-12 items-center bg-[url(~/assets/img/wealify-pattern.svg)] bg-no-repeat bg-right"
+            class="bg-[#1C1D23] rounded-[12px] flex flex-row pl-7 pr-12 pt-4 pb-6 justify-between gap-12 items-center bg-[url(~/assets/img/wealify-pattern.svg)] bg-no-repeat bg-right"
         >
           <div class="flex flex-col z-10">
             <span class="text-[#A5A8B8] text-14-600-20">
@@ -59,8 +153,8 @@ function onClickWithdraw() {
             </span>
             <div class="text-[18px] font-bold leading-7 mt-1">
               <span class="text-[#FFF]">{{
-                isShowBalance ? formatMoney(userBalance?.wallet_balance?.balance || 0) : '*'
-              }}</span>
+                  isShowBalance ? formatMoney(userBalance?.wallet_balance?.balance || 0) : '*'
+                }}</span>
               <span class="pl-1 text-[#7A7D89]">USD</span>
             </div>
             <div class="pt-4 flex flex-col w-[220px] gap-2">
@@ -112,7 +206,7 @@ function onClickWithdraw() {
 
         <!-- Card balance -->
         <div
-          class="bg-[#FFF5F2] text-[#000] border border-[#E1E5EB] rounded-[12px] flex flex-row pl-7 pr-12 pt-4 pb-6 justify-between items-center"
+            class="bg-[#FFF5F2] text-[#000] border border-[#E1E5EB] rounded-[12px] flex flex-row pl-7 pr-12 pt-4 pb-6 justify-between items-center"
         >
           <div class="flex flex-col z-10 w-full">
             <span class="text-[#A5A8B8] text-14-600-20">
@@ -158,8 +252,8 @@ function onClickWithdraw() {
       </div>
 
       <!-- Chart -->
-      <div class="w-[45%] flex justify-end items-end">
-        <img class="w-full max-h-[350px]" src="~/assets/img/dashboard/chart.svg" alt="" />
+      <div class="w-full">
+        <ApexCharts type="area" :options="chartOptions" :series="chartSeries"  height="300"/>
       </div>
     </div>
 
