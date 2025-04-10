@@ -54,7 +54,8 @@ const fetchBalanceHistory = async () =>{
       zoom: {
         enabled: false
       },
-      toolbar: { show: false }
+      toolbar: { show: false },
+      parentHeightOffset:0
     },
     colors: ['#2ea518'],
     stroke: {
@@ -253,7 +254,7 @@ onMounted(fetchBalanceHistory)
 
       <!-- Chart -->
       <div class="w-full">
-        <ApexCharts type="area" :options="chartOptions" :series="chartSeries"  height="300"/>
+        <ApexCharts type="area" :options="chartOptions" :series="chartSeries"  height="358"/>
       </div>
     </div>
 
