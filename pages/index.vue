@@ -222,7 +222,7 @@ onMounted(fetchBalanceHistory)
             </div>
           </div>
           <div class="flex flex-row gap-12 justify-end">
-            <div @click="onClickTopup" class="flex flex-col items-center cursor-pointer hover:opacity-90">
+            <div @click="onClickTopup" class="flex flex-col w-[40px] items-center cursor-pointer hover:opacity-90">
               <img width="40" src="~/assets/img/cards/topup.svg" alt="" />
               <span class="text-xs text-[#FFF] leading-5">
                 {{ t('dashboard.balance.wealify.topup') }}
