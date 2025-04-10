@@ -26,9 +26,7 @@ const topupAddress = computed(() => {
 
 const networkOptions = ref([])
 const selectedNetworkOption = ref(undefined)
-
 const currencyOptions = ref([])
-
 const selectedCurrencyOption = ref(undefined)
 
 function handleCopy(value: string) {
