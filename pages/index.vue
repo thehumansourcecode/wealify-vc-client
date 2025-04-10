@@ -298,7 +298,7 @@ onMounted(fetchBalanceHistory)
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .table-wrapper {
   &::-webkit-scrollbar {
     width: 4px;
@@ -311,7 +311,7 @@ onMounted(fetchBalanceHistory)
   }
 }
 
-.apexcharts-tooltip{
+.apexcharts-tooltip.apexcharts-active{
   border-radius: 0 !important;
 }
 </style>
