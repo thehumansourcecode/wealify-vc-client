@@ -282,6 +282,14 @@ export const useCardStore = defineStore('card', () => {
     }
   }
 
+  async function sendOtpMessage(code: string) {
+    const response = await otpService.sendOTPSensitiveDetail()
+    if (!response.success) {
+      showToast(ToastType.FAILED, response.message)
+      return
+    }
+  }
+
   return {
     isLoading,
     // modals - slideovers
@@ -327,6 +335,7 @@ export const useCardStore = defineStore('card', () => {
     // OTPs
     sendOTPSensitiveDetail,
     verifyOTPSensitiveDetail,
+    sendOtpMessage,
     isShowCardSensitiveDetail,
     cardSensitiveDetail,
   }
