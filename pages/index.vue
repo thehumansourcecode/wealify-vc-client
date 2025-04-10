@@ -105,6 +105,11 @@ const fetchBalanceHistory = async () =>{
     tooltip: {
       x: {
         format: 'dd/MM/yy'
+      },
+      custom: function({series, seriesIndex, dataPointIndex, w}:any) {
+        return  '<div class="rounded-none px-1">' +
+                '<span>' + series[seriesIndex][dataPointIndex] + ' USD </span>' +
+                '</div>'
       }
     },
     fill: {
@@ -274,5 +279,9 @@ onMounted(fetchBalanceHistory)
   &::-webkit-scrollbar-track {
     background: #f0f0f0;
   }
+}
+
+.apexcharts-tooltip{
+  border-radius: 0 !important;
 }
 </style>
