@@ -282,7 +282,7 @@ export const useCardStore = defineStore('card', () => {
     }
   }
 
-  async function sendOtpMessage(code: string) {
+  async function sendOtpMessage() {
     const response = await otpService.sendOTPSensitiveDetail()
     if (!response.success) {
       showToast(ToastType.FAILED, response.message)

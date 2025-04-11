@@ -6,6 +6,8 @@ const {
 const profileStore = useProfileStore()
 const { t } = useI18n()
 const selectedCard = computed(() => cardStore.selectedCardDetail)
+const countDownTime = ref(0)
+const isLoading = ref(false)
 
 async function handleCompleteInput(value: string) {
   if (value) {
@@ -17,6 +19,26 @@ const handleClose = () =>{
   cardStore.toggleSensitiveOTPModal(false)
   isPreventClose.value = false
 }
+
+const getCountDownTime = computed(()=>{
+  setTimeout(() => {
+    countDownTime.value =  countDownTime.value > 0 ? countDownTime.value - 1:countDownTime.value
+  }, 1000)
+  return countDownTime.value
+})
+
+const init = ()=>{
+  countDownTime.value = 30
+}
+
+const resendOtp = async ()=>{
+  isLoading.value = true
+  await cardStore.sendOtpMessage()
+  isLoading.value = false
+  countDownTime.value = 30
+}
+
+onMounted(init)
 </script>
 
 <template>
@@ -49,8 +71,18 @@ const handleClose = () =>{
     />
     <div class="mt-[52px] ml-auto flex flex-row manrope items-center text-14-500-20 gap-0.5">
       <span class="text-[#7a7d89]">{{ t('cards.modals.otp.notReceived') }}</span>
-      <span>{{ t('cards.modals.otp.resend') }}</span>
-      <span class="text-14-600-20 text-[#FF5524]">30s</span>
+      <template  v-if="getCountDownTime">
+        <span>{{ t('cards.modals.otp.resend') }}</span>
+        <span class="text-14-600-20 text-[#FF5524]">{{ getCountDownTime }}s</span>
+      </template>
+      <UButton
+      v-else
+       @click="resendOtp"
+       :loading="isLoading"
+        class="flex items-center py-[4px] px-3 !bg-[#FF5524] !hover:bg-[#FF5524] rounded-[44px] mx-auto w-[min-content] m-0"
+      >
+      {{ t('cards.modals.otp.button.resend') }}
+      </UButton>
     </div>
   </BaseModal>
 </template>

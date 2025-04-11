@@ -185,6 +185,9 @@ export default {
       timeout: 'Your verification code will expire in ',
       notReceived: 'Did not receive OTP? ',
       resend: 'Resend OTP in ',
+      button:{
+        resend:'Resend'
+      }
     },
     topup: {
       title: 'Top up card',
