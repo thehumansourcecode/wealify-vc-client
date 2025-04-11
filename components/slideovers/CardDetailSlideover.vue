@@ -107,7 +107,6 @@ const styleTooltipBalance =  computed(() => {
 
 async function handleShowSensitiveDetail() {
   isPreventClose.value = true
-  cardStore.sendOtpMessage()
   cardStore.toggleSensitiveOTPModal(true)
 }
 
