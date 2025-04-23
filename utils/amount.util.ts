@@ -15,3 +15,8 @@ export function formatAmount(amount: number, options: FormatOptions = {}): strin
 
   return parts.join(decimalSeparator)
 }
+
+export function roundTo(value : number, decimalPlaces = 1) {
+  const factor = Math.pow(10, decimalPlaces)
+  return Math.round(value * factor) / factor
+}

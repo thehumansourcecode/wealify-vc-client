@@ -217,7 +217,7 @@ await init()
         </div>
         <div class="text-12-500-20 text-[#7A7D89] mt-4 w-[400px]">{{ t(`dashboard.modals.topup.note`) }}</div>
         <div v-if="walletTopupFeeType === FeeAmountType.PERCENT" class="text-16-600-20 text-[#FF5524] mt-4">
-          {{ t(`dashboard.modals.topup.feePercent`, { fee: walletTopupFeeValue * 100 }) }}
+          {{ t(`dashboard.modals.topup.feePercent`, { fee: roundTo(walletTopupFeeValue * 100,3) }) }}
         </div>
         <div v-else-if="walletTopupFeeType === FeeAmountType.FIXED" class="text-16-600-20 text-[#FF5524] mt-4">
           {{
