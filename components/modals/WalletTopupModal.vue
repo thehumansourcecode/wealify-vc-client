@@ -5,7 +5,9 @@ import { TransactionCryptocurrency, TransactionNetwork } from '~/types/dashboard
 import VueQr from 'vue-qr/src/packages/vue-qr.vue'
 const { copy, copied } = useClipboard()
 const toast = useToast()
-
+import { showToast, ToastType } from '~/common/functions'
+const { fetchWalletInfo } = usePaymentStore()
+const { walletInfo } = storeToRefs(usePaymentStore())
 const dashboardStore = useDashboardStore()
 const commonStore = useCommonStore()
 
@@ -17,49 +19,16 @@ const walletTopupFeeType = computed(() => commonStore.feeList?.TOP_UP_WALLET.typ
 const { t } = useI18n()
 
 const topupAddress = computed(() => {
-  if (selectedNetworkOption.value.value === TransactionNetwork.SOLANA) {
-    return '2YzStCUvA2MaDxcuW8dJc4in1DY45GfwEzUnkPC87EA9'
-  } else if (selectedNetworkOption.value.value === TransactionNetwork.ETHEREUM) {
-    return '0x922cE1a5310DcEBe7CBF9eC1AcC16694b7007Fba'
-  } else if (selectedNetworkOption.value.value === TransactionNetwork.TRON) {
-    return 'TCJK2XuDrGd7BD8hxqS9PtsGYDFw9XJP8Z'
-  } else return ''
+  if (!walletInfo.value || !selectedNetworkOption.value){
+    return ''
+  }
+  return walletInfo.value.address[selectedNetworkOption.value.value]
 })
 
-const networkOptions = ref([
-  {
-    logo: `/icons/common/${TransactionNetwork.SOLANA}.svg`,
-    value: TransactionNetwork.SOLANA,
-    label: t(`dashboard.modals.topup.label.${TransactionNetwork.SOLANA}`),
-  },
-  {
-    logo: `/icons/common/${TransactionNetwork.TRON}.svg`,
-    value: TransactionNetwork.TRON,
-    label: t(`dashboard.modals.topup.label.${TransactionNetwork.TRON}`),
-  },
-  {
-    logo: `/icons/common/${TransactionNetwork.ETHEREUM}.svg`,
-    value: TransactionNetwork.ETHEREUM,
-    label: t(`dashboard.modals.topup.label.${TransactionNetwork.ETHEREUM}`),
-  },
-])
-
-const selectedNetworkOption = ref(networkOptions.value[0])
-
-const currencyOptions = ref([
-  {
-    logo: `/icons/common/${TransactionCryptocurrency.USDT}.svg`,
-    value: TransactionCryptocurrency.USDT,
-    label: t(`dashboard.modals.topup.label.${TransactionCryptocurrency.USDT}`),
-  },
-  {
-    logo: `/icons/common/${TransactionCryptocurrency.USDC}.svg`,
-    value: TransactionCryptocurrency.USDC,
-    label: t(`dashboard.modals.topup.label.${TransactionCryptocurrency.USDC}`),
-  },
-])
-
-const selectedCurrencyOption = ref(currencyOptions.value[0])
+const networkOptions = ref([])
+const selectedNetworkOption = ref(undefined)
+const currencyOptions = ref([])
+const selectedCurrencyOption = ref(undefined)
 
 function handleCopy(value: string) {
   copy(value)
@@ -70,6 +39,37 @@ function handleCopy(value: string) {
     timeout: 5000,
   })
 }
+
+const init = async ()=>{
+  const result = await fetchWalletInfo()
+  if (!result.success) {
+    showToast(ToastType.FAILED, result.message)
+    return
+  }
+
+  networkOptions.value = walletInfo.value?.network.map((network)=>{
+    return {
+      logo: `/icons/common/${network}.svg`,
+      value: network,
+      label: t(`dashboard.modals.topup.label.${network}`),
+    }
+  })
+
+  selectedNetworkOption.value = networkOptions.value[0]
+  currencyOptions.value = walletInfo.value?.token.map((token)=>{
+    return {
+      logo: `/icons/common/${token}.svg`,
+      value: token,
+      label: t(`dashboard.modals.topup.label.${token}`),
+    }
+  })
+
+  selectedCurrencyOption.value = currencyOptions.value[0]
+}
+
+
+await init()
+
 </script>
 
 <template>
@@ -127,7 +127,7 @@ function handleCopy(value: string) {
             <span
               v-if="selectedNetworkOption?.label"
               class="truncate text-14-500-20 text-[#1C1D23] max-w-[350px] pl-2.5"
-              >{{ selectedNetworkOption?.label }}</span
+            >{{ selectedNetworkOption?.label }}</span
             >
           </template>
           <template #option="{ option: network }">
