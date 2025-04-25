@@ -27,7 +27,7 @@ onMounted(() => {
   transactionStore.getTransactionList(payload.value)
 })
 
-onUnmounted(() =>
+onBeforeMount(() =>
   // Reset payload
   transactionStore.setPayload({
     page: 1,

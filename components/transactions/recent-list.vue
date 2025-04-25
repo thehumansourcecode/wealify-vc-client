@@ -24,7 +24,7 @@ onUnmounted(() =>
   // Reset payload
   transactionStore.setPayload({
     page: 1,
-    limit: 10,
+    limit: 5,
     keyword: undefined,
     transaction_type: undefined,
     transaction_status: undefined,
