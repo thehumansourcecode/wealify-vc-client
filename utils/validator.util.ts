@@ -19,7 +19,7 @@ export const passwordRequirements = [
   { regex: /\d/, text: 'At least 1 number' },
   { regex: /[A-Z]/, text: 'At least 1 uppercase letter' },
   { regex: /[a-z]/, text: 'At least 1 lowercase letter' },
-  { regex: /^(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]+$/, text: 'At least 1 special character' },
+  { regex: /^(?=.*[!@#$%^&*+\-])[A-Za-z0-9!@#$%^&*+\-]+$/, text: 'At least 1 special character' },
 ]
 
 export const validatePassword = (password: string): string | undefined => {
