@@ -96,14 +96,6 @@ export default defineNuxtConfig({
       path: '~/components',
     },
     {
-      path: '~/components/common',
-      pathPrefix: false,
-    },
-    {
-      path: '~/components/forms',
-      pathPrefix: false,
-    },
-    {
       path: '~/components/modals',
       pathPrefix: false,
     },
