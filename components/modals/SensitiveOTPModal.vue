@@ -18,6 +18,10 @@ const getCountdownTimer = computed(() => {
   let m = Math.floor(totalSeconds.value / 60)
   let s = totalSeconds.value % 60
   s = s < 10 ? `0${s}` : s
+  if (m == 0 && s == `00`){
+    errorCount.value = 0
+    clearInterval(interval.value)
+  }
   return m > 0 ? `${m}m${s}s` : `${s}s`
 })
 
@@ -27,14 +31,12 @@ async function handleCompleteInput(value: string) {
     if (!result.success){
         pinInput.value.clearInput()
         errorCount.value++
-        totalSeconds.value = 5
-        interval.value = setInterval(async () => {
-          if (totalSeconds.value > 0) {
+        if ( errorCount.value == 5){
+          totalSeconds.value = 5 // relplace time (s)
+          interval.value = setInterval(async () => {
             totalSeconds.value--
-            return
-          }
-          clearInterval(interval.value)
-        }, 1000)
+          }, 1000)
+        }
     }
   }
 }
@@ -134,10 +136,11 @@ onBeforeUnmount(() => {
       <div class="text-[#ED2C38] text-12-500-20 -mt-[14px]" v-if="errorCount > 0">{{ t('cards.modals.otp.message',{ count: 5 - errorCount})  }}</div>
         <div class="mt-[24px] ml-auto flex flex-row manrope items-center text-14-500-20 gap-0.5">
           <span class="text-[#1C1D23]">{{ t('cards.modals.otp.notReceived') }}</span>
-          <template  v-if="getCountDownTime">
+          <template v-if="getCountDownTime">
             <span  class="text-14-600-20 text-[#7A7D89]">{{ t('cards.modals.otp.resend') }}</span>
             <span class="text-14-600-20 text-[#FF5524]">{{ getCountDownTime }}s</span>
           </template>
+
           <UButton
           v-else
           @click="resendOtp"
@@ -150,7 +153,6 @@ onBeforeUnmount(() => {
     </template>
 
       <div class="flex flex-col " v-else>
-        
         <div  class="text-14-600-20 text-[#7A7D89] mb-7">{{ t('cards.modals.otp.max_attemp')  }}</div>
         <UButton
           class="flex self-end text-center justify-center  py-3 px-4 !bg-[#A5A8B8] !hover:bg-[#A5A8B8] rounded-[49px] mx-auto w-[min-content] m-0 min-w-[140px]"
