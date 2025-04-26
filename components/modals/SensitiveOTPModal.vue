@@ -12,6 +12,7 @@ const isLoading = ref(false)
 const errorCount= useCookie(`errorCount`)
 const totalSeconds = useCookie('totalSeconds')
 const interval = ref(null)
+const pinInput = ref(null)
 
 const getCountdownTimer = computed(() => {
   let m = Math.floor(totalSeconds.value / 60)
@@ -24,22 +25,16 @@ async function handleCompleteInput(value: string) {
   if (value) {
    const result =  await cardStore.verifyOTPSensitiveDetail(value)
     if (!result.success){
-      errorCount.value++
-      if(errorCount.value >= 1){
+        pinInput.value.clearInput()
+        errorCount.value++
         totalSeconds.value = 5
         interval.value = setInterval(async () => {
           if (totalSeconds.value > 0) {
             totalSeconds.value--
             return
-          }else{
-            clearInterval(interval.value)
           }
-          if (errorCount.value > 0){
-            errorCount.value = 0
-            await cardStore.sendOtpMessage()
-          }
+          clearInterval(interval.value)
         }, 1000)
-      }
     }
   }
 }
@@ -108,7 +103,7 @@ onBeforeUnmount(() => {
       </div>
      
 
-      <template  v-if="errorCount < 1">
+      <template  v-if="errorCount < 5">
         <div class="text-14-500-20 manrope">
           <div class="flex flex-row gap-0.5">
             <span class="text-[#7a7d89]">{{ t('cards.modals.otp.description') }}</span>
@@ -121,6 +116,7 @@ onBeforeUnmount(() => {
           </div>
       </div>
       <PinInput
+        ref="pinInput"
         class="flex flex-row justify-between gap-1"
         :input-classes="[
           'w-[68px] h-[68px] relative rounded-[49px] text-center justify-center p-2',
