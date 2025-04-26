@@ -153,7 +153,7 @@ onBeforeUnmount(() => {
         </div>
     </template>
 
-      <div class="flex flex-col " v-else>
+      <div v-else class="flex flex-col">
         <div  class="text-14-600-20 text-[#7A7D89] mb-7">{{ t('cards.modals.otp.max_attemp')  }}</div>
         <UButton
           class="flex self-end text-center justify-center  py-3 px-4 !bg-[#A5A8B8] !hover:bg-[#A5A8B8] rounded-[49px] mx-auto w-[min-content] m-0 min-w-[140px]"
