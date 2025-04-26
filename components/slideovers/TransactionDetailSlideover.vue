@@ -21,7 +21,7 @@ const transactionStore = useTransactionStore()
 const isOpenTransactionDetailSlideover = computed(() => transactionStore.isOpenTransactionDetailSlideover)
 const transactionDetail = computed(() => transactionStore.selectedTransactionDetail)
 
-const cardNumberArray = computed(() => transactionDetail.value?.virtual_card?.card_number?.match(/.{1,4}/g))
+const cardNumberArray = computed(() => transactionDetail.value?.virtual_card?.card_number)
 
 function copyTransactionId() {
   if (!transactionDetail.value) return
