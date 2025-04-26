@@ -32,6 +32,7 @@ const { isVisibleConfirmFreeze,
   activeCardCount,
   isPreventClose,
   totalCreatedCard,
+  totalBalanceCard,
 } = storeToRefs(cardStore)
 
 function isCardSelected(card: ICardDetail) {
@@ -500,7 +501,7 @@ onUnmounted(() =>
         </div>
         <img src="~/assets/img/common/line.svg" alt="" />
         <div class="text-[#1C1D23] text-12-600-20">
-          {{ t('cards.filter.label.total', { amount: formatMoney(totalActiveAmount) }) }}
+          {{ t('cards.filter.label.total', { amount: formatMoney(totalBalanceCard) }) }}
         </div>
       </div>
     </div>

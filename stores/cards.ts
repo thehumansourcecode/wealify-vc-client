@@ -17,6 +17,7 @@ import { FeeType, type IDropdownCardData } from '~/types/common'
 export const useCardStore = defineStore('card', () => {
   const cardCount = ref(0)
   const totalCreatedCard = ref(0)
+  const totalBalanceCard = ref(0)
   const activeCardCount  = ref(0)
   const { t } = useI18n()
   const commonStore = useCommonStore()
@@ -128,6 +129,7 @@ export const useCardStore = defineStore('card', () => {
       cardCount.value = response.data.total_items
       activeCardCount.value =  response.data.total_active
       totalCreatedCard.value = response.data.total_created
+      totalBalanceCard.value = response.data.total_balance
     }
     isLoading.value.cardTable = false
     return response
@@ -320,6 +322,7 @@ export const useCardStore = defineStore('card', () => {
     cardList,
     cardCount,
     totalCreatedCard,
+    totalBalanceCard,
     activeCardCount,
     getCardList,
     activeCardList,
