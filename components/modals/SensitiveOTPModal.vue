@@ -20,6 +20,7 @@ const getCountdownTimer = computed(() => {
   s = s < 10 ? `0${s}` : s
   if (m == 0 && s == `00`){
     errorCount.value = 0
+    cardStore.sendOtpMessage()
     clearInterval(interval.value)
   }
   return m > 0 ? `${m}m${s}s` : `${s}s`
