@@ -4,6 +4,7 @@ import { formatYYYYMMDDhmmA } from '~/common/functions'
 import { CommonCurrency } from '~/types/common'
 import { TransactionDetailType, TransactionVCType } from '~/types/transactions'
 import { formatAmount } from '~/utils/amount.util'
+import {TransactionNetwork } from '~/types/dashboard'
 
 const { copy, copied } = useClipboard()
 const { t } = useI18n()
@@ -37,7 +38,7 @@ function copyTransactionId() {
 }
 
 function copyTransactionAddress() {
-  // copy(transactionDetail.value.address)
+  copy(transactionDetail.value.crypto_wallet.address)
   copyIndex.value = 1
 
   toast.clear()
@@ -58,6 +59,18 @@ function handleNewTransaction() {
 }
 
 const transactionDestination = computed(() => {})
+
+const getLinkTxhash = (network,tx_id) => {
+  switch (network){
+    case TransactionNetwork.ETHEREUM:
+      return `<a target='_blank' href="https://etherscan.io/tx/${tx_id}">etherscan.io</a>`
+    case TransactionNetwork.SOLANA:
+      return `<a target='_blank' href="https://solscan.io/tx/${tx_id}">solscan.io</a>`
+    case TransactionNetwork.TRON:
+      return `<a target='_blank' href="https://tronscan.org/#/searcherror/${tx_id}">tronscan.org</a>`
+  }
+}
+
 </script>
 
 <template>
@@ -212,23 +225,24 @@ const transactionDestination = computed(() => {})
               </div>
               <div class="flex flex-row gap-2 items-center">
                 <div class="text-14-500-20 text-[#1C1D23]">
-                  <!-- {{ shortenAddress(transactionDetail.address) }} -->
+                  {{ shortenAddress(transactionDetail?.crypto_wallet?.address) }}
                 </div>
-                <!-- <img
+                 <img
                   class="cursor-pointer"
                   @click="copyTransactionAddress()"
                   :src="copied && copyIndex ? `/icons/common/copied-bordered.svg` : `/icons/common/copy-bordered.svg`"
                   alt=""
-                /> -->
+                />
               </div>
             </div>
             <div class="flex flex-row justify-between items-center">
               <div class="text-12-500-20 text-[#7A7D89]">
                 {{ t('transactions.detail.txhash') }}
               </div>
-              <ULink :to="transactionDetail?.txhash" target="_blank" class="text-14-500-20 text-[#1C1D23]">
-                {{ transactionDetail?.txhash }}
-              </ULink>
+              <div class="flex flex-row gap-2 items-center">
+                <div class="text-14-500-20 text-[#1C1D23]" v-html='getLinkTxhash(transactionDetail?.crypto_wallet?.network,transactionDetail?.confirm_transaction?.confirm_transaction_id)'>
+                </div>
+              </div>
             </div>
           </div>
           <div v-else class="flex flex-col gap-5 w-full">
