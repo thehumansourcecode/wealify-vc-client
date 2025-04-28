@@ -138,10 +138,13 @@ export const useCardStore = defineStore('card', () => {
   // Card actions: Issue, topup, withdraw, cancel, freeze
 
   async function issueCard(params: IIssueCardParams) {
-    // Flow: issue card => get id from response => back to card list page => call API to get card data from id => Show card detail
+
     isLoading.value.issueCard = true
     commonStore.toggleProcessingModal(true)
     const response = await cardService.issueCard(params)
+    commonStore.toggleProcessingModal(false)
+    isLoading.value.issueCard = false
+
     if (response.success) {
       const id = response.data.id
       navigateTo('/cards')
@@ -150,20 +153,15 @@ export const useCardStore = defineStore('card', () => {
       setPayload({ ...payload.value, card_status: [CardStatus.ACTIVE] })
       await getCardList(payload.value)
       // Open card detail slideover logic
-      const selectedCardDetail = cardList.value.find((card: ICardDetail) => card.id === id)
-      if (selectedCardDetail) {
-        const getCardDetailResponse = await getCardDetailById(id)
-        if (getCardDetailResponse.success) {
-          const cardDetail = getCardDetailResponse.data
-          setSelectedCardForTopup(cardDetail)
-          toggleCardDetailSlideover(true)
-        }
-      }
+      selectedCardDetail.value = response.data
+      isShowCardSensitiveDetail.value = true
+      setSelectedCardForTopup(selectedCardDetail.value)
+      toggleCardDetailSlideover(true)
+
     } else {
       showToast(ToastType.FAILED, response.message)
     }
-    commonStore.toggleProcessingModal(false)
-    isLoading.value.issueCard = false
+
     return response
   }
 
