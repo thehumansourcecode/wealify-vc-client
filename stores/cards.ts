@@ -154,10 +154,10 @@ export const useCardStore = defineStore('card', () => {
       await getCardList(payload.value)
       // Open card detail slideover logic
       selectedCardDetail.value = response.data
-      isShowCardSensitiveDetail.value = true
+      cardSensitiveDetail.value = response.data
       setSelectedCardForTopup(selectedCardDetail.value)
       toggleCardDetailSlideover(true)
-
+      isShowCardSensitiveDetail.value = true
     } else {
       showToast(ToastType.FAILED, response.message)
     }
