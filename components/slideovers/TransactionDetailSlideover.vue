@@ -146,7 +146,11 @@ const getWallet = (network) => {
               {{ t(`transactions.detail.amountLabel.${transactionDetail?.detailType}`) }}
             </div>
             <div class="text-16-700-24 text-[#1C1D23]">
-              {{
+              {{ transactionDetail?.detailType === TransactionDetailType.WALLET_TOP_UP ?
+                t(`transactions.detail.amount.${transactionDetail?.detailType}`, {
+                  currency: transactionDetail.confirm_transaction.raw_data.token ,
+                  amount: formatMoney(transactionDetail?.amount),
+                }) :
                 t(`transactions.detail.amount.${transactionDetail?.detailType}`, {
                   currency: transactionDetail.currency.symbol ,
                   amount: formatMoney(transactionDetail?.amount),
