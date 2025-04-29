@@ -93,6 +93,7 @@ export default {
     feeValue: '{fee} USD',
     account: 'Top up account',
     address: 'Received address',
+    wallet: 'Wallet',
     txhash: 'TxHash',
     cardName: 'Card name',
     cardNumber: 'Card number',

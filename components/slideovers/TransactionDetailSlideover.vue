@@ -71,6 +71,17 @@ const getLinkTxhash = (network,tx_id) => {
   }
 }
 
+const getWallet = (network) => {
+  switch (network){
+    case TransactionNetwork.ETHEREUM:
+      return `ETHEREUM(ETH)`
+    case TransactionNetwork.SOLANA:
+      return `SOLANA(SOL)`
+    case TransactionNetwork.TRON:
+      return `TRON(TRX)`
+  }
+}
+
 </script>
 
 <template>
@@ -219,6 +230,18 @@ const getLinkTxhash = (network,tx_id) => {
             v-if="transactionDetail.detailType === TransactionDetailType.WALLET_TOP_UP"
             class="flex flex-col gap-5 w-full"
           >
+
+            <div class="flex flex-row justify-between items-center">
+              <div class="text-12-500-20 text-[#7A7D89]">
+                {{ t('transactions.detail.wallet') }}
+              </div>
+              <div class="flex flex-row gap-2 items-center">
+                <div class="text-14-500-20 text-[#1C1D23]">
+                  {{ getWallet(transactionDetail?.crypto_wallet?.network) }}
+                </div>
+              </div>
+            </div>
+
             <div class="flex flex-row justify-between items-center">
               <div class="text-12-500-20 text-[#7A7D89]">
                 {{ t('transactions.detail.address') }}
