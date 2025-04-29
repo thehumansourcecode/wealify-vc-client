@@ -10,6 +10,7 @@ const countDownTime = ref(0)
 const isLoading = ref(false)
 
 const errorCount= useCookie(`errorCount`)
+const showCountDown = useCookie(`showCountDown`)
 const countDownStore = useCountDownStore()
 const { totalSeconds } = storeToRefs(countDownStore)
 const pinInput = ref(null)
@@ -19,7 +20,7 @@ const getCountdownTimer = computed(() => {
   let s = totalSeconds.value % 60
   s = s < 10 ? `0${s}` : s
   if (m == 0 && s == `00`){
-    errorCount.value = 0
+    showCountDown.value = false
     cardStore.sendOtpMessage()
     countDownStore.stop()
   }
@@ -34,6 +35,8 @@ async function handleCompleteInput(value: string) {
         pinInput.value.clearInput()
         errorCount.value++
         if ( errorCount.value == 5){
+          errorCount.value == 0
+          showCountDown.value = true
           countDownStore.start(600)
         }
     }
@@ -53,7 +56,7 @@ const getCountDownTime = computed(()=>{
 })
 
 const init = ()=>{
-  if (errorCount.value == 5){
+  if (showCountDown.value){
     countDownStore.resume()
   }
   countDownTime.value = 30
@@ -101,7 +104,7 @@ onMounted(async () => {
       </div>
      
 
-      <template  v-if="errorCount < 5">
+      <template  v-if="!showCountDown">
         <div class="text-14-500-20 manrope">
           <div class="flex flex-row gap-0.5">
             <span class="text-[#7a7d89]">{{ t('cards.modals.otp.description') }}</span>
