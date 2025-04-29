@@ -74,11 +74,11 @@ const getLinkTxhash = (network,tx_id) => {
 const getWallet = (network) => {
   switch (network){
     case TransactionNetwork.ETHEREUM:
-      return `ETHEREUM(ETH)`
+      return `Ethereum (ETH)`
     case TransactionNetwork.SOLANA:
-      return `SOLANA(SOL)`
+      return `Solana (SOL)`
     case TransactionNetwork.TRON:
-      return `TRON(TRX)`
+      return `Tron (TRX)`
   }
 }
 

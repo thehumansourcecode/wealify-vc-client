@@ -2,6 +2,7 @@
 import { formatMoney } from '~/common/functions'
 import { type ITransactionData, TransactionVCType } from '~/types/transactions'
 import { formatDDMMYYYY} from '~/common/functions'
+import {TransactionNetwork } from '~/types/dashboard'
 const dayjs = useDayjs()
 
 const { t } = useI18n()
@@ -57,6 +58,18 @@ function handleClickTransaction(row: ITransactionData) {
   transactionStore.setSelectedTransactionDetail(row)
   transactionStore.toggleTransactionDetailSlideover(true)
 }
+
+const getTransactionWallet = (network,token) => {
+  switch (network){
+    case TransactionNetwork.ETHEREUM:
+      return `${token} (ETHEREUM)`
+    case TransactionNetwork.SOLANA:
+      return `${token} (SOLANA)`
+    case TransactionNetwork.TRON:
+      return `${token} (TRON)`
+  }
+}
+
 </script>
 <template>
   <div v-if="!transactionList.length" class="flex flex-col items-center justify-center gap-4 p-10 pt-0 h-full">
@@ -110,9 +123,16 @@ function handleClickTransaction(row: ITransactionData) {
           <span class="text-14-600-20 text-[#1b1c23] text-sm font-semibold font-['Manrope'] leading-tight">{{
             t(`transactions.list.type.${row.transaction_vc_type}`)
           }}</span>
-          <span class="text-12-500-20 text-[#7A7D89]">{{
-            row.virtual_card ? t(`transactions.list.card`) : t(`transactions.list.cryptoTransfer`)
-          }}</span>
+          <div class='flex gap-[6px]'>
+            <img
+              v-if="row.crypto_walle"
+              class="cursor-pointer w-[16px] h-[16px]"
+              src="/icons/common/coin_logo.png"
+            />
+            <span class="text-12-500-20 text-[#7A7D89]">
+            {{row.virtual_card ? t(`transactions.list.card`) : row.crypto_wallet ? getTransactionWallet(row?.crypto_wallet?.network,row.confirm_transaction.raw_data.token) : t(`transactions.list.cryptoTransfer`) }}
+          </span>
+          </div>
         </div>
       </div>
     </template>
