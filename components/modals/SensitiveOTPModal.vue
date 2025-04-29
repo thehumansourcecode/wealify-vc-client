@@ -37,7 +37,7 @@ async function handleCompleteInput(value: string) {
         if ( errorCount.value == 5){
           errorCount.value == 0
           showCountDown.value = true
-          countDownStore.start(600)
+          countDownStore.start(300)
         }
     }
   }
