@@ -125,7 +125,7 @@ const getTransactionWallet = (network,token) => {
           }}</span>
           <div class='flex gap-[6px]'>
             <img
-              v-if="row.crypto_walle"
+              v-if="row.crypto_wallet"
               class="cursor-pointer w-[16px] h-[16px]"
               src="/icons/common/coin_logo.png"
             />
