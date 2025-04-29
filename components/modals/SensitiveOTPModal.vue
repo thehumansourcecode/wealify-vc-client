@@ -10,8 +10,8 @@ const countDownTime = ref(0)
 const isLoading = ref(false)
 
 const errorCount= useCookie(`errorCount`)
-const totalSeconds = useCookie('totalSeconds')
-const interval = ref(null)
+const countDownStore = useCountDownStore()
+const { totalSeconds } = storeToRefs(countDownStore)
 const pinInput = ref(null)
 
 const getCountdownTimer = computed(() => {
@@ -21,10 +21,11 @@ const getCountdownTimer = computed(() => {
   if (m == 0 && s == `00`){
     errorCount.value = 0
     cardStore.sendOtpMessage()
-    clearInterval(interval.value)
+    countDownStore.stop()
   }
   return m > 0 ? `${m}m${s}s` : `${s}s`
 })
+
 
 async function handleCompleteInput(value: string) {
   if (value) {
@@ -33,10 +34,7 @@ async function handleCompleteInput(value: string) {
         pinInput.value.clearInput()
         errorCount.value++
         if ( errorCount.value == 5){
-          totalSeconds.value = 600 // relplace time (s)
-          interval.value = setInterval(async () => {
-            totalSeconds.value--
-          }, 1000)
+          countDownStore.start(600)
         }
     }
   }
@@ -55,9 +53,10 @@ const getCountDownTime = computed(()=>{
 })
 
 const init = ()=>{
-  errorCount.value = 0
+  if (errorCount.value == 5){
+    countDownStore.resume()
+  }
   countDownTime.value = 30
-  totalSeconds.value = 0
 }
 
 const resendOtp = async ()=>{
@@ -69,13 +68,9 @@ const resendOtp = async ()=>{
 
 onMounted(async () => {
   init()
-  errorCount.value = 0
   await cardStore.sendOtpMessage()
 })
 
-onBeforeUnmount(() => {
-  clearInterval(interval.value)
-})
 </script>
 
 <template>
