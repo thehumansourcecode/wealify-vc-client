@@ -33,7 +33,7 @@ async function handleCompleteInput(value: string) {
         pinInput.value.clearInput()
         errorCount.value++
         if ( errorCount.value == 5){
-          totalSeconds.value = 5 // relplace time (s)
+          totalSeconds.value = 600 // relplace time (s)
           interval.value = setInterval(async () => {
             totalSeconds.value--
           }, 1000)
