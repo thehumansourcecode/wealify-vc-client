@@ -166,7 +166,13 @@ const getWallet = (network) => {
                 "
               >
                 {{
-                  t(`transactions.detail.rateValue`, {
+                  transactionDetail?.detailType === TransactionDetailType.WALLET_TOP_UP ?
+                    t(`transactions.detail.rateValue`, {
+                      currency: transactionDetail.confirm_transaction.raw_data.token ,
+                      rateUSDT: formatAmount(transactionDetail?.rate.value),
+                      rateUSD: 1,
+                    })
+                    : t(`transactions.detail.rateValue`, {
                     currency: transactionDetail.currency.symbol ,
                     rateUSDT: formatAmount(transactionDetail?.rate.value),
                     rateUSD: 1,
