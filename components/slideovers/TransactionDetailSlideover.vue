@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { formatMoney, shortenAddress } from '~/common/functions'
 import { formatYYYYMMDDhmmA } from '~/common/functions'
-import { CommonCurrency } from '~/types/common'
+import { CommonCurrency,FeeAmountType } from '~/types/common'
 import { TransactionDetailType, TransactionVCType } from '~/types/transactions'
 import { formatAmount } from '~/utils/amount.util'
 import {TransactionNetwork } from '~/types/dashboard'
@@ -120,7 +120,7 @@ const getWallet = (network) => {
               {{ formatMoney(transactionDetail.received_amount, CommonCurrency.USD) }}
             </div>
             <div class="text-12-500-20 text-[#7A7D89]">
-              {{ t(`transactions.detail.to`, { destination: transactionDetail?.to || 'Wealify Balance' }) }}
+             to {{ t(`transactions.detail.to.${transactionDetail.detailType}`) }}
             </div>
           </div>
           <div
@@ -189,6 +189,8 @@ const getWallet = (network) => {
           <div class="flex flex-row justify-between">
             <div class="text-12-500-20 text-[#7A7D89]">
               {{ t('transactions.detail.fee') }}
+              <span v-if="transactionDetail.fee.type == FeeAmountType.PERCENT">({{transactionDetail.fee.value}}%)
+              </span>
             </div>
             <div class="text-14-500-20 text-[#1C1D23]">
               {{

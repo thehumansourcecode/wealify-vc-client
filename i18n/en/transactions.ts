@@ -71,7 +71,14 @@ export default {
     },
   },
   detail: {
-    to: 'to {destination}',
+    to: {
+      [TransactionDetailType.CARD_PAYMENT]: 'Card',
+      [TransactionDetailType.CARD_TOP_UP]: 'Card',
+      [TransactionDetailType.CARD_WITHDRAW]: 'Card',
+      [TransactionDetailType.WALLET_TOP_UP]: 'Wallet',
+      [TransactionDetailType.WALLET_WITHDRAW]: 'Wallet',
+      [TransactionDetailType.WALLET_REFUND]: 'Wallet',
+    },
     amountLabel: {
       [TransactionDetailType.CARD_PAYMENT]: 'Merchant charged',
       [TransactionDetailType.CARD_TOP_UP]: 'Top up amount',
