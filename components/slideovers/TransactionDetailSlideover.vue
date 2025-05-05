@@ -161,7 +161,7 @@ const getWallet = (network) => {
             <div class="text-16-700-24 text-[#1C1D23]">
               {{ transactionDetail?.detailType === TransactionDetailType.WALLET_TOP_UP ?
                 t(`transactions.detail.amount.${transactionDetail?.detailType}`, {
-                  currency: transactionDetail.confirm_transaction.raw_data.token ,
+                  currency: transactionDetail.confirm_transaction?.raw_data?.token ,
                   amount: formatMoney(transactionDetail?.amount),
                 }) :
                 t(`transactions.detail.amount.${transactionDetail?.detailType}`, {
@@ -185,7 +185,7 @@ const getWallet = (network) => {
                 {{
                   transactionDetail?.detailType === TransactionDetailType.WALLET_TOP_UP ?
                     t(`transactions.detail.rateValue`, {
-                      currency: transactionDetail.confirm_transaction.raw_data.token ,
+                      currency: transactionDetail.confirm_transaction?.raw_data?.token ,
                       rateUSDT: formatAmount(transactionDetail?.rate.value),
                       rateUSD: 1,
                     })

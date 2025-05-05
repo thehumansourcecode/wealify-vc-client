@@ -75,7 +75,7 @@ export default {
       [TransactionDetailType.CARD_PAYMENT]: 'Card',
       [TransactionDetailType.CARD_TOP_UP]: 'Card',
       [TransactionDetailType.CARD_WITHDRAW]: 'Card',
-      [TransactionDetailType.WALLET_TOP_UP]: 'Wallet',
+      [TransactionDetailType.WALLET_TOP_UP]: 'refund to wallet when cancelling card',
       [TransactionDetailType.WALLET_WITHDRAW]: 'Wallet',
       [TransactionDetailType.WALLET_REFUND]: 'Wallet',
     },
