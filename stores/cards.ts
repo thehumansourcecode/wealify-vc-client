@@ -213,6 +213,7 @@ export const useCardStore = defineStore('card', () => {
     if (response.success) {
       showToast(ToastType.SUCCESS, t('common.toast.success.topupCard'))
       await getCardList(payload.value)
+      await getCardDetailById(params.id)
     } else {
       showToast(ToastType.FAILED, t('common.toast.failed.topupCard'))
     }
