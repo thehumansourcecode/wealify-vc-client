@@ -35,7 +35,7 @@ async function handleCompleteInput(value: string) {
         pinInput.value.clearInput()
         errorCount.value++
         if ( errorCount.value == 5){
-          errorCount.value == 0
+          errorCount.value = 0
           showCountDown.value = true
           countDownStore.start(300)
         }
