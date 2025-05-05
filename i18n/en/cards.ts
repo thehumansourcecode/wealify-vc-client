@@ -188,7 +188,8 @@ export default {
       message:'The OTP you entered is invalid or expired. You only have {count} attempts left',
       max_attemp:'You have reached the maximum fail attempts. Please try again after 30 minutes',
       button:{
-        resend:'Resend'
+        resend:'Resend',
+        try_again:'Try again',
       }
     },
     topup: {

@@ -25,9 +25,8 @@ const getCountdownTimer = computed(() => {
   let s = totalSeconds.value % 60
   s = s < 10 ? `0${s}` : s
   if (m == 0 && s == `00`){
-    showCountDown.value = false
-    cardStore.sendOtpMessage()
     countDownStore.stop()
+    return t('cards.modals.otp.button.try_again')
   }
   return m > 0 ? `${m}m${s}s` : `${s}s`
 })
@@ -76,6 +75,15 @@ const resendOtp = async ()=>{
   isLoading.value = false
   countDownTime.value = 30
 }
+
+const tryAgainHandler = ()=>{
+  if (totalSeconds.value > 0){
+    return
+  }
+  showCountDown.value = false
+  cardStore.sendOtpMessage()
+}
+
 
 onMounted(async () => {
  await init()
@@ -161,6 +169,7 @@ onMounted(async () => {
       <div v-else class="flex flex-col">
         <div  class="text-14-600-20 text-[#7A7D89] mb-7">{{ t('cards.modals.otp.max_attemp')  }}</div>
         <UButton
+          @click="tryAgainHandler"
           class="flex self-end text-center justify-center  py-3 px-4 !bg-[#A5A8B8] !hover:bg-[#A5A8B8] rounded-[49px] mx-auto w-[min-content] m-0 min-w-[140px]"
           >
           <span>{{getCountdownTimer}}</span>
