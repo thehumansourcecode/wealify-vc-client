@@ -29,7 +29,7 @@ watch(
 )
 
 onMounted(async() => {
-  await init
+  await init()
 })
 
 </script>
