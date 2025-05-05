@@ -37,7 +37,7 @@ async function handleCompleteInput(value: string) {
         if ( errorCount.value == 5){
           errorCount.value = 0
           showCountDown.value = true
-          countDownStore.start(300)
+          countDownStore.start(120)
         }
     }
   }
@@ -55,11 +55,14 @@ const getCountDownTime = computed(()=>{
   return countDownTime.value
 })
 
-const init = ()=>{
+const init = async ()=>{
+  errorCount.value = 0
+  countDownTime.value = 30
   if (showCountDown.value){
     countDownStore.resume()
+    return
   }
-  countDownTime.value = 30
+  await cardStore.sendOtpMessage()
 }
 
 const resendOtp = async ()=>{
@@ -70,8 +73,7 @@ const resendOtp = async ()=>{
 }
 
 onMounted(async () => {
-  init()
-  await cardStore.sendOtpMessage()
+ await init()
 })
 
 </script>
