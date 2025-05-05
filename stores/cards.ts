@@ -145,7 +145,6 @@ export const useCardStore = defineStore('card', () => {
       const id = response.data.id
       navigateTo('/cards')
       showToast(ToastType.SUCCESS, t('common.toast.success.issueCard'))
-      setPayload({ ...payload.value, card_status: [CardStatus.ACTIVE] })
       await getCardList(payload.value)
       selectedCardDetail.value = response.data
       cardSensitiveDetail.value = response.data
