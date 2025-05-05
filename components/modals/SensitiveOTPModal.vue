@@ -1,19 +1,24 @@
 <script setup lang="ts">
 const cardStore = useCardStore()
+
 const {
   isPreventClose
 } = storeToRefs(cardStore)
 const profileStore = useProfileStore()
 const { t } = useI18n()
+
 const selectedCard = computed(() => cardStore.selectedCardDetail)
 const countDownTime = ref(0)
 const isLoading = ref(false)
-
-const errorCount= useCookie(`errorCount`)
-const showCountDown = useCookie(`showCountDown`)
-const countDownStore = useCountDownStore()
-const { totalSeconds } = storeToRefs(countDownStore)
 const pinInput = ref(null)
+
+const countDownStore = useCountDownStore()
+
+const {
+  totalSeconds,
+  errorCount,
+  showCountDown
+} = storeToRefs(countDownStore)
 
 const getCountdownTimer = computed(() => {
   let m = Math.floor(totalSeconds.value / 60)

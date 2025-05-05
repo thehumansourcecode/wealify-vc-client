@@ -4,6 +4,8 @@ import { useCookie } from '#app'
 export const useCountDownStore = defineStore('countDown', () => {
   const cookieSeconds = useCookie<number>('countdown-seconds', { default: () => 0 })
   const cookieStartTime = useCookie<number>('countdown-start-at', { default: () => 0 })
+  const errorCount = useCookie<number>('errorCount', { default: () => 0 })
+  const showCountDown = useCookie<Boolean>('showCountDown', { default: () => false })
 
   const totalSeconds = ref(0)
   let interval: ReturnType<typeof setInterval> | null = null
@@ -53,6 +55,8 @@ export const useCountDownStore = defineStore('countDown', () => {
   }
 
   return {
+    errorCount,
+    showCountDown,
     totalSeconds,
     start,
     resume,
