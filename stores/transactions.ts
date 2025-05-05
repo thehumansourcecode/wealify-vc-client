@@ -40,7 +40,11 @@ export const useTransactionStore = defineStore('transaction', () => {
     const type = transaction.transaction_vc_type
     let detailType
     if (isCardTransaction && type === TransactionVCType.TOP_UP) {
-      detailType = TransactionDetailType.CARD_TOP_UP
+      if (transaction.is_issue){
+        detailType = TransactionDetailType.CARD_ISSUE_TOPUP
+      }else{
+        detailType = TransactionDetailType.CARD_TOP_UP
+      }
     }
     if (isCardTransaction && type === TransactionVCType.WITHDRAWAL) {
       detailType = TransactionDetailType.CARD_WITHDRAW

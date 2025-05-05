@@ -60,6 +60,7 @@ export interface ITransactionData {
   created_at: string
   id: string
   transaction_id: string
+  is_issue: Boolean
   fee: Fee
   rate: Rate
   amount: number
@@ -89,6 +90,7 @@ export interface IGetTransactionListParams {
 }
 
 export enum TransactionDetailType {
+  CARD_ISSUE_TOPUP = 'CARD_ISSUE_TOP_UP',
   CARD_TOP_UP = 'CARD_TOP_UP',
   CARD_WITHDRAW = 'CARD_WITHDRAW',
   CARD_PAYMENT = 'CARD_PAYMENT',
