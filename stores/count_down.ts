@@ -54,6 +54,13 @@ export const useCountDownStore = defineStore('countDown', () => {
     cookieStartTime.value = 0
   }
 
+  function clear() {
+    stop()
+    totalSeconds.value = 0
+    errorCount.value = 0
+    showCountDown.value = false
+  }
+
   return {
     errorCount,
     showCountDown,
@@ -61,5 +68,6 @@ export const useCountDownStore = defineStore('countDown', () => {
     start,
     resume,
     stop,
+    clear,
   }
 })
