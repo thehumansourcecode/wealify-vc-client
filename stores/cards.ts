@@ -219,12 +219,7 @@ export const useCardStore = defineStore('card', () => {
     const response = await cardService.topup(params)
     if (response.success) {
       showToast(ToastType.SUCCESS, t('common.toast.success.topupCard'))
-      // On change status => call API. Avoid duplicate API calls
-      if (payload.value.card_status.length !== 1 || payload.value.card_status[0] !== CardStatus.ACTIVE) {
-        setPayload({ ...payload.value, card_status: [CardStatus.ACTIVE] })
-      } else {
-        await getCardList(payload.value)
-      }
+      await getCardList(payload.value)
     } else {
       showToast(ToastType.FAILED, t('common.toast.failed.topupCard'))
     }
