@@ -6,6 +6,7 @@ import { PanelTab,CommonLanguage } from '~/types/common'
 const { t } = useI18n()
 const dayjs = useDayjs()
 
+const countDownStore = useCountDownStore()
 const userStore = useUserStore()
 const authStore = useAuthStore()
 const commonStore = useCommonStore()
@@ -74,6 +75,7 @@ const items = [
 ]
 
 async function logout() {
+  countDownStore.clear()
   await authStore.logout()
   navigateTo('/auth/sign-in')
 }
