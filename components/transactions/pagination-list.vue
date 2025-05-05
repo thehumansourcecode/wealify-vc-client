@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const { t } = useI18n()
 const transactionStore = useTransactionStore()
-const payload = computed(() => transactionStore.payload)
+const { payload } = storeToRefs(transactionStore)
 const transactionCount = computed(() => transactionStore.transactionCount)
 const limitOptions = ref([10, 30, 50])
 const page = computed(() => payload.value.page)
@@ -10,6 +10,11 @@ const limit = computed(() => payload.value.limit)
 async function onChangePage(page: number) {
   await transactionStore.setPayloadPage(page)
   transactionStore.getTransactionList(payload.value)
+}
+
+const init = async() => {
+  payload.value.limit = 10
+  await transactionStore.getTransactionList(payload.value)
 }
 
 watch(
@@ -23,8 +28,8 @@ watch(
   { deep: true },
 )
 
-onMounted(() => {
-  transactionStore.getTransactionList(payload.value)
+onMounted(async() => {
+  await init
 })
 
 </script>

@@ -16,22 +16,6 @@ const init = async () => {
 
 onMounted(init)
 
-onActivated(init)
-
-onUpdated(init)
-
-onUnmounted(() =>
-  // Reset payload
-  transactionStore.setPayload({
-    page: 1,
-    limit: 5,
-    keyword: undefined,
-    transaction_type: undefined,
-    transaction_status: undefined,
-    start_date: undefined,
-    end_date: undefined,
-  }),
-)
 </script>
 <template>
   <div class="rounded-[12px] flex flex-col border border-[#D7D9E5] mb-8 grow overflow-hidden">
