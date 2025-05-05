@@ -37,6 +37,19 @@ function copyTransactionId() {
   })
 }
 
+function copyTransactionLinkId() {
+  if (!transactionDetail.value) return
+  copy(transactionDetail.value.transaction_linked?.transaction_id)
+  copyIndex.value = 2
+
+  toast.clear()
+  toast.add({
+    title: t('common.toast.copy'),
+    avatar: { src: '/icons/common/toast-success.svg' },
+    timeout: 5000,
+  })
+}
+
 function copyTransactionAddress() {
   copy(transactionDetail.value.crypto_wallet.address)
   copyIndex.value = 1
@@ -220,6 +233,24 @@ const getWallet = (network) => {
               />
             </div>
           </div>
+
+          <div class="flex flex-row justify-between items-center pb-4">
+            <div class="text-12-500-20 text-[#7A7D89]">
+              {{ t(`transactions.detail.id2.${transactionDetail?.transaction_vc_type}`) }}
+            </div>
+            <div class="flex flex-row gap-2 items-center">
+              <div class="text-14-500-20 text-[#1C1D23]">
+                {{ transactionDetail?.transaction_linked?.transaction_id }}
+              </div>
+              <img
+                class="cursor-pointer"
+                @click="copyTransactionLinkId()"
+                :src="copied && copyIndex == 2 ? `/icons/common/copied-bordered.svg` : `/icons/common/copy-bordered.svg`"
+                alt=""
+              />
+            </div>
+          </div>
+
           <div class="flex flex-row justify-between items-center pb-5">
             <div class="text-12-500-20 text-[#7A7D89]">
               {{ t('transactions.detail.created_at') }}

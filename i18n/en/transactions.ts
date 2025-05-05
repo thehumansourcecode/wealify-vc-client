@@ -106,8 +106,13 @@ export default {
     cardNumber: 'Card number',
     id: {
       [TransactionVCType.PAYMENT]: 'Payment ID',
-      [TransactionVCType.TOP_UP]: 'Top up ID',
-      [TransactionVCType.WITHDRAWAL]: 'Withdraw ID',
+      [TransactionVCType.TOP_UP]: 'Card Top up ID',
+      [TransactionVCType.WITHDRAWAL]: 'Wallet Withdraw ID',
+    },
+    id2: {
+      [TransactionVCType.PAYMENT]: 'Payment ID',
+      [TransactionVCType.TOP_UP]: 'Wallet Withdraw ID',
+      [TransactionVCType.WITHDRAWAL]: 'Card Topup ID',
     },
     created_at: 'Created at',
     successAt: 'Success at',
