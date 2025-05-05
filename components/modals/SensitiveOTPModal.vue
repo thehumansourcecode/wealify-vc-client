@@ -80,6 +80,7 @@ const tryAgainHandler = ()=>{
   if (totalSeconds.value > 0){
     return
   }
+  countDownTime.value = 30
   showCountDown.value = false
   cardStore.sendOtpMessage()
 }
