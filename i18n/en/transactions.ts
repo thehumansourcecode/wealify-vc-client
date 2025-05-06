@@ -43,7 +43,7 @@ export default {
       [TransactionVCStatus.FAILURE]: 'Failed',
     },
     card: 'Card',
-    cryptoTransfer: 'Wallet',
+    wallet: 'Wallet',
     action: {
       viewDetail: 'View Detail',
     },
