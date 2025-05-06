@@ -77,7 +77,7 @@ export default {
       [TransactionDetailType.CARD_ISSUE_TOPUP]:'Card',
       [TransactionDetailType.CARD_WITHDRAW]: 'Card',
       [TransactionDetailType.WALLET_TOP_UP]: 'refund to wallet when cancelling card',
-      [TransactionDetailType.WALLET_WITHDRAW]: 'Wallet',
+      [TransactionDetailType.WALLET_WITHDRAW]: 'Card',
       [TransactionDetailType.WALLET_ISSUE_WITHDRAW]: 'issue new virtual card',
       [TransactionDetailType.WALLET_REFUND]: 'Wallet',
     },
