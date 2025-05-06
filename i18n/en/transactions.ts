@@ -74,10 +74,11 @@ export default {
     to: {
       [TransactionDetailType.CARD_PAYMENT]: 'Card',
       [TransactionDetailType.CARD_TOP_UP]: 'Card',
-      [TransactionDetailType.CARD_ISSUE_TOPUP]:'issue new virtual card',
+      [TransactionDetailType.CARD_ISSUE_TOPUP]:'Card',
       [TransactionDetailType.CARD_WITHDRAW]: 'Card',
       [TransactionDetailType.WALLET_TOP_UP]: 'refund to wallet when cancelling card',
       [TransactionDetailType.WALLET_WITHDRAW]: 'Wallet',
+      [TransactionDetailType.WALLET_ISSUE_WITHDRAW]: 'issue new virtual card',
       [TransactionDetailType.WALLET_REFUND]: 'Wallet',
     },
     amountLabel: {
@@ -87,11 +88,13 @@ export default {
       [TransactionDetailType.CARD_WITHDRAW]: 'Withdraw amount',
       [TransactionDetailType.WALLET_TOP_UP]: 'Top up amount',
       [TransactionDetailType.WALLET_WITHDRAW]: 'Withdraw amount',
+      [TransactionDetailType.WALLET_ISSUE_WITHDRAW]: 'Withdraw amount',
       [TransactionDetailType.WALLET_REFUND]: 'Refund amount',
     },
     amount:  {
       [TransactionDetailType.WALLET_TOP_UP]: '{amount} {currency}',
       [TransactionDetailType.WALLET_WITHDRAW]: '{amount} {currency}',
+      [TransactionDetailType.WALLET_ISSUE_WITHDRAW]: '{amount} {currency}',
       [TransactionDetailType.CARD_TOP_UP]: '{amount} {currency}',
       [TransactionDetailType.CARD_ISSUE_TOPUP]: '{amount} {currency}',
       [TransactionDetailType.CARD_WITHDRAW]: '{amount} {currency}',
@@ -133,6 +136,7 @@ export default {
     label: {
       [TransactionDetailType.WALLET_TOP_UP]: 'Wallet Top up',
       [TransactionDetailType.WALLET_WITHDRAW]: 'Wallet withdraw',
+      [TransactionDetailType.WALLET_ISSUE_WITHDRAW]: 'Wallet withdraw',
       [TransactionDetailType.CARD_TOP_UP]: 'Card Top up',
       [TransactionDetailType.CARD_ISSUE_TOPUP]: 'Card Top up',
       [TransactionDetailType.CARD_WITHDRAW]: 'Card withdraw',

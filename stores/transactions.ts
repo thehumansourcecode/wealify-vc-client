@@ -56,7 +56,11 @@ export const useTransactionStore = defineStore('transaction', () => {
       detailType = TransactionDetailType.WALLET_TOP_UP
     }
     if (!isCardTransaction && type === TransactionVCType.WITHDRAWAL) {
-      detailType = TransactionDetailType.WALLET_WITHDRAW
+      if (transaction.is_issue){
+        detailType = TransactionDetailType.WALLET_ISSUE_WITHDRAW
+      }else{
+        detailType = TransactionDetailType.WALLET_WITHDRAW
+      }
     }
     selectedTransactionDetail.value = { ...transaction, detailType: detailType }
   }
