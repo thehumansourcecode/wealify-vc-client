@@ -303,10 +303,10 @@ onUnmounted(() =>
 </script>
 <template>
   <!-- Note: Overflow-y-auto here if want to fit table data into 100vh -->
-  <div class="flex flex-col pl-10 pr-[60px] flex-1 gap-6 mt-7">
+  <div class="flex flex-col px-4 sm:pl-10 sm:pr-[60px] flex-1 gap-6 mt-7">
     <!-- Cards not selected -->
     <div v-if="!selectedCardList?.length" class="flex flex-col gap-3">
-      <div class="flex flex-row gap-[100px] justify-between">
+      <div class="flex flex-col sm:flex-row gap-4 sm:gap-[100px] justify-between">
         <BaseInput
           @blur="onEnterKeyword()"
           @keyup.enter="onEnterKeyword()"
@@ -320,14 +320,14 @@ onUnmounted(() =>
         />
         <div class="flex flex-row gap-[10px]">
           <UButton
-            class="flex items-center justify-center rounded-[49px] bg-[#F0F2F5] hover:bg-[#E1E3E6] px-4 py-3 w-[168px] cursor-not-allowed"
+            class="flex items-center justify-center rounded-[49px] bg-[#F0F2F5] hover:bg-[#E1E3E6] px-4 py-3 w-full sm:w-[168px] cursor-not-allowed"
           >
             <div class="text-[#1C1D23] text-16-600-24">
               {{ t('cards.button.withdraw') }}
             </div>
           </UButton>
           <UButton
-            class="flex items-center justify-center rounded-[49px] bg-[#FF5524] hover:bg-[#EE4413] px-4 py-2 w-[168px]"
+            class="flex items-center justify-center rounded-[49px] bg-[#FF5524] hover:bg-[#EE4413] px-4 py-2 w-full sm:w-[168px]"
             @click="navigateTo('/cards/issue')"
           >
             <div class="text-white text-16-600-24">
@@ -337,8 +337,8 @@ onUnmounted(() =>
         </div>
       </div>
       <!-- Filters -->
-      <div class="flex flex-row gap-5 items-center">
-        <DatePicker v-model="dateRange" />
+      <div class="flex flex-col sm:flex-row gap-5 items-start sm:items-center overflow-x-auto">
+        <DatePicker v-model="dateRange" class="w-full sm:w-auto" />
 
         <img src="~/assets/img/common/line.svg" alt="" />
 
@@ -573,193 +573,193 @@ onUnmounted(() =>
         <img src="~/assets/img/dashboard/no-transaction.svg" alt="" />
         <div class="text-14-500-20 text-[#A5A8B8]">{{ t('cards.list.empty') }}</div>
       </div>
-      <UTable
-        v-else
-        selectable
-        ref="tableRef"
-        :loading="loading.cardTable"
-        :loading-state="{ icon: 'i-heroicons-arrow-path-20-solid', label: 'Loading...' }"
-        v-model="selectedCardList"
-        :rows="cardList"
-        @select="handleClickCard"
-        :columns="cardTableColumns"
-        :ui="{
-          default: {
-            checkbox: {
-              color: '[#000000]',
+      <div class="overflow-x-auto">
+        <UTable
+          selectable
+          ref="tableRef"
+          :loading="loading.cardTable"
+          :loading-state="{ icon: 'i-heroicons-arrow-path-20-solid', label: 'Loading...' }"
+          v-model="selectedCardList"
+          :rows="cardList"
+          @select="handleClickCard"
+          :columns="cardTableColumns"
+          :ui="{
+            default: {
+              checkbox: {
+                color: '[#000000]',
+              },
             },
-          },
-
-          divide: 'divide-y divide-[#D7D9E5]/0',
-          tbody: 'divide-y divide-[#D7D9E5]',
-          td: {
-            padding: 'px-3 py-4',
-          },
-          checkbox: {
-            padding: 'px-2 ps-4',
-          },
-          tr: {
-            base: '',
-            padding: 'px-0 py-0',
-            selected: 'bg-[#F0F2F5]',
-          },
-          th: {
-            padding: 'px-3 py-4',
-          },
-          thead: 'bg-[#FFEEE9]',
-          emptyState: {
-            label: 'text-md text-center',
-            icon: '',
-          },
-        }"
-        class="table-wrapper grow"
-      >
-        <template #card-data="{ row }">
-          <div class="flex flex-row items-center gap-[14px] min-w-[240px]">
-            <img src="/icons/dashboard/mastercard.svg" alt="" />
-            <div class="flex flex-col gap-1">
-              <BaseTruncatedTooltip class="text-14-600-20 text-[#1C1D23] max-w-[180px]" :text="row?.card_name" />
-              <span class="text-12-500-20 text-[#7A7D89]">
-                {{ t(`cards.list.card_number`, { value: row?.last_four }) }}</span
-              >
-            </div>
-          </div>
-        </template>
-        <template #type-data="{ row }">
-          <div class="w-16 flex justify-center">
-            <img :src="`/icons/cards/${row.card_type}.svg`" alt="" />
-          </div>
-        </template>
-        <template #category-data="{ row }">
-          <div class="flex justify-center w-[172px]">
-            <div
-              class="px-3 py-[2px] flex items-center justify-center rounded-[5px] gap-1 bg-[#F0F2F5] border border-[#D7D9E5] max-w-[180px]"
-              :style="{ background: isCardSelected(row) ? 'white' : '#F0F2F5' }"
-            >
-              <div class="text-[#1C1D23] text-12-500-20">{{ t(`cards.list.category.${row.category}`) }}</div>
-              <img :src="getIconCategory(row)"/>
-            </div>
-          </div>
-        </template>
-        <template #balance-data="{ row }">
-          <div class="text-16-700-24 w-[150px] text-[#1C1D23] text-center">${{ formatMoney(row.balance) }}</div>
-        </template>
-        <template #total_top_up-data="{ row }">
-          <div class="text-16-700-24 w-[150px] text-[#2EA518] text-center">
-            ${{ formatMoney(row.total_top_up) || 0 }}
-          </div>
-        </template>
-        <template #total_withdraw-data="{ row }">
-          <div class="text-16-700-24 w-[150px] text-[#ED2C38] text-center">${{ formatMoney(row.total_withdraw) }}</div>
-        </template>
-        <template #created_at-data="{ row }">
-          <div class="text-14-500-20 w-[150px] text-[#7A7D89] text-center">
-            {{ formatDDMMYYYY(dayjs.utc(row.created_at).local()) }}
-          </div>
-        </template>
-        <template #status-data="{ row }">
-          <div
-            class="flex flex-row gap-[6px] w-[100px] items-center justify-center mx-auto px-3 py-[2px] rounded-[110px]"
-            :style="{ color: getStatusColor(row?.card_status), background: isCardSelected(row) ? 'white' : '#F0F2F5' }"
-          >
-            <div class="text-12-500-20">
-              {{ t(`cards.list.status.${row.card_status}`) }}
-            </div>
-            <div class="w-[6px] h-[6px] rounded-[1px]" :style="{ background: getStatusColor(row?.card_status) }"></div>
-          </div>
-        </template>
-        <template #action-data="{ row }">
-          <UButton
-            v-if="row.card_status === CardStatus.ACTIVE"
-            @click.stop="onClickTopup(row)"
-            class="flex items-center py-[6px] px-4 mx-4 bg-[#1C1D23] hover:bg-[#3D3E34] rounded-[6px]"
-          >
-            <div class="text-12-600-20 text-white">
-              {{ t('cards.button.topup') }}
-            </div>
-          </UButton>
-          <div v-else class="w-[104px]"></div>
-        </template>
-      </UTable>
-      <div class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700 gap-10 items-center">
-        <USelectMenu
-          v-model="payload.limit"
-          :options="limitOptions"
-          :selected-icon="'i-selected'"
-          :ui-menu="{
-            select: 'cursor-pointer',
-            base: 'relative focus:outline-none overflow-y-auto scroll-py-1',
-            padding: 'p-0',
-            rounded: 'rounded-[16px]',
-            width: 'w-[max-content] min-w-full',
-            option: {
-              base: 'cursor-pointer text-14-500-20',
+            divide: 'divide-y divide-[#D7D9E5]/0',
+            tbody: 'divide-y divide-[#D7D9E5]',
+            td: {
+              padding: 'px-2 sm:px-3 py-4',
+            },
+            checkbox: {
+              padding: 'px-2 ps-2 sm:ps-4',
+            },
+            tr: {
+              base: '',
+              padding: 'px-0 py-0',
               selected: 'bg-[#F0F2F5]',
-              active: 'bg-[#F0F2F5]',
-              inactive: 'cursor-pointer',
-              padding: 'px-3 py-[10px]',
-              rounded: 'rounded-none',
-              selectedIcon: {
-                base: 'h-[18px] w-[18px]',
+            },
+            th: {
+              padding: 'px-2 sm:px-3 py-4',
+            },
+            thead: 'bg-[#FFEEE9]',
+            emptyState: {
+              label: 'text-md text-center',
+              icon: '',
+            },
+          }"
+          class="table-wrapper grow min-w-[800px]"
+        >
+          <template #card-data="{ row }">
+            <div class="flex flex-row items-center gap-[14px] min-w-[240px]">
+              <img src="/icons/dashboard/mastercard.svg" alt="" />
+              <div class="flex flex-col gap-1">
+                <BaseTruncatedTooltip class="text-14-600-20 text-[#1C1D23] max-w-[180px]" :text="row?.card_name" />
+                <span class="text-12-500-20 text-[#7A7D89]">
+                  {{ t(`cards.list.card_number`, { value: row?.last_four }) }}</span
+                >
+              </div>
+            </div>
+          </template>
+          <template #type-data="{ row }">
+            <div class="w-16 flex justify-center">
+              <img :src="`/icons/cards/${row.card_type}.svg`" alt="" />
+            </div>
+          </template>
+          <template #category-data="{ row }">
+            <div class="flex justify-center w-[172px]">
+              <div
+                class="px-3 py-[2px] flex items-center justify-center rounded-[5px] gap-1 bg-[#F0F2F5] border border-[#D7D9E5] max-w-[180px]"
+                :style="{ background: isCardSelected(row) ? 'white' : '#F0F2F5' }"
+              >
+                <div class="text-[#1C1D23] text-12-500-20">{{ t(`cards.list.category.${row.category}`) }}</div>
+                <img :src="getIconCategory(row)"/>
+              </div>
+            </div>
+          </template>
+          <template #balance-data="{ row }">
+            <div class="text-16-700-24 w-[150px] text-[#1C1D23] text-center">${{ formatMoney(row.balance) }}</div>
+          </template>
+          <template #total_top_up-data="{ row }">
+            <div class="text-16-700-24 w-[150px] text-[#2EA518] text-center">
+              ${{ formatMoney(row.total_top_up) || 0 }}
+            </div>
+          </template>
+          <template #total_withdraw-data="{ row }">
+            <div class="text-16-700-24 w-[150px] text-[#ED2C38] text-center">${{ formatMoney(row.total_withdraw) }}</div>
+          </template>
+          <template #created_at-data="{ row }">
+            <div class="text-14-500-20 w-[150px] text-[#7A7D89] text-center">
+              {{ formatDDMMYYYY(dayjs.utc(row.created_at).local()) }}
+            </div>
+          </template>
+          <template #status-data="{ row }">
+            <div
+              class="flex flex-row gap-[6px] w-[100px] items-center justify-center mx-auto px-3 py-[2px] rounded-[110px]"
+              :style="{ color: getStatusColor(row?.card_status), background: isCardSelected(row) ? 'white' : '#F0F2F5' }"
+            >
+              <div class="text-12-500-20">
+                {{ t(`cards.list.status.${row.card_status}`) }}
+              </div>
+              <div class="w-[6px] h-[6px] rounded-[1px]" :style="{ background: getStatusColor(row?.card_status) }"></div>
+            </div>
+          </template>
+          <template #action-data="{ row }">
+            <UButton
+              v-if="row.card_status === CardStatus.ACTIVE"
+              @click.stop="onClickTopup(row)"
+              class="flex items-center py-[6px] px-4 mx-4 bg-[#1C1D23] hover:bg-[#3D3E34] rounded-[6px]"
+            >
+              <div class="text-12-600-20 text-white">
+                {{ t('cards.button.topup') }}
+              </div>
+            </UButton>
+            <div v-else class="w-[104px]"></div>
+          </template>
+        </UTable>
+        <div class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700 gap-10 items-center">
+          <USelectMenu
+            v-model="payload.limit"
+            :options="limitOptions"
+            :selected-icon="'i-selected'"
+            :ui-menu="{
+              select: 'cursor-pointer',
+              base: 'relative focus:outline-none overflow-y-auto scroll-py-1',
+              padding: 'p-0',
+              rounded: 'rounded-[16px]',
+              width: 'w-[max-content] min-w-full',
+              option: {
+                base: 'cursor-pointer text-14-500-20',
+                selected: 'bg-[#F0F2F5]',
+                active: 'bg-[#F0F2F5]',
+                inactive: 'cursor-pointer',
+                padding: 'px-3 py-[10px]',
+                rounded: 'rounded-none',
+                selectedIcon: {
+                  base: 'h-[18px] w-[18px]',
+                },
+                empty: 'text-sm',
               },
               empty: 'text-sm',
-            },
-            empty: 'text-sm',
-            input: 'px-3 py-[10px] w-full text-[#7A7D89] icon-search font-medium text-sm leading-5 m-0 bg-white',
-          }"
-        >
-          <template #option="{ option }">
-            <div class="text-14-500-20">{{ t(`cards.list.pagination.limit`, { limit: option }) }}</div>
-          </template>
-          <template #default="{ open: open }">
-            <div class="px-3 py-[6px] w-full rounded-[36px] border flex items-center justify-between">
-              <div class="text-14-500-20 text-[#1C1D23] w-[152px] px-2 py-1">
-                {{ t(`cards.list.pagination.limit`, { limit: limit }) }}
+              input: 'px-3 py-[10px] w-full text-[#7A7D89] icon-search font-medium text-sm leading-5 m-0 bg-white',
+            }"
+          >
+            <template #option="{ option }">
+              <div class="text-14-500-20">{{ t(`cards.list.pagination.limit`, { limit: option }) }}</div>
+            </template>
+            <template #default="{ open: open }">
+              <div class="px-3 py-[6px] w-full rounded-[36px] border flex items-center justify-between">
+                <div class="text-14-500-20 text-[#1C1D23] w-[152px] px-2 py-1">
+                  {{ t(`cards.list.pagination.limit`, { limit: limit }) }}
+                </div>
+                <img
+                  src="/assets/img/icons/dropdown.svg"
+                  class="transition-transform"
+                  :class="[open && 'transform rotate-180']"
+                />
               </div>
-              <img
-                src="/assets/img/icons/dropdown.svg"
-                class="transition-transform"
-                :class="[open && 'transform rotate-180']"
-              />
-            </div>
-          </template>
-        </USelectMenu>
-        <BasePagination
-          @update:model-value="onChangePage"
-          :model-value="payload.page"
-          :limit="payload.limit"
-          :total="cardCount"
+            </template>
+          </USelectMenu>
+          <BasePagination
+            @update:model-value="onChangePage"
+            :model-value="payload.page"
+            :limit="payload.limit"
+            :total="cardCount"
+          />
+        </div>
+        <ConfirmModal
+          v-model="isVisibleConfirmFreeze"
+          @confirm="handleFreeze"
+          :title="t('cards.modals.freeze.title')"
+          :message="t('cards.modals.freeze.message')"
+          :confirm-label="t('cards.modals.freeze.label.confirm')"
+          :cancel-label="t('cards.modals.freeze.label.cancel')"
+          :loading="cardStore.isLoading.freezeCard"
+        />
+
+        <ConfirmModal
+          v-model="isVisibleConfirmCancel"
+          @confirm="handleCancel"
+          :title="t('cards.modals.cancel.title')"
+          :message="t('cards.modals.cancel.message')"
+          :confirm-label="t('cards.modals.cancel.label.confirm')"
+          :cancel-label="t('cards.modals.cancel.label.cancel')"
+          :bg-confirm="`!bg-[#ED2C38] hover:bg-[#ED2C38]`"
+          :loading="cardStore.isLoading.cancelCard"
+        />
+        <ConfirmModal
+          v-model="isVisibleConfirmUnfreeze"
+          @confirm="handleUnfreeze"
+          :title="t('cards.modals.unfreeze.title')"
+          :message="t('cards.modals.unfreeze.message')"
+          :confirm-label="t('cards.modals.unfreeze.label.confirm')"
+          :cancel-label="t('cards.modals.unfreeze.label.cancel')"
+          :loading="cardStore.isLoading.unfreezeCard"
         />
       </div>
-      <ConfirmModal
-        v-model="isVisibleConfirmFreeze"
-        @confirm="handleFreeze"
-        :title="t('cards.modals.freeze.title')"
-        :message="t('cards.modals.freeze.message')"
-        :confirm-label="t('cards.modals.freeze.label.confirm')"
-        :cancel-label="t('cards.modals.freeze.label.cancel')"
-        :loading="cardStore.isLoading.freezeCard"
-      />
-
-      <ConfirmModal
-        v-model="isVisibleConfirmCancel"
-        @confirm="handleCancel"
-        :title="t('cards.modals.cancel.title')"
-        :message="t('cards.modals.cancel.message')"
-        :confirm-label="t('cards.modals.cancel.label.confirm')"
-        :cancel-label="t('cards.modals.cancel.label.cancel')"
-        :bg-confirm="`!bg-[#ED2C38] hover:bg-[#ED2C38]`"
-        :loading="cardStore.isLoading.cancelCard"
-      />
-      <ConfirmModal
-        v-model="isVisibleConfirmUnfreeze"
-        @confirm="handleUnfreeze"
-        :title="t('cards.modals.unfreeze.title')"
-        :message="t('cards.modals.unfreeze.message')"
-        :confirm-label="t('cards.modals.unfreeze.label.confirm')"
-        :cancel-label="t('cards.modals.unfreeze.label.cancel')"
-        :loading="cardStore.isLoading.unfreezeCard"
-      />
     </div>
   </div>
 </template>

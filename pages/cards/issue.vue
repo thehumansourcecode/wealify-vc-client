@@ -190,7 +190,7 @@ watch(
         <div class="text-18-600-28 text-[#1C1D23]">
           {{ t('cards.issue.info.title') }}
         </div>
-        <div class="flex flex-col sm:flex-row gap-3 text-14-600-20 mt-5 items-center">
+        <div class="flex flex-col sm:flex-row gap-3 text-14-600-20 mt-5 items-start sm:items-center">
           <div
             @click="form.card_type = CardType.VIRTUAL"
             class="px-5 py-4 bg-[#F0F2F5] hover:bg-[#F2F4F7] rounded-[16px] flex flex-row gap-3 items-center w-full sm:w-[250px] cursor-pointer"
@@ -229,8 +229,8 @@ watch(
             }"
             v-slot="{ error }"
           >
-          <div class="flex flex-row items-center">
-              <div class="text-14-500-20 mb-2 md:mb-0" style="flex: 0 0 156px">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center">
+              <div class="text-14-500-20 mb-2 sm:mb-0" style="flex: 0 0 156px">
                 <span>{{ t('cards.issue.info.form.label.name') }}</span>
                 <span class="pl-1 text-[#ED2C38]">*</span>
               </div>
@@ -245,6 +245,7 @@ watch(
                 :leading-img="'/icons/cards/issue-card/name.svg'"
                 :placeholder="$t('cards.issue.info.form.placeholder.name')"
                 @clear="form.card_name = ''"
+                class="w-full"
               />
             </div>
           </UFormGroup>
