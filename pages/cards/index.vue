@@ -320,17 +320,17 @@ onUnmounted(() =>
         />
         <div class="flex flex-row gap-[10px]">
           <UButton
-            class="flex items-center justify-center rounded-[49px] bg-[#F0F2F5] hover:bg-[#E1E3E6] px-4 py-3 w-full sm:w-[168px] cursor-not-allowed"
+            class="flex items-center justify-center rounded-[49px] bg-[#F0F2F5] hover:bg-[#E1E3E6] px-3 sm:px-4 py-2 sm:py-3 w-[120px] sm:w-[168px] cursor-not-allowed"
           >
-            <div class="text-[#1C1D23] text-16-600-24">
+            <div class="text-[#1C1D23] text-14-600-20 sm:text-16-600-24">
               {{ t('cards.button.withdraw') }}
             </div>
           </UButton>
           <UButton
-            class="flex items-center justify-center rounded-[49px] bg-[#FF5524] hover:bg-[#EE4413] px-4 py-2 w-full sm:w-[168px]"
+            class="flex items-center justify-center rounded-[49px] bg-[#FF5524] hover:bg-[#EE4413] px-3 sm:px-4 py-2 sm:py-3 w-[120px] sm:w-[168px]"
             @click="navigateTo('/cards/issue')"
           >
-            <div class="text-white text-16-600-24">
+            <div class="text-white text-14-600-20 sm:text-16-600-24">
               {{ t('cards.button.issue') }}
             </div>
           </UButton>
@@ -518,9 +518,9 @@ onUnmounted(() =>
             </div>
           </UButton>
           <UButton
-            class="flex items-center justify-center rounded-[49px] bg-[#F0F2F5] hover:bg-[#E1E3E6] px-4 py-2 w-[168px] cursor-not-allowed"
+            class="flex items-center justify-center rounded-[49px] bg-[#F0F2F5] hover:bg-[#E1E3E6] px-3 sm:px-4 py-2 sm:py-3 w-[120px] sm:w-[168px] cursor-not-allowed"
           >
-            <div class="text-[#1C1D23] text-16-600-24">
+            <div class="text-[#1C1D23] text-14-600-20 sm:text-16-600-24">
               {{ t('cards.button.withdraw') }}
             </div>
           </UButton>
