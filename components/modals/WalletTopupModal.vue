@@ -61,8 +61,8 @@ selectedCurrencyOption.value = currencyOptions.value[0]
 
 <template>
   <BaseModal :label="t('dashboard.modals.topup.title')" @close-prevented="dashboardStore.toggleWalletTopupModal(false)">
-    <div class="flex flex-row items-start gap-7">
-      <div>
+    <div class="flex flex-col lg:flex-row items-start gap-7">
+      <div class="w-full lg:w-auto">
         <!-- Network -->
         <div class="text-12-500-20 mb-1">
           <span>{{ t('dashboard.modals.topup.label.network') }}</span>
@@ -73,7 +73,7 @@ selectedCurrencyOption.value = currencyOptions.value[0]
           trailing-icon="i-dropdown"
           :ui="{
             variant: {
-              none: 'bg-white border border-[#D7D9E5] rounded-[48px] py-[10px] px-4',
+              none: 'bg-white border border-[#D7D9E5] rounded-[48px] py-[10px] px-4 w-full',
             },
             icon: {
               leading: {
@@ -133,7 +133,7 @@ selectedCurrencyOption.value = currencyOptions.value[0]
           trailing-icon="i-dropdown"
           :ui="{
             variant: {
-              none: 'bg-white border border-[#D7D9E5] rounded-[48px] py-[10px] px-4',
+              none: 'bg-white border border-[#D7D9E5] rounded-[48px] py-[10px] px-4 w-full',
             },
             icon: {
               leading: {
@@ -190,10 +190,10 @@ selectedCurrencyOption.value = currencyOptions.value[0]
           <span class="pl-1 text-[#ff5c5c]">*</span>
         </div>
         <div
-          class="border border-[#D7D9E5] rounded-[48px] py-[10px] px-4 flex flex-row items-center justify-between gap-4"
+          class="border border-[#D7D9E5] rounded-[48px] py-[10px] px-4 flex flex-row items-center justify-between gap-4 w-full"
         >
-          <div class="text-[#7A7D89] text-14-500-20 w-[400px]">{{ topupAddress }}</div>
-          <div class="relative">
+          <div class="text-[#7A7D89] text-14-500-20 break-all">{{ topupAddress }}</div>
+          <div class="relative flex-shrink-0">
             <img
               class="cursor-pointer"
               @click="handleCopy(topupAddress)"
@@ -202,7 +202,7 @@ selectedCurrencyOption.value = currencyOptions.value[0]
             />
           </div>
         </div>
-        <div class="text-12-500-20 text-[#7A7D89] mt-4 w-[400px]">{{ t(`dashboard.modals.topup.note`) }}</div>
+        <div class="text-12-500-20 text-[#7A7D89] mt-4 break-all">{{ t(`dashboard.modals.topup.note`) }}</div>
         <div v-if="walletTopupFeeType === FeeAmountType.PERCENT" class="text-16-600-20 text-[#FF5524] mt-4">
           {{ t(`dashboard.modals.topup.feePercent`, { fee: walletTopupFeeValue * 100 }) }}
         </div>
@@ -215,7 +215,7 @@ selectedCurrencyOption.value = currencyOptions.value[0]
         </div>
       </div>
       <div
-        class="py-[22px] px-[19px] rounded-[20px] border border-[#D7D9E5] relative w-[240px] h-[246px] flex items-center justify-center"
+        class="py-[22px] px-[19px] rounded-[20px] border border-[#D7D9E5] relative w-full lg:w-[240px] h-[246px] flex items-center justify-center mt-4 lg:mt-0"
       >
         <img class="absolute" style="scale: 0.65" src="~/assets/img/dashboard/qr-logo.svg" alt="" />
         <VueQr v-if="topupAddress" :text="topupAddress" :size="200" :margin="0" />

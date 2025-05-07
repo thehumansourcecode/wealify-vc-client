@@ -25,6 +25,15 @@ const languages = Object.values(CommonLanguage).filter((item,index)=>index !== 0
 const language = ref(languages[0])
 const isShowProfile = ref(false)
 
+// Define prop for leftPanelRef
+const props = defineProps<{
+  leftPanelRef: any
+}>()
+
+function toggleMobileMenu() {
+  commonStore.toggleMobileMenu()
+}
+
 const showProfile = () => {
   isShowProfile.value = true
 }
@@ -86,16 +95,26 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="py-4 flex flex-row w-full justify-between items-center pl-10 pr-[60px] flex-none">
-    <div v-if="!isHeaderBackLayout" class="text-[20px] leading-8">{{ t(`common.title.${activeTab}`) }}</div>
-    <div v-else class="flex flex-row gap-4 items-center">
-      <img
-        @click="navigateTo(getTabRoute(commonStore.activeTab))"
-        class="cursor-pointer hover:opacity-70"
-        src="~/assets/img/icons/back.svg"
-        alt=""
-      />
-      <div class="text-[20px] leading-8">{{ t(`common.title.${activeChildTab}`) }}</div>
+  <div class="py-4 flex flex-row w-full justify-between items-center pl-4 md:pl-10 pr-4 md:pr-[60px] flex-none">
+    <div class="flex items-center gap-4">
+      <!-- Mobile Menu Button -->
+      <button @click="toggleMobileMenu" class="lg:hidden p-2">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 12H21" stroke="#1C1D23" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M3 6H21" stroke="#1C1D23" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M3 18H21" stroke="#1C1D23" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <div v-if="!isHeaderBackLayout" class="text-[20px] leading-8">{{ t(`common.title.${activeTab}`) }}</div>
+      <div v-else class="flex flex-row gap-4 items-center">
+        <img
+          @click="navigateTo(getTabRoute(commonStore.activeTab))"
+          class="cursor-pointer hover:opacity-70"
+          src="~/assets/img/icons/back.svg"
+          alt=""
+        />
+        <div class="text-[20px] leading-8">{{ t(`common.title.${activeChildTab}`) }}</div>
+      </div>
     </div>
     <div class="flex flex-row items-center">
       <USelectMenu
