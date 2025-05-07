@@ -127,7 +127,7 @@ const onSelect = (value: WalletType | TransactionVCType) => {
                 </div>
               </div>
             </div>
-            <div v-if="index % 2 == 0" class="w-0 h-24 sm:h-32 origin-top-left border border-[#d6d8e5]" />
+            <div v-if="index % 2 == 0" class="w-0 h-24 sm:h-32 origin-top-left border border-[#d6d8e5] hidden sm:block" />
           </template>
         </div>
       </div>
