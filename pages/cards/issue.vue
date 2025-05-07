@@ -25,8 +25,10 @@ const userStore = useUserStore()
 const loading = computed(() => cardStore.isLoading)
 
 const issueCardFees = computed(() => {
-  const feeAmountType = commonStore.feeList?.ISSUE_CARD.type
-  const feeValue = commonStore.feeList?.ISSUE_CARD.value
+  if (!commonStore.feeList?.ISSUE_CARD) return 0
+  
+  const feeAmountType = commonStore.feeList.ISSUE_CARD.type
+  const feeValue = commonStore.feeList.ISSUE_CARD.value
   if (feeAmountType === FeeAmountType.FIXED) {
     return feeValue || 0
   }
@@ -181,17 +183,17 @@ watch(
 </script>
 
 <template>
-  <div class="pl-10 pr-[60px] pt-3 pb-[60px] overflow-y-auto">
-    <div class="flex flex-row gap-20 justify-between">
+  <div class="px-4 md:pl-10 md:pr-[60px] pt-3 pb-[60px] overflow-y-auto">
+    <div class="flex flex-col lg:flex-row gap-8 lg:gap-20 justify-between">
       <div class="flex flex-col flex-1 max-w-[720px]">
         <!-- Card information -->
         <div class="text-18-600-28 text-[#1C1D23]">
           {{ t('cards.issue.info.title') }}
         </div>
-        <div class="flex flex-row gap-3 text-14-600-20 mt-5 items-center">
+        <div class="flex flex-col sm:flex-row gap-3 text-14-600-20 mt-5 items-center">
           <div
             @click="form.card_type = CardType.VIRTUAL"
-            class="px-5 py-4 bg-[#F0F2F5] hover:bg-[#F2F4F7] rounded-[16px] flex flex-row gap-3 items-center w-[250px] cursor-pointer"
+            class="px-5 py-4 bg-[#F0F2F5] hover:bg-[#F2F4F7] rounded-[16px] flex flex-row gap-3 items-center w-full sm:w-[250px] cursor-pointer"
             :class="
               form.card_type === CardType.VIRTUAL
                 ? 'text-[#1C1D23] border border-[#FF5524]'
@@ -202,7 +204,7 @@ watch(
             <div>{{ t(`cards.list.type.${CardType.VIRTUAL}`) }}</div>
           </div>
           <div
-            class="px-5 py-4 bg-[#F0F2F5] hover:bg-[#F2F4F7] rounded-[16px] flex flex-row gap-3 items-center w-[250px] cursor-not-allowed relative"
+            class="px-5 py-4 bg-[#F0F2F5] hover:bg-[#F2F4F7] rounded-[16px] flex flex-row gap-3 items-center w-full sm:w-[250px] cursor-not-allowed relative"
             :class="
               form.card_type === CardType.PHYSICAL
                 ? 'text-[#1C1D23] border border-[#FF5524]'
@@ -223,12 +225,12 @@ watch(
             name="card_name"
             class="mt-5"
             :ui="{
-              error: 'ml-[156px] mt-2 text-red-500 dark:text-red-400',
+              error: 'ml-0 md:ml-[156px] mt-2 text-red-500 dark:text-red-400',
             }"
             v-slot="{ error }"
           >
-            <div class="flex flex-row items-center">
-              <div class="text-14-500-20" style="flex: 0 0 156px">
+          <div class="flex flex-row items-center">
+              <div class="text-14-500-20 mb-2 md:mb-0" style="flex: 0 0 156px">
                 <span>{{ t('cards.issue.info.form.label.name') }}</span>
                 <span class="pl-1 text-[#ED2C38]">*</span>
               </div>
@@ -549,22 +551,22 @@ watch(
           </template>
         </UCheckbox>
       </div>
-      <div class="flex flex-col">
+      <div class="flex flex-col mt-8 lg:mt-0">
         <div class="text-18-600-28 text-[#1C1D23]">
           {{ t('cards.issue.preview.title') }}
         </div>
         <div class="mt-5">
           <div
-            class="w-[399px] h-[219px] rounded-[21px] flex flex-col items-start overflow-hidden bg-[url(~/assets/img/cards/card-bg.svg)] bg-left pt-5 pb-6 pl-4 pr-6"
+            class="w-full max-w-[399px] h-[219px] rounded-[21px] flex flex-col items-start overflow-hidden bg-[url(~/assets/img/cards/card-bg.svg)] bg-left pt-5 pb-6 pl-4 pr-6"
           >
             <img src="~/assets/img/cards/card-logo.svg" alt="" />
-            <div class="text-20-500-32 text-[#FFFFFF] mt-5 w-[360px]" :class="{ uppercase: form.card_name }">
+            <div class="text-20-500-32 text-[#FFFFFF] mt-5 w-full max-w-[360px]" :class="{ uppercase: form.card_name }">
               {{ form.card_name ? formattedCardName : t('cards.issue.preview.namePlaceholder') }}
             </div>
             <img class="mt-auto" src="~/assets/img/cards/card-number.svg" alt="" />
           </div>
         </div>
-        <div class="mt-8 px-5 py-4 bg-[#F0F2F5] rounded-[18px] flex flex-col">
+        <div class="mt-8 px-5 py-4 bg-[#F0F2F5] rounded-[18px] flex flex-col w-full max-w-[399px]">
           <div class="flex flex-row justify-between">
             <div class="text-[#7A7D89] text-12-500-20">
               {{ t('cards.issue.preview.starting') }}
@@ -596,6 +598,7 @@ watch(
           :loading="loading.issueCard"
           :is-submit-enabled="isPolicyChecked && isFormValid"
           :title="t('cards.button.issue')"
+          class="mt-8"
         />
       </div>
     </div>

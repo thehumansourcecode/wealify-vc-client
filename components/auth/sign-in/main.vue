@@ -3,9 +3,9 @@ const { fields, errors, isLoading, isValidate, login } = useSignIn()
 const router = useRouter()
 </script>
 <template>
-  <div class="flex flex-row justify-between w-full relative bg-white overflow-hidden p-5 min-h-screen">
+  <div class="flex flex-col lg:flex-row justify-between w-full relative bg-white overflow-hidden p-4 lg:p-5 min-h-screen">
     <div
-      class="w-7/12 relative rounded-lg bg-[#d6d8e5]/50 overflow-hidden flex flex-col justify-between align-middle p-10"
+      class="hidden lg:flex w-7/12 relative rounded-lg bg-[#d6d8e5]/50 overflow-hidden flex-col justify-between align-middle p-10"
     >
       <!-- DON'T DELETE THE DIV -->
       <div></div>
@@ -27,14 +27,18 @@ const router = useRouter()
       <div></div>
       <!-- DON'T DELETE THE DIV -->
     </div>
-    <div class="w-5/12 flex flex-col justify-between items-center p-5">
+    <div class="w-full lg:w-5/12 flex flex-col justify-between items-center p-4 lg:p-5">
+      <!-- Logo for mobile -->
+      <div class="lg:hidden w-full flex justify-center mb-8">
+        <img class="w-[200px]" src="/images/auth/logo.svg" />
+      </div>
       <!-- DON'T DELETE DIV -->
       <div></div>
       <div></div>
       <div></div>
       <!-- DON'T DELETE DIV -->
-      <div class="flex flex-col gap-2">
-        <div class="text-center justify-center text-[#1b1c23] text-[32px] font-bold leading-[44px]">
+      <div class="flex flex-col gap-2 w-full max-w-[400px]">
+        <div class="text-center justify-center text-[#1b1c23] text-2xl lg:text-[32px] font-bold leading-[44px]">
           Sign in to Wealify
         </div>
         <div class="text-center justify-start text-[#7a7c89] text-sm font-medium leading-tight">
@@ -42,15 +46,15 @@ const router = useRouter()
           convenient money transfers
         </div>
       </div>
-      <div class="flex flex-col gap-2 md:w-[100%] lg:w-[65%]">
-        <div class="inline-flex flex-col justify-center items-start gap-1">
+      <div class="flex flex-col gap-2 w-full max-w-[400px]">
+        <div class="inline-flex flex-col justify-center items-start gap-1 w-full">
           <div class="h-5 justify-center text-[#1b1c23] text-xs font-medium leading-tight">Email</div>
           <AuthEmailInput v-model="fields.email" :error="errors.email" />
           <div class="h-5 justify-center text-[#ec2c37] text-xs font-medium leading-tight">
             {{ errors.email }}
           </div>
         </div>
-        <div class="inline-flex flex-col justify-center items-start gap-1">
+        <div class="inline-flex flex-col justify-center items-start gap-1 w-full">
           <div class="h-5 justify-center text-[#1b1c23] text-xs font-medium leading-tight">Password</div>
           <AuthPasswordInput v-model="fields.password" :error="errors.password" />
           <div class="h-5 justify-center text-[#ec2c37] text-xs font-medium leading-tight">
@@ -68,7 +72,7 @@ const router = useRouter()
           </div>
         </div>
       </div>
-      <div class="md:w-[100%] flex flex-col gap-2 lg:w-[65%]">
+      <div class="w-full max-w-[400px] flex flex-col gap-2">
         <AuthSubmitButton
           :title="'Log In'"
           :loading="isLoading"
