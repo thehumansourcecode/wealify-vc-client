@@ -149,7 +149,7 @@ const handleClose = () =>{
         <div class="w-full text-[#FF5524] text-16-700-24 sm:text-20-700-32">{{ formatMoney(walletBalance, CommonCurrency.USD) }}</div>
       </div>
       <USelectMenu
-        class="mt-4 w-full"
+        class="mt-4 w-full sm:w-[500px]"
         v-model="selectedCard"
         :options="dropdownCardList"
         searchable
@@ -292,7 +292,6 @@ const handleClose = () =>{
           :loading="loading"
           :is-submit-enabled="isFormValid"
           :title="t('cards.button.topupCard')"
-          class="w-full sm:w-auto"
         />
       </div>
     </div>
