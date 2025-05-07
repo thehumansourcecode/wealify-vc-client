@@ -38,19 +38,18 @@ watch(
 )
 </script>
 <template>
-  <!-- Filters -->
-  <div class="flex flex-row gap-5 pb-5 items-center">
+  <div class="flex flex-row gap-2 sm:gap-5 pb-3 sm:pb-5 items-center overflow-x-auto">
     <!-- Date -->
-    <DatePicker v-model="dateRange" />
+    <DatePicker v-model="dateRange" class="min-w-[140px] sm:min-w-[160px]" />
 
-    <img src="~/assets/img/common/line.svg" alt="" />
+    <img src="~/assets/img/common/line.svg" alt="" class="hidden sm:block" />
 
     <!-- Type -->
-    <TransactionsTypeSelection v-model="payload.transaction_type" />
+    <TransactionsTypeSelection v-model="payload.transaction_type" class="min-w-[140px] sm:min-w-[160px]" />
 
-    <img src="~/assets/img/common/line.svg" alt="" />
+    <img src="~/assets/img/common/line.svg" alt="" class="hidden sm:block" />
 
     <!-- Status -->
-    <TransactionsStatusSelection v-model="payload.transaction_status" />
+    <TransactionsStatusSelection v-model="payload.transaction_status" class="min-w-[140px] sm:min-w-[160px]" />
   </div>
 </template>

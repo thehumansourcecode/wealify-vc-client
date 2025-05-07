@@ -36,20 +36,18 @@ onMounted(async() => {
 <template>
   <div class="rounded-[12px] flex flex-col border border-[#D7D9E5] mb-8 overflow-x-auto w-full">
     <TransactionsList />
-    <div class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700 gap-10 items-center">
-      <USelectMenu v-model="payload.limit" :options="limitOptions" selected-icon="i-selected">
+    <div class="flex flex-row justify-between sm:justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700 gap-3 sm:gap-10 items-center">
+      <USelectMenu v-model="payload.limit" :options="limitOptions" selected-icon="i-selected" class="w-[100px] sm:w-auto">
         <template #option="{ option }">
-          <div
-            className="self-stretch justify-center text-[#1b1c23] text-sm font-medium font-['Manrope'] leading-tight"
-          >
+          <div class="self-stretch justify-center text-[#1b1c23] text-12 md:text-14-500-20 font-medium font-['Manrope'] leading-tight">
             {{ t(`transactions.list.pagination.limit`, { limit: option }) }}
           </div>
         </template>
-        <div class="border border-[#D7D9E5] rounded-[90px] py-[10px] pl-5 pr-4 flex flex-row gap-8">
-          <div class="text-14-500-20 text-[#1C1D23]">
+        <div class="border border-[#D7D9E5] rounded-[90px] py-1.5 md:py-[10px] px-2 md:pl-5 md:pr-4 flex flex-row gap-2 md:gap-8">
+          <div class="text-12 md:text-14-500-20 text-[#1C1D23]">
             {{ t(`transactions.list.pagination.limit`, { limit }) }}
           </div>
-          <img src="/images/transactions/dropdown.svg" alt="" />
+          <img src="/images/transactions/dropdown.svg" alt="" class="w-3 h-3 md:w-auto md:h-auto" />
         </div>
       </USelectMenu>
       <BasePagination
@@ -57,6 +55,15 @@ onMounted(async() => {
         :model-value="payload.page"
         :limit="payload.limit"
         :total="transactionCount"
+        :ui="{
+          wrapper: 'flex items-center gap-1 md:gap-2',
+          default: {
+            size: 'text-12 md:text-14-500-20',
+            padding: 'p-1 md:p-2',
+            base: 'text-[#7A7D89]',
+            active: 'text-[#1C1D23]',
+          },
+        }"
       />
     </div>
   </div>

@@ -12,5 +12,7 @@ onMounted(() => {
 </script>
 
 <template>
-<TransactionsMain />
+  <div class="w-full h-full">
+    <TransactionsMain />
+  </div>
 </template>

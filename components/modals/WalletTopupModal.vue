@@ -13,7 +13,7 @@ const commonStore = useCommonStore()
 onMounted(async () => await Promise.all([commonStore.getFee()]))
 
 const walletTopupFeeValue = computed(() => commonStore.feeList?.TOP_UP_WALLET.value || 0)
-const walletTopupFeeType = computed(() => commonStore.feeList?.TOP_UP_WALLET.type)
+const walletTopupFeeType = computed(() => commonStore.feeList?.TOP_UP_WALLET?.type)
 
 const { t } = useI18n()
 

@@ -19,14 +19,13 @@ async function loadData() {
 watch(() => [payload.value.keyword], loadData, { deep: true })
 </script>
 <template>
-  <!-- Cards not selected -->
-  <div class="flex flex-row justify-between items-start gap-[200px]">
-    <div class="flex flex-col relative gap-[10px] flex-1">
+  <div class="flex flex-row justify-between items-center gap-2 sm:gap-[200px]">
+    <div class="flex flex-col relative gap-2 sm:gap-[10px] flex-1">
       <BaseInput
         @blur="onEnterKeyword()"
         @keyup.enter="onEnterKeyword()"
         input-class="input-field rounded-49"
-        class="w-[80%]"
+        class="w-full"
         v-model.trim="tempKeyword"
         leading
         :leading-img="'/icons/common/search.svg'"
@@ -34,13 +33,13 @@ watch(() => [payload.value.keyword], loadData, { deep: true })
         autocomplete="off"
       />
     </div>
-    <div class="flex flex-row justify-end gap-[10px]">
+    <div class="flex flex-row justify-end gap-2 sm:gap-[10px]">
       <UButton
-        class="flex items-center justify-center rounded-[49px] bg-[#FF5524] disabled:bg-[#FF5524] hover:bg-[#EE4413] px-4 py-2 w-[168px]"
+        class="flex items-center justify-center rounded-[49px] bg-[#FF5524] disabled:bg-[#FF5524] hover:bg-[#EE4413] px-3 sm:px-4 py-1.5 sm:py-2 w-[100px] sm:w-[168px]"
         aria-disabled
         disabled
       >
-        <div class="text-white text-16-600-24">{{ t('transactions.button.export') }}</div>
+        <div class="text-14 sm:text-16-600-24 text-white">{{ t('transactions.button.export') }}</div>
       </UButton>
     </div>
   </div>
