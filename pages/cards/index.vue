@@ -590,17 +590,14 @@ onUnmounted(() =>
       <!-- Close -->
       <img @click="clearSelected" class="cursor-pointer hover:opacity-70" src="~/assets/img/common/close.svg" alt="" />
     </div>
-    <div class="rounded-[12px] flex flex-col border border-[#D7D9E5] mb-8 overflow-x-auto w-full grow">
-      <!-- Table -->
-      <div
-        v-if="!cardList?.length && !loading.cardTable"
-        class="flex flex-col items-center justify-center gap-4 h-full grow"
-      >
-        <img src="~/assets/img/dashboard/no-transaction.svg" alt="" />
-        <div class="text-14-500-20 text-[#A5A8B8]">{{ t('cards.list.empty') }}</div>
-      </div>
-      <div class="overflow-x-auto">
+    <div class="rounded-[12px] flex flex-col border border-[#D7D9E5] mb-8 w-full grow">
+        <!-- Table -->
+        <div v-if="!cardList?.length && !loading.cardTable"class="flex flex-col items-center justify-center gap-4 h-full grow">
+          <img src="~/assets/img/dashboard/no-transaction.svg" alt="" />
+          <div class="text-14-500-20 text-[#A5A8B8]">{{ t('cards.list.empty') }}</div>
+        </div>
         <UTable
+          v-else
           selectable
           ref="tableRef"
           :loading="loading.cardTable"
@@ -637,7 +634,7 @@ onUnmounted(() =>
               icon: '',
             },
           }"
-          class="table-wrapper grow min-w-[800px]"
+          class="table-wrapper grow overflow-x-scroll"
         >
           <template #card-data="{ row }">
             <div class="flex flex-row items-center gap-2 sm:gap-[14px] min-w-[240px]">
@@ -765,7 +762,6 @@ onUnmounted(() =>
           :cancel-label="t('cards.modals.unfreeze.label.cancel')"
           :loading="cardStore.isLoading.unfreezeCard"
         />
-      </div>
     </div>
   </div>
 </template>
