@@ -229,7 +229,7 @@ watch(
             }"
             v-slot="{ error }"
           >
-            <div class="flex flex-col sm:flex-row items-start sm:items-center">
+            <div class="flex flex-row items-center">
               <div class="text-14-500-20 mb-2 sm:mb-0" style="flex: 0 0 156px">
                 <span>{{ t('cards.issue.info.form.label.name') }}</span>
                 <span class="pl-1 text-[#ED2C38]">*</span>
