@@ -120,10 +120,10 @@ onMounted(async () => {
       </div>
 
       <template v-if="!showCountDown">
-        <div class="text-sm sm:text-base font-medium manrope">
-          <div class="flex flex-wrap gap-1">
+        <div class="text-14-500-20 manrope">
+          <div>
             <span class="text-[#7a7d89]">{{ t('cards.modals.otp.description') }}</span>
-            <span class="text-[#1c1d23] break-all">{{ maskEmail(profileStore.profile?.email || '') }}</span>
+            <span class="text-[#1c1d23]">{{ maskEmail(profileStore.profile?.email || '') }}</span>
           </div>
           <div class="flex flex-row gap-1">
             <span class="text-[#7a7d89]">{{ t('cards.modals.otp.timeout') }}</span>
@@ -133,7 +133,7 @@ onMounted(async () => {
 
         <PinInput
           ref="pinInput"
-          class="flex flex-wrap justify-between gap-1 mt-4"
+          class="flex flex-wrap justify-between gap-1 mt-4 lg:gap-2"
           :input-classes="[
             'w-12 h-12 sm:w-[68px] sm:h-[68px] rounded-full text-center p-2',
             'border border-[#d6d8e5] focus:border-[#ec2c37]',
@@ -170,16 +170,14 @@ onMounted(async () => {
         </div>
       </template>
 
-      <div v-else class="flex flex-col items-center text-center">
-        <div class="text-sm sm:text-base text-[#7A7D89] mb-6">
-          {{ t('cards.modals.otp.max_attemp') }}
-        </div>
+      <div v-else class="flex flex-col">
+        <div  class="text-14-600-20 text-[#7A7D89] mb-7">{{ t('cards.modals.otp.max_attemp')  }}</div>
         <UButton
           @click="tryAgainHandler"
           :class="{'!bg-[#FF5524]':!totalSeconds}"
-          class="text-white py-2.5 px-4 bg-[#A5A8B8] hover:bg-[#A5A8B8] rounded-full min-w-[140px]"
+          class="flex self-end text-center justify-center  py-3 px-4 bg-[#A5A8B8] hover:bg-[#A5A8B8] rounded-[49px] mx-auto w-[min-content] m-0 min-w-[140px]"
         >
-          <span>{{ getCountdownTimer }}</span>
+          <span>{{getCountdownTimer}}</span>
         </UButton>
       </div>
     </div>
