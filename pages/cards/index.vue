@@ -706,32 +706,12 @@ onUnmounted(() =>
             <div v-else class="w-[80px] sm:w-[104px]"></div>
           </template>
         </UTable>
-        <div class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700 gap-10 items-center">
+        <div class="flex flex-row justify-between sm:justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700 gap-3 sm:gap-10 items-center">
           <USelectMenu
             v-model="payload.limit"
             :options="limitOptions"
+            class="w-[150px] sm:w-auto"
             :selected-icon="'i-selected'"
-            :ui-menu="{
-              select: 'cursor-pointer',
-              base: 'relative focus:outline-none overflow-y-auto scroll-py-1',
-              padding: 'p-0',
-              rounded: 'rounded-[16px]',
-              width: 'w-[max-content] min-w-full',
-              option: {
-                base: 'cursor-pointer text-14-500-20',
-                selected: 'bg-[#F0F2F5]',
-                active: 'bg-[#F0F2F5]',
-                inactive: 'cursor-pointer',
-                padding: 'px-3 py-[10px]',
-                rounded: 'rounded-none',
-                selectedIcon: {
-                  base: 'h-[18px] w-[18px]',
-                },
-                empty: 'text-sm',
-              },
-              empty: 'text-sm',
-              input: 'px-3 py-[10px] w-full text-[#7A7D89] icon-search font-medium text-sm leading-5 m-0 bg-white',
-            }"
           >
             <template #option="{ option }">
               <div class="text-14-500-20">{{ t(`cards.list.pagination.limit`, { limit: option }) }}</div>
