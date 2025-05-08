@@ -318,7 +318,7 @@ onUnmounted(() =>
           :placeholder="t('cards.filter.placeholder.search')"
           autocomplete="off"
         />
-        <div class="flex flex-row gap-[10px]">
+        <div class="flex flex-row gap-[10px] justify-between">
           <UButton
             class="flex items-center justify-center rounded-[49px] bg-[#F0F2F5] hover:bg-[#E1E3E6] px-3 sm:px-4 py-2 sm:py-3 w-[120px] sm:w-[168px] cursor-not-allowed"
           >
@@ -337,171 +337,197 @@ onUnmounted(() =>
         </div>
       </div>
       <!-- Filters -->
-      <div class="flex flex-col sm:flex-row gap-5 items-start sm:items-center overflow-x-auto">
-        <DatePicker v-model="dateRange" class="w-full sm:w-auto" />
+      <div class="flex flex-col sm:flex-row gap-3 sm:gap-5 items-start sm:items-center">
+        <!-- Grid container for mobile -->
+        <div class="grid grid-cols-2 sm:flex sm:flex-row gap-3 sm:gap-5 w-full">
+          <!-- Date Picker -->
+          <div class="col-span-1 sm:col-auto">
+            <DatePicker v-model="dateRange" class="w-full sm:w-auto" />
+          </div>
 
-        <img src="~/assets/img/common/line.svg" alt="" />
+          <div class="hidden sm:block">
+            <img src="~/assets/img/common/line.svg" alt="" />
+          </div>
 
-        <!-- Type -->
-        <BaseSingleSelect
-          class="w-[150px]"
-          :options="typeOptions"
-          v-model="filterType"
-          :selected-icon="'i-selected'"
-          :option-attribute="`label`"
-        >
-          <template #default="{ open: open }">
-            <div
-              class="px-3 py-[6px] w-full rounded-[36px] bg-[#f0f2f5] border flex items-center justify-between"
-              :class="open ? 'border-[#FF5524]' : 'border-[f0f2f5]'"
+          <!-- Type -->
+          <div class="col-span-1 sm:col-auto">
+            <BaseSingleSelect
+              class="w-full sm:w-[150px]"
+              :options="typeOptions"
+              v-model="filterType"
+              :selected-icon="'i-selected'"
+              :option-attribute="`label`"
             >
-              <div class="text-12-500-20 text-[#7A7D89]">
-                <span v-if="filterType">
-                  {{ t(`cards.list.type.${filterType.type}`) }}
+              <template #default="{ open: open }">
+                <div
+                  class="px-3 py-[6px] w-full rounded-[36px] bg-[#f0f2f5] border flex items-center justify-between"
+                  :class="open ? 'border-[#FF5524]' : 'border-[f0f2f5]'"
+                >
+                  <div class="text-12-500-20 text-[#7A7D89]">
+                    <span v-if="filterType">
+                      {{ t(`cards.list.type.${filterType.type}`) }}
+                    </span>
+                    <span v-else>
+                      {{ t('cards.filter.label.type') }}
+                    </span>
+                  </div>
+                  <img
+                    v-if="!filterType"
+                    src="/assets/img/icons/dropdown.svg"
+                    class="transition-transform"
+                    :class="[open && 'transform rotate-180']"
+                  />
+                  <img
+                    @click.prevent="filterType = undefined"
+                    v-else
+                    class="cursor-pointer"
+                    src="/assets/img/icons/clear.svg"
+                  />
+                </div>
+              </template>
+              <template #option="{ option }">
+                <span class="text-[#1C1D23] text-14-500-20">
+                  {{ t(`cards.list.type.${option.type}`) }}
                 </span>
-                <span v-else>
-                  {{ t('cards.filter.label.type') }}
-                </span>
-              </div>
-              <img
-                v-if="!filterType"
-                src="/assets/img/icons/dropdown.svg"
-                class="transition-transform"
-                :class="[open && 'transform rotate-180']"
-              />
-              <img
-                @click.prevent="filterType = undefined"
-                v-else
-                class="cursor-pointer"
-                src="/assets/img/icons/clear.svg"
-              />
-            </div>
-          </template>
-          <template #option="{ option }">
-            <span class="text-[#1C1D23] text-14-500-20">
-              {{ t(`cards.list.type.${option.type}`) }}
-            </span>
-          </template>
-        </BaseSingleSelect>
+              </template>
+            </BaseSingleSelect>
+          </div>
 
-        <img src="~/assets/img/common/line.svg" alt="" />
-        <!-- Category -->
-        <BaseMultipleSelect
-          ref="filterCat"
-          class="w-[200px]"
-          multiple
-          searchable
-          :searchable-placeholder="'Search categories'"
-          :options="categoryOptions"
-          v-model="payload.category"
-        >
-          <template #default="{ open: open }">
-            <div
-              class="px-3 py-[6px] w-full rounded-[36px] bg-[#f0f2f5] border flex items-center justify-between"
-              :class="open ? 'border-[#FF5524]' : 'border-[f0f2f5]'"
+          <!-- Category -->
+          <div class="col-span-1 sm:col-auto">
+            <BaseMultipleSelect
+              ref="filterCat"
+              class="w-full sm:w-[200px]"
+              multiple
+              searchable
+              :searchable-placeholder="'Search categories'"
+              :options="categoryOptions"
+              v-model="payload.category"
             >
-              <div class="text-12-500-20 text-[#7A7D89]">
-                <span v-if="payload.category.length == 1">
-                  {{ t(`cards.list.category.${payload.category[0]}`) }}
-                </span>
-                <span v-else-if="payload.category.length > 1" class="text-12-500-20 text-[#7A7D89]">
-                  {{ payload.category.length }} selected
-                </span>
-                <span v-else>
-                  {{ t('cards.filter.label.category') }}
-                </span>
-              </div>
-              <img
-                v-if="!payload.category.length"
-                src="/assets/img/icons/dropdown.svg"
-                class="transition-transform"
-                :class="[open && 'transform rotate-180']"
-              />
-              <img
-                @click.prevent="clearFilterCategory()"
-                v-else
-                class="cursor-pointer"
-                src="/assets/img/icons/clear.svg"
-                alt=""
-              />
-            </div>
-          </template>
-       <template #option="{ option: category }">
-            <div class="flex flex-row gap-[9px]">
-              <UCheckbox
-                @click.prevent
-                :model-value="isCategorySelected(category)"
-                :ui="{
-                  base: 'cursor-pointer',
-                }"
-              />
-              <span class="text-[#1C1D23] text-14-500-20">
-                {{ t(`cards.list.category.${category}`) }}
-              </span>
-            </div>
-          </template>
-        </BaseMultipleSelect>
+              <template #default="{ open: open }">
+                <div
+                  class="px-3 py-[6px] w-full rounded-[36px] bg-[#f0f2f5] border flex items-center justify-between"
+                  :class="open ? 'border-[#FF5524]' : 'border-[f0f2f5]'"
+                >
+                  <div class="text-12-500-20 text-[#7A7D89]">
+                    <span v-if="payload.category.length == 1">
+                      {{ t(`cards.list.category.${payload.category[0]}`) }}
+                    </span>
+                    <span v-else-if="payload.category.length > 1" class="text-12-500-20 text-[#7A7D89]">
+                      {{ payload.category.length }} selected
+                    </span>
+                    <span v-else>
+                      {{ t('cards.filter.label.category') }}
+                    </span>
+                  </div>
+                  <img
+                    v-if="!payload.category.length"
+                    src="/assets/img/icons/dropdown.svg"
+                    class="transition-transform"
+                    :class="[open && 'transform rotate-180']"
+                  />
+                  <img
+                    @click.prevent="clearFilterCategory()"
+                    v-else
+                    class="cursor-pointer"
+                    src="/assets/img/icons/clear.svg"
+                    alt=""
+                  />
+                </div>
+              </template>
+              <template #option="{ option: category }">
+                <div class="flex flex-row gap-[9px]">
+                  <UCheckbox
+                    @click.prevent
+                    :model-value="isCategorySelected(category)"
+                    :ui="{
+                      base: 'cursor-pointer',
+                    }"
+                  />
+                  <span class="text-[#1C1D23] text-14-500-20">
+                    {{ t(`cards.list.category.${category}`) }}
+                  </span>
+                </div>
+              </template>
+            </BaseMultipleSelect>
+          </div>
 
-        <img src="~/assets/img/common/line.svg" alt="" />
+          <div class="hidden sm:block">
+            <img src="~/assets/img/common/line.svg" alt="" />
+          </div>
 
-        <!-- Status -->
-        <BaseMultipleSelect class="w-[150px]" multiple :options="statusOptions" v-model="payload.card_status">
-          <template #default="{ open: open }">
-            <div
-              class="px-3 py-[6px] w-full rounded-[36px] bg-[#f0f2f5] border flex items-center justify-between"
-              :class="open ? 'border-[#FF5524]' : 'border-[f0f2f5]'"
+          <!-- Status -->
+          <div class="col-span-1 sm:col-auto">
+            <BaseMultipleSelect 
+              class="w-full sm:w-[150px]" 
+              multiple 
+              :options="statusOptions" 
+              v-model="payload.card_status"
             >
-              <div class="text-12-500-20 text-[#7A7D89]">
-                <span v-if="payload.card_status.length == 1">
-                  {{ t(`cards.list.status.${payload.card_status[0]}`) }}
-                </span>
-                <span v-else-if="payload.card_status.length > 1" class="text-12-500-20 text-[#7A7D89]">
-                  {{ payload.card_status.length }} selected
-                </span>
-                <span v-else>
-                  {{ t('cards.filter.label.status') }}
-                </span>
-              </div>
-              <img
-                v-if="!payload.card_status.length"
-                src="/assets/img/icons/dropdown.svg"
-                class="transition-transform"
-                :class="[open && 'transform rotate-180']"
-              />
-              <img
-                @click.prevent="payload.card_status = []"
-                v-else
-                class="cursor-pointer"
-                src="/assets/img/icons/clear.svg"
-                alt=""
-              />
-            </div>
-          </template>
-          <template #option="{ option: status }">
-            <div class="flex flex-row gap-[9px]">
-              <UCheckbox
-                @click.passive
-                :model-value="isStatusSelected(status)"
-                :ui="{
-                  base: 'cursor-pointer',
-                }"
-              />
-              <span class="text-[#1C1D23] text-14-500-20">
-                {{ t(`cards.list.status.${status}`) }}
-              </span>
-            </div>
-          </template>
-        </BaseMultipleSelect>
+              <template #default="{ open: open }">
+                <div
+                  class="px-3 py-[6px] w-full rounded-[36px] bg-[#f0f2f5] border flex items-center justify-between"
+                  :class="open ? 'border-[#FF5524]' : 'border-[f0f2f5]'"
+                >
+                  <div class="text-12-500-20 text-[#7A7D89]">
+                    <span v-if="payload.card_status.length == 1">
+                      {{ t(`cards.list.status.${payload.card_status[0]}`) }}
+                    </span>
+                    <span v-else-if="payload.card_status.length > 1" class="text-12-500-20 text-[#7A7D89]">
+                      {{ payload.card_status.length }} selected
+                    </span>
+                    <span v-else>
+                      {{ t('cards.filter.label.status') }}
+                    </span>
+                  </div>
+                  <img
+                    v-if="!payload.card_status.length"
+                    src="/assets/img/icons/dropdown.svg"
+                    class="transition-transform"
+                    :class="[open && 'transform rotate-180']"
+                  />
+                  <img
+                    @click.prevent="payload.card_status = []"
+                    v-else
+                    class="cursor-pointer"
+                    src="/assets/img/icons/clear.svg"
+                    alt=""
+                  />
+                </div>
+              </template>
+              <template #option="{ option: status }">
+                <div class="flex flex-row gap-[9px]">
+                  <UCheckbox
+                    @click.passive
+                    :model-value="isStatusSelected(status)"
+                    :ui="{
+                      base: 'cursor-pointer',
+                    }"
+                  />
+                  <span class="text-[#1C1D23] text-14-500-20">
+                    {{ t(`cards.list.status.${status}`) }}
+                  </span>
+                </div>
+              </template>
+            </BaseMultipleSelect>
+          </div>
 
-        <img src="~/assets/img/common/line.svg" alt="" />
+          <div class="hidden sm:block">
+            <img src="~/assets/img/common/line.svg" alt="" />
+          </div>
 
-        <!-- Active / Total -->
-        <div class="text-[#7A7D89] text-12-500-20">
-          {{ t('cards.filter.label.amount', { active: activeCardCount, total: totalCreatedCard }) }}
-        </div>
-        <img src="~/assets/img/common/line.svg" alt="" />
-        <div class="text-[#1C1D23] text-12-600-20">
-          {{ t('cards.filter.label.total', { amount: formatMoney(totalBalanceCard) }) }}
+          <!-- Active / Total Stats -->
+          <div class="col-span-1 sm:col-auto flex flex-col sm:flex-row gap-2 sm:gap-5">
+            <div class="text-[#7A7D89] text-12-500-20">
+              {{ t('cards.filter.label.amount', { active: activeCardCount, total: totalCreatedCard }) }}
+            </div>
+            <div class="hidden sm:block">
+              <img src="~/assets/img/common/line.svg" alt="" />
+            </div>
+            <div class="text-[#1C1D23] text-12-600-20">
+              {{ t('cards.filter.label.total', { amount: formatMoney(totalBalanceCard) }) }}
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -614,70 +640,70 @@ onUnmounted(() =>
           class="table-wrapper grow min-w-[800px]"
         >
           <template #card-data="{ row }">
-            <div class="flex flex-row items-center gap-[14px] min-w-[240px]">
-              <img src="/icons/dashboard/mastercard.svg" alt="" />
+            <div class="flex flex-row items-center gap-2 sm:gap-[14px] min-w-[240px]">
+              <img src="/icons/dashboard/mastercard.svg" class="w-8 h-8 sm:w-auto sm:h-auto" alt="" />
               <div class="flex flex-col gap-1">
-                <BaseTruncatedTooltip class="text-14-600-20 text-[#1C1D23] max-w-[180px]" :text="row?.card_name" />
-                <span class="text-12-500-20 text-[#7A7D89]">
+                <BaseTruncatedTooltip class="text-12 sm:text-14-600-20 text-[#1C1D23] max-w-[120px] sm:max-w-[180px]" :text="row?.card_name" />
+                <span class="text-11 sm:text-12-500-20 text-[#7A7D89]">
                   {{ t(`cards.list.card_number`, { value: row?.last_four }) }}</span
                 >
               </div>
             </div>
           </template>
           <template #type-data="{ row }">
-            <div class="w-16 flex justify-center">
-              <img :src="`/icons/cards/${row.card_type}.svg`" alt="" />
+            <div class="w-12 sm:w-16 flex justify-center">
+              <img :src="`/icons/cards/${row.card_type}.svg`" class="w-6 h-6 sm:w-auto sm:h-auto" alt="" />
             </div>
           </template>
           <template #category-data="{ row }">
-            <div class="flex justify-center w-[172px]">
+            <div class="flex justify-center w-[120px] sm:w-[172px]">
               <div
-                class="px-3 py-[2px] flex items-center justify-center rounded-[5px] gap-1 bg-[#F0F2F5] border border-[#D7D9E5] max-w-[180px]"
+                class="px-2 sm:px-3 py-[2px] flex items-center justify-center rounded-[5px] gap-1 bg-[#F0F2F5] border border-[#D7D9E5] max-w-[120px] sm:max-w-[180px]"
                 :style="{ background: isCardSelected(row) ? 'white' : '#F0F2F5' }"
               >
-                <div class="text-[#1C1D23] text-12-500-20">{{ t(`cards.list.category.${row.category}`) }}</div>
-                <img :src="getIconCategory(row)"/>
+                <div class="text-[#1C1D23] text-11 sm:text-12-500-20">{{ t(`cards.list.category.${row.category}`) }}</div>
+                <img :src="getIconCategory(row)" class="w-4 h-4 sm:w-auto sm:h-auto"/>
               </div>
             </div>
           </template>
           <template #balance-data="{ row }">
-            <div class="text-16-700-24 w-[150px] text-[#1C1D23] text-center">${{ formatMoney(row.balance) }}</div>
+            <div class="text-14 sm:text-16-700-24 w-[120px] sm:w-[150px] text-[#1C1D23] text-center">${{ formatMoney(row.balance) }}</div>
           </template>
           <template #total_top_up-data="{ row }">
-            <div class="text-16-700-24 w-[150px] text-[#2EA518] text-center">
+            <div class="text-14 sm:text-16-700-24 w-[120px] sm:w-[150px] text-[#2EA518] text-center">
               ${{ formatMoney(row.total_top_up) || 0 }}
             </div>
           </template>
           <template #total_withdraw-data="{ row }">
-            <div class="text-16-700-24 w-[150px] text-[#ED2C38] text-center">${{ formatMoney(row.total_withdraw) }}</div>
+            <div class="text-14 sm:text-16-700-24 w-[120px] sm:w-[150px] text-[#ED2C38] text-center">${{ formatMoney(row.total_withdraw) }}</div>
           </template>
           <template #created_at-data="{ row }">
-            <div class="text-14-500-20 w-[150px] text-[#7A7D89] text-center">
+            <div class="text-12 sm:text-14-500-20 w-[120px] sm:w-[150px] text-[#7A7D89] text-center">
               {{ formatDDMMYYYY(dayjs.utc(row.created_at).local()) }}
             </div>
           </template>
           <template #status-data="{ row }">
             <div
-              class="flex flex-row gap-[6px] w-[100px] items-center justify-center mx-auto px-3 py-[2px] rounded-[110px]"
+              class="flex flex-row gap-[6px] w-[90px] sm:w-[100px] items-center justify-center mx-auto px-2 sm:px-3 py-[2px] rounded-[110px]"
               :style="{ color: getStatusColor(row?.card_status), background: isCardSelected(row) ? 'white' : '#F0F2F5' }"
             >
-              <div class="text-12-500-20">
+              <div class="text-11 sm:text-12-500-20">
                 {{ t(`cards.list.status.${row.card_status}`) }}
               </div>
-              <div class="w-[6px] h-[6px] rounded-[1px]" :style="{ background: getStatusColor(row?.card_status) }"></div>
+              <div class="w-[4px] sm:w-[6px] h-[4px] sm:h-[6px] rounded-[1px]" :style="{ background: getStatusColor(row?.card_status) }"></div>
             </div>
           </template>
           <template #action-data="{ row }">
             <UButton
               v-if="row.card_status === CardStatus.ACTIVE"
               @click.stop="onClickTopup(row)"
-              class="flex items-center py-[6px] px-4 mx-4 bg-[#1C1D23] hover:bg-[#3D3E34] rounded-[6px]"
+              class="flex items-center py-1 sm:py-[6px] px-2 sm:px-4 mx-2 sm:mx-4 bg-[#1C1D23] hover:bg-[#3D3E34] rounded-[6px]"
             >
-              <div class="text-12-600-20 text-white">
+              <div class="text-11 sm:text-12-600-20 text-white">
                 {{ t('cards.button.topup') }}
               </div>
             </UButton>
-            <div v-else class="w-[104px]"></div>
+            <div v-else class="w-[80px] sm:w-[104px]"></div>
           </template>
         </UTable>
         <div class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700 gap-10 items-center">
