@@ -72,7 +72,6 @@ const getTransactionWallet = (network,token) => {
 
 </script>
 <template>
-  <div class="flex flex-col px-3 sm:px-4 md:px-6 lg:px-10 xl:pr-[60px] flex-1 gap-3 sm:gap-6 mt-4 sm:mt-7">
     <div v-if="!transactionList.length" class="flex flex-col items-center justify-center gap-4 p-4 md:p-10 pt-0 h-full">
       <img class="min-w-[150px] md:min-w-[200px] min-h-[150px] md:min-h-[200px]" src="/images/transactions/no-transaction.svg" alt="" />
       <div class="text-14-500-20 text-[#A5A8B8] text-center">{{ t('transactions.list.empty') }}</div>
@@ -195,5 +194,5 @@ const getTransactionWallet = (network,token) => {
         </UButton>
       </template>
     </UTable>
-  </div>
+
 </template>
