@@ -34,15 +34,15 @@ const getCountdownTimer = computed(() => {
 
 async function handleCompleteInput(value: string) {
   if (value) {
-   const result =  await cardStore.verifyOTPSensitiveDetail(value)
+    const result =  await cardStore.verifyOTPSensitiveDetail(value)
     if (!result.success){
-        pinInput.value.clearInput()
-        errorCount.value++
-        if ( errorCount.value == 5){
-          errorCount.value = 0
-          showCountDown.value = true
-          countDownStore.start(120)
-        }
+      pinInput.value.clearInput()
+      errorCount.value++
+      if ( errorCount.value == 5){
+        errorCount.value = 0
+        showCountDown.value = true
+        countDownStore.start(120)
+      }
     }
   }
 }
@@ -87,7 +87,7 @@ const tryAgainHandler = ()=>{
 
 
 onMounted(async () => {
- await init()
+  await init()
 })
 
 </script>
@@ -108,37 +108,38 @@ onMounted(async () => {
       margin: 'sm:my-0',
     }"
   >
-    <div class="p-4 sm:p-8 bg-white rounded-[20px] flex flex-col gap-5 sm:gap-7 w-full">
+    <div class="p-8 bg-white rounded-[20px] flex flex-col gap-7">
       <div class="w-full flex flex-row justify-between items-center">
-        <div class="text-base sm:text-xl font-semibold">{{ t('cards.modals.otp.title') }}</div>
+        <div class="text-20-600-32">{{ t('cards.modals.otp.title') }}</div>
         <img
-          class="cursor-pointer hover:opacity-70 w-5 h-5"
+          class="cursor-pointer hover:opacity-70"
           src="~/assets/img/common/close.svg"
           alt=""
           @click="handleClose()"
         />
       </div>
 
-      <template v-if="!showCountDown">
-        <div class="text-sm sm:text-base font-medium manrope">
-          <div class="flex flex-wrap gap-1">
+
+      <template  v-if="!showCountDown">
+        <div class="text-14-500-20 manrope">
+          <div class="flex flex-row gap-0.5">
             <span class="text-[#7a7d89]">{{ t('cards.modals.otp.description') }}</span>
-            <span class="text-[#1c1d23] break-all">{{ maskEmail(profileStore.profile?.email || '') }}</span>
+            <span class="text-[#1c1d23]">{{ maskEmail(profileStore.profile?.email || '') }}</span>
           </div>
-          <div class="flex flex-row gap-1">
+          <div class="flex flex-row gap-0.5">
             <span class="text-[#7a7d89]">{{ t('cards.modals.otp.timeout') }}</span>
-            <span class="font-semibold text-[#FF5524]">{{ 90 }}s</span>
+            <!-- Countdown -->
+            <span class="text-14-600-20 text-[#FF5524]">90s</span>
           </div>
         </div>
-
         <PinInput
           ref="pinInput"
-          class="flex flex-wrap justify-between gap-2 mt-4"
+          class="flex flex-row justify-between gap-1"
           :input-classes="[
-            'w-12 h-12 sm:w-[68px] sm:h-[68px] rounded-full text-center p-2',
-            'border border-[#d6d8e5] focus:border-[#ec2c37]',
-            'text-[#1b1c23] text-xl sm:text-2xl font-semibold',
-          ]"
+          'w-[68px] h-[68px] relative rounded-[49px] text-center justify-center p-2',
+          'border-[1.50px] focus:border-[#ec2c37] border-[#d6d8e5]',
+          `text-[#1b1c23] text-2xl font-semibold leading-9`,
+        ]"
           input-type="number"
           input-mode="numeric"
           :num-inputs="6"
@@ -147,39 +148,33 @@ onMounted(async () => {
           :placeholder="[]"
           @on-complete="handleCompleteInput"
         />
-
-        <div class="text-[#ED2C38] text-xs sm:text-sm font-medium -mt-2" v-if="errorCount > 0">
-          {{ t('cards.modals.otp.message',{ count: 5 - errorCount}) }}
-        </div>
-
-        <div class="mt-4 ml-auto flex flex-wrap items-center text-sm font-medium gap-1">
+        <div class="text-[#ED2C38] text-12-500-20 -mt-[14px]" v-if="errorCount > 0">{{ t('cards.modals.otp.message',{ count: 5 - errorCount})  }}</div>
+        <div class="mt-[24px] ml-auto flex flex-row manrope items-center text-14-500-20 gap-0.5">
           <span class="text-[#1C1D23]">{{ t('cards.modals.otp.notReceived') }}</span>
           <template v-if="getCountDownTime">
-            <span class="text-[#7A7D89]">{{ t('cards.modals.otp.resend') }}</span>
-            <span class="text-[#FF5524]">{{ getCountDownTime }}s</span>
+            <span  class="text-14-600-20 text-[#7A7D89]">{{ t('cards.modals.otp.resend') }}</span>
+            <span class="text-14-600-20 text-[#FF5524]">{{ getCountDownTime }}s</span>
           </template>
 
           <UButton
             v-else
             @click="resendOtp"
             :loading="isLoading"
-            class="flex items-center py-1.5 px-3 !bg-[#FF5524] !hover:bg-[#FF5524] rounded-full mx-auto"
+            class="flex items-center py-[4px] px-3 !bg-[#FF5524] !hover:bg-[#FF5524] rounded-[44px] mx-auto w-[min-content] m-0"
           >
             {{ t('cards.modals.otp.button.resend') }}
           </UButton>
         </div>
       </template>
 
-      <div v-else class="flex flex-col items-center text-center">
-        <div class="text-sm sm:text-base text-[#7A7D89] mb-6">
-          {{ t('cards.modals.otp.max_attemp') }}
-        </div>
+      <div v-else class="flex flex-col">
+        <div  class="text-14-600-20 text-[#7A7D89] mb-7">{{ t('cards.modals.otp.max_attemp')  }}</div>
         <UButton
           @click="tryAgainHandler"
           :class="{'!bg-[#FF5524]':!totalSeconds}"
-          class="text-white py-2.5 px-4 bg-[#A5A8B8] hover:bg-[#A5A8B8] rounded-full min-w-[140px]"
+          class="flex self-end text-center justify-center  py-3 px-4 bg-[#A5A8B8] hover:bg-[#A5A8B8] rounded-[49px] mx-auto w-[min-content] m-0 min-w-[140px]"
         >
-          <span>{{ getCountdownTimer }}</span>
+          <span>{{getCountdownTimer}}</span>
         </UButton>
       </div>
     </div>
