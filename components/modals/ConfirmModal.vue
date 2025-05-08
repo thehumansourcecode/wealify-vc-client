@@ -46,6 +46,7 @@ watch(
       overlay: {
         background: 'bg-gray-200/20',
       },
+      container: 'flex min-h-full items-center sm:items-center justify-center text-center',
       rounded: 'rounded-xl',
       background: '',
       width: 'w-[max-content] sm:max-w-[516px]',
