@@ -63,13 +63,13 @@ watch(
         <UButton
           @click="closeModal"
           :label="cancelLabel"
-          class="manrope flex justify-center rounded-[49px] bg-[#F0F2F5] hover:bg-[#F0F2F5] p-3 xl:min-w-[223px] font-semibold text-[#1C1D23]"
+          class="manrope flex justify-center rounded-[49px] min-w-[100px] bg-[#F0F2F5] hover:bg-[#F0F2F5] p-3 xl:min-w-[223px] font-semibold text-[#1C1D23]"
         ></UButton>
         <UButton
           :label="confirmLabel"
           :loading="loading"
           @click="confirmModal"
-          class="manrope flex justify-center rounded-[49px] p-3 xl:min-w-[223px] font-semibold text-[#FFFFFF]"
+          class="manrope flex justify-center rounded-[49px] p-3 min-w-[100px] xl:min-w-[223px] font-semibold text-[#FFFFFF]"
           :class="bgConfirm"
         ></UButton>
       </div>
