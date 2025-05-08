@@ -11,7 +11,7 @@ const { t } = useI18n()
 const userProfile = computed(() => userStore.userProfile)
 
 const activeTab = computed(() => commonStore.activeTab)
-const isMobileMenuOpen = computed(() => commonStore.isMobileMenuOpen)
+const {isMobileMenuOpen} = storeToRefs(commonStore)
 
 function setActiveTab(tab: PanelTab) {
   commonStore.setActiveTab(tab)
@@ -102,7 +102,7 @@ onMounted(() => {
   <div class="lg:hidden fixed inset-0 z-50" v-show="isMobileMenuOpen">
     <!-- Overlay -->
     <div class="fixed inset-0 bg-black/50" @click="commonStore.toggleMobileMenu(false)"></div>
-    
+
     <!-- Sidebar -->
     <div class="fixed inset-y-0 left-0 w-[250px] bg-white transform transition-transform duration-300 ease-in-out" 
          :class="isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'">
