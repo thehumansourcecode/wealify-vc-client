@@ -18,6 +18,7 @@ function onClosePrevented() {
       overlay: {
         background: 'bg-[#1c1d23]/30',
       },
+      container: 'flex min-h-full items-center sm:items-center justify-center text-center',
       rounded: 'rounded-xl',
       background: '',
       width: 'w-[max-content] sm:max-w-[1000px]',
