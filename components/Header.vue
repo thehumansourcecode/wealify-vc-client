@@ -105,7 +105,7 @@ onMounted(async () => {
           <path d="M3 18H21" stroke="#1C1D23" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </button>
-      <div v-if="!isHeaderBackLayout" class="text-[20px] leading-8">{{ t(`common.title.${activeTab}`) }}</div>
+      <div v-if="!isHeaderBackLayout" class="text-[16px] leading-8 lg:text-[20px]">{{ t(`common.title.${activeTab}`) }}</div>
       <div v-else class="flex-row gap-4 items-center hidden sm:flex">
         <img
           @click="navigateTo(getTabRoute(commonStore.activeTab))"
