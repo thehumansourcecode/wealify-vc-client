@@ -186,7 +186,7 @@ const showIconCard = computed(()=>{
               @click="handleEdit()"
             />
           </div>
-          <div class="flex flex-col slideover-content overflow-y-auto w-full">
+          <div class="flex flex-col slideover-content w-full">
             <!-- Card -->
             <div
               class="w-[calc(100%-32px)] sm:w-[400px] h-[180px] sm:h-[220px] rounded-[21px] flex flex-none flex-col items-start bg-[url(~/assets/img/cards/card-bg.svg)] bg-right pt-3 sm:pt-[18px] pb-4 sm:pb-6 pl-3 sm:pl-5 pr-6 sm:pr-10 mx-4 sm:mx-8 mb-6 sm:mb-8"
