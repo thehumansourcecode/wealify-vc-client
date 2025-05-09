@@ -380,7 +380,7 @@ const getWallet = (network) => {
         <UButton
           @click="handleNewTransaction()"
           v-if=" transactionDetail?.detailType === TransactionDetailType.WALLET_TOP_UP"
-          class="flex items-center bg-[#1C1D23] hover:bg-[#3D3E34] justify-center w-[400px] my-8 rounded-[49px]"
+          class="flex items-center bg-[#1C1D23] hover:bg-[#3D3E34] justify-center my-8 rounded-[49px] w-[320px] lg:w-[400px]"
         >
           <div class="text-white text-14-600-20 px-4 py-[14px]">
             {{ t(`transactions.detail.createNew.${transactionDetail.detailType}`) }}
