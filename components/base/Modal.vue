@@ -25,7 +25,7 @@ function onClosePrevented() {
       margin: 'sm:my-0',
     }"
   >
-    <div class="p-8 bg-white rounded-[20px] flex flex-col gap-7">
+    <div class="p-4 lg:p-8 bg-white rounded-[20px] flex flex-col gap-2 lg:gap-7">
       <div v-if="label" class="w-full flex flex-row justify-between items-center">
         <div class="text-20-600-32">{{ label }}</div>
         <img
