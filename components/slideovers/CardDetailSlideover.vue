@@ -413,7 +413,7 @@ const showIconCard = computed(()=>{
               <!-- Actions -->
               <UButton
                 @click="handleViewTransaction"
-                class="flex items-center justify-center w-[400px] bg-[#1C1D23] hover:bg-[#3D3E34] rounded-[49px]"
+                class="flex items-center justify-center w-[320px] bg-[#1C1D23] hover:bg-[#3D3E34] rounded-[49px] lg:w-[400px]"
               >
                 <div class="text-white text-14-600-20 px-4 py-[14px]">
                   <div>{{ t(`cards.slideovers.detail.button.transaction`) }}</div>
