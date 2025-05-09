@@ -122,7 +122,7 @@ const getWallet = (network) => {
           @click="onClosePrevented()"
         />
       </div>
-      <div class="flex flex-col items-center slideover-content overflow-y-auto px-8">
+      <div class="flex flex-col items-center slideover-content overflow-y-auto px-8 pb-8 lg:pb-0">
         <img class="w-[180px]" src="/images/transactions/slideover-banner.svg" alt="" />
         <div class="pt-5 flex flex-row justify-between items-end w-full">
           <div class="flex-col gap-[6px]">
