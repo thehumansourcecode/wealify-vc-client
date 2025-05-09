@@ -350,7 +350,7 @@ const getWallet = (network) => {
           <ULink to="mailto:support@cs2agent.com" class="text-[#FF5524]"> support@wealify.com </ULink>
         </div>
 
-        <div  v-if=" transactionDetail?.detailType === TransactionDetailType.CARD_PAYMENT" class="flex items-center mt-8 gap-[10px] mb-12">
+        <div  v-if=" transactionDetail?.detailType === TransactionDetailType.CARD_PAYMENT" class="flex flex-col items-center mt-8 gap-[10px] mb-12 lg:flex-row">
           <UButton
           disabled
           class="flex items-center !bg-[#F0F2F5] hover:bg-[#F0F2F5] h-[48px] justify-center w-[195px] rounded-[49px]"
