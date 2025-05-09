@@ -429,7 +429,8 @@ const showIconCard = computed(()=>{
 
 <style lang="scss" scoped>
 .slideover-content {
-  // max-height: calc(100vh - 80px);
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .slide-enter-active,
