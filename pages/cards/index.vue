@@ -634,7 +634,7 @@ onUnmounted(() =>
               icon: '',
             },
           }"
-          class="table-wrapper grow overflow-x-scroll"
+          class="table-wrapper grow overflow-x-auto"
         >
           <template #card-data="{ row }">
             <div class="flex flex-row items-center gap-2 sm:gap-[14px] min-w-[240px]">
