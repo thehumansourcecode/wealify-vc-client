@@ -160,9 +160,10 @@ const showIconCard = computed(()=>{
 </script>
 
 <template>
-  <div v-if="isOpenCardDetailSlideover" class="fixed inset-0 bg-[#1c1d23]/30"></div>
+  <div class="fixed inset-0 bg-[#1c1d23]/30" v-if="isOpenCardDetailSlideover"></div>
   <Transition name="slide">
     <div v-if="isOpenCardDetailSlideover" class="fixed inset-0 z-40">
+      <div class="fixed inset-0" @click="onClosePrevented()"></div>
       <!-- Slideover content -->
       <div class="fixed inset-y-0 right-0 w-screen max-w-[464px] z-40">
         <div class="h-full flex flex-col items-center bg-[#1C1D23]">
