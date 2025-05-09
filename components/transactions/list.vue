@@ -130,7 +130,7 @@ const getTransactionWallet = (network,token) => {
                 src="/icons/common/coin_logo.png"
               />
               <span class="text-10 md:text-12-500-20 text-[#7A7D89]">
-              {{row.virtual_card ? t(`transactions.list.card`) : row.crypto_wallet ? getTransactionWallet(row?.crypto_wallet?.network,row.confirm_transaction.raw_data.token) : t(`transactions.list.wallet`) }}
+              {{row.virtual_card ? t(`transactions.list.card`) : row.crypto_wallet ? getTransactionWallet(row.crypto_wallet?.network,row.confirm_transaction?.raw_data?.token) : t(`transactions.list.wallet`) }}
             </span>
             </div>
           </div>
