@@ -129,7 +129,7 @@ const getTransactionWallet = (network,token) => {
                 class="cursor-pointer w-[16px] h-[16px]"
                 src="/icons/common/coin_logo.png"
               />
-              <span class="text-10 md:text-12-500-20 text-[#7A7D89]">
+              <span class="text-[10px] lg:text-[12px] leading-[20px] font-medium text-[#7A7D89]">
               {{row.virtual_card ? t(`transactions.list.card`) : row.crypto_wallet ? getTransactionWallet(row.crypto_wallet?.network,row.confirm_transaction?.raw_data?.token) : t(`transactions.list.wallet`) }}
             </span>
             </div>
@@ -151,14 +151,14 @@ const getTransactionWallet = (network,token) => {
         </div>
       </template>
       <template #currency-data="{ row }">
-        <div class="text-12 md:text-14-500-20 w-[120px] min-w-[80px] text-[#FF5524] text-center">{{ row.currency.symbol }}</div>
+        <div class="text-14-500-20 w-[120px] min-w-[80px] text-[#FF5524] text-center">{{ row.currency.symbol }}</div>
       </template>
       <template #card-data="{ row }">
         <div v-if="row.virtual_card" class="flex flex-row items-center gap-2 md:gap-[14px] w-[218px] min-w-[160px]">
           <img src="/images/transactions/mastercard.svg" alt="" class="w-6 h-6 md:w-auto md:h-auto" />
           <div class="flex flex-col gap-0.5 md:gap-1">
-            <span class="text-12 md:text-14-600-20 text-[#1C1D23]">{{ row.virtual_card.card_name }}</span>
-            <span class="text-10 md:text-12-500-20 text-[#7A7D89]">
+            <span class="text-14-600-20 text-[#1C1D23]">{{ row.virtual_card.card_name }}</span>
+            <span class="text-[10px] lg:text-[12px] leading-[20px] font-medium text-[#7A7D89]">
               {{ t(`cards.list.card_number`, { value: row.virtual_card?.last_four }) }}</span
             >
           </div>
@@ -174,7 +174,7 @@ const getTransactionWallet = (network,token) => {
           class="flex flex-row gap-1 md:gap-[6px] w-[120px] min-w-[100px] items-center justify-center mx-auto px-1.5 md:px-3 py-[2px] bg-[#F0F2F5] rounded-[110px]"
           :style="{ color: getStatusColor(row?.transaction_vc_status) }"
         >
-          <div class="text-10 md:text-12-500-20">
+          <div class="text-12-500-20">
             {{ t(`transactions.list.status.${row.transaction_vc_status}`) }}
           </div>
           <div
@@ -188,7 +188,7 @@ const getTransactionWallet = (network,token) => {
           @click="handleClickTransaction(row)"
           class="flex items-center py-[4px] md:py-[6px] px-1.5 md:px-4 bg-[#1C1D23] hover:bg-[#3D3E34] rounded-[6px] mx-auto"
         >
-          <div class="text-10 md:text-12-600-20 text-white">
+          <div class="text-12-600-20 text-white">
             {{ t('transactions.list.action.viewDetail') }}
           </div>
         </UButton>
