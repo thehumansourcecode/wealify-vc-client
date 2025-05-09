@@ -119,7 +119,7 @@ async function handleEdit() {
           v-slot="{ error }"
         >
           <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-0">
-            <div class="text-xs sm:text-14-500-20 w-full sm:w-auto sm:flex-none sm:flex-[0_0_156px]">
+            <div class="text-xs sm:text-14-500-20 w-full sm:w-auto sm:flex-none lg:flex-[0_0_156px]">
               <span>{{ t('cards.issue.info.form.label.name') }}</span>
               <span class="pl-1 text-[#ED2C38]">*</span>
             </div>
@@ -147,7 +147,7 @@ async function handleEdit() {
           v-slot="{ error }"
         >
           <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-0">
-            <div class="text-xs sm:text-14-500-20 flex flex-row items-center w-full sm:w-auto sm:flex-none sm:flex-[0_0_156px]">
+            <div class="text-xs sm:text-14-500-20 flex flex-row items-center w-full sm:w-auto sm:flex-none lg:flex-[0_0_156px]">
               <span>{{ t('cards.issue.info.form.label.email') }}</span>
               <span class="pl-1 text-[#ED2C38]">*</span>
               <UTooltip
@@ -182,7 +182,7 @@ async function handleEdit() {
         </UFormGroup>
         <!-- Phone number -->
         <div class="flex flex-col sm:flex-row items-start gap-2 sm:gap-0">
-          <div class="text-xs sm:text-14-500-20 mt-4 sm:mt-8 w-full sm:w-auto sm:flex-none sm:flex-[0_0_156px]">
+          <div class="text-xs sm:text-14-500-20 mt-4 sm:mt-8 w-full sm:w-auto sm:flex-none lg:flex-[0_0_156px]">
             <div class="flex flex-row items-center">
               <span>{{ t('cards.issue.info.form.label.phoneNumber') }}</span>
               <span class="pl-1 text-[#ED2C38]">*</span>
@@ -307,7 +307,7 @@ async function handleEdit() {
           v-slot="{ error }"
         >
           <div class="flex flex-row items-center">
-            <div class="text-14-500-20 w-full sm:w-auto sm:flex-none sm:flex-[0_0_156px]">
+            <div class="text-14-500-20 w-full sm:w-auto sm:flex-none lg:flex-[0_0_156px]">
               <span>{{ t('cards.issue.info.form.label.category') }}</span>
               <span class="pl-1 text-[#ED2C38]">*</span>
             </div>
@@ -350,7 +350,7 @@ async function handleEdit() {
         </UFormGroup>
         <UFormGroup name="purpose" class="mt-5">
           <div class="flex flex-row items-center">
-            <div class="text-14-500-20 w-full sm:w-auto sm:flex-none sm:flex-[0_0_156px]">
+            <div class="text-14-500-20 w-full sm:w-auto sm:flex-none lg:flex-[0_0_156px]">
               <span>{{ t('cards.issue.info.form.label.purpose') }}</span>
             </div>
             <BaseInput
