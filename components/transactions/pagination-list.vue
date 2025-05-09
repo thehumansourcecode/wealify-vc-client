@@ -37,7 +37,7 @@ onMounted(async() => {
   <div class="rounded-[12px] flex flex-col border border-[#D7D9E5] mb-8 overflow-x-auto w-full">
     <TransactionsList />
     <div class="flex flex-row justify-between sm:justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700 gap-3 sm:gap-10 items-center">
-      <USelectMenu v-model="payload.limit" :options="limitOptions" selected-icon="i-selected" class="w-[160px] sm:w-auto">
+      <USelectMenu v-model="payload.limit" :options="limitOptions" selected-icon="i-selected" class="hidden sm:block w-[160px] sm:w-auto">
         <template #option="{ option }">
           <div class="self-stretch justify-center text-[#1b1c23] text-12 md:text-14-500-20 font-medium font-['Manrope'] leading-tight">
             {{ t(`transactions.list.pagination.limit`, { limit: option }) }}
@@ -50,21 +50,23 @@ onMounted(async() => {
           <img src="/images/transactions/dropdown.svg" alt="" class="w-3 h-3 md:w-auto md:h-auto mt-[5px] md:mt-[0px]" />
         </div>
       </USelectMenu>
-      <BasePagination
-        @update:model-value="onChangePage"
-        :model-value="payload.page"
-        :limit="payload.limit"
-        :total="transactionCount"
-        :ui="{
-          wrapper: 'flex items-center gap-1 md:gap-2',
-          default: {
-            size: 'text-14-500-20',
-            padding: 'p-1 md:p-2',
-            base: 'text-[#7A7D89]',
-            active: 'text-[#1C1D23]',
-          },
-        }"
-      />
+      <div class="flex-1 sm:flex-none flex justify-center sm:justify-end">
+        <BasePagination
+          @update:model-value="onChangePage"
+          :model-value="payload.page"
+          :limit="payload.limit"
+          :total="transactionCount"
+          :ui="{
+            wrapper: 'flex items-center gap-1 md:gap-2',
+            default: {
+              size: 'text-14-500-20',
+              padding: 'p-1 md:p-2',
+              base: 'text-[#7A7D89]',
+              active: 'text-[#1C1D23]',
+            },
+          }"
+        />
+      </div>
     </div>
   </div>
 </template>

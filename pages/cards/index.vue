@@ -707,7 +707,7 @@ onUnmounted(() =>
           <USelectMenu
             v-model="payload.limit"
             :options="limitOptions"
-            class="w-[150px] sm:w-auto"
+            class="hidden sm:block w-[150px] sm:w-auto"
             :selected-icon="'i-selected'"
           >
             <template #option="{ option }">
@@ -726,12 +726,14 @@ onUnmounted(() =>
               </div>
             </template>
           </USelectMenu>
-          <BasePagination
-            @update:model-value="onChangePage"
-            :model-value="payload.page"
-            :limit="payload.limit"
-            :total="cardCount"
-          />
+          <div class="flex-1 sm:flex-none flex justify-center sm:justify-end">
+            <BasePagination
+              @update:model-value="onChangePage"
+              :model-value="payload.page"
+              :limit="payload.limit"
+              :total="cardCount"
+            />
+          </div>
         </div>
         <ConfirmModal
           v-model="isVisibleConfirmFreeze"
