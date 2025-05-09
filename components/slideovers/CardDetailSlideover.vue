@@ -161,9 +161,12 @@ const showIconCard = computed(()=>{
 
 <template>
   <USlideover
+    class="z-40"
+    :modal="true"
    :preventClose="isPreventClose"
     v-model="isOpenCardDetailSlideover"
     :ui="{
+      container: 'z-40',
       width: 'w-screen max-w-[464px]',
       overlay: {
         background: 'bg-[#1c1d23]/30',
@@ -171,21 +174,21 @@ const showIconCard = computed(()=>{
     }"
   >
     <div class="flex flex-col items-center bg-[#1C1D23]">
-      <div class="w-full flex flex-row items-center py-6 px-8 justify-between">
-        <div class="flex flex-row gap-4 items-center">
+      <div class="w-full flex flex-row items-center py-4 sm:py-6 px-4 sm:px-8 justify-between">
+        <div class="flex flex-row gap-2 sm:gap-4 items-center">
           <img
-            class="cursor-pointer hover:opacity-80"
+            class="cursor-pointer hover:opacity-80 w-5 h-5 sm:w-6 sm:h-6"
             src="~/assets/img/icons/back-dark.svg"
             alt=""
             @click="onClosePrevented()"
           />
-          <div class="text-20-600-32 text-[#FFF]">
+          <div class="text-base sm:text-20-600-32 text-[#FFF]">
             {{ t(`cards.slideovers.detail.label`) }}
           </div>
         </div>
         <img
           v-if="cardDetail?.card_status === CardStatus.ACTIVE"
-          class="cursor-pointer hover:opacity-80"
+          class="cursor-pointer hover:opacity-80 w-5 h-5 sm:w-6 sm:h-6"
           src="~/assets/img/icons/edit.svg"
           alt=""
           @click="handleEdit()"
@@ -194,27 +197,27 @@ const showIconCard = computed(()=>{
       <div class="flex flex-col slideover-content overflow-y-auto w-full">
         <!-- Card -->
         <div
-          class="w-[400px] h-[220px] rounded-[21px] flex flex-none flex-col items-start bg-[url(~/assets/img/cards/card-bg.svg)] bg-right pt-[18px] pb-6 pl-5 pr-10 mx-8 mb-8"
+          class="w-[calc(100%-32px)] sm:w-[400px] h-[180px] sm:h-[220px] rounded-[21px] flex flex-none flex-col items-start bg-[url(~/assets/img/cards/card-bg.svg)] bg-right pt-3 sm:pt-[18px] pb-4 sm:pb-6 pl-3 sm:pl-5 pr-6 sm:pr-10 mx-4 sm:mx-8 mb-6 sm:mb-8"
           :class="{'!bg-[url(~/assets/img/cards/card-bg-canceled.svg)]':cardDetail?.card_status === CardStatus.CANCELLED,'!bg-[url(~/assets/img/cards/card-bg-freeze.svg)]':cardDetail?.card_status === CardStatus.FROZEN,}"
         >
-          <div class="flex flex-row gap-3">
-            <img src="~/assets/img/cards/card-logo.svg" alt="" />
+          <div class="flex flex-row gap-2 sm:gap-3">
+            <img class="w-6 h-6 sm:w-auto sm:h-auto" src="~/assets/img/cards/card-logo.svg" alt="" />
             <div
-              class="px-3 py-[2px] flex items-center justify-center rounded-[5px] gap-1 border border-[#FFFFFF33] max-w-[180px]"
+              class="px-2 sm:px-3 py-[2px] flex items-center justify-center rounded-[5px] gap-1 border border-[#FFFFFF33] max-w-[150px] sm:max-w-[180px]"
             >
-              <div class="text-[#FFF] text-12-500-20">{{ t(`cards.list.category.${cardDetail?.category}`) }}</div>
-              <img :src="`/icons/cards/category/${cardDetail?.category}.svg`" alt="" />
+              <div class="text-[#FFF] text-xs sm:text-12-500-20">{{ t(`cards.list.category.${cardDetail?.category}`) }}</div>
+              <img class="w-4 h-4 sm:w-auto sm:h-auto" :src="`/icons/cards/category/${cardDetail?.category}.svg`" alt="" />
             </div>
           </div>
-          <div v-if="cardDetail?.card_status === CardStatus.CANCELLED" class="pull-left mt-auto ml-0 mb-3 w-[76px] h-[24px] gap-[6px] bg-[#FFE3EF] items-center justify-center mx-auto px-3 py-[2px] rounded-[110px] flex flex-row">
-            <div class="text-12-500-20 text-[#ED2C38]">
+          <div v-if="cardDetail?.card_status === CardStatus.CANCELLED" class="pull-left mt-auto ml-0 mb-2 sm:mb-3 w-[70px] sm:w-[76px] h-[20px] sm:h-[24px] gap-[6px] bg-[#FFE3EF] items-center justify-center mx-auto px-2 sm:px-3 py-[2px] rounded-[110px] flex flex-row">
+            <div class="text-xs sm:text-12-500-20 text-[#ED2C38]">
               {{ t(`cards.list.status.${cardDetail?.card_status}`) }}
             </div>
-            <div class="w-[6px] h-[6px] rounded-[1px] bg-[#ED2C38]"></div>
+            <div class="w-[4px] sm:w-[6px] h-[4px] sm:h-[6px] rounded-[1px] bg-[#ED2C38]"></div>
           </div>
-          <div v-else-if="cardDetail?.card_status === CardStatus.FROZEN" class="pull-left mt-auto ml-0 mb-3 w-[76px] h-[24px]"></div>
-          <img v-else class="mt-auto mb-3 w-[110px]" src="~/assets/img/cards/add-to-apple.png" alt="" />
-          <div class="karla tracking-[3px] text-24-400 text-[#D7D9E5] w-full">
+          <div v-else-if="cardDetail?.card_status === CardStatus.FROZEN" class="pull-left mt-auto ml-0 mb-2 sm:mb-3 w-[70px] sm:w-[76px] h-[20px] sm:h-[24px]"></div>
+          <img v-else class="mt-auto mb-2 sm:mb-3 w-[90px] sm:w-[110px]" src="~/assets/img/cards/add-to-apple.png" alt="" />
+          <div class="karla tracking-[2px] sm:tracking-[3px] text-lg sm:text-24-400 text-[#D7D9E5] w-full">
             <div class="flex flex-row justify-between w-full" v-if="isShowCardSensitiveDetail">
               <div v-for="(part, index) in cardNumberArray" :key="index">
                 {{ part }}
@@ -229,16 +232,16 @@ const showIconCard = computed(()=>{
           </div>
         </div>
         <!-- Information -->
-        <div class="bg-white grow px-8 pt-4 pb-9 rounded-t-[20px] flex flex-col">
-          <div class="text-[#1C1D23] text-20-500-32 uppercase">{{ cardDetail?.card_name }}</div>
-          <div class="mt-2 flex flex-row gap-8">
+        <div class="bg-white grow px-4 sm:px-8 pt-3 sm:pt-4 pb-6 sm:pb-9 rounded-t-[20px] flex flex-col">
+          <div class="text-[#1C1D23] text-base sm:text-20-500-32 uppercase">{{ cardDetail?.card_name }}</div>
+          <div class="mt-2 flex flex-col sm:flex-row gap-2 sm:gap-8">
             <div class="flex flex-row gap-2">
-              <img src="~/assets/img/icons/mail.svg" alt="" />
-              <div class="text-[#7A7D89] text-14-500-20">{{ cardDetail?.email }}</div>
+              <img class="w-4 h-4 sm:w-auto sm:h-auto" src="~/assets/img/icons/mail.svg" alt="" />
+              <div class="text-[#7A7D89] text-xs sm:text-14-500-20">{{ cardDetail?.email }}</div>
             </div>
             <div class="flex flex-row gap-2">
-              <img src="~/assets/img/icons/phone.svg" alt="" />
-              <div class="text-[#7A7D89] text-14-500-20">{{ cardDetail?.phone_number }}</div>
+              <img class="w-4 h-4 sm:w-auto sm:h-auto" src="~/assets/img/icons/phone.svg" alt="" />
+              <div class="text-[#7A7D89] text-xs sm:text-14-500-20">{{ cardDetail?.phone_number }}</div>
             </div>
           </div>
           <!-- Buttons -->
