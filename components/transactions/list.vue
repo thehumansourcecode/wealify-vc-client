@@ -151,7 +151,7 @@ const getTransactionWallet = (network,token) => {
         </div>
       </template>
       <template #currency-data="{ row }">
-        <div class="text-14-500-20 w-[120px] min-w-[80px] text-[#FF5524] text-center">{{ row.currency.symbol }}</div>
+        <div class="text-14-500-20 w-[120px] min-w-[80px] text-[#FF5524] text-center">{{ row.currency?.symbol }}</div>
       </template>
       <template #card-data="{ row }">
         <div v-if="row.virtual_card" class="flex flex-row items-center gap-2 md:gap-[14px] w-[218px] min-w-[160px]">
