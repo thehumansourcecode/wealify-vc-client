@@ -668,11 +668,11 @@ onUnmounted(() =>
           </template>
           <template #total_top_up-data="{ row }">
             <div class="text-14 sm:text-16-700-24 w-[120px] sm:w-[150px] text-[#2EA518] text-center">
-              ${{ formatMoney(row.total_top_up) || 0 }}
+              ${{ row.total_top_up ? formatMoney(row.total_top_up) : 0.00 }} 
             </div>
           </template>
           <template #total_withdraw-data="{ row }">
-            <div class="text-14 sm:text-16-700-24 w-[120px] sm:w-[150px] text-[#ED2C38] text-center">${{ formatMoney(row.total_withdraw) }}</div>
+            <div class="text-14 sm:text-16-700-24 w-[120px] sm:w-[150px] text-[#ED2C38] text-center">${{ row.total_withdraw ? formatMoney(row.total_withdraw) : 0.00 }}</div>
           </template>
           <template #created_at-data="{ row }">
             <div class="text-12 sm:text-14-500-20 w-[120px] sm:w-[150px] text-[#7A7D89] text-center">
