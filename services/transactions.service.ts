@@ -18,7 +18,7 @@ export class TransactionService extends BaseService {
   }
 
   async getTransactionList(payload: IGetTransactionListParams): Promise<ICommonListResponse<ITransactionData>> {
-    return this.get('/', {
+    return this.get('', {
       params: payload,
     })
   }
