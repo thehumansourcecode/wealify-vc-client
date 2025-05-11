@@ -1,6 +1,6 @@
 import { BaseService } from './base.service'
 import type { ITransactionData, IGetTransactionListParams } from '~/types/transactions'
-import type { ICommonListResponse } from '~/types/common'
+import type { ICommonListResponse,ICommonResponse } from '~/types/common'
 
 export class TransactionService extends BaseService {
   private static _instance: TransactionService
@@ -21,6 +21,10 @@ export class TransactionService extends BaseService {
     return this.get('', {
       params: payload,
     })
+  }
+
+  async getTransaction(id: string): Promise<ICommonResponse<ITransactionData>> {
+    return this.get(`/${id}`)
   }
 }
 

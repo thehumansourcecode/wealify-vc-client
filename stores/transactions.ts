@@ -91,6 +91,24 @@ export const useTransactionStore = defineStore('transaction', () => {
     }
   }
 
+  async function getTransaction(id:string) {
+    let result = {
+      success: true
+    }
+    const response = await TransactionService.instance.getTransaction(id)
+    if (response.success) {
+      selectedTransactionDetail.value = response.data
+      return {
+        ...result,
+        transaction: response.data
+      }
+    }
+    return {
+      success: false,
+      message: response.message || ''
+    }
+  }
+
   return {
     payload,
     setPayload,
@@ -103,5 +121,6 @@ export const useTransactionStore = defineStore('transaction', () => {
     selectedTransactionDetail,
     setSelectedTransactionDetail,
     isLoading,
+    getTransaction,
   }
 })

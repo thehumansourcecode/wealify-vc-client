@@ -95,6 +95,18 @@ const getWallet = (network) => {
   }
 }
 
+const getTransactionLinkTo = async () =>{
+  const id = transactionDetail.value?.transaction_linked?.id
+  if (!id){
+    return
+  }
+  const result = await transactionStore.getTransaction(id)
+  if (result.success) {
+    transactionStore.setSelectedTransactionDetail(result.transaction)
+    return
+  }
+}
+
 </script>
 
 <template>
@@ -234,8 +246,9 @@ const getWallet = (network) => {
           </div>
 
           <div class="flex flex-row justify-between items-center pb-4">
-            <div class="text-12-500-20 text-[#7A7D89]">
+            <div class="flex flex-row text-12-500-20 text-[#7A7D89] gap-[2px] cursor-pointer" @click="getTransactionLinkTo">
               {{ t(`transactions.detail.id2.${transactionDetail?.transaction_vc_type}`) }}
+              <Icon name="heroicons:arrow-top-right-on-square" class="w-4 h-4 text-blue-500 opacity-50" />
             </div>
             <div class="flex flex-row gap-2 items-center">
               <div class="text-14-500-20 text-[#1C1D23]">
