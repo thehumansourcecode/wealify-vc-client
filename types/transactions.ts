@@ -73,6 +73,7 @@ export interface ITransactionData {
   virtual_card: VCard
   currency: Currency
   detailType?: TransactionDetailType
+  vc_detail_transaction_type : String
 }
 
 export interface IGetTransactionListParams {
