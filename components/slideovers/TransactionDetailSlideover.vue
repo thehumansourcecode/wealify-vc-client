@@ -241,7 +241,7 @@ const getTransactionLinkTo = async () =>{
             </div>
           </div>
 
-          <div class="flex flex-row justify-between items-center pb-4">
+          <div class="flex flex-row justify-between items-center pb-4" v-if="transactionDetail?.detailType !== TransactionDetailType.WALLET_TOP_UP">
             <div class="flex flex-row text-12-500-20 text-[#7A7D89] gap-[2px] cursor-pointer" @click="getTransactionLinkTo">
               {{ t(`transactions.detail.id2.${transactionDetail?.transaction_vc_type}`) }}
               <Icon name="heroicons:arrow-top-right-on-square" class="w-4 h-4 text-blue-500 opacity-50" />
