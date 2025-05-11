@@ -125,6 +125,7 @@ watch(
       overlay: {
         background: 'bg-gray-200/20',
       },
+      container: 'flex min-h-full items-center sm:items-center justify-center text-center',
       rounded: 'rounded-[30px]',
       background: '',
       width: 'w-[516px] sm:max-w-[516px]',
