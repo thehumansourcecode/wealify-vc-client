@@ -8,7 +8,6 @@ export const usePaymentStore = defineStore('payment', () => {
       success:true
     }
     const response = await paymentService.getWalletInfo()
-    console.log(response)
     if (response.success) {
       walletInfo.value = response.data
       return result
