@@ -76,10 +76,10 @@ export default {
       [TransactionDetailType.CARD_TOP_UP]: 'Card',
       [TransactionDetailType.CARD_ISSUE_TOPUP]:'Card',
       [TransactionDetailType.CARD_WITHDRAW]: 'Card',
-      [TransactionDetailType.WALLET_TOP_UP]: 'refund to wallet when cancelling card',
+      [TransactionDetailType.WALLET_TOP_UP]: 'Wealify balance',
       [TransactionDetailType.WALLET_WITHDRAW]: 'Card',
       [TransactionDetailType.WALLET_ISSUE_WITHDRAW]: 'issue new virtual card',
-      [TransactionDetailType.WALLET_REFUND]: 'Wallet',
+      [TransactionDetailType.WALLET_REFUND]: 'refund to wallet when cancelling card',
     },
     amountLabel: {
       [TransactionDetailType.CARD_PAYMENT]: 'Merchant charged',
@@ -89,7 +89,7 @@ export default {
       [TransactionDetailType.WALLET_TOP_UP]: 'Top up amount',
       [TransactionDetailType.WALLET_WITHDRAW]: 'Withdraw amount',
       [TransactionDetailType.WALLET_ISSUE_WITHDRAW]: 'Withdraw amount',
-      [TransactionDetailType.WALLET_REFUND]: 'Refund amount',
+      [TransactionDetailType.WALLET_REFUND]: 'Top up amount',
     },
     amount:  {
       [TransactionDetailType.WALLET_TOP_UP]: '{amount} {currency}',
@@ -99,6 +99,7 @@ export default {
       [TransactionDetailType.CARD_ISSUE_TOPUP]: '{amount} {currency}',
       [TransactionDetailType.CARD_WITHDRAW]: '{amount} {currency}',
       [TransactionDetailType.CARD_PAYMENT]: '{amount} {currency}',
+      [TransactionDetailType.WALLET_REFUND]: '{amount} {currency}',
     },
     rate: 'Rate',
     fee: 'Fee',
@@ -141,7 +142,7 @@ export default {
       [TransactionDetailType.CARD_ISSUE_TOPUP]: 'Card Top up',
       [TransactionDetailType.CARD_WITHDRAW]: 'Card withdraw',
       [TransactionDetailType.CARD_PAYMENT]: 'Card payment',
-      [TransactionDetailType.WALLET_REFUND]: 'Wallet withdraw',
+      [TransactionDetailType.WALLET_REFUND]: 'Wallet Top up',
     },
     status: {
       [TransactionVCStatus.PROCESSING]: 'Processing',

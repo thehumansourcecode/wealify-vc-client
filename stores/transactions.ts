@@ -45,7 +45,7 @@ export const useTransactionStore = defineStore('transaction', () => {
         detailType = TransactionDetailType.CARD_ISSUE_TOPUP
       }else{
         if (transactionDetailType == TransactionDetailType.WALLET_REFUND){
-          detailType = TransactionDetailType.WALLET_TOP_UP
+          detailType = TransactionDetailType.WALLET_REFUND
         }else{
           detailType = TransactionDetailType.CARD_TOP_UP
         }
@@ -56,6 +56,9 @@ export const useTransactionStore = defineStore('transaction', () => {
     }
     if (isCardTransaction && type === TransactionVCType.PAYMENT) {
       detailType = TransactionDetailType.CARD_PAYMENT
+    }
+    if (!isCardTransaction && type === TransactionVCType.TOP_UP) { // ví nạp tiền vào
+      detailType = TransactionDetailType.WALLET_TOP_UP
     }
     if (!isCardTransaction && type === TransactionVCType.WITHDRAWAL) {
       if (transaction.is_issue){

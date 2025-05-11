@@ -186,7 +186,8 @@ const getTransactionLinkTo = async () =>{
             <div class="text-14-500-20 text-[#1C1D23]">
               <span
                 v-if="
-                  transactionDetail?.detailType === TransactionDetailType.CARD_PAYMENT
+                  transactionDetail?.detailType === TransactionDetailType.CARD_PAYMENT  ||
+                  transactionDetail?.detailType === TransactionDetailType.WALLET_TOP_UP
                 "
               >
                 {{
