@@ -145,7 +145,9 @@ const getTransactionLinkTo = async () =>{
               {{ formatMoney(transactionDetail.received_amount, CommonCurrency.USD) }}
             </div>
             <div class="text-12-500-20 text-[#7A7D89]">
-             to {{ t(`transactions.detail.to.${transactionDetail.detailType}`) }}
+             to {{transactionDetail?.detailType === TransactionDetailType.CARD_PAYMENT ?
+                  transactionDetail.aspire_transaction?.merchant :
+                  t(`transactions.detail.to.${transactionDetail.detailType}`) }}
             </div>
           </div>
           <div
