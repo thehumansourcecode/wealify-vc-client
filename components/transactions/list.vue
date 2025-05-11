@@ -4,6 +4,7 @@ import { type ITransactionData, TransactionVCType } from '~/types/transactions'
 import { formatDDMMYYYY} from '~/common/functions'
 import {TransactionNetwork } from '~/types/dashboard'
 const dayjs = useDayjs()
+import { TransactionDetailType, } from '~/types/transactions'
 
 const { t } = useI18n()
 const transactionStore = useTransactionStore()
@@ -130,7 +131,11 @@ const getTransactionWallet = (network,token) => {
                 src="/icons/common/coin_logo.png"
               />
               <span class="text-[10px] lg:text-[12px] leading-[20px] font-medium text-[#7A7D89]">
-              {{row.virtual_card ? t(`transactions.list.card`) : row.crypto_wallet ? getTransactionWallet(row.crypto_wallet?.network,row.confirm_transaction?.raw_data?.token) : t(`transactions.list.wallet`) }}
+              {{
+                  row.virtual_card ? row.vc_detail_transaction_type == TransactionDetailType.WALLET_REFUND ? t(`transactions.list.wallet`) : t(`transactions.list.card`) :
+                  row.crypto_wallet ?
+                  getTransactionWallet(row.crypto_wallet?.network,row.confirm_transaction?.raw_data?.token) :
+                  t(`transactions.list.wallet`) }}
             </span>
             </div>
           </div>

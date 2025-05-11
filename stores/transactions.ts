@@ -64,8 +64,7 @@ export const useTransactionStore = defineStore('transaction', () => {
         detailType = TransactionDetailType.WALLET_WITHDRAW
       }
     }
-    console.log(type)
-    console.log(isCardTransaction)
+
     selectedTransactionDetail.value = { ...transaction, detailType: detailType }
   }
 
