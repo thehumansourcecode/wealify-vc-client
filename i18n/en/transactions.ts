@@ -119,7 +119,7 @@ export default {
       [TransactionDetailType.WALLET_TOP_UP]: 'Wallet Top up ID',
       [TransactionDetailType.WALLET_WITHDRAW]: 'Wallet Withdraw ID',
       [TransactionDetailType.WALLET_ISSUE_WITHDRAW]: 'Wallet Withdraw ID',
-      [TransactionDetailType.WALLET_REFUND]: 'Card Withdraw ID',
+      [TransactionDetailType.WALLET_REFUND]: 'Wallet Top up ID',
     },
     id2: {
       [TransactionDetailType.CARD_PAYMENT]: 'Payment ID',
@@ -129,7 +129,7 @@ export default {
       [TransactionDetailType.WALLET_TOP_UP]: 'Card Withdraw ID',
       [TransactionDetailType.WALLET_WITHDRAW]: 'Card Top up ID',
       [TransactionDetailType.WALLET_ISSUE_WITHDRAW]: 'Card Top up ID',
-      [TransactionDetailType.WALLET_REFUND]: 'Wallet Top up ID',
+      [TransactionDetailType.WALLET_REFUND]: 'Card Withdraw ID',
     },
     created_at: 'Created at',
     successAt: 'Success at',
