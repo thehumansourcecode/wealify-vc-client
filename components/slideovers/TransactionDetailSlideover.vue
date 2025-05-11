@@ -226,7 +226,7 @@ const getTransactionLinkTo = async () =>{
         <div class="p-2 mt-2 flex flex-col w-full">
           <div class="flex flex-row justify-between items-center pb-4">
             <div class="text-12-500-20 text-[#7A7D89]">
-              {{ t(`transactions.detail.id.${transactionDetail?.transaction_vc_type}`) }}
+              {{ t(`transactions.detail.id.${transactionDetail.detailType}`) }}
             </div>
             <div class="flex flex-row gap-2 items-center">
               <div class="text-14-500-20 text-[#1C1D23]">
@@ -243,7 +243,7 @@ const getTransactionLinkTo = async () =>{
 
           <div class="flex flex-row justify-between items-center pb-4" v-if="transactionDetail?.detailType !== TransactionDetailType.WALLET_TOP_UP">
             <div class="flex flex-row text-12-500-20 text-[#7A7D89] gap-[2px] cursor-pointer" @click="getTransactionLinkTo">
-              {{ t(`transactions.detail.id2.${transactionDetail?.transaction_vc_type}`) }}
+              {{ t(`transactions.detail.id2.${transactionDetail.detailType}`) }}
               <Icon name="heroicons:arrow-top-right-on-square" class="w-4 h-4 text-blue-500 opacity-50" />
             </div>
             <div class="flex flex-row gap-2 items-center">
