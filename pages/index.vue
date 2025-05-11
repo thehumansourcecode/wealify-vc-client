@@ -242,7 +242,7 @@ onMounted(fetchBalanceHistory)
         <!-- Card balance -->
         <div
          @mouseenter="setBalanceHistoryType('VC_CARD','#5268E1')"
-            class="bg-[#FFF5F2] cursor-pointer text-[#000] border border-[#E1E5EB] rounded-[12px] flex flex-col md:flex-row pl-4 md:pl-7 pr-4 md:pr-12 pt-4 pb-6 justify-between items-center"
+            class="bg-[#FFF5F2] cursor-pointer text-[#000] border border-[#E1E5EB] rounded-[12px] flex flex-col md:flex-row pl-4 md:pl-7 pr-4 md:pr-12 pt-4 pb-6 justify-between items-center mb-[20px]"
         >
           <div class="flex flex-col z-10 w-full">
             <span class="text-[#A5A8B8] text-14-600-20">
