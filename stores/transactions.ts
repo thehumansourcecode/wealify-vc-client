@@ -36,14 +36,19 @@ export const useTransactionStore = defineStore('transaction', () => {
   const selectedTransactionDetail = ref<ITransactionData>()
 
   function setSelectedTransactionDetail(transaction: ITransactionData) {
-    const isCardTransaction = !!transaction.virtual_card
+    const isCardTransaction = transaction.virtual_card
     const type = transaction.transaction_vc_type
+    const transactionDetailType = transaction.vc_detail_transaction_type
     let detailType
     if (isCardTransaction && type === TransactionVCType.TOP_UP) {
       if (transaction.is_issue){
         detailType = TransactionDetailType.CARD_ISSUE_TOPUP
       }else{
-        detailType = TransactionDetailType.CARD_TOP_UP
+        if (transactionDetailType == TransactionDetailType.WALLET_REFUND){
+          detailType = TransactionDetailType.WALLET_TOP_UP
+        }else{
+          detailType = TransactionDetailType.CARD_TOP_UP
+        }
       }
     }
     if (isCardTransaction && type === TransactionVCType.WITHDRAWAL) {
@@ -52,9 +57,6 @@ export const useTransactionStore = defineStore('transaction', () => {
     if (isCardTransaction && type === TransactionVCType.PAYMENT) {
       detailType = TransactionDetailType.CARD_PAYMENT
     }
-    if (!isCardTransaction && type === TransactionVCType.TOP_UP) {
-      detailType = TransactionDetailType.WALLET_TOP_UP
-    }
     if (!isCardTransaction && type === TransactionVCType.WITHDRAWAL) {
       if (transaction.is_issue){
         detailType = TransactionDetailType.WALLET_ISSUE_WITHDRAW
@@ -62,6 +64,8 @@ export const useTransactionStore = defineStore('transaction', () => {
         detailType = TransactionDetailType.WALLET_WITHDRAW
       }
     }
+    console.log(type)
+    console.log(isCardTransaction)
     selectedTransactionDetail.value = { ...transaction, detailType: detailType }
   }
 

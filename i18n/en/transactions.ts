@@ -141,6 +141,7 @@ export default {
       [TransactionDetailType.CARD_ISSUE_TOPUP]: 'Card Top up',
       [TransactionDetailType.CARD_WITHDRAW]: 'Card withdraw',
       [TransactionDetailType.CARD_PAYMENT]: 'Card payment',
+      [TransactionDetailType.WALLET_REFUND]: 'Wallet withdraw',
     },
     status: {
       [TransactionVCStatus.PROCESSING]: 'Processing',

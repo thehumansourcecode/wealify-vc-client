@@ -171,11 +171,7 @@ const getTransactionLinkTo = async () =>{
               {{ t(`transactions.detail.amountLabel.${transactionDetail?.detailType}`) }}
             </div>
             <div class="text-16-700-24 text-[#1C1D23]">
-              {{ transactionDetail?.detailType === TransactionDetailType.WALLET_TOP_UP ?
-                t(`transactions.detail.amount.${transactionDetail?.detailType}`, {
-                  currency: transactionDetail.confirm_transaction?.raw_data?.token ,
-                  amount: formatMoney(transactionDetail?.amount),
-                }) :
+              {{
                 t(`transactions.detail.amount.${transactionDetail?.detailType}`, {
                   currency: transactionDetail.currency.symbol ,
                   amount: formatMoney(transactionDetail?.amount),
@@ -190,8 +186,7 @@ const getTransactionLinkTo = async () =>{
             <div class="text-14-500-20 text-[#1C1D23]">
               <span
                 v-if="
-                  transactionDetail?.detailType === TransactionDetailType.CARD_PAYMENT ||
-                  transactionDetail?.detailType === TransactionDetailType.WALLET_TOP_UP
+                  transactionDetail?.detailType === TransactionDetailType.CARD_PAYMENT
                 "
               >
                 {{
@@ -282,7 +277,7 @@ const getTransactionLinkTo = async () =>{
         </div>
         <div class="px-5 py-4 mt-2 bg-[#F0F2F5] rounded-[18px] w-full">
           <div
-            v-if="transactionDetail.detailType === TransactionDetailType.WALLET_TOP_UP"
+            v-if="transactionDetail?.crypto_wallet"
             class="flex flex-col gap-5 w-full"
           >
 
