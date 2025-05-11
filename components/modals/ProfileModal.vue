@@ -125,14 +125,14 @@ watch(
       overlay: {
         background: 'bg-gray-200/20',
       },
-      container: 'flex min-h-full items-center sm:items-center justify-center text-center',
+      container: 'flex min-h-full items-center justify-start sm:items-center text-center',
       rounded: 'rounded-[30px]',
       background: '',
-      width: 'w-[516px] sm:max-w-[516px]',
+      width: 'w-[358px] lg:w-[516px]',
       margin: 'sm:my-0',
     }"
   >
-    <div class="p-7 bg-white rounded-[30px] flex flex-col">
+    <div class="p-4 bg-white rounded-[30px] flex flex-col lg:p-7">
       <div class="w-full flex flex-row justify-between items-center mb-[14px]">
         <div class="manrope text-2xl font-semibold leading-9">{{t('profile.modal.title')}}</div>
         <img class="cursor-pointer hover:opacity-70" src="~/assets/img/common/close.svg" @click="closeModal()" />
@@ -309,5 +309,11 @@ watch(
 <style lang="scss">
 .phone_number.error{
   margin-bottom: 35px !important;
+}
+
+@media (max-width: 1023px) {
+  [style*="flex: 0 0 156px"] {
+    flex: 0 0 100px !important;
+  }
 }
 </style>
