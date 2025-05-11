@@ -56,7 +56,9 @@ export const useTransactionStore = defineStore('transaction', () => {
     if (cardInfo && type === TransactionVCType.WITHDRAWAL) {
       if (transactionType == TransactionDetailType.WALLET_WITHDRAW){
         detailType = TransactionDetailType.WALLET_WITHDRAW
-      }else{
+      }if (transactionType == TransactionDetailType.WALLET_ISSUE_WITHDRAW){
+        detailType = TransactionDetailType.WALLET_ISSUE_WITHDRAW
+      } else{
         detailType = TransactionDetailType.CARD_WITHDRAW
       }
     }

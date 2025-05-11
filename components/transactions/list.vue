@@ -132,7 +132,10 @@ const getTransactionWallet = (network,token) => {
               />
               <span class="text-[10px] lg:text-[12px] leading-[20px] font-medium text-[#7A7D89]">
               {{
-                  row.virtual_card ? row.vc_detail_transaction_type == TransactionDetailType.WALLET_REFUND || row.vc_detail_transaction_type == TransactionDetailType.WALLET_WITHDRAW
+                  row.virtual_card ?
+                    row.vc_detail_transaction_type == TransactionDetailType.WALLET_REFUND ||
+                    row.vc_detail_transaction_type == TransactionDetailType.WALLET_WITHDRAW ||
+                    row.vc_detail_transaction_type == TransactionDetailType.WALLET_ISSUE_WITHDRAW
                     ? t(`transactions.list.wallet`) : t(`transactions.list.card`) :
                   row.crypto_wallet ?
                   getTransactionWallet(row.crypto_wallet?.network,row.confirm_transaction?.raw_data?.token) :
