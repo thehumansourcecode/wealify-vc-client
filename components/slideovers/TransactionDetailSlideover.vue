@@ -175,7 +175,7 @@ const getTransactionLinkTo = async () =>{
             <div class="text-16-700-24 text-[#1C1D23]">
               {{
                 t(`transactions.detail.amount.${transactionDetail?.detailType}`, {
-                  currency: transactionDetail.currency.symbol ,
+                  currency: transactionDetail?.detailType === TransactionDetailType.WALLET_TOP_UP ? transactionDetail.confirm_transaction?.raw_data?.token : transactionDetail.currency.symbol ,
                   amount: formatMoney(transactionDetail?.amount),
                 })
               }}
