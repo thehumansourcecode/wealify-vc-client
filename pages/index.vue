@@ -226,13 +226,13 @@ onMounted(fetchBalanceHistory)
           <div class="flex flex-row gap-6 md:gap-12 justify-end mt-4 md:mt-0">
             <div @click="onClickTopup" class="flex flex-col w-[40px] items-center cursor-pointer hover:opacity-90">
               <img width="40" src="~/assets/img/cards/topup.svg" alt="" />
-              <span class="text-xs text-[#FFF] leading-5">
+              <span class="text-xs text-[#FFF] leading-5 whitespace-nowrap">
                 {{ t('dashboard.balance.wealify.topup') }}
               </span>
             </div>
             <div @click="onClickWithdraw" class="flex flex-col items-center cursor-not-allowed hover:opacity-90">
               <img width="40" src="~/assets/img/cards/withdraw.svg" alt="" />
-              <span class="text-xs text-[#FFF] leading-5">
+              <span class="text-xs text-[#FFF] leading-5 whitespace-nowrap">
                 {{ t('dashboard.balance.wealify.withdraw') }}
               </span>
             </div>
