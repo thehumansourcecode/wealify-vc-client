@@ -196,7 +196,7 @@ onMounted(fetchBalanceHistory)
               <div class="flex flex-row justify-between w-full">
                 <div class="flex flex-row gap-2 items-center">
                   <img src="~/assets/img/dashboard/money-in.svg" alt="" />
-                  <span class="text-[#A5A8B8] text-12-500-20">
+                  <span class="text-[#A5A8B8] text-12-500-20 w-[80px] lg:w-auto">
                     {{ t('dashboard.balance.wealify.moneyIn') }}
                   </span>
                 </div>
@@ -210,7 +210,7 @@ onMounted(fetchBalanceHistory)
               <div class="flex flex-row justify-between w-full">
                 <div class="flex flex-row gap-2 items-center">
                   <img src="~/assets/img/dashboard/money-out.svg" alt="" />
-                  <span class="text-[#A5A8B8] text-12-500-20">
+                  <span class="text-[#A5A8B8] text-12-500-20 w-[80px] lg:w-auto">
                     {{ t('dashboard.balance.wealify.moneyOut') }}
                   </span>
                 </div>
@@ -256,7 +256,7 @@ onMounted(fetchBalanceHistory)
               <div class="flex flex-row w-full">
                 <div class="flex flex-row gap-2 items-center w-[110px] md:w-[130px]">
                   <img src="~/assets/img/dashboard/money-in.svg" alt="" />
-                  <span class="text-[#A5A8B8] text-12-500-20">
+                  <span class="text-[#A5A8B8] text-12-500-20 whitespace-nowrap">
                     {{ t('dashboard.balance.card.topup') }}
                   </span>
                 </div>
@@ -270,7 +270,7 @@ onMounted(fetchBalanceHistory)
               <div class="flex flex-row w-full">
                 <div class="flex flex-row gap-2 items-center w-[110px] md:w-[130px]">
                   <img src="~/assets/img/dashboard/money-out.svg" alt="" />
-                  <span class="text-[#A5A8B8] text-12-500-20">
+                  <span class="text-[#A5A8B8] text-12-500-20 whitespace-nowrap">
                     {{ t('dashboard.balance.card.withdraw') }}
                   </span>
                 </div>
@@ -288,7 +288,7 @@ onMounted(fetchBalanceHistory)
       </div>
 
       <!-- Chart -->
-      <div class="w-full mt-6 lg:mt-0">
+      <div class="w-full hidden lg:block">
         <ApexCharts type="area" :options="chartOptions" :series="chartSeries"  height="358"/>
       </div>
     </div>
