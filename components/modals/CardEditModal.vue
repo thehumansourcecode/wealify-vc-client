@@ -109,17 +109,17 @@ async function handleEdit() {
 
 <template>
   <BaseModal :label="t('cards.modals.edit.title')" @close-prevented="cardStore.toggleCardEditModal(false)">
-    <div class="flex flex-col gap-7 w-[700px]">
+    <div class="flex flex-col gap-4 sm:gap-7 w-full sm:w-[700px] px-4 sm:px-0">
       <UForm :schema="editCardSchema" :state="form">
         <UFormGroup
           name="card_name"
           :ui="{
-            error: 'ml-[156px] mt-2 text-red-500 dark:text-red-400',
+            error: 'ml-0 sm:ml-[156px] mt-2 text-red-500 dark:text-red-400',
           }"
           v-slot="{ error }"
         >
-          <div class="flex flex-row items-center">
-            <div class="text-14-500-20" style="flex: 0 0 156px">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-0">
+            <div class="text-xs sm:text-14-500-20 w-full sm:w-auto sm:flex-none lg:flex-[0_0_156px]">
               <span>{{ t('cards.issue.info.form.label.name') }}</span>
               <span class="pl-1 text-[#ED2C38]">*</span>
             </div>
@@ -134,19 +134,20 @@ async function handleEdit() {
               :leading-img="'/icons/cards/issue-card/name.svg'"
               :placeholder="$t('cards.issue.info.form.placeholder.name')"
               @clear="form.card_name = ''"
+              class="w-full"
             />
           </div>
         </UFormGroup>
         <UFormGroup
           name="email"
-          class="mt-5"
+          class="mt-4 sm:mt-5"
           :ui="{
-            error: 'ml-[156px] mt-2 text-red-500 dark:text-red-400',
+            error: 'ml-0 sm:ml-[156px] mt-2 text-red-500 dark:text-red-400',
           }"
           v-slot="{ error }"
         >
-          <div class="flex flex-row items-center">
-            <div class="text-14-500-20 flex flex-row items-center" style="flex: 0 0 156px">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-0">
+            <div class="text-xs sm:text-14-500-20 flex flex-row items-center w-full sm:w-auto sm:flex-none lg:flex-[0_0_156px]">
               <span>{{ t('cards.issue.info.form.label.email') }}</span>
               <span class="pl-1 text-[#ED2C38]">*</span>
               <UTooltip
@@ -157,12 +158,12 @@ async function handleEdit() {
                   background: 'bg-[#1C1D23]',
                   width: 'max-w-[252px]',
                   color: 'text-[#FFF]',
-                  base: 'px-3 py-2 h-[max-content]  text-xs font-medium text-clip text-center',
+                  base: 'px-3 py-2 h-[max-content] text-clip text-center',
                   ring: 'ring-0',
                   arrow: { background: 'before:bg-[#1C1D23]' },
                 }"
               >
-                <img src="~/assets/img/icons/tooltip.svg" alt="" />
+                <img class="w-4 h-4 sm:w-auto sm:h-auto" src="~/assets/img/icons/tooltip.svg" alt="" />
               </UTooltip>
             </div>
             <BaseInput
@@ -175,13 +176,13 @@ async function handleEdit() {
               :placeholder="$t('cards.issue.info.form.placeholder.email')"
               autocomplete="off"
               @clear="form.email = ''"
+              class="w-full"
             />
           </div>
         </UFormGroup>
         <!-- Phone number -->
-
-        <div class="flex flex-row items-start">
-          <div class="text-14-500-20 mt-8" style="flex: 0 0 156px">
+        <div class="flex flex-col sm:flex-row items-start gap-2 sm:gap-0">
+          <div class="text-xs sm:text-14-500-20 mt-4 sm:mt-8 w-full sm:w-auto sm:flex-none lg:flex-[0_0_156px]">
             <div class="flex flex-row items-center">
               <span>{{ t('cards.issue.info.form.label.phoneNumber') }}</span>
               <span class="pl-1 text-[#ED2C38]">*</span>
@@ -198,100 +199,102 @@ async function handleEdit() {
                   arrow: { background: 'before:bg-[#1C1D23]' },
                 }"
               >
-                <img src="~/assets/img/icons/tooltip.svg" alt="" />
+                <img class="w-4 h-4 sm:w-auto sm:h-auto" src="~/assets/img/icons/tooltip.svg" alt="" />
               </UTooltip>
             </div>
           </div>
-          <div class="flex flex-row items-start w-full mt-5">
-            <!-- Country code -->
-            <UFormGroup
-              name="country_code"
-              :ui="{
-                error: 'mt-2 text-red-500 dark:text-red-400',
-              }"
-              v-slot="{ error }"
-            >
-              <USelectMenu
-                v-model="form.country_code"
-                value-attribute="country"
-                :options="countryCodeOptions"
-                class=""
-                :ui-menu="{
-                  select: 'cursor-pointer',
-                  background: 'bg-white',
-                  base: 'relative focus:outline-none overflow-y-auto scroll-py-1',
-
-                  padding: 'p-0',
-                  option: {
-                    base: 'cursor-pointer text-14-500-20 bg-[#F0F2F5]',
-                    inactive: 'bg-white hover:bg-[#F0F2F5] cursor-pointer',
-                    padding: 'px-3 py-2',
-                    rounded: 'rounded-none',
-                    selectedIcon: {
-                      base: 'h-[18px] w-[18px]',
+          <div class="flex flex-col sm:flex-row items-start w-full gap-2 sm:gap-0 mt-2 sm:mt-5">
+            <div class="flex flex-row w-full gap-0">
+              <!-- Country code -->
+              <UFormGroup
+                name="country_code"
+                :ui="{
+                  error: 'mt-2 text-red-500 dark:text-red-400',
+                }"
+                v-slot="{ error }"
+                class="w-auto"
+              >
+                <USelectMenu
+                  v-model="form.country_code"
+                  value-attribute="country"
+                  :options="countryCodeOptions"
+                  class="w-[100px] sm:w-[120px]"
+                  :ui-menu="{
+                    select: 'cursor-pointer',
+                    background: 'bg-white',
+                    base: 'relative focus:outline-none overflow-y-auto scroll-py-1',
+                    padding: 'p-0',
+                    option: {
+                      base: 'cursor-pointer text-xs sm:text-14-500-20 bg-[#F0F2F5]',
+                      inactive: 'bg-white hover:bg-[#F0F2F5] cursor-pointer',
+                      padding: 'px-3 py-2',
+                      rounded: 'rounded-none',
+                      selectedIcon: {
+                        base: 'h-[18px] w-[18px]',
+                      },
+                      empty: 'text-sm',
                     },
                     empty: 'text-sm',
-                  },
-                  empty: 'text-sm',
-                }"
-              >
-                <template #option="{ option }">
-                  <div class="flex flex-row gap-[10px]">
-                    <img :src="option.flag" alt="" />
-                    <div class="text-12-500-20">{{ getCountryCode(option.country) }}</div>
+                  }"
+                >
+                  <template #option="{ option }">
+                    <div class="flex flex-row gap-[10px]">
+                      <img :src="option.flag" alt="" />
+                      <div class="text-xs sm:text-12-500-20">{{ getCountryCode(option.country) }}</div>
+                    </div>
+                  </template>
+                  <div class="border border-r-0 py-2 sm:py-[11px] rounded-l-[49px] pl-3 sm:pl-4 pr-2 sm:pr-3 flex flex-row gap-[10px] w-[100px] sm:w-[120px] h-[44px] items-center">
+                    <img width="20" :src="getCountryFlag(form.country_code)" alt="" />
+                    <div class="text-xs sm:text-14-500-20 text-[#1C1D23] grow">
+                      {{ form.country_code ? getCountryCode(form.country_code) : '' }}
+                    </div>
+                    <img class="justify-self-end w-4 h-4 sm:w-auto sm:h-auto" src="assets/img/icons/dropdown.svg" alt="" />
                   </div>
-                </template>
-                <div class="border border-r-0 py-[11px] rounded-l-[49px] pl-4 pr-3 flex flex-row gap-[10px] w-[120px]">
-                  <img width="20" :src="getCountryFlag(form.country_code)" alt="" />
-                  <div class="text-14-500-20 text-[#1C1D23] grow">
-                    {{ form.country_code ? getCountryCode(form.country_code) : '' }}
-                  </div>
-                  <img class="justify-self-end" src="assets/img/icons/dropdown.svg" alt="" />
-                </div>
-              </USelectMenu>
-            </UFormGroup>
+                </USelectMenu>
+              </UFormGroup>
 
-            <!-- Phone  -->
-            <UFormGroup
-              class="w-full"
-              name="phone_number"
-              :ui="{
-                error: 'mt-2 text-red-500 dark:text-red-400',
-              }"
-              v-slot="{ error }"
-            >
-              <UInput
+              <!-- Phone  -->
+              <UFormGroup
+                class="flex-1"
+                name="phone_number"
                 :ui="{
-                  rounded: 'rounded-r-[49px] rounded-l-none',
-                  icon: {
-                    trailing: { pointer: '' },
-                  },
+                  error: 'mt-2 text-red-500 dark:text-red-400',
                 }"
-                :error="error"
-                class="w-full"
-                :input-class="[`input-field`, `${error ? 'error' : ''}`].join(' ')"
-                variant="none"
-                v-model="form.phone_number"
-                :clearable="!!form.phone_number"
-                :maxlength="15"
-                @input="handleInputPhoneNumber"
-                :placeholder="$t('cards.issue.info.form.placeholder.phoneNumber')"
-                autocomplete="off"
+                v-slot="{ error }"
               >
-                <template #trailing>
-                  <UButton
-                    v-if="form.phone_number"
-                    color="gray"
-                    variant="link"
-                    icon="i-heroicons-x-mark-20-solid"
-                    :padded="false"
-                    @click="form.phone_number = ''"
-                    alt=""
-                  />
-                  <div v-else></div>
-                </template>
-              </UInput>
-            </UFormGroup>
+                <UInput
+                  :ui="{
+                    rounded: 'rounded-r-[49px] rounded-l-none',
+                    icon: {
+                      trailing: { pointer: '' },
+                    },
+                  }"
+                  :error="error"
+                  class="w-full"
+                  :input-class="[`input-field`, `${error ? 'error' : ''}`].join(' ')"
+                  variant="none"
+                  v-model="form.phone_number"
+                  :clearable="!!form.phone_number"
+                  :maxlength="15"
+                  @input="handleInputPhoneNumber"
+                  :placeholder="$t('cards.issue.info.form.placeholder.phoneNumber')"
+                  autocomplete="off"
+                >
+                  <template #trailing>
+                    <UButton
+                      v-if="form.phone_number"
+                      color="gray"
+                      variant="link"
+                      icon="i-heroicons-x-mark-20-solid"
+                      :padded="false"
+                      @click="form.phone_number = ''"
+                      alt=""
+                    />
+                    <div v-else></div>
+                  </template>
+                </UInput>
+              </UFormGroup>
+            </div>
           </div>
         </div>
         <!-- Category -->
@@ -304,7 +307,7 @@ async function handleEdit() {
           v-slot="{ error }"
         >
           <div class="flex flex-row items-center">
-            <div class="text-14-500-20" style="flex: 0 0 156px">
+            <div class="text-14-500-20 w-full sm:w-auto sm:flex-none lg:flex-[0_0_156px]">
               <span>{{ t('cards.issue.info.form.label.category') }}</span>
               <span class="pl-1 text-[#ED2C38]">*</span>
             </div>
@@ -347,7 +350,7 @@ async function handleEdit() {
         </UFormGroup>
         <UFormGroup name="purpose" class="mt-5">
           <div class="flex flex-row items-center">
-            <div class="text-14-500-20" style="flex: 0 0 156px">
+            <div class="text-14-500-20 w-full sm:w-auto sm:flex-none lg:flex-[0_0_156px]">
               <span>{{ t('cards.issue.info.form.label.purpose') }}</span>
             </div>
             <BaseInput

@@ -27,7 +27,7 @@ export class CardService extends BaseService {
   }
 
   async getCardList(payload: IGetCardListParams): Promise<ICommonListResponse<ICardDetail>> {
-    return this.get('/', {
+    return this.get('', {
       params: payload,
     })
   }

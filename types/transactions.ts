@@ -60,6 +60,7 @@ export interface ITransactionData {
   created_at: string
   id: string
   transaction_id: string
+  is_issue: Boolean
   fee: Fee
   rate: Rate
   amount: number
@@ -72,6 +73,7 @@ export interface ITransactionData {
   virtual_card: VCard
   currency: Currency
   detailType?: TransactionDetailType
+  vc_detail_transaction_type : String
 }
 
 export interface IGetTransactionListParams {
@@ -89,10 +91,12 @@ export interface IGetTransactionListParams {
 }
 
 export enum TransactionDetailType {
+  CARD_ISSUE_TOPUP = 'CARD_ISSUE_TOP_UP',
   CARD_TOP_UP = 'CARD_TOP_UP',
   CARD_WITHDRAW = 'CARD_WITHDRAW',
   CARD_PAYMENT = 'CARD_PAYMENT',
   WALLET_TOP_UP = 'WALLET_TOP_UP',
   WALLET_WITHDRAW = 'WALLET_WITHDRAW',
+  WALLET_ISSUE_WITHDRAW = 'WALLET_ISSUE_WITHDRAW',
   WALLET_REFUND = 'WALLET_REFUND'
 }

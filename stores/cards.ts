@@ -16,11 +16,11 @@ import { FeeType, type IDropdownCardData } from '~/types/common'
 
 export const useCardStore = defineStore('card', () => {
   const cardCount = ref(0)
+  const totalCreatedCard = ref(0)
+  const totalBalanceCard = ref(0)
   const activeCardCount  = ref(0)
   const { t } = useI18n()
   const commonStore = useCommonStore()
-
-  // Payload for card list
   const payload = ref<IGetCardListParams>({
     page: 1,
     limit: 10,
@@ -32,6 +32,31 @@ export const useCardStore = defineStore('card', () => {
     end_date: undefined,
   })
 
+  const isOpenCardTopupModal = ref(false)
+  const isVisibleConfirmFreeze = ref(false)
+  const isVisibleConfirmCancel = ref(false)
+  const isVisibleConfirmUnfreeze = ref(false)
+  const isPreventClose = ref(false)
+
+  const isLoading = ref({
+    issueCard: false,
+    cardTable: false,
+    topupCard: false,
+    freezeCard: false,
+    cancelCard: false,
+    unfreezeCard: false,
+    editCard: false,
+  })
+
+  const cardList = ref<ICardDetail[]>([])
+
+  const activeCardList = computed(() =>
+    cardList.value.filter((card: ICardDetail) => card.card_status === CardStatus.ACTIVE),
+  )
+
+  const isShowCardSensitiveDetail = ref(false)
+  const cardSensitiveDetail = ref<ICardSensitiveDetail>()
+
   function setPayload(_payload: IGetCardListParams) {
     payload.value = { ..._payload }
   }
@@ -39,13 +64,6 @@ export const useCardStore = defineStore('card', () => {
   function setPayloadPage(page: number) {
     payload.value.page = page
   }
-
-  // MODALS
-
-  const isOpenCardTopupModal = ref(false)
-  const isVisibleConfirmFreeze = ref(false)
-  const isVisibleConfirmCancel = ref(false)
-  const isVisibleConfirmUnfreeze = ref(false)
 
   function toggleCardTopupModal(state: boolean) {
     isOpenCardTopupModal.value = state
@@ -79,17 +97,6 @@ export const useCardStore = defineStore('card', () => {
     isOpenCardEditModal.value = state
   }
 
-  // Loading
-  const isLoading = ref({
-    issueCard: false,
-    cardTable: false,
-    topupCard: false,
-    freezeCard: false,
-    cancelCard: false,
-    unfreezeCard: false,
-    editCard: false,
-  })
-
   const selectedCardDetail = ref<ICardDetail>()
 
   function setSelectedCardDetail(card?: ICardDetail) {
@@ -111,12 +118,6 @@ export const useCardStore = defineStore('card', () => {
     }
   }
 
-  const cardList = ref<ICardDetail[]>([])
-
-  const activeCardList = computed(() =>
-    cardList.value.filter((card: ICardDetail) => card.card_status === CardStatus.ACTIVE),
-  )
-
   async function getCardList(payload: IGetCardListParams) {
     isLoading.value.cardTable = true
     cardList.value = []
@@ -125,40 +126,35 @@ export const useCardStore = defineStore('card', () => {
       cardList.value = response.data.items
       cardCount.value = response.data.total_items
       activeCardCount.value =  response.data.total_active
+      totalCreatedCard.value = response.data.total_created
+      totalBalanceCard.value = response.data.total_balance
     }
     isLoading.value.cardTable = false
     return response
   }
 
-  // Card actions: Issue, topup, withdraw, cancel, freeze
-
   async function issueCard(params: IIssueCardParams) {
-    // Flow: issue card => get id from response => back to card list page => call API to get card data from id => Show card detail
+
     isLoading.value.issueCard = true
     commonStore.toggleProcessingModal(true)
     const response = await cardService.issueCard(params)
+    commonStore.toggleProcessingModal(false)
+    isLoading.value.issueCard = false
+
     if (response.success) {
       const id = response.data.id
       navigateTo('/cards')
       showToast(ToastType.SUCCESS, t('common.toast.success.issueCard'))
-      // Fetch newly created card
-      setPayload({ ...payload.value, card_status: [CardStatus.ACTIVE] })
       await getCardList(payload.value)
-      // Open card detail slideover logic
-      const selectedCardDetail = cardList.value.find((card: ICardDetail) => card.id === id)
-      if (selectedCardDetail) {
-        const getCardDetailResponse = await getCardDetailById(id)
-        if (getCardDetailResponse.success) {
-          const cardDetail = getCardDetailResponse.data
-          setSelectedCardForTopup(cardDetail)
-          toggleCardDetailSlideover(true)
-        }
-      }
+      selectedCardDetail.value = response.data
+      cardSensitiveDetail.value = response.data
+      setSelectedCardForTopup(selectedCardDetail.value)
+      toggleCardDetailSlideover(true)
+      isShowCardSensitiveDetail.value = true
     } else {
       showToast(ToastType.FAILED, response.message)
     }
-    commonStore.toggleProcessingModal(false)
-    isLoading.value.issueCard = false
+
     return response
   }
 
@@ -216,12 +212,8 @@ export const useCardStore = defineStore('card', () => {
     const response = await cardService.topup(params)
     if (response.success) {
       showToast(ToastType.SUCCESS, t('common.toast.success.topupCard'))
-      // On change status => call API. Avoid duplicate API calls
-      if (payload.value.card_status.length !== 1 || payload.value.card_status[0] !== CardStatus.ACTIVE) {
-        setPayload({ ...payload.value, card_status: [CardStatus.ACTIVE] })
-      } else {
-        await getCardList(payload.value)
-      }
+      await getCardList(payload.value)
+      await getCardDetailById(params.id)
     } else {
       showToast(ToastType.FAILED, t('common.toast.failed.topupCard'))
     }
@@ -236,11 +228,7 @@ export const useCardStore = defineStore('card', () => {
     if (response.success) {
       toggleCardEditModal(false)
       showToast(ToastType.SUCCESS, t('common.toast.success.editCard'))
-      if (payload.value.card_status.length !== 1 || payload.value.card_status[0] !== CardStatus.ACTIVE) {
-        setPayload({ ...payload.value, card_status: [CardStatus.ACTIVE] })
-      } else {
-        await getCardList(payload.value)
-      }
+      await getCardList(payload.value)
       await getCardDetailById(id)
       toggleCardDetailSlideover(true)
     } else {
@@ -250,9 +238,6 @@ export const useCardStore = defineStore('card', () => {
     return response
   }
 
-  // Sensitive details OTP handling
-  const isShowCardSensitiveDetail = ref(false)
-  const cardSensitiveDetail = ref<ICardSensitiveDetail>()
   async function sendOTPSensitiveDetail() {
     commonStore.toggleProcessingModal(true)
     const response = await otpService.sendOTPSensitiveDetail()
@@ -261,36 +246,45 @@ export const useCardStore = defineStore('card', () => {
   }
 
   async function verifyOTPSensitiveDetail(code: string) {
-    console.log(code)
+    let result = {
+      success:true
+    }
     commonStore.toggleProcessingModal(true)
+    const response = await otpService.verifyOTPSensitiveDetail(code)
+    commonStore.toggleProcessingModal(false)
+    if (!response.success) {
+      return {
+        success:false
+      }
+    }
     toggleSensitiveOTPModal(false)
     isShowCardSensitiveDetail.value = true
-    // Handle Verify OTP
-    // const response = await otpService.verifyOTPSensitiveDetail(code)
-    // if (response.success) {
-    //   toggleSensitiveOTPModal(false)
-    //   isShowCardSensitiveDetail.value = true
-    // }
+    isPreventClose.value = false
     if (selectedCardDetail.value?.id) {
       const response = await cardService.getCardSensitiveDetailById(selectedCardDetail.value?.id)
       if (response.success) {
         cardSensitiveDetail.value = response.data
       }
     }
-    commonStore.toggleProcessingModal(false)
-    // return response
+    return result
+  }
+
+  async function sendOtpMessage() {
+    const response = await otpService.sendOTPSensitiveDetail()
+    if (!response.success) {
+      showToast(ToastType.FAILED, response.message)
+      return
+    }
   }
 
   return {
     isLoading,
-    // modals - slideovers
     isVisibleConfirmFreeze,
     isVisibleConfirmCancel,
     isVisibleConfirmUnfreeze,
     toggleCardUnFreeze,
     toggleCardFreeze,
     toggleCardCancel,
-
     isOpenCardDetailSlideover,
     toggleCardDetailSlideover,
     isOpenCardEditModal,
@@ -299,31 +293,31 @@ export const useCardStore = defineStore('card', () => {
     toggleCardTopupModal,
     isOpenSensitiveOTPModal,
     toggleSensitiveOTPModal,
-    // Card table
     payload,
     setPayload,
     setPayloadPage,
     cardList,
     cardCount,
+    totalCreatedCard,
+    totalBalanceCard,
     activeCardCount,
     getCardList,
     activeCardList,
-    // Card detail slideover
     selectedCardForTopup,
     setSelectedCardForTopup,
     selectedCardDetail,
     setSelectedCardDetail,
     getCardDetailById,
-    // Card actions
+    isPreventClose,
     issueCard,
     freezeCard,
     cancelCard,
     unfreezeCard,
     topupCard,
     editCard,
-    // OTPs
     sendOTPSensitiveDetail,
     verifyOTPSensitiveDetail,
+    sendOtpMessage,
     isShowCardSensitiveDetail,
     cardSensitiveDetail,
   }

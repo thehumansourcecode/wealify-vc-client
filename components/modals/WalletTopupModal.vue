@@ -5,7 +5,6 @@ import { TransactionCryptocurrency, TransactionNetwork } from '~/types/dashboard
 import VueQr from 'vue-qr/src/packages/vue-qr.vue'
 const { copy, copied } = useClipboard()
 const toast = useToast()
-import { showToast, ToastType } from '~/common/functions'
 const { fetchWalletInfo } = usePaymentStore()
 const { walletInfo } = storeToRefs(usePaymentStore())
 const dashboardStore = useDashboardStore()
@@ -14,7 +13,7 @@ const commonStore = useCommonStore()
 onMounted(async () => await Promise.all([commonStore.getFee()]))
 
 const walletTopupFeeValue = computed(() => commonStore.feeList?.TOP_UP_WALLET.value || 0)
-const walletTopupFeeType = computed(() => commonStore.feeList?.TOP_UP_WALLET.type)
+const walletTopupFeeType = computed(() => commonStore.feeList?.TOP_UP_WALLET?.type)
 
 const { t } = useI18n()
 
@@ -40,42 +39,30 @@ function handleCopy(value: string) {
   })
 }
 
-const init = async ()=>{
-  const result = await fetchWalletInfo()
-  if (!result.success) {
-    showToast(ToastType.FAILED, result.message)
-    return
+await fetchWalletInfo()
+networkOptions.value = walletInfo.value?.network.map((network)=>{
+  return {
+    logo: `/icons/common/${network}.svg`,
+    value: network,
+    label: t(`dashboard.modals.topup.label.${network}`),
   }
-
-  networkOptions.value = walletInfo.value?.network.map((network)=>{
-    return {
-      logo: `/icons/common/${network}.svg`,
-      value: network,
-      label: t(`dashboard.modals.topup.label.${network}`),
-    }
-  })
-
-  selectedNetworkOption.value = networkOptions.value[0]
-  currencyOptions.value = walletInfo.value?.token.map((token)=>{
-    return {
-      logo: `/icons/common/${token}.svg`,
-      value: token,
-      label: t(`dashboard.modals.topup.label.${token}`),
-    }
-  })
-
-  selectedCurrencyOption.value = currencyOptions.value[0]
-}
-
-
-await init()
+}) 
+selectedNetworkOption.value = networkOptions.value[0]
+currencyOptions.value = walletInfo.value?.token.map((token)=>{
+  return {
+    logo: `/icons/common/${token}.svg`,
+    value: token,
+    label: t(`dashboard.modals.topup.label.${token}`),
+  }
+})
+selectedCurrencyOption.value = currencyOptions.value[0]
 
 </script>
 
 <template>
   <BaseModal :label="t('dashboard.modals.topup.title')" @close-prevented="dashboardStore.toggleWalletTopupModal(false)">
-    <div class="flex flex-row items-start gap-7">
-      <div>
+    <div class="flex flex-col lg:flex-row items-start gap-7">
+      <div class="w-full lg:w-auto">
         <!-- Network -->
         <div class="text-12-500-20 mb-1">
           <span>{{ t('dashboard.modals.topup.label.network') }}</span>
@@ -86,7 +73,7 @@ await init()
           trailing-icon="i-dropdown"
           :ui="{
             variant: {
-              none: 'bg-white border border-[#D7D9E5] rounded-[48px] py-[10px] px-4',
+              none: 'bg-white border border-[#D7D9E5] rounded-[48px] py-[10px] px-4 w-full',
             },
             icon: {
               leading: {
@@ -127,7 +114,7 @@ await init()
             <span
               v-if="selectedNetworkOption?.label"
               class="truncate text-14-500-20 text-[#1C1D23] max-w-[350px] pl-2.5"
-            >{{ selectedNetworkOption?.label }}</span
+              >{{ selectedNetworkOption?.label }}</span
             >
           </template>
           <template #option="{ option: network }">
@@ -146,7 +133,7 @@ await init()
           trailing-icon="i-dropdown"
           :ui="{
             variant: {
-              none: 'bg-white border border-[#D7D9E5] rounded-[48px] py-[10px] px-4',
+              none: 'bg-white border border-[#D7D9E5] rounded-[48px] py-[10px] px-4 w-full',
             },
             icon: {
               leading: {
@@ -203,10 +190,10 @@ await init()
           <span class="pl-1 text-[#ff5c5c]">*</span>
         </div>
         <div
-          class="border border-[#D7D9E5] rounded-[48px] py-[10px] px-4 flex flex-row items-center justify-between gap-4"
+          class="border border-[#D7D9E5] rounded-[48px] py-[10px] px-4 flex flex-row items-center justify-between gap-4 w-full"
         >
-          <div class="text-[#7A7D89] text-14-500-20 w-[400px]">{{ topupAddress }}</div>
-          <div class="relative">
+          <div class="text-[#7A7D89] text-14-500-20 break-all">{{ topupAddress }}</div>
+          <div class="relative flex-shrink-0">
             <img
               class="cursor-pointer"
               @click="handleCopy(topupAddress)"
@@ -215,9 +202,9 @@ await init()
             />
           </div>
         </div>
-        <div class="text-12-500-20 text-[#7A7D89] mt-4 w-[400px]">{{ t(`dashboard.modals.topup.note`) }}</div>
+        <div class="text-12-500-20 text-[#7A7D89] mt-4 break-all">{{ t(`dashboard.modals.topup.note`) }}</div>
         <div v-if="walletTopupFeeType === FeeAmountType.PERCENT" class="text-16-600-20 text-[#FF5524] mt-4">
-          {{ t(`dashboard.modals.topup.feePercent`, { fee: roundTo(walletTopupFeeValue * 100,3) }) }}
+          {{ t(`dashboard.modals.topup.feePercent`, { fee: walletTopupFeeValue * 100 }) }}
         </div>
         <div v-else-if="walletTopupFeeType === FeeAmountType.FIXED" class="text-16-600-20 text-[#FF5524] mt-4">
           {{
@@ -228,7 +215,7 @@ await init()
         </div>
       </div>
       <div
-        class="py-[22px] px-[19px] rounded-[20px] border border-[#D7D9E5] relative w-[240px] h-[246px] flex items-center justify-center"
+        class="py-[22px] px-[19px] rounded-[20px] border border-[#D7D9E5] relative w-full lg:w-[240px] h-[246px] flex items-center justify-center mt-4 lg:mt-0"
       >
         <img class="absolute" style="scale: 0.65" src="~/assets/img/dashboard/qr-logo.svg" alt="" />
         <VueQr v-if="topupAddress" :text="topupAddress" :size="200" :margin="0" />

@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { formatMoney, shortenAddress } from '~/common/functions'
 import { formatYYYYMMDDhmmA } from '~/common/functions'
-import { CommonCurrency } from '~/types/common'
+import { CommonCurrency,FeeAmountType } from '~/types/common'
 import { TransactionDetailType, TransactionVCType } from '~/types/transactions'
 import { formatAmount } from '~/utils/amount.util'
+import {TransactionNetwork } from '~/types/dashboard'
 
 const { copy, copied } = useClipboard()
 const { t } = useI18n()
@@ -21,7 +22,7 @@ const transactionStore = useTransactionStore()
 const isOpenTransactionDetailSlideover = computed(() => transactionStore.isOpenTransactionDetailSlideover)
 const transactionDetail = computed(() => transactionStore.selectedTransactionDetail)
 
-const cardNumberArray = computed(() => transactionDetail.value?.virtual_card?.card_number?.match(/.{1,4}/g))
+const cardNumberArray = computed(() => transactionDetail.value?.virtual_card?.card_number?.match(/.{1,4}/g).join(' '))
 
 function copyTransactionId() {
   if (!transactionDetail.value) return
@@ -36,8 +37,21 @@ function copyTransactionId() {
   })
 }
 
+function copyTransactionLinkId() {
+  if (!transactionDetail.value) return
+  copy(transactionDetail.value.transaction_linked?.transaction_id)
+  copyIndex.value = 2
+
+  toast.clear()
+  toast.add({
+    title: t('common.toast.copy'),
+    avatar: { src: '/icons/common/toast-success.svg' },
+    timeout: 5000,
+  })
+}
+
 function copyTransactionAddress() {
-  // copy(transactionDetail.value.address)
+  copy(transactionDetail.value.crypto_wallet.address)
   copyIndex.value = 1
 
   toast.clear()
@@ -58,6 +72,41 @@ function handleNewTransaction() {
 }
 
 const transactionDestination = computed(() => {})
+
+const getLinkTxhash = (network,tx_id) => {
+  switch (network){
+    case TransactionNetwork.ETHEREUM:
+      return `<a target='_blank' href="https://etherscan.io/tx/${tx_id}">etherscan.io</a>`
+    case TransactionNetwork.SOLANA:
+      return `<a target='_blank' href="https://solscan.io/tx/${tx_id}">solscan.io</a>`
+    case TransactionNetwork.TRON:
+      return `<a target='_blank' href="https://tronscan.org/#/searcherror/${tx_id}">tronscan.org</a>`
+  }
+}
+
+const getWallet = (network) => {
+  switch (network){
+    case TransactionNetwork.ETHEREUM:
+      return `Ethereum (ETH)`
+    case TransactionNetwork.SOLANA:
+      return `Solana (SOL)`
+    case TransactionNetwork.TRON:
+      return `Tron (TRX)`
+  }
+}
+
+const getTransactionLinkTo = async () =>{
+  const id = transactionDetail.value?.transaction_linked?.id
+  if (!id){
+    return
+  }
+  const result = await transactionStore.getTransaction(id)
+  if (result.success) {
+    transactionStore.setSelectedTransactionDetail(result.transaction)
+    return
+  }
+}
+
 </script>
 
 <template>
@@ -85,7 +134,7 @@ const transactionDestination = computed(() => {})
           @click="onClosePrevented()"
         />
       </div>
-      <div class="flex flex-col items-center slideover-content overflow-y-auto px-8">
+      <div class="flex flex-col items-center slideover-content overflow-y-auto px-8 pb-20 lg:pb-0">
         <img class="w-[180px]" src="/images/transactions/slideover-banner.svg" alt="" />
         <div class="pt-5 flex flex-row justify-between items-end w-full">
           <div class="flex-col gap-[6px]">
@@ -96,7 +145,9 @@ const transactionDestination = computed(() => {})
               {{ formatMoney(transactionDetail.received_amount, CommonCurrency.USD) }}
             </div>
             <div class="text-12-500-20 text-[#7A7D89]">
-              {{ t(`transactions.detail.to`, { destination: transactionDetail?.to || 'Wealify Balance' }) }}
+             to {{transactionDetail?.detailType === TransactionDetailType.CARD_PAYMENT ?
+                  transactionDetail.aspire_transaction?.merchant :
+                  t(`transactions.detail.to.${transactionDetail.detailType}`) }}
             </div>
           </div>
           <div
@@ -124,6 +175,7 @@ const transactionDestination = computed(() => {})
             <div class="text-16-700-24 text-[#1C1D23]">
               {{
                 t(`transactions.detail.amount.${transactionDetail?.detailType}`, {
+                  currency: transactionDetail?.detailType === TransactionDetailType.WALLET_TOP_UP ? transactionDetail.confirm_transaction?.raw_data?.token : transactionDetail.currency.symbol ,
                   amount: formatMoney(transactionDetail?.amount),
                 })
               }}
@@ -136,12 +188,19 @@ const transactionDestination = computed(() => {})
             <div class="text-14-500-20 text-[#1C1D23]">
               <span
                 v-if="
-                  transactionDetail?.detailType === TransactionDetailType.CARD_PAYMENT ||
+                  transactionDetail?.detailType === TransactionDetailType.CARD_PAYMENT  ||
                   transactionDetail?.detailType === TransactionDetailType.WALLET_TOP_UP
                 "
               >
                 {{
-                  t(`transactions.detail.rateValue`, {
+                  transactionDetail?.detailType === TransactionDetailType.WALLET_TOP_UP ?
+                    t(`transactions.detail.rateValue`, {
+                      currency: transactionDetail.confirm_transaction?.raw_data?.token ,
+                      rateUSDT: formatAmount(transactionDetail?.rate.value),
+                      rateUSD: 1,
+                    })
+                    : t(`transactions.detail.rateValue`, {
+                    currency: transactionDetail.currency.symbol ,
                     rateUSDT: formatAmount(transactionDetail?.rate.value),
                     rateUSD: 1,
                   })
@@ -153,6 +212,7 @@ const transactionDestination = computed(() => {})
           <div class="flex flex-row justify-between">
             <div class="text-12-500-20 text-[#7A7D89]">
               {{ t('transactions.detail.fee') }}
+              <span v-if="transactionDetail.fee.type == FeeAmountType.PERCENT && transactionDetail.fee.value > 0">({{transactionDetail.fee.value*100}}%)</span>
             </div>
             <div class="text-14-500-20 text-[#1C1D23]">
               {{
@@ -168,7 +228,7 @@ const transactionDestination = computed(() => {})
         <div class="p-2 mt-2 flex flex-col w-full">
           <div class="flex flex-row justify-between items-center pb-4">
             <div class="text-12-500-20 text-[#7A7D89]">
-              {{ t(`transactions.detail.id.${transactionDetail?.transaction_vc_type}`) }}
+              {{ t(`transactions.detail.id.${transactionDetail.detailType}`) }}
             </div>
             <div class="flex flex-row gap-2 items-center">
               <div class="text-14-500-20 text-[#1C1D23]">
@@ -182,6 +242,25 @@ const transactionDestination = computed(() => {})
               />
             </div>
           </div>
+
+          <div class="flex flex-row justify-between items-center pb-4" v-if="transactionDetail?.detailType !== TransactionDetailType.WALLET_TOP_UP && transactionDetail?.detailType !== TransactionDetailType.CARD_PAYMENT">
+            <div class="flex flex-row text-12-500-20 text-[#7A7D89] gap-[2px] cursor-pointer" @click="getTransactionLinkTo">
+              {{ t(`transactions.detail.id2.${transactionDetail.detailType}`) }}
+              <Icon name="heroicons:arrow-top-right-on-square" class="w-4 h-4 text-blue-500 opacity-50" />
+            </div>
+            <div class="flex flex-row gap-2 items-center">
+              <div class="text-14-500-20 text-[#1C1D23]">
+                {{ transactionDetail?.transaction_linked?.transaction_id }}
+              </div>
+              <img
+                class="cursor-pointer"
+                @click="copyTransactionLinkId()"
+                :src="copied && copyIndex == 2 ? `/icons/common/copied-bordered.svg` : `/icons/common/copy-bordered.svg`"
+                alt=""
+              />
+            </div>
+          </div>
+
           <div class="flex flex-row justify-between items-center pb-5">
             <div class="text-12-500-20 text-[#7A7D89]">
               {{ t('transactions.detail.created_at') }}
@@ -201,32 +280,45 @@ const transactionDestination = computed(() => {})
         </div>
         <div class="px-5 py-4 mt-2 bg-[#F0F2F5] rounded-[18px] w-full">
           <div
-            v-if="transactionDetail.detailType === TransactionDetailType.WALLET_TOP_UP"
+            v-if="transactionDetail?.crypto_wallet"
             class="flex flex-col gap-5 w-full"
           >
+
+            <div class="flex flex-row justify-between items-center">
+              <div class="text-12-500-20 text-[#7A7D89]">
+                {{ t('transactions.detail.wallet') }}
+              </div>
+              <div class="flex flex-row gap-2 items-center">
+                <div class="text-14-500-20 text-[#1C1D23]">
+                  {{ getWallet(transactionDetail?.crypto_wallet?.network) }}
+                </div>
+              </div>
+            </div>
+
             <div class="flex flex-row justify-between items-center">
               <div class="text-12-500-20 text-[#7A7D89]">
                 {{ t('transactions.detail.address') }}
               </div>
               <div class="flex flex-row gap-2 items-center">
                 <div class="text-14-500-20 text-[#1C1D23]">
-                  <!-- {{ shortenAddress(transactionDetail.address) }} -->
+                  {{ shortenAddress(transactionDetail?.crypto_wallet?.address) }}
                 </div>
-                <!-- <img
+                 <img
                   class="cursor-pointer"
                   @click="copyTransactionAddress()"
                   :src="copied && copyIndex ? `/icons/common/copied-bordered.svg` : `/icons/common/copy-bordered.svg`"
                   alt=""
-                /> -->
+                />
               </div>
             </div>
             <div class="flex flex-row justify-between items-center">
               <div class="text-12-500-20 text-[#7A7D89]">
                 {{ t('transactions.detail.txhash') }}
               </div>
-              <ULink :to="transactionDetail?.txhash" target="_blank" class="text-14-500-20 text-[#1C1D23]">
-                {{ transactionDetail?.txhash }}
-              </ULink>
+              <div class="flex flex-row gap-2 items-center">
+                <div class="text-14-500-20 text-[#1C1D23]" v-html='getLinkTxhash(transactionDetail?.crypto_wallet?.network,transactionDetail?.confirm_transaction?.confirm_transaction_id)'>
+                </div>
+              </div>
             </div>
           </div>
           <div v-else class="flex flex-col gap-5 w-full">
@@ -269,13 +361,40 @@ const transactionDestination = computed(() => {})
           <ULink to="mailto:support@cs2agent.com" class="text-[#FF5524]"> support@wealify.com </ULink>
         </div>
 
+        <div  v-if=" transactionDetail?.detailType === TransactionDetailType.CARD_PAYMENT" class="flex flex-col items-center mt-8 gap-[10px] mb-12 lg:flex-row">
+          <UButton
+          disabled
+          class="flex items-center !bg-[#F0F2F5] hover:bg-[#F0F2F5] h-[48px] justify-center w-[195px] rounded-[49px]"
+        >
+        <img
+          class="cursor-pointer hover:opacity-70"
+          src="~/assets/img/flags/flag.svg"
+          alt=""
+          @click="onClosePrevented()"
+        />
+          <div class="text-[#1C1D23] text-14-600-20 manrope">
+            {{ t(`transactions.detail.disputeTransaction.${transactionDetail?.detailType}`) }}
+          </div>
+        </UButton>
+
+          <UButton
+          disabled
+          class="flex items-center !bg-[#1C1D23] hover:bg-[#3D3E34]  h-[48px] justify-center w-[195px] rounded-[49px]"
+        >
+          <div class="text-white text-14-600-20 manrope">
+            {{ t(`transactions.detail.downloadInvoice.${transactionDetail?.detailType}`) }}
+          </div>
+        </UButton>
+        </div>
+        
+
         <UButton
           @click="handleNewTransaction()"
-          v-if="transactionDetail.transaction_vc_type === TransactionVCType.TOP_UP"
-          class="flex items-center bg-[#1C1D23] hover:bg-[#3D3E34] justify-center w-[400px] my-8 rounded-[49px]"
+          v-if=" transactionDetail?.detailType === TransactionDetailType.WALLET_TOP_UP"
+          class="flex items-center bg-[#1C1D23] hover:bg-[#3D3E34] justify-center my-8 rounded-[49px] w-[320px] lg:w-[400px]"
         >
           <div class="text-white text-14-600-20 px-4 py-[14px]">
-            {{ t(`transactions.detail.createNew.${transactionDetail.transaction_vc_type}`) }}
+            {{ t(`transactions.detail.createNew.${transactionDetail.detailType}`) }}
           </div>
         </UButton>
       </div>

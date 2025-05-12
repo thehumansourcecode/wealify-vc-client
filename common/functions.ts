@@ -26,7 +26,7 @@ export const formatMoney = (amount: number | undefined, currency?: string) => {
 }
 
 export const formatMoneyWithoutDecimals = (amount: number | undefined, currency?: string) => {
-  if (!amount) return 0.0
+  if (!amount) return 0.0  + (currency ? ` ${currency}` : '')
   return new Intl.NumberFormat('en-US').format(amount) + (currency ? ` ${currency}` : '')
 }
 

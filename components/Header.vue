@@ -6,6 +6,7 @@ import { PanelTab,CommonLanguage } from '~/types/common'
 const { t } = useI18n()
 const dayjs = useDayjs()
 
+const countDownStore = useCountDownStore()
 const userStore = useUserStore()
 const authStore = useAuthStore()
 const commonStore = useCommonStore()
@@ -23,6 +24,15 @@ const lastResetDate = computed(() => '2025-03-11T13:36:41.718Z')
 const languages = Object.values(CommonLanguage).filter((item,index)=>index !== 0)
 const language = ref(languages[0])
 const isShowProfile = ref(false)
+
+// Define prop for leftPanelRef
+const props = defineProps<{
+  leftPanelRef: any
+}>()
+
+function toggleMobileMenu() {
+  commonStore.toggleMobileMenu()
+}
 
 const showProfile = () => {
   isShowProfile.value = true
@@ -74,6 +84,7 @@ const items = [
 ]
 
 async function logout() {
+  countDownStore.clear()
   await authStore.logout()
   navigateTo('/auth/sign-in')
 }
@@ -84,16 +95,26 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="py-4 flex flex-row w-full justify-between items-center pl-10 pr-[60px] flex-none">
-    <div v-if="!isHeaderBackLayout" class="text-[20px] leading-8">{{ t(`common.title.${activeTab}`) }}</div>
-    <div v-else class="flex flex-row gap-4 items-center">
-      <img
-        @click="navigateTo(getTabRoute(commonStore.activeTab))"
-        class="cursor-pointer hover:opacity-70"
-        src="~/assets/img/icons/back.svg"
-        alt=""
-      />
-      <div class="text-[20px] leading-8">{{ t(`common.title.${activeChildTab}`) }}</div>
+  <div class="py-4 flex flex-row w-full justify-between items-center pl-4 md:pl-10 pr-4 md:pr-[60px] flex-none">
+    <div class="flex items-center gap-1 lg:gap-4">
+      <!-- Mobile Menu Button -->
+      <button @click="toggleMobileMenu" class="lg:hidden p-2">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 12H21" stroke="#1C1D23" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M3 6H21" stroke="#1C1D23" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M3 18H21" stroke="#1C1D23" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <div v-if="!isHeaderBackLayout" class="text-[16px] leading-8 lg:text-[20px]">{{ t(`common.title.${activeTab}`) }}</div>
+      <div v-else class="flex-row gap-4 items-center hidden sm:flex">
+        <img
+          @click="navigateTo(getTabRoute(commonStore.activeTab))"
+          class="cursor-pointer hover:opacity-70"
+          src="~/assets/img/icons/back.svg"
+          alt=""
+        />
+        <div class="text-[20px] leading-8">{{ t(`common.title.${activeChildTab}`) }}</div>
+      </div>
     </div>
     <div class="flex flex-row items-center">
       <USelectMenu
@@ -144,7 +165,7 @@ onMounted(async () => {
           </div>
         </template>
       </USelectMenu>
-      <UDropdown :items="items"  class="sm:mr-7 mr-7 ml-4 notify" :content="{align: 'end',side: 'bottom'}">
+      <UDropdown :items="items"  class="lg:mr-7 lg:mr-4 mr-2 ml-2 notify" :content="{align: 'end',side: 'bottom'}">
         <UButton class="w-10 h-10 p-0 rounded-full border border-[#D7D9E5] bg-[#fff] hover:bg-[#fff] flex items-center justify-center">
           <img src="~/assets/img/icons/ring.svg" />
           <span class="h-[17px] w-[27px] bg-[#FF5524] text-[10px] rounded-[48px] absolute top-[-4px] right-[-4px] leading-4">99+</span>
@@ -174,7 +195,7 @@ onMounted(async () => {
       </UDropdown>
 
       <UPopover mode="click" :ui="{ background: 'bg-white', ring: 'ring-0' }">
-        <div class="flex items-center justify-between">
+        <div class="flex items-center justify-between w-[110px] lg:w-auto">
           <UTooltip
                 class="ml-1"
                 :text="profile?.email"
@@ -190,7 +211,7 @@ onMounted(async () => {
               >
               <img src="~/assets/img/common/avatar.svg"/>
               </UTooltip>
-          <div class="font-semibold mb-1.5 text-[#17171E] ml-[9px]">{{profile?.full_name}} </div>
+          <div class="font-semibold mb-1.5 text-[#17171E] ml-[9px] max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap" :title="profile?.full_name">{{profile?.full_name}} </div>
           <UButton  class="w-[20px h-[20px] ml-[6px] p-0 flex items-center justify-center shadow-none bg-white hover:bg-white">
             <img src="/assets/img/icons/dropdown.svg"/>
           </UButton>

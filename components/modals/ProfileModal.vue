@@ -16,11 +16,11 @@ const form = ref({
   full_name: profile.value?.full_name,
   email: profile.value?.email,
   phone_number: profile.value?.phone_number,
-  country_code:profile.value?.country_code,
+  country_code:profile.value?.country_code ? profile.value?.country_code:  CommonCountry.VIETNAM,
 })
 
 const isSubmitting = ref(false)
-
+const isDisableButton = ref(false)
 
 const profileSchema = object({
   full_name: string()
@@ -39,9 +39,10 @@ const closeModal = () => {
 }
 
 const formatPhoneNumber = (target: HTMLInputElement) => {
+  target.value = target.value.replace(/\s+/g, '')
   const rawValue = Number(target.value)
   if (Number.isNaN(Number(rawValue))) {
-    target.value = ''
+    target.value = target.value.replace(/\D/g, '')
     return
   }
 }
@@ -57,6 +58,9 @@ const handleInputPhoneNumber = async (event: InputEvent) => {
 
 
 const handleClickEdit = async() =>{
+  if(isDisableButton.value){
+    return
+  }
   let valid = true
   try {
     await formRef.value.validate()
@@ -72,13 +76,23 @@ const handleClickEdit = async() =>{
   const result =  await profileStore.updateProfile(form.value)
   isSubmitting.value = false
   if (!result.success) {
-    showToast(ToastType.FAILED, t('profile.message.edit.fail'))
+    showToast(ToastType.FAILED,result.message)
     return
   }
   showToast(ToastType.SUCCESS, t('profile.message.edit.success'))
   closeModal()
   await profileStore.fetchProfile()
 }
+
+const showLastEdit = computed(()=> {
+  const date = new Date(profile.value.updated_at)
+  const formattedDate = date.toLocaleDateString('en-US', {
+    month: 'short', 
+    day: 'numeric', 
+    year: 'numeric' 
+  })
+ return formattedDate
+})
 
 watch(
   isOpen,
@@ -93,6 +107,14 @@ watch(
   },
 )
 
+watch(
+  form,
+  (v) => {
+    isDisableButton.value = form.value.full_name === ""
+  },
+  { deep: true },
+)
+
 </script>
 
 <template>
@@ -103,13 +125,14 @@ watch(
       overlay: {
         background: 'bg-gray-200/20',
       },
+      container: 'flex items-center justify-start sm:items-center lg:justify-center text-center',
       rounded: 'rounded-[30px]',
       background: '',
-      width: 'w-[516px] sm:max-w-[516px]',
+      width: 'w-[358px] lg:w-[516px]',
       margin: 'sm:my-0',
     }"
   >
-    <div class="p-7 bg-white rounded-[30px] flex flex-col">
+    <div class="p-4 bg-white rounded-[30px] flex flex-col lg:p-7">
       <div class="w-full flex flex-row justify-between items-center mb-[14px]">
         <div class="manrope text-2xl font-semibold leading-9">{{t('profile.modal.title')}}</div>
         <img class="cursor-pointer hover:opacity-70" src="~/assets/img/common/close.svg" @click="closeModal()" />
@@ -172,7 +195,6 @@ watch(
           <div class="text-14-500-20 mt-8" style="flex: 0 0 156px">
             <div class="flex flex-row items-center">
               <span>{{t('profile.form.label.phone_number') }}</span>
-              <span class="pl-1 text-[#ED2C38]">*</span>
             </div>
           </div>
           <div class="flex flex-row items-start w-full mt-5 relative">
@@ -271,12 +293,14 @@ watch(
       </UForm>
 
       <div class="flex justify-between mt-[28px]">
-        <div class="text-[#7A7D89] text-[12px] manrope font-normal leading-[20px] flex items-center justify-center">Last edit: Mar 12, 2025</div>
+        <div class="text-[#7A7D89] text-[12px] manrope font-normal leading-[20px] flex items-center justify-center">Last edit: {{showLastEdit}}</div>
         <UButton
+            :class="isDisableButton ? 'text-[#d6d8e5] !bg-[#a4a8b8] hover:bg-[#a4a8b8]' : 'text-white !bg-[#FF5524] hover:bg-[#FF5524]'"
+            :disabled="isDisableButton"
             :loading="isSubmitting"
             :label="t('profile.button.ready.edit')"
             @click="handleClickEdit"
-            class="manrope flex justify-center rounded-[49px] p-3 xl:min-w-[223px] font-semibold bg-[#FF5524] hover:bg-[#FF5524] text-[#fff]"
+            class="manrope flex justify-center rounded-[49px] p-3 xl:min-w-[223px] font-semibold"
         ></UButton>
       </div>
     </div>
@@ -285,5 +309,11 @@ watch(
 <style lang="scss">
 .phone_number.error{
   margin-bottom: 35px !important;
+}
+
+@media (max-width: 1023px) {
+  [style*="flex: 0 0 156px"] {
+    flex: 0 0 100px !important;
+  }
 }
 </style>

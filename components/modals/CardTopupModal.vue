@@ -3,6 +3,7 @@ import { formatMoney, formatMoneyWithoutDecimals } from '~/common/functions'
 import { CommonCurrency, FeeAmountType, FeeType } from '~/types/common'
 import { MAX_SPEND_LIMIT } from '../cards/constants'
 import { number, object, string } from 'yup'
+import { commonService } from '~/services/common.service'
 const { t } = useI18n()
 
 const { copy, copied } = useClipboard()
@@ -12,12 +13,29 @@ const cardStore = useCardStore()
 const commonStore = useCommonStore()
 const userStore = useUserStore()
 
-onMounted(async () => Promise.all([commonStore.getDropdownCardList(), commonStore.getFee(), userStore.getBalance()]))
+const dropdownCardList = ref([])
+
+onMounted(async () => {
+  const [cardListResponse, feeResponse, balanceResponse] = await Promise.all([
+    commonService.getDropdownCardList({}),
+    commonStore.getFee(),
+    userStore.getBalance()
+  ])
+  if (cardListResponse.success) {
+    dropdownCardList.value = cardListResponse.data.items
+  }
+})
+
 const selectedCard = ref(cardStore.selectedCardForTopup)
 const walletBalance = computed(() => userStore.userBalance?.wallet_balance?.balance)
-const dropdownCardList = computed(() => commonStore.dropdownCardList)
-const topupCardFees = computed(() => commonStore.feeList?.TOP_UP_CARD)
+const topupCardFees = computed(() => {
+  if (!commonStore.feeList?.TOP_UP_CARD) return { type: undefined, value: 0 }
+  return commonStore.feeList.TOP_UP_CARD
+})
 const loading = computed(() => cardStore.isLoading.topupCard)
+const { 
+  isPreventClose
+} = storeToRefs(cardStore)
 
 const currencyInputRef = ref()
 
@@ -71,8 +89,8 @@ watch(
 
 const threshold = computed(() => {
   const balance = walletBalance.value || 0
-  const feeAmountType = commonStore.feeList?.TOP_UP_CARD.type
-  const feeValue = commonStore.feeList?.TOP_UP_CARD.value
+  const feeAmountType = topupCardFees.value?.type
+  const feeValue = topupCardFees.value?.value
   if (!feeValue) {
     return balance
   } else {
@@ -85,8 +103,8 @@ const threshold = computed(() => {
 })
 
 const finalAmount = computed(() => {
-  const feeAmountType = commonStore.feeList?.TOP_UP_CARD.type
-  const feeValue = commonStore.feeList?.TOP_UP_CARD.value
+  const feeAmountType = topupCardFees.value?.type
+  const feeValue = topupCardFees.value?.value
   if (!feeValue) {
     return form.amount
   } else {
@@ -114,20 +132,24 @@ async function handleTopup() {
     await cardStore.topupCard(payload)
   }
 }
+const handleClose = () =>{
+  cardStore.toggleCardTopupModal(false)
+  isPreventClose.value = false
+}
 </script>
 
 <template>
-  <BaseModal :label="t('cards.modals.topup.title')" @close-prevented="cardStore.toggleCardTopupModal(false)">
+  <BaseModal :label="t('cards.modals.topup.title')" @close-prevented="handleClose">
     <div class="flex flex-col">
       <!-- Balance -->
-      <div class="flex flex-row gap-3 items-center">
-        <div class="text-14-500-20 text-[#7A7D89] w-[120px] flex-none">
+      <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+        <div class="text-14-500-20 text-[#7A7D89] w-full sm:w-[120px] flex-none">
           {{ t('cards.modals.topup.label.balance') }}
         </div>
-        <div class="w-full text-[#FF5524] text-20-700-32">{{ formatMoney(walletBalance, CommonCurrency.USD) }}</div>
+        <div class="w-full text-[#FF5524] text-16-700-24 sm:text-20-700-32">{{ formatMoney(walletBalance, CommonCurrency.USD) }}</div>
       </div>
       <USelectMenu
-        class="mt-4"
+        class="mt-4 w-full sm:w-[500px]"
         v-model="selectedCard"
         :options="dropdownCardList"
         searchable
@@ -169,12 +191,12 @@ async function handleTopup() {
         </template>
         <template #default="{ open: open }">
           <div
-            class="px-3 py-[10px] rounded-[13px] bg-[#F0F2F5] border flex items-center justify-between gap-[64px] w-[500px]"
+            class="px-3 py-[10px] rounded-[13px] bg-[#F0F2F5] border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-[64px] w-full"
           >
-            <div class="text-14-500-20 text-[#7A7D89] w-[92px] flex-none">
+            <div class="text-14-500-20 text-[#7A7D89] w-full sm:w-[92px] flex-none">
               {{ t('cards.modals.topup.label.select') }}
             </div>
-            <div class="flex flex-row gap-3 items-center">
+            <div class="flex flex-row gap-3 items-center w-full sm:w-auto">
               <div class="flex flex-row gap-3">
                 <img src="/icons/dashboard/mastercard.svg" alt="" />
                 <div class="flex flex-col gap-1">
@@ -205,10 +227,10 @@ async function handleTopup() {
           }"
         >
           <div
-            class="px-6 py-[22px] border rounded-[16px] flex flex-col mt-5"
+            class="px-4 sm:px-6 py-4 sm:py-[22px] border rounded-[16px] flex flex-col mt-5"
             :class="error ? 'border-[#ED2C38]' : 'border-[#5268E1]'"
           >
-            <div class="flex flex-row justify-between">
+            <div class="flex flex-col sm:flex-row justify-between gap-2 sm:gap-0">
               <div class="flex flex-row gap-1">
                 <div class="text-[#1C1D23] text-14-500-20">
                   {{ t('cards.modals.topup.label.amount') }}
@@ -231,19 +253,19 @@ async function handleTopup() {
                 {{ t('cards.issue.balance.form.availableCard', { amount: formatMoney(selectedCard?.balance || 0) }) }}
               </div>
             </div>
-            <div class="flex flex-row justify-between mt-4 w-full">
-              <BaseFormattedCurrencyInput v-model="form.amount" ref="currencyInputRef" />
-              <div class="flex flex-row gap-[6px] py-1 pr-3 pl-[6px] bg-[#F0F2F5] rounded-[44px]">
+            <div class="flex flex-col sm:flex-row justify-between gap-3 sm:gap-0 mt-4 w-full">
+              <BaseFormattedCurrencyInput v-model="form.amount" ref="currencyInputRef" class="w-full sm:w-auto" />
+              <div class="flex flex-row gap-[6px] py-1 pr-3 pl-[6px] bg-[#F0F2F5] rounded-[44px] w-fit">
                 <img src="~/assets/img/flags/us.svg" alt="" />
                 <div class="text-[#1C1D23] text-12-500-20">USD</div>
               </div>
             </div>
-            <div class="flex flex-row gap-[5px] mt-[14px] justify-start">
+            <div class="flex flex-wrap gap-[5px] mt-[14px] justify-start">
               <UButton
                 v-for="(amount, index) in presetAmounts"
                 :key="index"
                 @click="setAmount(amount)"
-                class="flex items-center py-[4px] px-3 bg-[#EDEFFF] hover:bg-[#DCDEEE] rounded-[44px] mx-auto w-[min-content] m-0"
+                class="flex items-center py-[4px] px-3 bg-[#EDEFFF] hover:bg-[#DCDEEE] rounded-[44px] w-fit"
               >
                 <div class="text-[#1C1D23] text-12-500-20">{{ formatMoneyWithoutDecimals(amount) }}</div>
               </UButton>
@@ -251,7 +273,7 @@ async function handleTopup() {
           </div>
         </UFormGroup>
       </UForm>
-      <div class="mb-6 mt-8 flex flex-row justify-between items-center">
+      <div class="mb-6 mt-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-0">
         <div class="text-12-500-20 text-[#7A7D89]">{{ t('cards.modals.topup.label.fee') }}</div>
         <div v-if="topupCardFees?.type === FeeAmountType.PERCENT" class="text-14-500-20">
           {{ topupCardFees?.value * 100 || 0 }}%
@@ -260,7 +282,7 @@ async function handleTopup() {
           {{ formatMoney(topupCardFees?.value || 0, CommonCurrency.USD) }}
         </div>
       </div>
-      <div class="flex flex-row justify-between items-center">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-0">
         <div class="text-12-500-20">{{ t('cards.modals.topup.label.topup') }}</div>
         <div class="text-16-700-24">{{ formatMoney(finalAmount, CommonCurrency.USD) }}</div>
       </div>

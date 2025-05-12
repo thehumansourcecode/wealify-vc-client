@@ -149,6 +149,9 @@ export default {
         total_withdraw: 'Total Withdraw',
         balance: 'Balance',
       },
+      analysis:{
+        tilte:'Cash-out Report'
+      },
       button: {
         transaction: 'View Transaction',
         viewInfo: 'View card information',
@@ -182,6 +185,12 @@ export default {
       timeout: 'Your verification code will expire in ',
       notReceived: 'Did not receive OTP? ',
       resend: 'Resend OTP in ',
+      message:'The OTP you entered is invalid or expired. You only have {count} attempts left',
+      max_attemp:'You have reached the maximum fail attempts. Please try again after 30 minutes',
+      button:{
+        resend:'Resend',
+        try_again:'Try again',
+      }
     },
     topup: {
       title: 'Top up card',
@@ -194,11 +203,11 @@ export default {
       },
     },
     freeze: {
-      title: 'Freeze the card',
-      message: 'This card will be reactivated and ready for use. Are you sure you want to continue?',
+      title: 'Freeze this card',
+      message: 'The card will be temporarily unusable until you unfreeze it again. Are you sure you want to proceed?',
       label: {
         cancel: 'Cancel',
-        confirm: 'Unfreeze',
+        confirm: 'Freeze card',
       },
     },
     cancel: {

@@ -11,6 +11,7 @@ const { t } = useI18n()
 const userProfile = computed(() => userStore.userProfile)
 
 const activeTab = computed(() => commonStore.activeTab)
+const {isMobileMenuOpen} = storeToRefs(commonStore)
 
 function setActiveTab(tab: PanelTab) {
   commonStore.setActiveTab(tab)
@@ -73,7 +74,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="px-4 w-[24%] max-w-[250px] min-w-[250px]">
+  <div class="hidden lg:block px-4 w-[24%] max-w-[250px] min-w-[250px]">
     <div class="pt-5 pb-8">
       <ULink to="/"><img src="~/assets/img/logo/logo.svg" alt="" /></ULink>
     </div>
@@ -96,6 +97,50 @@ onMounted(() => {
       </div>
     </div>
   </div>
+
+  <!-- Mobile Sidebar -->
+  <div class="lg:hidden fixed inset-0 z-50" v-show="isMobileMenuOpen">
+    <!-- Overlay -->
+    <div class="fixed inset-0 bg-black/50" @click="commonStore.toggleMobileMenu(false)"></div>
+
+    <!-- Sidebar -->
+    <div class="fixed inset-y-0 left-0 w-[250px] bg-white transform transition-transform duration-300 ease-in-out" 
+         :class="isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'">
+      <div class="px-4">
+        <div class="pt-5 pb-8 flex justify-between items-center">
+          <ULink to="/"><img src="~/assets/img/logo/logo.svg" alt="" /></ULink>
+          <button @click="commonStore.toggleMobileMenu(false)" class="p-2">
+            <img src="~/assets/img/common/close.svg" alt="Close" />
+          </button>
+        </div>
+        <div class="flex flex-col gap-1">
+          <div
+            v-for="link in links"
+            :key="link.to"
+            class="w-full relative hover:bg-[#F0F2F5] rounded-[6px] border-l"
+            :class="link.active ? 'bg-[#F0F2F5] border-[#FF5524]' : 'border-transparent'"
+            @click="setActiveTab(link.value); commonStore.toggleMobileMenu(false)"
+          >
+            <ULink :to="link.to">
+              <div class="flex flex-row">
+                <img class="mx-2" :src="link.icon" alt="" />
+                <div class="relative py-[10px] cursor-pointer relative" :class="link.active ? 'text-common' : 'text-pale'">
+                  {{ link.label }}
+                </div>
+              </div>
+            </ULink>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+// Add transition for mobile sidebar
+.lg\:hidden {
+  .fixed {
+    transition: transform 0.3s ease-in-out;
+  }
+}
+</style>

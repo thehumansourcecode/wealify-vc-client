@@ -15,6 +15,7 @@ export const useCommonStore = defineStore('common', () => {
   const { t } = useI18n()
 
   const loading = ref(false)
+  const isMobileMenuOpen = ref(false)
 
   function setLoading(state: boolean) {
     loading.value = state
@@ -80,6 +81,14 @@ export const useCommonStore = defineStore('common', () => {
     return response
   }
 
+  async function toggleMobileMenu(isOpen?: boolean) {
+    if (typeof isOpen === 'boolean') {
+      isMobileMenuOpen.value = isOpen
+    } else {
+      isMobileMenuOpen.value = !isMobileMenuOpen.value
+    }
+  }
+
   return {
     config,
     loading,
@@ -100,5 +109,7 @@ export const useCommonStore = defineStore('common', () => {
     toggleProcessingModal,
     feeList,
     getFee,
+    isMobileMenuOpen,
+    toggleMobileMenu,
   }
 })

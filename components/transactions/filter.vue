@@ -7,8 +7,8 @@ const payload = computed(() => transactionStore.payload)
 const dateRange = ref<[Date | undefined, Date | undefined]>([undefined, undefined])
 
 watch(dateRange, () => {
-  const start_date = dateRange.value[0] ? dayjs(dateRange.value[0]).utc().toISOString() : undefined
-  const end_date = dateRange.value[0] ? dayjs(dateRange.value[1]).utc().hour(23).minute(59).second(59).millisecond(999).toISOString() : undefined
+  const start_date = dateRange.value[0] ? dateFormat(dateRange.value[0],'yyyy-MM-dd') : undefined
+  const end_date = dateRange.value[1] ? dateFormat(dateRange.value[1],'yyyy-MM-dd') : undefined
 
   if (payload.value.start_date == start_date && payload.value.end_date == end_date) {
     return
@@ -38,19 +38,18 @@ watch(
 )
 </script>
 <template>
-  <!-- Filters -->
-  <div class="flex flex-row gap-5 pb-5 items-center">
+  <div class="flex flex-row gap-2 sm:gap-5 pb-3 sm:pb-5 items-center overflow-x-auto">
     <!-- Date -->
-    <DatePicker v-model="dateRange" />
+    <DatePicker v-model="dateRange" class="min-w-[140px] sm:min-w-[160px]" />
 
-    <img src="~/assets/img/common/line.svg" alt="" />
+    <img src="~/assets/img/common/line.svg" alt="" class="hidden sm:block" />
 
     <!-- Type -->
-    <TransactionsTypeSelection v-model="payload.transaction_type" />
+    <TransactionsTypeSelection v-model="payload.transaction_type" class="min-w-[140px] sm:min-w-[160px]" />
 
-    <img src="~/assets/img/common/line.svg" alt="" />
+    <img src="~/assets/img/common/line.svg" alt="" class="hidden sm:block" />
 
     <!-- Status -->
-    <TransactionsStatusSelection v-model="payload.transaction_status" />
+    <TransactionsStatusSelection v-model="payload.transaction_status" class="min-w-[140px] sm:min-w-[160px]" />
   </div>
 </template>
