@@ -165,7 +165,7 @@ onMounted(async () => {
           </div>
         </template>
       </USelectMenu>
-      <UDropdown :items="items"  class="sm:mr-7 mr-7 ml-4 notify" :content="{align: 'end',side: 'bottom'}">
+      <UDropdown :items="items"  class="lg:mr-7 lg:mr-4 mr-2 ml-2 notify" :content="{align: 'end',side: 'bottom'}">
         <UButton class="w-10 h-10 p-0 rounded-full border border-[#D7D9E5] bg-[#fff] hover:bg-[#fff] flex items-center justify-center">
           <img src="~/assets/img/icons/ring.svg" />
           <span class="h-[17px] w-[27px] bg-[#FF5524] text-[10px] rounded-[48px] absolute top-[-4px] right-[-4px] leading-4">99+</span>
@@ -195,7 +195,7 @@ onMounted(async () => {
       </UDropdown>
 
       <UPopover mode="click" :ui="{ background: 'bg-white', ring: 'ring-0' }">
-        <div class="flex items-center justify-between">
+        <div class="flex items-center justify-between w-[110px] lg:w-auto">
           <UTooltip
                 class="ml-1"
                 :text="profile?.email"
