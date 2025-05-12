@@ -173,7 +173,11 @@ const getTransactionLinkTo = async () =>{
               {{ t(`transactions.detail.amountLabel.${transactionDetail?.detailType}`) }}
             </div>
             <div class="text-16-700-24 text-[#1C1D23]">
-              {{
+              {{transactionDetail?.detailType === TransactionDetailType.CARD_PAYMENT ?
+              t(`transactions.detail.amount.${transactionDetail?.detailType}`, {
+                currency: transactionDetail.aspire_transaction?.destination_currency,
+                amount: formatMoney( roundTo(transactionDetail.aspire_transaction?.fx_rate*transactionDetail?.amount,0)),
+              }) :
                 t(`transactions.detail.amount.${transactionDetail?.detailType}`, {
                   currency: transactionDetail?.detailType === TransactionDetailType.WALLET_TOP_UP ? transactionDetail.confirm_transaction?.raw_data?.token : transactionDetail.currency.symbol ,
                   amount: formatMoney(transactionDetail?.amount),
@@ -198,8 +202,12 @@ const getTransactionLinkTo = async () =>{
                       currency: transactionDetail.confirm_transaction?.raw_data?.token ,
                       rateUSDT: formatAmount(transactionDetail?.rate.value),
                       rateUSD: 1,
-                    })
-                    : t(`transactions.detail.rateValue`, {
+                    }) : transactionDetail?.detailType === TransactionDetailType.CARD_PAYMENT ?
+                    t(`transactions.detail.rateValue`, {
+                      currency: transactionDetail.aspire_transaction?.destination_currency ,
+                      rateUSDT: formatAmount( roundTo(transactionDetail.aspire_transaction?.fx_rate,0)),
+                      rateUSD: 1,
+                    }) : t(`transactions.detail.rateValue`, {
                     currency: transactionDetail.currency.symbol ,
                     rateUSDT: formatAmount(transactionDetail?.rate.value),
                     rateUSD: 1,
