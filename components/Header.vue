@@ -96,7 +96,7 @@ onMounted(async () => {
 
 <template>
   <div class="py-4 flex flex-row w-full justify-between items-center pl-4 md:pl-10 pr-4 md:pr-[60px] flex-none">
-    <div class="flex items-center gap-4">
+    <div class="flex items-center gap-1 lg:gap-4">
       <!-- Mobile Menu Button -->
       <button @click="toggleMobileMenu" class="lg:hidden p-2">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
