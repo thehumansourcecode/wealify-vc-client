@@ -71,6 +71,10 @@ const getTransactionWallet = (network,token) => {
   }
 }
 
+const getCoinLogo = (network:string ,token :string) => {
+  return `/icons/common/${token}_${network}.png`
+}
+
 </script>
 <template>
     <div v-if="!transactionList.length" class="flex flex-col items-center justify-center gap-4 p-4 md:p-10 pt-0 h-full">
@@ -128,7 +132,7 @@ const getTransactionWallet = (network,token) => {
               <img
                 v-if="row.crypto_wallet"
                 class="cursor-pointer w-[16px] h-[16px]"
-                src="/icons/common/coin_logo.png"
+                :src="getCoinLogo(row.crypto_wallet?.network,row.confirm_transaction?.raw_data?.token)"
               />
               <span class="text-[10px] lg:text-[12px] leading-[20px] font-medium text-[#7A7D89]">
               {{
