@@ -212,7 +212,7 @@ const getTransactionLinkTo = async () =>{
           <div class="flex flex-row justify-between">
             <div class="text-12-500-20 text-[#7A7D89]">
               {{ t('transactions.detail.fee') }}
-              <span v-if="transactionDetail.fee.type == FeeAmountType.PERCENT && transactionDetail.fee.value > 0">({{transactionDetail.fee.value*100}}%)</span>
+              <span v-if="transactionDetail.fee.type == FeeAmountType.PERCENT && transactionDetail.fee.value > 0">({{roundTo(transactionDetail.fee.value*100,3)}}%)</span>
             </div>
             <div class="text-14-500-20 text-[#1C1D23]">
               {{
