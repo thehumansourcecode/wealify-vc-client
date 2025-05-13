@@ -146,7 +146,7 @@ const getTransactionLinkTo = async () =>{
             </div>
             <div class="text-12-500-20 text-[#7A7D89]">
              to {{transactionDetail?.detailType === TransactionDetailType.CARD_PAYMENT ?
-                  transactionDetail.aspire_transaction?.merchant :
+                  transactionDetail.confirm_transaction?.raw_data?.merchant :
                   t(`transactions.detail.to.${transactionDetail.detailType}`) }}
             </div>
           </div>
@@ -175,8 +175,8 @@ const getTransactionLinkTo = async () =>{
             <div class="text-16-700-24 text-[#1C1D23]">
               {{transactionDetail?.detailType === TransactionDetailType.CARD_PAYMENT ?
               t(`transactions.detail.amount.${transactionDetail?.detailType}`, {
-                currency: transactionDetail.aspire_transaction?.destination_currency,
-                amount: formatMoney( roundTo(transactionDetail.aspire_transaction?.fx_rate*transactionDetail?.amount,0)),
+                currency: transactionDetail.confirm_transaction?.raw_data?.destination_currency,
+                amount: formatMoney( roundTo(transactionDetail.confirm_transaction?.raw_data?.fx_rate*transactionDetail?.amount,0)),
               }) :
                 t(`transactions.detail.amount.${transactionDetail?.detailType}`, {
                   currency: transactionDetail?.detailType === TransactionDetailType.WALLET_TOP_UP ? transactionDetail.confirm_transaction?.raw_data?.token : transactionDetail.currency.symbol ,
@@ -204,8 +204,8 @@ const getTransactionLinkTo = async () =>{
                       rateUSD: 1,
                     }) : transactionDetail?.detailType === TransactionDetailType.CARD_PAYMENT ?
                     t(`transactions.detail.rateValue`, {
-                      currency: transactionDetail.aspire_transaction?.destination_currency ,
-                      rateUSDT: formatAmount( roundTo(transactionDetail.aspire_transaction?.fx_rate,0)),
+                      currency: transactionDetail.confirm_transaction?.raw_data?.destination_currency ,
+                      rateUSDT: formatAmount( roundTo(transactionDetail.confirm_transaction?.raw_data?.fx_rate,0)),
                       rateUSD: 1,
                     }) : t(`transactions.detail.rateValue`, {
                     currency: transactionDetail.currency.symbol ,
