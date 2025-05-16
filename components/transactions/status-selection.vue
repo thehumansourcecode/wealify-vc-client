@@ -76,7 +76,7 @@ const onSelect = (option: Option) => {
                 base: 'cursor-pointer',
               }"
             />
-            <div class="justify-center text-[#1b1c23] text-12 sm:text-14-500-20 font-semibold font-['Manrope'] leading-tight">
+            <div  @click="onSelect(option)" class="justify-center text-[#1b1c23] text-12 sm:text-14-500-20 font-semibold font-['Manrope'] leading-tight cursor-pointer">
               {{ option.title }}
             </div>
           </div>
