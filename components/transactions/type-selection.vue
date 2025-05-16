@@ -119,7 +119,8 @@ const onSelect = (value: WalletType | TransactionVCType) => {
                     }"
                   />
                   <div
-                    class="justify-center text-[#1b1c23] text-12 sm:text-14-500-20 font-semibold font-['Manrope'] leading-tight"
+                    @click="onSelect(option.value)"
+                    class="justify-center text-[#1b1c23] text-12 sm:text-14-500-20 font-semibold font-['Manrope'] leading-tight cursor-pointer"
                     :class="!isVCCardEnabled && option.value == TransactionVCType.PAYMENT ? 'opacity-50' : ''"
                   >
                     {{ option.title }}
