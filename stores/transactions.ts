@@ -95,7 +95,7 @@ export const useTransactionStore = defineStore('transaction', () => {
     try {
       const response = await TransactionService.instance.getTransactionList(payload)
       if (response.code == HTTP_STATUS_CODE.OK) {
-        transactionList.value = response.data.items
+        transactionList.value = response.data.items || []
         transactionCount.value = response.data.total_items
       } else {
         throw new Error(response.message ?? 'Can not get transactions')
