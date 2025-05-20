@@ -234,26 +234,23 @@ selectedCurrencyOption.value = currencyOptions.value[0]
           </div>
         </div>
         <!-- QR + Warning -->
-        <div class="flex flex-row gap-4 items-start">
-          <div class="rounded-[12px] border border-[#D7D9E5] bg-white p-3 flex items-center justify-center w-[110px] h-[110px] relative">
-            <img class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-8 h-8" src="~/assets/img/dashboard/qr-logo.svg" alt="" />
-            <VueQr v-if="topupAddress" :text="topupAddress" :size="100" :margin="0" class="z-0" />
-          </div>
-          <div class="flex-1">
-            <div class="bg-[#FFF4ED] rounded-[8px] px-3 py-2 text-[13px] text-[#7A7D89]">
-              <div class="flex flex-row items-center gap-2 mb-1">
-                <span class="text-[15px] font-semibold text-[#FF5524]">{{ t('dashboard.modals.topup.noteTitle')  }}</span>
+        <div class="flex flex-col sm:flex-row gap-3 w-full">
+              <div class="flex justify-center relative items-center bg-white border border-[#D7D9E5] rounded-[20px] w-full sm:w-[152px] h-[152px] p-2">
+                <img class="absolute" style="scale: 0.65" src="~/assets/img/dashboard/qr-logo.svg" alt="" />
+                <VueQr v-if="topupAddress" :text="topupAddress" :size="140" :margin="0" />
               </div>
-              {{ t('dashboard.modals.topup.note') }}
-              <span v-if="walletTopupFeeType === FeeAmountType.PERCENT" class="block mt-1 text-[#FF5524] font-semibold">
-                {{ t('dashboard.modals.topup.feePercent', { fee: roundTo(walletTopupFeeValue * 100,3) }) }}
-              </span>
-              <span v-else-if="walletTopupFeeType === FeeAmountType.FIXED" class="block mt-1 text-[#FF5524] font-semibold">
-                {{ t('dashboard.modals.topup.feePercent', { fee: formatMoneyWithoutDecimals(walletTopupFeeValue, CommonCurrency.USD) }) }}
-              </span>
+              <div class="flex-1 bg-[#FFF4F0] rounded-[20px] px-[15px] py-3 flex flex-col gap-0 justify-center">
+                <div class="flex flex-row items-center gap-2 mb-1">
+                  <span class="text-[#1C1D23] text-14-600-20 font-bold">{{ t('dashboard.modals.topup.noteTitle')  }}</span>
+                </div>
+                <div class="text-12-500-20 text-[#7A7D89]">
+                  {{ t('dashboard.modals.topup.note') }}
+                </div>
+                <div class="text-12-500-20 text-[#FF5524] mt-1">
+                  Fee: <span class="font-bold">{{ walletTopupFeeType === FeeAmountType.PERCENT ? (walletTopupFeeValue * 100) + '%' : formatMoneyWithoutDecimals(walletTopupFeeValue, CommonCurrency.USD) }}</span>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
       </div>
     </div>
   </USlideover>

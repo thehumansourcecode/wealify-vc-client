@@ -624,10 +624,10 @@ watch(walletInfo, () => {
               </div>
               <div class="flex-1 bg-[#FFF4F0] rounded-[20px] px-[15px] py-3 flex flex-col gap-0 justify-center">
                 <div class="flex flex-row items-center gap-2 mb-1">
-                  <span class="text-[#1C1D23] text-14-600-20 font-bold">Attention!</span>
+                  <span class="text-[#1C1D23] text-14-600-20 font-bold">{{ t('dashboard.modals.topup.noteTitle')  }}</span>
                 </div>
                 <div class="text-12-500-20 text-[#7A7D89]">
-                  Only send <span class="font-bold">USDT/USDC</span> to this deposit address. Sending any other asset to this address may result in the loss of your deposit.
+                  {{ t('dashboard.modals.topup.note') }}
                 </div>
                 <div class="text-12-500-20 text-[#FF5524] mt-1">
                   Fee: <span class="font-bold">{{ walletTopupFeeType === FeeAmountType.PERCENT ? (walletTopupFeeValue * 100) + '%' : formatMoneyWithoutDecimals(walletTopupFeeValue, CommonCurrency.USD) }}</span>
