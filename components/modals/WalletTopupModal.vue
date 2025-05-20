@@ -3,6 +3,19 @@ import { formatMoneyWithoutDecimals } from '~/common/functions'
 import { CommonCurrency, FeeAmountType } from '~/types/common'
 import { TransactionCryptocurrency, TransactionNetwork } from '~/types/dashboard'
 import VueQr from 'vue-qr/src/packages/vue-qr.vue'
+
+interface NetworkOption {
+  logo: string
+  value: string
+  label: string
+}
+
+interface CurrencyOption {
+  logo: string
+  value: string
+  label: string
+}
+
 const { copy, copied } = useClipboard()
 const toast = useToast()
 const { fetchWalletInfo } = usePaymentStore()
@@ -24,10 +37,10 @@ const topupAddress = computed(() => {
   return walletInfo.value.address[selectedNetworkOption.value.value]
 })
 
-const networkOptions = ref([])
-const selectedNetworkOption = ref(undefined)
-const currencyOptions = ref([])
-const selectedCurrencyOption = ref(undefined)
+const networkOptions = ref<NetworkOption[]>([])
+const selectedNetworkOption = ref<NetworkOption | undefined>(undefined)
+const currencyOptions = ref<CurrencyOption[]>([])
+const selectedCurrencyOption = ref<CurrencyOption | undefined>(undefined)
 
 function handleCopy(value: string) {
   copy(value)
@@ -37,6 +50,10 @@ function handleCopy(value: string) {
     avatar: { src: '/icons/common/toast-success.svg' },
     timeout: 5000,
   })
+}
+
+function handleClose() {
+  dashboardStore.toggleWalletTopupModal(false)
 }
 
 await fetchWalletInfo()
@@ -60,168 +77,190 @@ selectedCurrencyOption.value = currencyOptions.value[0]
 </script>
 
 <template>
-  <BaseModal :label="t('dashboard.modals.topup.title')" @close-prevented="dashboardStore.toggleWalletTopupModal(false)">
-    <div class="flex flex-col lg:flex-row items-start gap-7">
-      <div class="w-full lg:w-auto">
+  <USlideover
+    :model-value="true"
+    @update:model-value="handleClose"
+    :ui="{
+      overlay: {
+        background: 'bg-[#1b1c23]/30',
+      },
+      container: 'flex items-center justify-end',
+      width: 'w-full sm:w-[420px]',
+      background: 'bg-white',
+    }"
+    @close-prevented="handleClose"
+  >
+    <div class="flex flex-col h-full">
+      <div class="flex items-center justify-between px-6 pt-6 pb-4">
+        <div class="text-[22px] font-semibold text-[#1C1D23]">{{ t('dashboard.modals.topup.title') }}</div>
+        <button class="text-gray-400 hover:text-gray-500" @click="handleClose">
+          <UIcon name="i-heroicons-x-mark-20-solid" class="w-6 h-6" />
+        </button>
+      </div>
+      <div class="flex-1 overflow-y-auto px-6 pb-8 pt-4">
         <!-- Network -->
-        <div class="text-12-500-20 mb-1">
-          <span>{{ t('dashboard.modals.topup.label.network') }}</span>
-          <span class="pl-1 text-[#ff5c5c]">*</span>
-        </div>
-        <USelectMenu
-          selected-icon="i-selected"
-          trailing-icon="i-dropdown"
-          :ui="{
-            variant: {
-              none: 'bg-white border border-[#D7D9E5] rounded-[48px] py-[10px] px-4 w-full',
-            },
-            icon: {
-              leading: {
-                padding: { xs: 'pl-4 pr-2.5', sm: 'pl-4 pr-2.5' },
+        <div class="mb-4">
+          <div class="text-[13px] font-medium text-[#1C1D23] mb-1 flex items-center">
+            {{ t('dashboard.modals.topup.label.network') }}
+            <span class="pl-1 text-[#ff5c5c]">*</span>
+          </div>
+          <USelectMenu
+            selected-icon="i-selected"
+            trailing-icon="i-dropdown"
+            :ui="{
+              variant: {
+                none: 'bg-white border border-[#D7D9E5] rounded-[12px] py-[10px] px-4 w-full',
               },
-            },
-          }"
-          :ui-menu="{
-            select: 'cursor-pointer',
-            background: 'bg-white',
-            base: 'relative focus:outline-none overflow-y-auto scroll-py-1',
-            padding: 'p-0',
-            rounded: 'rounded-[16px]',
-            option: {
-              base: 'cursor-pointer text-14-500-20 bg-[#F0F2F5]',
-              inactive: 'bg-white hover:bg-[#F0F2F5] cursor-pointer',
-              padding: 'px-3 py-[10px]',
-              rounded: 'rounded-none',
-              selectedIcon: {
-                base: 'h-[18px] w-[18px]',
+              icon: {
+                leading: {
+                  padding: { xs: 'pl-4 pr-2.5', sm: 'pl-4 pr-2.5' },
+                },
               },
-              empty: 'text-sm',
-            },
-            empty: 'text-sm',
-            default: {
-              selectedIcon: 'i-selected',
-            },
-          }"
-          variant="none"
-          v-model="selectedNetworkOption"
-          :options="networkOptions"
-          option-attribute="name"
-        >
-          <template #leading>
-            <img v-if="selectedNetworkOption?.logo" :src="selectedNetworkOption?.logo" />
-          </template>
-          <template #label>
-            <span
-              v-if="selectedNetworkOption?.label"
-              class="truncate text-14-500-20 text-[#1C1D23] max-w-[350px] pl-2.5"
-              >{{ selectedNetworkOption?.label }}</span
-            >
-          </template>
-          <template #option="{ option: network }">
-            <img :src="network.logo" alt="logo" />
-            <span class="truncate">{{ network.label }}</span>
-          </template>
-        </USelectMenu>
-
-        <!-- Currency -->
-        <div class="text-12-500-20 mt-4 mb-1">
-          <span>{{ t('dashboard.modals.topup.label.currency') }}</span>
-          <span class="pl-1 text-[#ff5c5c]">*</span>
-        </div>
-        <USelectMenu
-          selected-icon="i-selected"
-          trailing-icon="i-dropdown"
-          :ui="{
-            variant: {
-              none: 'bg-white border border-[#D7D9E5] rounded-[48px] py-[10px] px-4 w-full',
-            },
-            icon: {
-              leading: {
-                padding: { xs: 'pl-4 pr-2.5', sm: 'pl-4 pr-2.5' },
-              },
-            },
-          }"
-          :ui-menu="{
-            select: 'cursor-pointer',
-            background: 'bg-white',
-            base: 'relative focus:outline-none overflow-y-auto scroll-py-1',
-            padding: 'p-0',
-            rounded: 'rounded-[16px]',
-            option: {
-              base: 'cursor-pointer text-14-500-20 bg-[#F0F2F5]',
-              inactive: 'bg-white hover:bg-[#F0F2F5] cursor-pointer',
-              padding: 'px-3 py-[10px]',
-              rounded: 'rounded-none',
-              selectedIcon: {
-                base: 'h-[18px] w-[18px]',
+            }"
+            :ui-menu="{
+              select: 'cursor-pointer',
+              background: 'bg-white',
+              base: 'relative focus:outline-none overflow-y-auto scroll-py-1',
+              padding: 'p-0',
+              rounded: 'rounded-[12px]',
+              option: {
+                base: 'cursor-pointer text-14-500-20 bg-[#F0F2F5]',
+                inactive: 'bg-white hover:bg-[#F0F2F5] cursor-pointer',
+                padding: 'px-3 py-[10px]',
+                rounded: 'rounded-none',
+                selectedIcon: {
+                  base: 'h-[18px] w-[18px]',
+                },
+                empty: 'text-sm',
               },
               empty: 'text-sm',
-            },
-            empty: 'text-sm',
-            default: {
-              selectedIcon: 'i-selected',
-            },
-          }"
-          variant="none"
-          v-model="selectedCurrencyOption"
-          :options="currencyOptions"
-          option-attribute="value"
-        >
-          <template #leading>
-            <img v-if="selectedCurrencyOption?.logo" :src="selectedCurrencyOption?.logo" />
-          </template>
-          <template #label>
-            <span
-              v-if="selectedCurrencyOption?.label"
-              class="truncate text-14-500-20 text-[#1C1D23] max-w-[350px] pl-2.5"
-            >
-              {{ selectedCurrencyOption?.label }}
-            </span>
-          </template>
-          <template #option="{ option: currency }">
-            <img :src="currency.logo" alt="logo" />
-            <span class="truncate">{{ currency.label }}</span>
-          </template>
-        </USelectMenu>
-
+              default: {
+                selectedIcon: 'i-selected',
+              },
+            }"
+            variant="none"
+            v-model="selectedNetworkOption"
+            :options="networkOptions"
+            option-attribute="name"
+          >
+            <template #leading>
+              <img v-if="selectedNetworkOption?.logo" :src="selectedNetworkOption?.logo" class="w-5 h-5 rounded-full" />
+            </template>
+            <template #label>
+              <span v-if="selectedNetworkOption?.label" class="truncate text-14-500-20 text-[#1C1D23] max-w-[350px] pl-2.5">
+                {{ selectedNetworkOption?.label }}
+              </span>
+            </template>
+            <template #option="{ option: network }">
+              <img :src="network.logo" alt="logo" class="w-5 h-5 rounded-full mr-2" />
+              <span class="truncate">{{ network.label }}</span>
+            </template>
+          </USelectMenu>
+        </div>
+        <!-- Token -->
+        <div class="mb-4">
+          <div class="text-[13px] font-medium text-[#1C1D23] mb-1 flex items-center">
+            {{ t('dashboard.modals.topup.label.currency') }}
+            <span class="pl-1 text-[#ff5c5c]">*</span>
+          </div>
+          <USelectMenu
+            selected-icon="i-selected"
+            trailing-icon="i-dropdown"
+            :ui="{
+              variant: {
+                none: 'bg-white border border-[#D7D9E5] rounded-[12px] py-[10px] px-4 w-full',
+              },
+              icon: {
+                leading: {
+                  padding: { xs: 'pl-4 pr-2.5', sm: 'pl-4 pr-2.5' },
+                },
+              },
+            }"
+            :ui-menu="{
+              select: 'cursor-pointer',
+              background: 'bg-white',
+              base: 'relative focus:outline-none overflow-y-auto scroll-py-1',
+              padding: 'p-0',
+              rounded: 'rounded-[12px]',
+              option: {
+                base: 'cursor-pointer text-14-500-20 bg-[#F0F2F5]',
+                inactive: 'bg-white hover:bg-[#F0F2F5] cursor-pointer',
+                padding: 'px-3 py-[10px]',
+                rounded: 'rounded-none',
+                selectedIcon: {
+                  base: 'h-[18px] w-[18px]',
+                },
+                empty: 'text-sm',
+              },
+              empty: 'text-sm',
+              default: {
+                selectedIcon: 'i-selected',
+              },
+            }"
+            variant="none"
+            v-model="selectedCurrencyOption"
+            :options="currencyOptions"
+            option-attribute="value"
+          >
+            <template #leading>
+              <img v-if="selectedCurrencyOption?.logo" :src="selectedCurrencyOption?.logo" class="w-5 h-5 rounded-full" />
+            </template>
+            <template #label>
+              <span v-if="selectedCurrencyOption?.label" class="truncate text-14-500-20 text-[#1C1D23] max-w-[350px] pl-2.5">
+                {{ selectedCurrencyOption?.label }}
+              </span>
+            </template>
+            <template #option="{ option: currency }">
+              <img :src="currency.logo" alt="logo" class="w-5 h-5 rounded-full mr-2" />
+              <span class="truncate">{{ currency.label }}</span>
+            </template>
+          </USelectMenu>
+        </div>
         <!-- Address -->
-        <div class="text-12-500-20 mt-4 mb-1">
-          <span>{{ t('dashboard.modals.topup.label.address') }}</span>
-          <span class="pl-1 text-[#ff5c5c]">*</span>
-        </div>
-        <div
-          class="border border-[#D7D9E5] rounded-[48px] py-[10px] px-4 flex flex-row items-center justify-between gap-4 w-full"
-        >
-          <div class="text-[#7A7D89] text-14-500-20 break-all">{{ topupAddress }}</div>
-          <div class="relative flex-shrink-0">
-            <img
-              class="cursor-pointer"
-              @click="handleCopy(topupAddress)"
-              :src="copied ? `/icons/common/copied.svg` : `/icons/common/copy.svg`"
-              alt=""
+        <div class="mb-4">
+          <div class="text-[13px] font-medium text-[#1C1D23] mb-1 flex items-center">
+            {{ t('dashboard.modals.topup.label.address') }}
+            <span class="pl-1 text-[#ff5c5c]">*</span>
+          </div>
+          <div class="relative flex items-center">
+            <input
+              class="w-full border border-[#D7D9E5] rounded-[12px] py-[10px] px-4 pr-10 text-[#7A7D89] text-14-500-20 bg-[#F8F9FB] outline-none select-all"
+              :value="topupAddress"
+              readonly
             />
+            <button class="absolute right-2 top-1/2 -translate-y-1/2" @click="handleCopy(topupAddress)">
+              <img :src="copied ? '/icons/common/copied.svg' : '/icons/common/copy.svg'" class="w-5 h-5" />
+            </button>
           </div>
         </div>
-        <div class="text-12-500-20 text-[#7A7D89] mt-4 break-all">{{ t(`dashboard.modals.topup.note`) }}</div>
-        <div v-if="walletTopupFeeType === FeeAmountType.PERCENT" class="text-16-600-20 text-[#FF5524] mt-4">
-          {{ t(`dashboard.modals.topup.feePercent`, { fee: roundTo(walletTopupFeeValue * 100,3) }) }}
+        <!-- QR + Warning -->
+        <div class="flex flex-row gap-4 items-start">
+          <div class="rounded-[12px] border border-[#D7D9E5] bg-white p-3 flex items-center justify-center w-[110px] h-[110px] relative">
+            <img class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-8 h-8" src="~/assets/img/dashboard/qr-logo.svg" alt="" />
+            <VueQr v-if="topupAddress" :text="topupAddress" :size="100" :margin="0" class="z-0" />
+          </div>
+          <div class="flex-1">
+            <div class="bg-[#FFF4ED] rounded-[8px] px-3 py-2 text-[13px] text-[#7A7D89]">
+              <div class="flex flex-row items-center gap-2 mb-1">
+                <span class="text-[15px] font-semibold text-[#FF5524]">{{ t('dashboard.modals.topup.noteTitle')  }}</span>
+              </div>
+              {{ t('dashboard.modals.topup.note') }}
+              <span v-if="walletTopupFeeType === FeeAmountType.PERCENT" class="block mt-1 text-[#FF5524] font-semibold">
+                {{ t('dashboard.modals.topup.feePercent', { fee: roundTo(walletTopupFeeValue * 100,3) }) }}
+              </span>
+              <span v-else-if="walletTopupFeeType === FeeAmountType.FIXED" class="block mt-1 text-[#FF5524] font-semibold">
+                {{ t('dashboard.modals.topup.feePercent', { fee: formatMoneyWithoutDecimals(walletTopupFeeValue, CommonCurrency.USD) }) }}
+              </span>
+            </div>
+          </div>
         </div>
-        <div v-else-if="walletTopupFeeType === FeeAmountType.FIXED" class="text-16-600-20 text-[#FF5524] mt-4">
-          {{
-            t(`dashboard.modals.topup.feePercent`, {
-              fee: formatMoneyWithoutDecimals(walletTopupFeeValue, CommonCurrency.USD),
-            })
-          }}
-        </div>
-      </div>
-      <div
-        class="py-[22px] px-[19px] rounded-[20px] border border-[#D7D9E5] relative w-full lg:w-[240px] h-[246px] flex items-center justify-center mt-4 lg:mt-0"
-      >
-        <img class="absolute" style="scale: 0.65" src="~/assets/img/dashboard/qr-logo.svg" alt="" />
-        <VueQr v-if="topupAddress" :text="topupAddress" :size="200" :margin="0" />
       </div>
     </div>
-  </BaseModal>
+  </USlideover>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+input[readonly] {
+  cursor: pointer;
+}
+</style>

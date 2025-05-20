@@ -55,7 +55,8 @@ export default {
   },
   modals: {
     topup: {
-      title: 'Top up',
+      title: 'Top up Wallet',
+      noteTitle:'Attention!',
       note: 'Send only USDT/USDC to this deposit address. Sending any other asset to this address may result in the loss of your deposit',
       feePercent: 'Fee: {fee}%',
       feeFlat: 'Fee: {fee}',
