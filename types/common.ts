@@ -1,3 +1,5 @@
+import {WalletData} from './payment'
+
 export enum CommonLanguage {
   VI = 'vi',
   EN = 'en',
@@ -129,6 +131,7 @@ export interface IDropdownCardData {
   id: string
   last_four: string
   balance: number
+  crypto_wallets: WalletData
 }
 
 export enum FeeType {

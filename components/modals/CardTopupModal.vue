@@ -20,7 +20,6 @@ const { copy, copied } = useClipboard()
 const cardStore = useCardStore()
 const commonStore = useCommonStore()
 const userStore = useUserStore()
-const paymentStore = usePaymentStore()
 
 const dropdownCardList = ref([])
 
@@ -30,8 +29,7 @@ onMounted(async () => {
   const [cardListResponse, feeResponse, balanceResponse] = await Promise.all([
     commonService.getDropdownCardList({}),
     commonStore.getFee(),
-    userStore.getBalance(),
-    paymentStore.fetchWalletInfo()
+    userStore.getBalance()
   ])
   if (cardListResponse.success) {
     dropdownCardList.value = cardListResponse.data.items
@@ -155,15 +153,15 @@ const tabOptions = [
 ]
 
 
-const { walletInfo } = storeToRefs(paymentStore) as { walletInfo: Ref<any> }
+// const { walletInfo } = storeToRefs(paymentStore) as { walletInfo: Ref<any> }
 const walletTopupFeeValue = computed(() => commonStore.feeList?.TOP_UP_WALLET.value || 0)
 const walletTopupFeeType = computed(() => commonStore.feeList?.TOP_UP_WALLET?.type)
 
 const topupAddress = computed(() => {
-  if (!walletInfo.value || !selectedNetworkOption.value){
+  if (!selectedCard.value.crypto_wallets || !selectedNetworkOption.value){
     return ''
   }
-  return walletInfo.value.address[selectedNetworkOption.value.value]
+  return selectedCard.value.crypto_wallets.address[selectedNetworkOption.value.value]
 })
 
 const networkOptions = ref<any[]>([])
@@ -181,20 +179,22 @@ function handleCopy(value: string) {
   })
 }
 
-watch(walletInfo, () => {
-  networkOptions.value = walletInfo.value?.network.map((network: any) => ({
+watch(selectedCard, () => {
+  networkOptions.value = selectedCard.value.crypto_wallets?.network.map((network: any) => ({
     logo: `/icons/common/${network}.svg`,
     value: network,
     label: t(`dashboard.modals.topup.label.${network}`),
   })) || []
   selectedNetworkOption.value = networkOptions.value[0]
-  currencyOptions.value = walletInfo.value?.token.map((token: any) => ({
+  currencyOptions.value = selectedCard.value.crypto_wallets?.token.map((token: any) => ({
     logo: `/icons/common/${token}.svg`,
     value: token,
     label: t(`dashboard.modals.topup.label.${token}`),
   })) || []
   selectedCurrencyOption.value = currencyOptions.value[0]
-}, { immediate: true })
+}, 
+  { immediate: true }
+)
 </script>
 
 <template>
@@ -604,7 +604,7 @@ watch(walletInfo, () => {
               <div class="mb-7">
                 <label class="text-14-500-20 block mb-1">Address<span class="text-red-500">*</span></label>
                 <div class="border border-[#D7D9E5] rounded-[48px] py-[10px] px-4 flex flex-row items-center justify-between gap-0 w-full bg-[#F8F8FA]">
-                  <div class="text-[#7A7D89] text-14-500-20 break-all">{{ topupAddress }}</div>
+                  <div class="text-[#7A7D89] text-14-500-20 break-all truncate whitespace-nowrap">{{ topupAddress }}</div>
                   <div class="relative flex-shrink-0">
                     <img
                       class="cursor-pointer"
@@ -619,7 +619,7 @@ watch(walletInfo, () => {
             <!-- QR + Attention -->
             <div class="flex flex-col sm:flex-row gap-3 w-full">
               <div class="flex justify-center relative items-center bg-white border border-[#D7D9E5] rounded-[20px] w-full sm:w-[152px] h-[152px] p-2">
-                <img class="absolute" style="scale: 0.65" src="~/assets/img/dashboard/qr-logo.svg" alt="" />
+                <img class="absolute" style="scale: 0.25" src="~/assets/img/dashboard/qr-logo.svg" alt="" />
                 <VueQr v-if="topupAddress" :text="topupAddress" :size="140" :margin="0" />
               </div>
               <div class="flex-1 bg-[#FFF4F0] rounded-[20px] px-[15px] py-3 flex flex-col gap-0 justify-center">

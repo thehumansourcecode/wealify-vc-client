@@ -112,6 +112,7 @@ export const useCardStore = defineStore('card', () => {
         card_name: card?.card_name,
         last_four: card?.last_four,
         balance: card?.balance,
+        crypto_wallets:card?.crypto_wallets
       }
     } else {
       selectedCardForTopup.value = undefined

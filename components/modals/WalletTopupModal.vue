@@ -224,7 +224,7 @@ selectedCurrencyOption.value = currencyOptions.value[0]
           </div>
           <div class="relative flex items-center">
             <input
-              class="w-full border border-[#D7D9E5] rounded-[12px] py-[10px] px-4 pr-10 text-[#7A7D89] text-14-500-20 bg-[#F8F9FB] outline-none select-all"
+              class="w-full border truncate border-[#D7D9E5] rounded-[12px] py-[10px] px-4 pr-10 text-[#7A7D89] text-14-500-20 bg-[#F8F9FB] outline-none select-all"
               :value="topupAddress"
               readonly
             />
@@ -236,7 +236,7 @@ selectedCurrencyOption.value = currencyOptions.value[0]
         <!-- QR + Warning -->
         <div class="flex flex-col sm:flex-row gap-3 w-full">
               <div class="flex justify-center relative items-center bg-white border border-[#D7D9E5] rounded-[20px] w-full sm:w-[152px] h-[152px] p-2">
-                <img class="absolute" style="scale: 0.65" src="~/assets/img/dashboard/qr-logo.svg" alt="" />
+                <img class="absolute" style="scale: 0.25" src="~/assets/img/dashboard/qr-logo.svg" alt="" />
                 <VueQr v-if="topupAddress" :text="topupAddress" :size="140" :margin="0" />
               </div>
               <div class="flex-1 bg-[#FFF4F0] rounded-[20px] px-[15px] py-3 flex flex-col gap-0 justify-center">
