@@ -80,9 +80,6 @@ const issueCardSchema = object({
   phone_number: string().required(t('common.validator.empty.issueCard.phoneNumber')),
   category: string().required(t('common.validator.empty.issueCard.category')),
   spend_limit: number()
-    .test('min-threshold', t('common.validator.invalid.issueCard.zeroStartingBalance'), value => {
-      return value >= 1
-    })
     .test('max-threshold', t('common.validator.invalid.issueCard.insufficientBalance'), value => {
       return value <= +threshold.value
     }),

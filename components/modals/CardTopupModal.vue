@@ -53,7 +53,7 @@ const form = reactive({
   amount: 0,
 })
 
-const isFormValid = ref(true)
+const isFormValid = ref(false)
 
 const presetAmounts = computed(() => {
   const balance = form.amount
@@ -128,8 +128,10 @@ const finalAmount = computed(() => {
 
 const topupCardSchema = object({
   amount: number()
+    .test('min-threshold', t('common.validator.invalid.topupCard.zeroTopup'), value => {
+      return value >= 1
+    })
     .test('max-threshold', t('common.validator.invalid.topupCard.insufficientBalance'), value => {
-      if (typeof value !== 'number') return false
       return value <= +threshold.value
     }),
 })
