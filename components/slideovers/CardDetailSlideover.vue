@@ -127,7 +127,7 @@ const showCardSensitiveDetailOverlay = computed(()=>{
 
 // Actions
 function handleTopup() {
-  isPreventClose.value = true
+  cardStore.toggleCardDetailSlideover(false)
   cardStore.toggleCardTopupModal(true)
 }
 
