@@ -191,7 +191,7 @@ const fetchBalanceHistory = async () =>{
                 }}</span>
               <span class="pl-1 text-[#7A7D89]">USD</span>
             </div>
-            <div class="pt-4 flex flex-col w-full md:w-[150px] gap-2">
+            <div class="pt-4 flex flex-col w-[220px] lg:w-[150px] xl:w-[220px] gap-2">
               <div class="flex flex-row justify-between w-full">
                 <div class="flex flex-row gap-2 items-center">
                   <img src="~/assets/img/dashboard/money-in.svg" alt="" />
