@@ -570,7 +570,7 @@ watch(
               {{ t('cards.issue.preview.starting') }}
             </div>
             <div class="text-14-600-20 text-[#1C1D23]">
-              {{ form.spend_limit ? formatMoneyWithoutDecimals(form.spend_limit, CommonCurrency.USD) : '-' }}
+              {{formatMoneyWithoutDecimals(form.spend_limit, CommonCurrency.USD)}}
             </div>
           </div>
           <div class="flex flex-row justify-between mt-6">
