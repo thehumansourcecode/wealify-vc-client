@@ -148,7 +148,7 @@ const handleClose = () =>{
   isPreventClose.value = false
 }
 
-const topupSource = ref(0) // 0: balance, 1: crypto
+const topupSource = ref(1) // 0: balance, 1: crypto
 const tabOptions = [
   { label: 'Wealify Balance' },
   { label: 'Crypto Transfer' },
