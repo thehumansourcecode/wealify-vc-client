@@ -158,7 +158,7 @@ const fetchBalanceHistory = async () =>{
 
 }
 
-onMounted(fetchBalanceHistory)
+// onMounted(fetchBalanceHistory)
 
 </script>
 <template>
@@ -179,7 +179,6 @@ onMounted(fetchBalanceHistory)
       <div class="flex flex-col gap-3 w-full lg:w-[45%]">
         <!-- Wealify Balance -->
         <div
-            @mouseenter="setBalanceHistoryType('MAIN','#2ea518')"
             class="bg-[#1C1D23] cursor-pointer rounded-[12px] flex flex-row pl-7 pr-12 pt-4 pb-6 justify-between gap-12 items-center bg-[url(~/assets/img/wealify-pattern.svg)] bg-no-repeat bg-right"
         >
           <div class="flex flex-col z-10 sm:w-1/2">
@@ -241,7 +240,6 @@ onMounted(fetchBalanceHistory)
 
         <!-- Card balance -->
         <div
-         @mouseenter="setBalanceHistoryType('VC_CARD','#5268E1')"
             class="bg-[#FFF5F2] cursor-pointer text-[#000] border border-[#E1E5EB] rounded-[12px] flex flex-col md:flex-row pl-4 md:pl-7 pr-4 md:pr-12 pt-4 pb-6 justify-between items-center mb-[20px]"
         >
           <div class="flex flex-col z-10 w-full">
