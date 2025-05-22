@@ -483,6 +483,8 @@ watch(selectedCard, () => {
                   </template>
                 </USelectMenu>
               </div>
+
+              <template v-if="selectedCard.crypto_wallets">
               <!-- Network -->
               <div class="mb-4">
                 <label class="text-14-500-20 block mb-1">Network<span class="text-red-500">*</span></label>
@@ -617,24 +619,39 @@ watch(selectedCard, () => {
                   </div>
                 </div>
               </div>
-            </div>
-            <!-- QR + Attention -->
-            <div class="flex flex-col sm:flex-row gap-3 w-full">
-              <div class="flex justify-center relative items-center bg-white border border-[#D7D9E5] rounded-[20px] w-full sm:w-[152px] h-[152px] p-2">
-                <img class="absolute" style="scale: 0.25" src="~/assets/img/dashboard/qr-logo.svg" alt="" />
-                <VueQr v-if="topupAddress" :text="topupAddress" :size="140" :margin="0" />
+
+                          <!-- QR + Attention -->
+              <div class="flex flex-col sm:flex-row gap-3 w-full">
+                <div class="flex justify-center relative items-center bg-white border border-[#D7D9E5] rounded-[20px] w-full sm:w-[152px] h-[152px] p-2">
+                  <img class="absolute" style="scale: 0.25" src="~/assets/img/dashboard/qr-logo.svg" alt="" />
+                  <VueQr v-if="topupAddress" :text="topupAddress" :size="140" :margin="0" />
+                </div>
+                <div class="flex-1 bg-[#FFF4F0] rounded-[20px] px-[15px] py-3 flex flex-col gap-0 justify-center">
+                  <div class="flex flex-row items-center gap-2 mb-1">
+                    <span class="text-[#1C1D23] text-14-600-20 font-bold">{{ t('dashboard.modals.topup.noteTitle')  }}</span>
+                  </div>
+                  <div class="text-12-500-20 text-[#7A7D89]">
+                    {{ t('dashboard.modals.topup.note') }}
+                  </div>
+                  <div class="text-12-500-20 text-[#FF5524] mt-1">
+                    Fee: <span class="font-bold">{{ walletTopupFeeType === FeeAmountType.PERCENT ? (walletTopupFeeValue * 100 + topupCardFees?.value * 100) + '%' : formatMoneyWithoutDecimals(walletTopupFeeValue + topupCardFees?.value, CommonCurrency.USD) }}</span>
+                  </div>
+                </div>
               </div>
-              <div class="flex-1 bg-[#FFF4F0] rounded-[20px] px-[15px] py-3 flex flex-col gap-0 justify-center">
-                <div class="flex flex-row items-center gap-2 mb-1">
-                  <span class="text-[#1C1D23] text-14-600-20 font-bold">{{ t('dashboard.modals.topup.noteTitle')  }}</span>
+
+              </template>
+            
+              <template v-else>
+                <div  class="flex flex-col items-center justify-center text-center py-8">
+                  <img src="/icons/cards/emty_wallet.svg"  class="w-[180px] h-[108px] mb-4"/>
+                  <p class="text-14-500-20 text-[#7A7D89] mb-5 w-[242px]">
+                    {{ t('cards.modals.topup.getAddressesPrompt') }}
+                  </p>
+                  <UButton class="flex items-center bg-[#FF5524] hover:bg-[#FF5524] !text-[#fff] text-[16px] leading-[24px] font-semibold px-6 py-3 rounded-[49px] w-[214px]">
+                    {{ t('cards.modals.topup.getAddressesButton') }}
+                  </UButton>
                 </div>
-                <div class="text-12-500-20 text-[#7A7D89]">
-                  {{ t('dashboard.modals.topup.note') }}
-                </div>
-                <div class="text-12-500-20 text-[#FF5524] mt-1">
-                  Fee: <span class="font-bold">{{ walletTopupFeeType === FeeAmountType.PERCENT ? (walletTopupFeeValue * 100 + topupCardFees?.value * 100) + '%' : formatMoneyWithoutDecimals(walletTopupFeeValue + topupCardFees?.value, CommonCurrency.USD) }}</span>
-                </div>
-              </div>
+              </template>
             </div>
           </div>
         </div>

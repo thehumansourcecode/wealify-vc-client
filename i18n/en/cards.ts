@@ -201,6 +201,8 @@ export default {
         fee: 'Fee',
         topup: 'Top up amount',
       },
+      getAddressesPrompt:"Get card's wallet addresses to start top up coin directly to your Wealify Virtual Card",
+      getAddressesButton:"Get wallet addresses",
     },
     freeze: {
       title: 'Freeze this card',
