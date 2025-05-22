@@ -386,7 +386,7 @@ watch(selectedCard, () => {
             <div class="mb-6 mt-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-0">
               <div class="text-12-500-20 text-[#7A7D89]">{{ t('cards.modals.topup.label.fee') }}</div>
               <div v-if="topupCardFees?.type === FeeAmountType.PERCENT" class="text-14-500-20">
-                {{ topupCardFees?.value * 100 || 0 }}%
+                {{ roundTo(topupCardFees?.value * 100,3) || 0 }}%
               </div>
               <div v-else-if="topupCardFees?.type === FeeAmountType.FIXED" class="text-14-500-20">
                 {{ formatMoney(topupCardFees?.value || 0, CommonCurrency.USD) }}
@@ -634,7 +634,7 @@ watch(selectedCard, () => {
                     {{ t('dashboard.modals.topup.note') }}
                   </div>
                   <div class="text-12-500-20 text-[#FF5524] mt-1">
-                    Fee: <span class="font-bold">{{ walletTopupFeeType === FeeAmountType.PERCENT ? (walletTopupFeeValue * 100 + topupCardFees?.value * 100) + '%' : formatMoneyWithoutDecimals(walletTopupFeeValue + topupCardFees?.value, CommonCurrency.USD) }}</span>
+                    Fee: <span class="font-bold">{{ walletTopupFeeType === FeeAmountType.PERCENT ? (roundTo(walletTopupFeeValue * 100 + topupCardFees?.value * 100,3)) + '%' : formatMoneyWithoutDecimals(walletTopupFeeValue + topupCardFees?.value, CommonCurrency.USD) }}</span>
                   </div>
                 </div>
               </div>
