@@ -247,7 +247,7 @@ selectedCurrencyOption.value = currencyOptions.value[0]
                   {{ t('dashboard.modals.topup.note') }}
                 </div>
                 <div class="text-12-500-20 text-[#FF5524] mt-1">
-                  Fee: <span class="font-bold">{{ walletTopupFeeType === FeeAmountType.PERCENT ? (walletTopupFeeValue * 100) + '%' : formatMoneyWithoutDecimals(walletTopupFeeValue, CommonCurrency.USD) }}</span>
+                  Fee: <span class="font-bold">{{ walletTopupFeeType === FeeAmountType.PERCENT ? (roundTo(walletTopupFeeValue * 100,3)) + '%' : formatMoneyWithoutDecimals(walletTopupFeeValue, CommonCurrency.USD) }}</span>
                 </div>
               </div>
             </div>
