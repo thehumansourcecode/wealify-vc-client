@@ -208,14 +208,14 @@ watch(selectedCard, () => {
         background: 'bg-[#1b1c23]/30',
       },
       container: 'flex items-center justify-end',
-      width: 'w-full sm:w-[540px]',
+      width: 'w-full max-w-[464px]',
       background: 'bg-white',
     }"
     :prevent-close="isPreventClose"
     @close-prevented="handleClose"
   >
-    <div class="flex flex-col h-full">
-      <div class="flex items-center justify-between p-4">
+    <div class="flex flex-col h-full w-[464px] right-0">
+      <div class="flex items-center justify-between px-6 py-8">
         <h2 class="text-xl font-semibold text-gray-900">{{ t('cards.modals.topup.title') }}</h2>
         <button
           class="text-gray-400 hover:text-gray-500"
@@ -224,7 +224,7 @@ watch(selectedCard, () => {
           <UIcon name="i-heroicons-x-mark-20-solid" class="w-6 h-6" />
         </button>
       </div>
-      <div class="flex-1 overflow-y-auto p-4">
+      <div class="flex-1 overflow-y-auto px-6 !pt-0 pb-8">
         <!-- Chọn nguồn nạp bằng UTab -->
         <div class="mb-1 text-14-500-20 text-[#1C1D23]">From</div>
         <UTabs
