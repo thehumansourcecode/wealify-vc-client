@@ -366,7 +366,7 @@ const getTransactionLinkTo = async () =>{
           <span class="text-[#7A7D89]">
             {{ t('transactions.detail.contact') }}
           </span>
-          <ULink to="mailto:support@cs2agent.com" class="text-[#FF5524]"> support@wealify.com </ULink>
+          <ULink to="mailto:support@wealify.com" class="text-[#FF5524]"> support@wealify.com </ULink>
         </div>
 
         <div  v-if=" transactionDetail?.detailType === TransactionDetailType.CARD_PAYMENT" class="flex flex-col items-center mt-8 gap-[10px] mb-12 lg:flex-row">
