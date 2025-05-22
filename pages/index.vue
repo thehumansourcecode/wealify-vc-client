@@ -191,7 +191,7 @@ const fetchBalanceHistory = async () =>{
                 }}</span>
               <span class="pl-1 text-[#7A7D89]">USD</span>
             </div>
-            <div class="pt-4 flex flex-col w-full md:w-[220px] gap-2">
+            <div class="pt-4 flex flex-col w-full md:w-[150px] gap-2">
               <div class="flex flex-row justify-between w-full">
                 <div class="flex flex-row gap-2 items-center">
                   <img src="~/assets/img/dashboard/money-in.svg" alt="" />
@@ -222,7 +222,7 @@ const fetchBalanceHistory = async () =>{
               </div>
             </div>
           </div>
-          <div class="flex flex-row gap-6 md:gap-12 justify-end mt-4 md:mt-0">
+          <div class="flex flex-row gap-6 md:gap-2 xl:gap-12 justify-end mt-4 md:mt-0">
             <div @click="onClickTopup" class="flex flex-col w-[40px] items-center cursor-pointer hover:opacity-90">
               <img width="40" src="~/assets/img/cards/topup.svg" alt="" />
               <span class="text-xs text-[#FFF] leading-5 whitespace-nowrap">
