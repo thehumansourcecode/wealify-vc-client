@@ -653,9 +653,9 @@ onUnmounted(() =>
             </div>
           </template>
           <template #category-data="{ row }">
-            <div class="flex justify-center w-[120px] sm:w-[172px]">
+            <div class="flex justify-center">
               <div
-                class="px-2 sm:px-3 py-[2px] flex items-center justify-center rounded-[5px] gap-1 bg-[#F0F2F5] border border-[#D7D9E5] max-w-[120px] sm:max-w-[180px]"
+                class="px-3 sm:px-3 py-[2px] flex items-center justify-center rounded-[5px] gap-1 bg-[#F0F2F5] border border-[#D7D9E5]"
                 :style="{ background: isCardSelected(row) ? 'white' : '#F0F2F5' }"
               >
                 <div class="text-[#1C1D23] text-11 sm:text-12-500-20">{{ t(`cards.list.category.${row.category}`) }}</div>
