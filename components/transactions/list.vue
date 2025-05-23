@@ -155,11 +155,7 @@ const getCoinLogo = (network:string ,token :string) => {
       <template #amount-data="{ row }">
         <div class="text-14 md:text-16-700-24 w-[150px] min-w-[100px] text-[#1C1D23] text-center">
           {{
-            row.amount
-              ? row.transaction_vc_type === TransactionVCType.TOP_UP
-                ? `+${formatMoney(row?.received_amount)}`
-                : `-${formatMoney(row?.received_amount)}`
-              : ''
+            row.transaction_vc_type === TransactionVCType.TOP_UP ? `+${formatMoney(row?.received_amount)}` : `-${formatMoney(row?.received_amount)}`
           }}
         </div>
       </template>
