@@ -136,7 +136,7 @@ const getCoinLogo = (network:string ,token :string) => {
               />
               <span class="text-[10px] lg:text-[12px] leading-[20px] font-medium text-[#7A7D89]">
               {{
-                  row.virtual_card ?
+                  row.virtual_card &&  row.vc_detail_transaction_type != TransactionDetailType.CARD_CRYPTO_TOP_UP  ?
                     row.vc_detail_transaction_type == TransactionDetailType.WALLET_REFUND ||
                     row.vc_detail_transaction_type == TransactionDetailType.WALLET_WITHDRAW ||
                     row.vc_detail_transaction_type == TransactionDetailType.WALLET_ISSUE_WITHDRAW
