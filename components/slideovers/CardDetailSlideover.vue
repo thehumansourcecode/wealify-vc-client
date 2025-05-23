@@ -344,7 +344,7 @@ const showIconCard = computed(()=>{
                 </div>
                 <div class="flex flex-row justify-between text-14-500-20">
                   <div class="text-[#7A7D89]">{{ t(`cards.slideovers.detail.info.cardBalance`) }}</div>
-                  <div>{{ formatMoneyWithoutDecimals(cardDetail?.balance, CommonCurrency.USD) }}</div>
+                  <div>{{ formatMoneyWithoutDecimals(roundTo(cardDetail?.balance,2), CommonCurrency.USD) }}</div>
                 </div>
               </div>
               <!-- Analysis -->
@@ -399,7 +399,7 @@ const showIconCard = computed(()=>{
                     <div class="bg-[#D7D9E5] w-2 h-2 mx-[3px] rounded-full"></div>
                     <div class="ml-1.5 w-[85px]">{{ t(`cards.slideovers.detail.info.total_top_up`) }}</div>
                     <div class="ml-auto text-[#1C1D23] text-14-500-20">
-                      ${{ formatMoneyWithoutDecimals(cardDetail?.total_top_up) }}
+                      ${{ formatMoneyWithoutDecimals(roundTo(cardDetail?.total_top_up,2)) }}
                     </div>
                   </div>
                   <div class="flex flex-row items-center gap-4">
