@@ -186,7 +186,7 @@ async function handleGenerateCryptoWallet() {
 }
 
 watch(selectedCard, () => {
-  if (!selectedCard.value.crypto_wallets){
+  if(!selectedCard.value.crypto_wallets){
     return
   }
   networkOptions.value = selectedCard.value.crypto_wallets?.network.map((network: any) => ({
@@ -202,7 +202,7 @@ watch(selectedCard, () => {
   })) || []
   selectedCurrencyOption.value = currencyOptions.value[0]
 }, 
-  { immediate: true }
+  { immediate: true,deep:true }
 )
 </script>
 
@@ -490,7 +490,6 @@ watch(selectedCard, () => {
                   </template>
                 </USelectMenu>
               </div>
-
               <template v-if="selectedCard.crypto_wallets">
               <!-- Network -->
               <div class="mb-4">
