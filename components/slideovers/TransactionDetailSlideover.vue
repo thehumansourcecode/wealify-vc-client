@@ -193,11 +193,12 @@ const getTransactionLinkTo = async () =>{
               <span
                 v-if="
                   transactionDetail?.detailType === TransactionDetailType.CARD_PAYMENT  ||
-                  transactionDetail?.detailType === TransactionDetailType.WALLET_TOP_UP
+                  transactionDetail?.detailType === TransactionDetailType.WALLET_TOP_UP ||
+                  transactionDetail?.detailType === TransactionDetailType.CARD_CRYPTO_TOP_UP
                 "
               >
                 {{
-                  transactionDetail?.detailType === TransactionDetailType.WALLET_TOP_UP ?
+                  transactionDetail?.detailType === TransactionDetailType.WALLET_TOP_UP || TransactionDetailType.CARD_CRYPTO_TOP_UP?
                     t(`transactions.detail.rateValue`, {
                       currency: transactionDetail.confirm_transaction?.raw_data?.token ,
                       rateUSDT: formatAmount(transactionDetail?.rate.value),
