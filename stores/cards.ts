@@ -169,6 +169,7 @@ export const useCardStore = defineStore('card', () => {
 
     if (response.success) {
       selectedCardForTopup.value.crypto_wallets = response.data
+      showToast(ToastType.SUCCESS, t('common.toast.success.generateCard'))
     } else {
       showToast(ToastType.FAILED, response.data.error)
     }

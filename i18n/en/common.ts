@@ -23,6 +23,7 @@ export default {
       topupCard: 'Successful Card Top-up',
       editCard: 'Edited card successfully',
       issueCard: 'Card issued successfully',
+      generateCard:'Gen card address successful',
     },
     failed: {
       topupCard: 'Fail to Top up virtual card. Please try again',
