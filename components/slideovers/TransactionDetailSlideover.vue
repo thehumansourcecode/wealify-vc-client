@@ -179,7 +179,7 @@ const getTransactionLinkTo = async () =>{
                 amount: formatMoney( roundTo(transactionDetail.confirm_transaction?.raw_data?.fx_rate*transactionDetail?.amount,0)),
               }) :
                 t(`transactions.detail.amount.${transactionDetail?.detailType}`, {
-                  currency: transactionDetail?.detailType === TransactionDetailType.WALLET_TOP_UP ? transactionDetail.confirm_transaction?.raw_data?.token : transactionDetail.currency.symbol ,
+                  currency: transactionDetail?.detailType === TransactionDetailType.WALLET_TOP_UP || transactionDetail?.detailType === TransactionDetailType.CARD_CRYPTO_TOP_UP ? transactionDetail.confirm_transaction?.raw_data?.token : transactionDetail.currency.symbol ,
                   amount: formatMoney(transactionDetail?.amount),
                 })
               }}
@@ -251,7 +251,8 @@ const getTransactionLinkTo = async () =>{
             </div>
           </div>
 
-          <div class="flex flex-row justify-between items-center pb-4" v-if="transactionDetail?.detailType !== TransactionDetailType.WALLET_TOP_UP && transactionDetail?.detailType !== TransactionDetailType.CARD_PAYMENT">
+          <div class="flex flex-row justify-between items-center pb-4" v-if="transactionDetail?.detailType !== TransactionDetailType.WALLET_TOP_UP
+          && transactionDetail?.detailType !== TransactionDetailType.CARD_PAYMENT && transactionDetail?.detailType !== TransactionDetailType.CARD_CRYPTO_TOP_UP">
             <div class="flex flex-row text-12-500-20 text-[#7A7D89] gap-[2px] cursor-pointer" @click="getTransactionLinkTo">
               {{ t(`transactions.detail.id2.${transactionDetail.detailType}`) }}
               <Icon name="heroicons:arrow-top-right-on-square" class="w-4 h-4 text-blue-500 opacity-50" />
@@ -286,7 +287,41 @@ const getTransactionLinkTo = async () =>{
             </div>
           </div>
         </div>
+
         <div class="px-5 py-4 mt-2 bg-[#F0F2F5] rounded-[18px] w-full">
+          <div v-if="transactionDetail?.detailType === TransactionDetailType.CARD_CRYPTO_TOP_UP" class="flex flex-col gap-5 w-full">
+            <div class="flex flex-row justify-between items-center">
+              <div class="text-12-500-20 text-[#7A7D89]">
+                {{ t('transactions.detail.cardName') }}
+              </div>
+              <div class="text-14-500-20 text-[#1C1D23]">
+                {{ transactionDetail?.virtual_card?.card_name }}
+              </div>
+            </div>
+            <div class="flex flex-row justify-between items-center mb-5">
+              <div class="text-12-500-20 text-[#7A7D89]">
+                {{ t('transactions.detail.cardNumber') }}
+              </div>
+              <div class="flex flex-row gap-2 items-center">
+                <div class="text-14-500-20 text-[#1C1D23]">
+                  <span v-if="!isShowFullCardNumber">
+                    {{ t(`cards.list.card_number`, { value: transactionDetail?.virtual_card?.last_four }) }}
+                  </span>
+                  <span v-else>{{ cardNumberArray }}</span>
+                </div>
+                <div class="p-[5px] bg-white rounded-[50px] cursor-pointer border border-[#D7D9E5]">
+                  <img
+                      class="w-[18px]"
+                      @click="isShowFullCardNumber = !isShowFullCardNumber"
+                      :src="
+                      !isShowFullCardNumber ? `/images/transactions/eye.svg` : `/images/transactions/eye-disabled.svg`
+                    "
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div
             v-if="transactionDetail?.crypto_wallet"
             class="flex flex-col gap-5 w-full"

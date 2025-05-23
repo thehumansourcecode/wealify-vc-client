@@ -40,13 +40,15 @@ export const useTransactionStore = defineStore('transaction', () => {
     const type = transaction.transaction_vc_type
     const transactionType = transaction.vc_detail_transaction_type
     let detailType
-
+    
     if (cardInfo && type === TransactionVCType.TOP_UP) {
       if (transaction.is_issue){
         detailType = TransactionDetailType.CARD_ISSUE_TOPUP
       }else{
         if (transactionType == TransactionDetailType.WALLET_REFUND){
           detailType = TransactionDetailType.WALLET_REFUND
+        }if(transactionType == TransactionDetailType.CARD_CRYPTO_TOP_UP){
+          detailType = TransactionDetailType.CARD_CRYPTO_TOP_UP
         }else{
           detailType = TransactionDetailType.CARD_TOP_UP
         }
@@ -78,6 +80,8 @@ export const useTransactionStore = defineStore('transaction', () => {
         detailType = TransactionDetailType.WALLET_WITHDRAW
       }
     }
+
+    console.log(detailType)
 
     selectedTransactionDetail.value = { ...transaction, detailType: detailType }
   }

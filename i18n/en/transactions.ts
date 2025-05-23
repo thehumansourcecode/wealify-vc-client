@@ -74,6 +74,7 @@ export default {
     to: {
       [TransactionDetailType.CARD_PAYMENT]: 'Card',
       [TransactionDetailType.CARD_TOP_UP]: 'Card',
+      [TransactionDetailType.CARD_CRYPTO_TOP_UP]: 'Card',
       [TransactionDetailType.CARD_ISSUE_TOPUP]:'Card',
       [TransactionDetailType.CARD_WITHDRAW]: 'Wealify balance',
       [TransactionDetailType.WALLET_TOP_UP]: 'Wealify balance',
@@ -84,6 +85,7 @@ export default {
     amountLabel: {
       [TransactionDetailType.CARD_PAYMENT]: 'Merchant charged',
       [TransactionDetailType.CARD_TOP_UP]: 'Top up amount',
+      [TransactionDetailType.CARD_CRYPTO_TOP_UP]: 'Top up amount',
       [TransactionDetailType.CARD_ISSUE_TOPUP]: 'Top up amount',
       [TransactionDetailType.CARD_WITHDRAW]: 'Withdraw amount',
       [TransactionDetailType.WALLET_TOP_UP]: 'Top up amount',
@@ -96,6 +98,7 @@ export default {
       [TransactionDetailType.WALLET_WITHDRAW]: '{amount} {currency}',
       [TransactionDetailType.WALLET_ISSUE_WITHDRAW]: '{amount} {currency}',
       [TransactionDetailType.CARD_TOP_UP]: '{amount} {currency}',
+      [TransactionDetailType.CARD_CRYPTO_TOP_UP]: '{amount} {currency}',
       [TransactionDetailType.CARD_ISSUE_TOPUP]: '{amount} {currency}',
       [TransactionDetailType.CARD_WITHDRAW]: '{amount} {currency}',
       [TransactionDetailType.CARD_PAYMENT]: '{amount} {currency}',
@@ -114,6 +117,7 @@ export default {
     id: {
       [TransactionDetailType.CARD_PAYMENT]: 'Payment ID',
       [TransactionDetailType.CARD_TOP_UP]: 'Card Top up ID',
+      [TransactionDetailType.CARD_CRYPTO_TOP_UP]: 'Card Top up ID',
       [TransactionDetailType.CARD_ISSUE_TOPUP]:'Card Top up ID',
       [TransactionDetailType.CARD_WITHDRAW]: 'Card Withdraw ID',
       [TransactionDetailType.WALLET_TOP_UP]: 'Wallet Top up ID',
@@ -149,6 +153,7 @@ export default {
       [TransactionDetailType.WALLET_WITHDRAW]: 'Wallet withdraw',
       [TransactionDetailType.WALLET_ISSUE_WITHDRAW]: 'Wallet withdraw',
       [TransactionDetailType.CARD_TOP_UP]: 'Card Top up',
+      [TransactionDetailType.CARD_CRYPTO_TOP_UP]: 'Card Top up',
       [TransactionDetailType.CARD_ISSUE_TOPUP]: 'Card Top up',
       [TransactionDetailType.CARD_WITHDRAW]: 'Card withdraw',
       [TransactionDetailType.CARD_PAYMENT]: 'Card payment',
