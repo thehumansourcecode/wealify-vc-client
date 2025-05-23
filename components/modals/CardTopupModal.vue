@@ -35,8 +35,8 @@ onMounted(async () => {
     dropdownCardList.value = cardListResponse.data.items
   }
 })
-
-const selectedCard = ref(cardStore.selectedCardForTopup)
+const {selectedCardForTopup} = storeToRefs(cardStore)
+const selectedCard = ref(selectedCardForTopup)
 const walletBalance = computed(() => userStore.userBalance?.wallet_balance?.balance)
 const topupCardFees = computed(() => {
   if (!commonStore.feeList?.TOP_UP_CARD) return { type: undefined, value: 0 }
@@ -181,7 +181,14 @@ function handleCopy(value: string) {
   })
 }
 
+async function handleGenerateCryptoWallet() {
+  await cardStore.generateCryptoWallet(selectedCard.value.id)
+}
+
 watch(selectedCard, () => {
+  if (!selectedCard.value.crypto_wallets){
+    return
+  }
   networkOptions.value = selectedCard.value.crypto_wallets?.network.map((network: any) => ({
     logo: `/icons/common/${network}.svg`,
     value: network,
@@ -647,7 +654,7 @@ watch(selectedCard, () => {
                   <p class="text-14-500-20 text-[#7A7D89] mb-5 w-[242px]">
                     {{ t('cards.modals.topup.getAddressesPrompt') }}
                   </p>
-                  <UButton class="flex items-center bg-[#FF5524] hover:bg-[#FF5524] !text-[#fff] text-[16px] leading-[24px] font-semibold px-6 py-3 rounded-[49px] w-[214px]">
+                  <UButton @click="handleGenerateCryptoWallet"  class="flex items-center bg-[#FF5524] hover:bg-[#FF5524] !text-[#fff] text-[16px] leading-[24px] font-semibold px-6 py-3 rounded-[49px] w-[214px]">
                     {{ t('cards.modals.topup.getAddressesButton') }}
                   </UButton>
                 </div>

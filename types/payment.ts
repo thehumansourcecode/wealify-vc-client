@@ -7,14 +7,15 @@ export interface WalletInfoResponse {
   success: boolean
 }
 
+export interface WalletData {
+  network: string[]
+  token: string[]
+  address: NetworkAddresses
+}
+
 interface NetworkAddresses {
   SOL: string
   TRX: string
   ETH: string
 }
 
-interface WalletData {
-  network: string[]
-  token: string[]
-  address: NetworkAddresses
-}

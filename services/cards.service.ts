@@ -10,6 +10,7 @@ import type {
   ITopupCardParams,
 } from '~/types/cards'
 import type { ICommonListResponse, ICommonResponse } from '~/types/common'
+import type { WalletData } from '~/types/payment'
 
 export class CardService extends BaseService {
   private static _instance: CardService
@@ -67,6 +68,10 @@ export class CardService extends BaseService {
     return this.post(`${params.id}/top-up`, {
       amount: params.amount,
     })
+  }
+
+  async generateCryptoWallet(id: string):Promise<ICommonResponse<WalletData>> {
+    return this.post(`/${id}/crypto-wallets`,null)
   }
 }
 

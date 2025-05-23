@@ -46,6 +46,7 @@ export const useCardStore = defineStore('card', () => {
     cancelCard: false,
     unfreezeCard: false,
     editCard: false,
+    generateWallet:false,
   })
 
   const cardList = ref<ICardDetail[]>([])
@@ -156,6 +157,21 @@ export const useCardStore = defineStore('card', () => {
       showToast(ToastType.FAILED, response.message)
     }
 
+    return response
+  }
+
+  async function generateCryptoWallet(cardID:string) {
+    isLoading.value.generateWallet = true
+    commonStore.toggleProcessingModal(true)
+    const response = await cardService.generateCryptoWallet(cardID)
+    commonStore.toggleProcessingModal(false)
+    isLoading.value.generateWallet = false
+
+    if (response.success) {
+      selectedCardForTopup.value.crypto_wallets = response.data
+    } else {
+      showToast(ToastType.FAILED, response.data.error)
+    }
     return response
   }
 
@@ -321,5 +337,6 @@ export const useCardStore = defineStore('card', () => {
     sendOtpMessage,
     isShowCardSensitiveDetail,
     cardSensitiveDetail,
+    generateCryptoWallet,
   }
 })
