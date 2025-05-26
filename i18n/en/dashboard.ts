@@ -57,7 +57,7 @@ export default {
     topup: {
       title: 'Top up Wallet',
       noteTitle:'Attention!',
-      note: 'Send only USDT/USDC to this deposit address. Sending any other asset to this address may result in the loss of your deposit',
+      note: 'Please ensure that only USDT or USDC is sent to this deposit address. Transferring any other asset to this address may lead to the permanent loss of your funds',
       feePercent: 'Fee: {fee}%',
       feeFlat: 'Fee: {fee}',
       label: {
