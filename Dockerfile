@@ -1,35 +1,18 @@
-# --- Build stage ---
-    FROM node:20-alpine AS builder
+FROM node:20.17.0
 
-    # Tạo thư mục làm việc
-    WORKDIR /app
+WORKDIR /app
 
-    ARG NUXT_UI_PRO_LICENSE
+COPY package*.json ./
 
-    # Export biến môi trường cho Nuxt dùng
-    ENV NUXT_UI_PRO_LICENSE=$NUXT_UI_PRO_LICENSE
-    
-    # Cài dependencies
-    COPY package*.json ./
-    RUN npm install
-    
-    # Copy toàn bộ mã nguồn và build Nuxt app
-    COPY . .
-    RUN npm run build
-    
-    # --- Production stage ---
-    FROM node:20-alpine AS production
-    
-    WORKDIR /app
-    
-    # Chỉ copy build output và dependencies cần thiết
-    COPY --from=builder /app/.output ./.output
-    COPY --from=builder /app/package*.json ./
-    
-    # Cài các dependency production (nếu có)
-    RUN npm install --omit=dev
-    
-    EXPOSE 3000
-    
-    # Chạy ứng dụng Nuxt 3
-    CMD ["node", ".output/server/index.mjs"]
+RUN npm install
+
+COPY . .
+
+ARG MODE 
+
+ENV NUXT_UI_PRO_LICENSE "CA641533-B3AD-4BB5-BBF5-DD62A86257F2"
+
+EXPOSE 3000
+
+RUN npm run build-${MODE}
+CMD [ "npm", "run", "start" ]
