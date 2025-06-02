@@ -4,6 +4,8 @@
   "type": "module",
   "scripts": {
     "build": "nuxt build",
+    "build-production": "nuxt build --dotenv .env.production",
+    "build-development": "nuxt build --dotenv .env.development",
     "dev": "nuxt dev",
     "start": "node .output/server/index.mjs",
     "generate": "nuxt generate",
@@ -33,6 +35,7 @@
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
     "dayjs-nuxt": "2.1.11",
+    "dotenv": "^16.5.0",
     "element-plus": "^2.9.6",
     "fullpage.js": "^4.0.30",
     "jwt-decode": "^4.0.0",
