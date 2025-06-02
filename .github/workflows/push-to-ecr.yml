@@ -41,5 +41,5 @@ jobs:
         run: |
 
           IMAGE_URI=${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
-          docker build -t $IMAGE_URI --build-arg NUXT_UI_PRO_LICENSE=CA641533-B3AD-4BB5-BBF5-DD62A86257F2 .
+          docker build -t $IMAGE_URI --build-arg MODE=development .
           docker push $IMAGE_URI
