@@ -3,6 +3,11 @@
 
     # Tạo thư mục làm việc
     WORKDIR /app
+
+    ARG NUXT_UI_PRO_LICENSE
+
+    # Export biến môi trường cho Nuxt dùng
+    ENV NUXT_UI_PRO_LICENSE=$NUXT_UI_PRO_LICENSE
     
     # Cài dependencies
     COPY package*.json ./
