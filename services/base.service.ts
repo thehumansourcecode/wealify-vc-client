@@ -16,7 +16,7 @@ export class BaseService {
   constructor(baseURL: string, options?: CreateAxiosDefaults) {
     this.client = axios.create({
       baseURL,
-      withCredentials: true,
+      // withCredentials: true,
       ...options,
     })
     this.initInterceptors()
