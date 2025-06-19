@@ -82,6 +82,7 @@ export interface IGetTransactionListParams {
   start_date?: string
   end_date?: string
   keyword?: string
+  exclude_vc_detail_transaction_types?: string
   transaction_status?: TransactionVCStatus[]
   transaction_type?: TransactionVCType[]
   dataSort?: {

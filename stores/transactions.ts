@@ -96,6 +96,7 @@ export const useTransactionStore = defineStore('transaction', () => {
 
   async function getTransactionList(payload: IGetTransactionListParams) {
     isLoading.value.transactionTable = true
+    payload.exclude_vc_detail_transaction_types = "WALLET_WITHDRAW_BANK"
     try {
       const response = await TransactionService.instance.getTransactionList(payload)
       if (response.code == HTTP_STATUS_CODE.OK) {
