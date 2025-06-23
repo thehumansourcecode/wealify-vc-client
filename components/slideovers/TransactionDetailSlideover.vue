@@ -145,7 +145,8 @@ const getTransactionLinkTo = async () =>{
               {{ formatMoney(transactionDetail.received_amount, CommonCurrency.USD) }}
             </div>
             <div class="text-12-500-20 text-[#7A7D89]">
-             to {{transactionDetail?.detailType === TransactionDetailType.CARD_PAYMENT ?
+              {{transactionDetail?.detailType === TransactionDetailType.CARD_REFUND ? 'from' : 'to' }}
+              {{transactionDetail?.detailType === TransactionDetailType.CARD_PAYMENT || transactionDetail?.detailType === TransactionDetailType.CARD_REFUND ?
                   transactionDetail.confirm_transaction?.raw_data?.merchant :
                   t(`transactions.detail.to.${transactionDetail.detailType}`) }}
             </div>
