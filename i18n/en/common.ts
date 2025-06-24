@@ -28,6 +28,7 @@ export default {
     failed: {
       topupCard: 'Fail to Top up virtual card. Please try again',
     },
+    error:'Oops! We hit a snag. Please check your internet and try again.'
   },
   validator: {
     empty: {
