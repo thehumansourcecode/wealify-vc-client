@@ -70,7 +70,7 @@ export const useAuthStore = defineStore('auth', {
         }
         return {
           success:false,
-          message:response.message || ""
+          message:response.message || t('common.toast.error')
         }
       }catch (error) {
         return  {
