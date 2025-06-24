@@ -14,6 +14,8 @@ export const useTransactionStore = defineStore('transaction', () => {
     transactionTable: false,
   })
 
+  const { t } = useI18n()
+
   const payload = ref<IGetTransactionListParams>({
     page: 1,
     limit: 10,
@@ -81,8 +83,6 @@ export const useTransactionStore = defineStore('transaction', () => {
       }
     }
 
-    console.log(detailType)
-
     selectedTransactionDetail.value = { ...transaction, detailType: detailType }
   }
 
@@ -127,7 +127,7 @@ export const useTransactionStore = defineStore('transaction', () => {
     }
     return {
       success: false,
-      message: response.message || ''
+      message: response.message ||  t('common.toast.error')
     }
   }
 

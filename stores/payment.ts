@@ -3,6 +3,8 @@ import { paymentService } from '~/services/payment.service'
 
 export const usePaymentStore = defineStore('payment', () => {
   const walletInfo = ref(undefined)
+  const { t } = useI18n()
+
   const fetchWalletInfo = async()=>{
     let result = {
       success:true
@@ -14,7 +16,7 @@ export const usePaymentStore = defineStore('payment', () => {
     }
     return {
       success:false,
-      message: response.message || ''
+      message: response.message ||  t('common.toast.error')
     }
   }
 
