@@ -130,7 +130,7 @@ export class BaseService {
       const response: AxiosResponse = await this.client.get(endpoint, options)
       return response.data
     } catch (error) {
-      return error as AxiosError
+      // return error as AxiosError
     }
   }
 
@@ -139,7 +139,7 @@ export class BaseService {
       const response: AxiosResponse = await this.client.post(endpoint, data, options)
       return response.data
     } catch (error) {
-      return error as AxiosError
+      // return error as AxiosError
     }
   }
 
@@ -148,7 +148,7 @@ export class BaseService {
       const response: AxiosResponse = await this.client.patch(endpoint, data, options)
       return response.data
     } catch (error) {
-      return error as AxiosError
+      // return error as AxiosError
     }
   }
 
@@ -157,7 +157,7 @@ export class BaseService {
       const response: AxiosResponse = await this.client.delete(endpoint, options)
       return response.data
     } catch (error) {
-      return error as AxiosError
+      // return error as AxiosError
     }
   }
 
@@ -166,7 +166,7 @@ export class BaseService {
       const response: AxiosResponse = await this.client.put(endpoint, data, options)
       return response.data
     } catch (error) {
-      return error as AxiosError
+      // return error as AxiosError
     }
   }
 }
