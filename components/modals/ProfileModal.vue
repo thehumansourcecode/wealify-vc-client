@@ -220,7 +220,7 @@ watch(
                     option: {
                       base: 'cursor-pointer text-14-500-20 bg-[#F0F2F5]',
                       inactive: 'bg-white hover:bg-[#F0F2F5] cursor-pointer',
-                      padding: 'px-1 py-2 lg:px-3 lg:py-2',
+                      padding: 'px-3 py-2',
                       rounded: 'rounded-none',
                       selectedIcon: {
                         base: 'h-[18px] w-[18px]',
@@ -236,7 +236,7 @@ watch(
                     <div class="text-12-500-20">{{ getCountryCode(option.country) }}</div>
                   </div>
                 </template>
-                <div class="border border-r-0 py-[11px] rounded-l-[49px] pl-4 pr-3 flex flex-row gap-[10px] w-full sm:w-[120px]">
+                <div class="border border-r-0 py-[11px] rounded-l-[49px] pl-3 pr-3 flex flex-row gap-[10px] w-[110px] lg:w-[120px]">
                   <img width="20" :src="getCountryFlag(form.country_code)" />
                   <div class="text-14-500-20 text-[#1C1D23] grow">
                     {{ form.country_code ? getCountryCode(form.country_code) : '' }}
