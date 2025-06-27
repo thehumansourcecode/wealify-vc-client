@@ -128,19 +128,19 @@ watch(
       container: 'flex items-center justify-center sm:items-center lg:justify-center text-center',
       rounded: 'rounded-[30px]',
       background: '',
-      width: 'w-[358px] lg:w-[516px]',
+      width: 'max-w-[358px] lg:max-w-[516px]',
       margin: 'sm:my-0',
     }"
   >
-    <div class="p-4 bg-white rounded-[30px] flex flex-col lg:p-7">
+    <div class="p-4 sm:p-4 lg:p-7 bg-white rounded-[30px] flex flex-col w-full">
       <div class="w-full flex flex-row justify-between items-center mb-[14px]">
         <div class="manrope text-2xl font-semibold leading-9">{{t('profile.modal.title')}}</div>
         <img class="cursor-pointer hover:opacity-70" src="~/assets/img/common/close.svg" @click="closeModal()" />
       </div>
       <UForm :schema="profileSchema" ref="formRef" :state="form">
-        <UFormGroup name="full_name" class="mt-5" :ui="{error: 'ml-[156px] mt-2 text-red-500 dark:text-red-400'}" v-slot="{ error }">
-          <div class="flex flex-row items-center">
-            <div class="text-14-500-20 flex flex-row items-center" style="flex: 0 0 156px">
+        <UFormGroup name="full_name" class="mt-5" :ui="{error: 'ml-0 sm:ml-[156px] mt-2 text-red-500 dark:text-red-400'}" v-slot="{ error }">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center w-full gap-2 sm:gap-0">
+            <div class="text-14-500-20 flex flex-row items-center w-full sm:w-[156px] mb-1 sm:mb-0">
               <span>{{ t('profile.form.label.full_name') }}</span>
               <span class="pl-1 text-[#ED2C38]">*</span>
             </div>
@@ -153,12 +153,13 @@ watch(
                 :placeholder="$t('profile.form.placeholder.full_name')"
                 autocomplete="off"
                 @clear="form.full_name = ''"
+                class="w-full"
             />
           </div>
         </UFormGroup>
-        <UFormGroup name="email" class="mt-5" :ui="{error: 'ml-[156px] mt-2 text-red-500 dark:text-red-400'}" v-slot="{ error }">
-          <div class="flex flex-row items-center">
-            <div class="text-14-500-20 flex flex-row items-center" style="flex: 0 0 156px">
+        <UFormGroup name="email" class="mt-5" :ui="{error: 'ml-0 sm:ml-[156px] mt-2 text-red-500 dark:text-red-400'}" v-slot="{ error }">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center w-full gap-2 sm:gap-0">
+            <div class="text-14-500-20 flex flex-row items-center w-full sm:w-[156px] mb-1 sm:mb-0">
               <span>{{ t('profile.form.label.email') }}</span>
               <span class="pl-1 text-[#ED2C38]">*</span>
             </div>
@@ -180,7 +181,7 @@ watch(
                     },
                   },
                 }"
-                :class="`disabled-email`"
+                :class="`disabled-email w-full`"
                 v-model.trim="form.email"
                 leading
                 disabled
@@ -191,13 +192,13 @@ watch(
         </UFormGroup>
         <!-- Phone number -->
 
-        <div class="flex flex-row items-start">
-          <div class="text-14-500-20 mt-8" style="flex: 0 0 156px">
+        <div class="flex flex-col sm:flex-row items-start w-full mt-8 gap-2 sm:gap-0">
+          <div class="text-14-500-20 w-full sm:w-[156px] mb-1 sm:mb-0">
             <div class="flex flex-row items-center">
               <span>{{t('profile.form.label.phone_number') }}</span>
             </div>
           </div>
-          <div class="flex flex-row items-start w-full mt-5 relative">
+          <div class="flex flex-row items-start w-full relative">
             <!-- Country code -->
             <UFormGroup
                 name="country_code"
@@ -215,12 +216,11 @@ watch(
                     select: 'cursor-pointer',
                     background: 'bg-white',
                     base: 'relative focus:outline-none overflow-y-auto scroll-py-1',
-
                     padding: 'p-0',
                     option: {
                       base: 'cursor-pointer text-14-500-20 bg-[#F0F2F5]',
                       inactive: 'bg-white hover:bg-[#F0F2F5] cursor-pointer',
-                      padding: 'px-3 py-2',
+                      padding: 'px-1 py-2 lg:px-3 lg:py-2',
                       rounded: 'rounded-none',
                       selectedIcon: {
                         base: 'h-[18px] w-[18px]',
@@ -231,12 +231,12 @@ watch(
                   }"
               >
                 <template #option="{ option }">
-                  <div class="flex flex-row gap-[10px]">
+                  <div class="flex flex-row gap-[2px] lg:gap-[10px]">
                     <img :src="option.flag" />
                     <div class="text-12-500-20">{{ getCountryCode(option.country) }}</div>
                   </div>
                 </template>
-                <div class="border border-r-0 py-[11px] rounded-l-[49px] pl-4 pr-3 flex flex-row gap-[10px] w-[120px]">
+                <div class="border border-r-0 py-[11px] rounded-l-[49px] pl-4 pr-3 flex flex-row gap-[10px] w-full sm:w-[120px]">
                   <img width="20" :src="getCountryFlag(form.country_code)" />
                   <div class="text-14-500-20 text-[#1C1D23] grow">
                     {{ form.country_code ? getCountryCode(form.country_code) : '' }}
@@ -292,15 +292,17 @@ watch(
         </div>
       </UForm>
 
-      <div class="flex justify-between mt-[28px]">
-        <div class="text-[#7A7D89] text-[12px] manrope font-normal leading-[20px] flex items-center justify-center">Last edit: {{showLastEdit}}</div>
+      <div class="flex justify-between mt-[28px] flex-col sm:flex-row items-center gap-3 sm:gap-0">
+        <div class="text-[#7A7D89] text-[12px] manrope font-normal leading-[20px] flex items-center justify-center last-edit-desktop">
+          Last edit: {{showLastEdit}}
+        </div>
         <UButton
             :class="isDisableButton ? 'text-[#d6d8e5] !bg-[#a4a8b8] hover:bg-[#a4a8b8]' : 'text-white !bg-[#FF5524] hover:bg-[#FF5524]'"
             :disabled="isDisableButton"
             :loading="isSubmitting"
             :label="t('profile.button.ready.edit')"
             @click="handleClickEdit"
-            class="manrope flex justify-center rounded-[49px] p-3 xl:min-w-[223px] font-semibold"
+            class="manrope flex justify-center rounded-[49px] p-3 font-semibold save-btn-mobile"
         ></UButton>
       </div>
     </div>
@@ -314,6 +316,31 @@ watch(
 @media (max-width: 1023px) {
   [style*="flex: 0 0 156px"] {
     flex: 0 0 100px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .modal-xs {
+    padding: 0 !important;
+  }
+  .modal-xs > div {
+    border-radius: 24px !important;
+    padding: 20px 10px !important;
+  }
+  .text-14-500-20 {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+  }
+  // .w-full {
+  //   width: 100% !important;
+  // }
+  .last-edit-desktop {
+    display: none !important;
+  }
+  .save-btn-mobile {
+    width: 255px !important;
+    align-self: center;
   }
 }
 </style>
