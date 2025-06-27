@@ -46,4 +46,8 @@ export const countryCodeOptions = [
     country: CommonCountry.SINGAPORE,
     flag: `/icons/flags/${CommonCountry.SINGAPORE}.svg`,
   },
+  {
+    country: CommonCountry.RUSSIA,
+    flag: `/icons/flags/${CommonCountry.RUSSIA}.svg`,
+  },
 ]
