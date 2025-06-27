@@ -72,7 +72,7 @@ const router = useRouter()
           </div>
         </div>
       </div>
-      <div class="w-full max-w-[400px] flex flex-col gap-2">
+      <div class="w-full max-w-[400px] flex flex-col mt-4 lg:mt-0">
         <AuthSubmitButton
           :title="'Log In'"
           :loading="isLoading"
