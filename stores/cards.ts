@@ -154,7 +154,7 @@ export const useCardStore = defineStore('card', () => {
       toggleCardDetailSlideover(true)
       isShowCardSensitiveDetail.value = true
     } else {
-      showToast(ToastType.FAILED, response.message)
+      showToast(ToastType.FAILED, response.message || t('common.toast.error'))
     }
 
     return response
@@ -171,7 +171,7 @@ export const useCardStore = defineStore('card', () => {
       selectedCardForTopup.value.crypto_wallets = response.data
       showToast(ToastType.SUCCESS, t('common.toast.success.generateCard'))
     } else {
-      showToast(ToastType.FAILED, response.data.error)
+      showToast(ToastType.FAILED, response.data.error || t('common.toast.error'))
     }
     return response
   }
@@ -250,7 +250,7 @@ export const useCardStore = defineStore('card', () => {
       await getCardDetailById(id)
       toggleCardDetailSlideover(true)
     } else {
-      showToast(ToastType.FAILED, response.message)
+      showToast(ToastType.FAILED, response.message || t('common.toast.error'))
     }
     isLoading.value.editCard = false
     return response
@@ -290,7 +290,7 @@ export const useCardStore = defineStore('card', () => {
   async function sendOtpMessage() {
     const response = await otpService.sendOTPSensitiveDetail()
     if (!response.success) {
-      showToast(ToastType.FAILED, response.message)
+      showToast(ToastType.FAILED, response.message || t('common.toast.error'))
       return
     }
   }

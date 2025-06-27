@@ -5,6 +5,7 @@ import type { LoginCredentials, LoginResponse, TokenPayload, AuthData } from '~/
 import { AuthService } from '~/services/auth.service'
 import { CommonLogger } from '~/common/logger'
 import { AUTH_DATA_STORED_KEY } from '~/common/constants'
+import { useI18n } from 'vue-i18n'
 
 export const useAuthStore = defineStore('auth', {
   state: (): { accessToken?: string; refreshToken?: string; refreshInterval?: NodeJS.Timeout } => ({
@@ -57,18 +58,25 @@ export const useAuthStore = defineStore('auth', {
       }
       this.$reset();
     },
-    async login(credentials: LoginCredentials) {
-      const result = {
-        success:true,
-      }
-      const response = await AuthService.instance.login(credentials)
-      if (response.success) {
-        this.setTokens(response.data.access_token, response.data.access_token)
-        return result
-      }
-      return {
-        success:false,
-        message:response.message || ""
+    async login(credentials: LoginCredentials, t?: (key: string) => string) {
+      try {
+        const result = {
+          success:true,
+        }
+        const response = await AuthService.instance.login(credentials)
+        if (response.success) {
+          this.setTokens(response.data.access_token, response.data.access_token)
+          return result
+        }
+        return {
+          success:false,
+          message:response.message || t('common.toast.error')
+        }
+      }catch (error) {
+        return  {
+          success:false,
+          message: t ? t('common.toast.error') : 'Ops.Something went wrong',
+        }
       }
     },
     logout() {

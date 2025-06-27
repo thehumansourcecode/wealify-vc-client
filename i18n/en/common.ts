@@ -28,6 +28,7 @@ export default {
     failed: {
       topupCard: 'Fail to Top up virtual card. Please try again',
     },
+    error:'Oops! Something went wrong. Please try again.'
   },
   validator: {
     empty: {

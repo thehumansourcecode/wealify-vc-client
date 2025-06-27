@@ -9,7 +9,7 @@ export default defineAppConfig({
       background: 'bg-[#1C1D23]',
       rounded: 'rounded-[10px]',
       container: 'relative overflow-hidden',
-      title: 'text-[#FFFFFF] text-sm leading-5 font-medium manrope w-[max-content] max-w-[330px]',
+      title: 'text-[#FFFFFF] text-sm leading-5 font-medium manrope max-w-[330px]',
       inner: 'w-0 flex-0 self-center',
       padding: 'p-5',
       gap: 'gap-[18px]',

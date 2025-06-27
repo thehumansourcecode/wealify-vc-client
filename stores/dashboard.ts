@@ -8,6 +8,7 @@ export const useDashboardStore = defineStore('dashboard', () => {
   const toast = useToast()
   const nuxtApp = useNuxtApp()
   const i18n = nuxtApp.$i18n
+  const { t } = useI18n()
 
   const isOpenWalletTopupModal = ref(false)
   const balance_histories = ref([])
@@ -33,7 +34,7 @@ export const useDashboardStore = defineStore('dashboard', () => {
     }
     return {
       success:false,
-      message: response.message || ''
+      message: response.message ||  t('common.toast.error')
     }
   }
 

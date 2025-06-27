@@ -13,6 +13,7 @@ interface SignInFieldErrors {
 }
 
 export const useSignIn = () => {
+  const { t } = useI18n()
   const { login } = useAuthStore()
   const { fetchProfile } = useProfileStore()
   const router = useRouter()
@@ -28,7 +29,7 @@ export const useSignIn = () => {
   })
 
   const { isLoading, handleRequest } = useHandleRequest(async () => {
-      const result = await login(fields.value)
+      const result = await login(fields.value,t)
       if (result.success){
         await fetchProfile()
         router.push('/')
