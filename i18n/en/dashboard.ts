@@ -57,7 +57,11 @@ export default {
     topup: {
       title: 'Top up Wallet',
       noteTitle:'Attention!',
-      note: 'Please ensure that only USDT or USDC is sent to this deposit address. Transferring any other asset to this address may lead to the permanent loss of your funds',
+      note: {
+        [TransactionNetwork.SOLANA]: 'Please ensure that only USDT or USDC is sent to this deposit address. Transferring any other asset to this address may lead to the permanent loss of your funds',
+        [TransactionNetwork.ETHEREUM]: 'Please ensure that only USDT or USDC is sent to this deposit address. Transferring any other asset to this address may lead to the permanent loss of your funds',
+        [TransactionNetwork.TRON]:'Please ensure that only USDT is sent to this deposit address. Transferring any other asset to this address may lead to the permanent loss of your funds',
+      },
       feePercent: 'Fee: {fee}%',
       feeFlat: 'Fee: {fee}',
       label: {

@@ -16,6 +16,7 @@ import VueQr from 'vue-qr/src/packages/vue-qr.vue'
 const { t } = useI18n()
 
 const { copy, copied } = useClipboard()
+import { TransactionCryptocurrency, TransactionNetwork } from '~/types/dashboard'
 
 const cardStore = useCardStore()
 const commonStore = useCommonStore()
@@ -204,6 +205,21 @@ watch(selectedCard, () => {
 }, 
   { immediate: true,deep:true }
 )
+
+watch(selectedNetworkOption,()=>{
+  currencyOptions.value = selectedNetworkOption.value.value == TransactionNetwork.TRON ? [
+    {
+      logo: `/icons/common/${TransactionCryptocurrency.USDT}.svg`,
+      value: TransactionCryptocurrency.USDT,
+      label: t(`dashboard.modals.topup.label.${TransactionCryptocurrency.USDT}`),
+    },
+  ]: selectedCard.value.crypto_wallets?.token.map((token: any) => ({
+    logo: `/icons/common/${token}.svg`,
+    value: token,
+    label: t(`dashboard.modals.topup.label.${token}`),
+  })) || []
+  selectedCurrencyOption.value = currencyOptions.value[0]
+}, { immediate: true,deep:true })
 </script>
 
 <template>
@@ -637,7 +653,7 @@ watch(selectedCard, () => {
                     <span class="text-[#1C1D23] text-14-600-20 font-bold">{{ t('dashboard.modals.topup.noteTitle')  }}</span>
                   </div>
                   <div class="text-12-500-20 text-[#7A7D89]">
-                    {{ t('dashboard.modals.topup.note') }}
+                    {{ t(`dashboard.modals.topup.note.${selectedNetworkOption.value}`) }}
                   </div>
                   <div class="text-12-500-20 text-[#FF5524] mt-1">
                     Fee: <span class="font-bold">{{ walletTopupFeeType === FeeAmountType.PERCENT ? (roundTo(walletTopupFeeValue * 100 + topupCardFees?.value * 100,3)) + '%' : formatMoneyWithoutDecimals(walletTopupFeeValue + topupCardFees?.value, CommonCurrency.USD) }}</span>
