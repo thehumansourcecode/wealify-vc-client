@@ -259,14 +259,14 @@ const showIconCard = computed(()=>{
                   <div>{{ t(`cards.slideovers.detail.button.withdraw`) }}</div>
                 </div>
               </div>
-              <div v-if="cardDetail?.card_status === CardStatus.FROZEN" class="mt-7 flex flex-row w-full justify-between">
-                <div
+              <div v-if="cardDetail?.card_status === CardStatus.FROZEN" class="mt-7 flex flex-row w-full justify-center ">
+                <!-- <div
                   @click="handleUnfreeze"
                   class="flex flex-col gap-3 w-[50%] items-center cursor-pointer hover:opacity-90"
                 >
                   <img class="w-10" src="~/assets/img/cards/unfreeze.svg" alt="" />
                   <div>{{ t(`cards.slideovers.detail.button.unfreeze`) }}</div>
-                </div>
+                </div> -->
                 <div @click="handleCancel" class="flex flex-col gap-3 w-[50%] items-center cursor-pointer hover:opacity-90">
                   <img class="w-10" src="~/assets/img/cards/cancel.svg" alt="" />
                   <div>{{ t(`cards.slideovers.detail.button.cancel`) }}</div>
