@@ -23,6 +23,7 @@ const { walletInfo } = storeToRefs(usePaymentStore())
 const dashboardStore = useDashboardStore()
 const commonStore = useCommonStore()
 
+
 onMounted(async () => await Promise.all([commonStore.getFee()]))
 
 const walletTopupFeeValue = computed(() => commonStore.feeList?.TOP_UP_WALLET.value || 0)
@@ -39,7 +40,7 @@ const topupAddress = computed(() => {
 
 const networkOptions = ref<NetworkOption[]>([])
 const selectedNetworkOption = ref<NetworkOption | undefined>(undefined)
-const currencyOptions = ref<CurrencyOption[]>([])
+
 const selectedCurrencyOption = ref<CurrencyOption | undefined>(undefined)
 
 function handleCopy(value: string) {
@@ -65,14 +66,25 @@ networkOptions.value = walletInfo.value?.network.map((network)=>{
   }
 }) 
 selectedNetworkOption.value = networkOptions.value[0]
-currencyOptions.value = walletInfo.value?.token.map((token)=>{
-  return {
-    logo: `/icons/common/${token}.svg`,
-    value: token,
-    label: t(`dashboard.modals.topup.label.${token}`),
-  }
+console.log(selectedNetworkOption.value.value)
+const currencyOptions = computed(() => {
+  return selectedNetworkOption.value.value == TransactionNetwork.TRON ? [
+    {
+      logo: `/icons/common/${TransactionCryptocurrency.USDT}.svg`,
+      value: TransactionCryptocurrency.USDT,
+      label: t(`dashboard.modals.topup.label.${TransactionCryptocurrency.USDT}`),
+    },
+]: walletInfo.value?.token.map((token)=>{
+    return {
+      logo: `/icons/common/${token}.svg`,
+      value: token,
+      label: t(`dashboard.modals.topup.label.${token}`),
+    }
+  })
 })
 selectedCurrencyOption.value = currencyOptions.value[0]
+
+
 
 </script>
 
@@ -244,7 +256,7 @@ selectedCurrencyOption.value = currencyOptions.value[0]
                   <span class="text-[#1C1D23] text-14-600-20 font-bold">{{ t('dashboard.modals.topup.noteTitle')  }}</span>
                 </div>
                 <div class="text-12-500-20 text-[#7A7D89]">
-                  {{ t('dashboard.modals.topup.note') }}
+                  {{ t(`dashboard.modals.topup.note.${selectedNetworkOption.value}`) }}
                 </div>
                 <div class="text-12-500-20 text-[#FF5524] mt-1">
                   Fee: <span class="font-bold">{{ walletTopupFeeType === FeeAmountType.PERCENT ? (roundTo(walletTopupFeeValue * 100,3)) + '%' : formatMoneyWithoutDecimals(walletTopupFeeValue, CommonCurrency.USD) }}</span>
