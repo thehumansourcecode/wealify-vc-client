@@ -138,24 +138,39 @@ watch(
         <img class="cursor-pointer hover:opacity-70" src="~/assets/img/common/close.svg" @click="closeModal()" />
       </div>
       <UForm :schema="profileSchema" ref="formRef" :state="form">
-        <UFormGroup name="full_name" class="mt-5" :ui="{error: 'ml-[156px] mt-2 text-red-500 dark:text-red-400'}" v-slot="{ error }">
-          <div class="flex flex-row items-center">
-            <div class="text-14-500-20 flex flex-row items-center" style="flex: 0 0 156px">
-              <span>{{ t('profile.form.label.full_name') }}</span>
-              <span class="pl-1 text-[#ED2C38]">*</span>
-            </div>
-            <BaseInput
-                v-model.trim="form.full_name"
-                :error="error"
-                :limit="128"
-                leading
-                :leading-img="'/icons/cards/issue-card/name.svg'"
-                :placeholder="$t('profile.form.placeholder.full_name')"
-                autocomplete="off"
-                @clear="form.full_name = ''"
-            />
-          </div>
-        </UFormGroup>
+              <UTooltip
+                class="ml-1"
+                :text="`A card name helps identify your cards. The default name on the card is Wealify`"
+                :popper="{ arrow: true, placement: 'bottom' }"
+                :ui="{
+                 wrapper: 'w-full block',
+                  background: 'bg-[#1C1D23]',
+                  width: 'max-w-[252px]',
+                  color: 'text-[#FFF]',
+                  base: 'px-3 py-2 h-[max-content]  text-xs font-medium text-clip text-center',
+                  ring: 'ring-0',
+                  arrow: { background: 'before:bg-[#1C1D23]' },
+                }"
+              >
+            <UFormGroup name="full_name" class="mt-5" :ui="{error: 'ml-[156px] mt-2 text-red-500 dark:text-red-400'}" v-slot="{ error }">
+              <div class="flex flex-row items-center">
+                <div class="text-14-500-20 flex flex-row items-center" style="flex: 0 0 156px">
+                  <span>{{ t('profile.form.label.full_name') }}</span>
+                  <span class="pl-1 text-[#ED2C38]">*</span>
+                </div>
+                <BaseInput
+                    v-model.trim="form.full_name"
+                    :error="error"
+                    :limit="128"
+                    leading
+                    :leading-img="'/icons/cards/issue-card/name.svg'"
+                    :placeholder="$t('profile.form.placeholder.full_name')"
+                    autocomplete="off"
+                    @clear="form.full_name = ''"
+                />
+              </div>
+            </UFormGroup>
+          </UTooltip>
         <UFormGroup name="email" class="mt-5" :ui="{error: 'ml-[156px] mt-2 text-red-500 dark:text-red-400'}" v-slot="{ error }">
           <div class="flex flex-row items-center">
             <div class="text-14-500-20 flex flex-row items-center" style="flex: 0 0 156px">
