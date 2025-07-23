@@ -8,7 +8,8 @@ export default {
     [PanelTab.SETTINGS]: 'Settings',
     [PanelTab.HELP]: 'Help',
     [PanelTab.CONTACT_SUPPORT]: 'Contact support',
-    [PanelChildTab.CARD_ISSUE]: 'Issue a new card',
+    [PanelChildTab.CARD_ISSUE]: 'Advertising Card',
+    [PanelChildTab.CARD_TYPE_SELECT]: 'Select card type',
   },
   header: {
     profile: 'Profile',

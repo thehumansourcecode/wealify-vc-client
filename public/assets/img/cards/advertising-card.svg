@@ -1,0 +1,11 @@
+<svg width="320" height="200" viewBox="0 0 320 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="320" height="200" rx="24" fill="#FFF6F9"/>
+  <circle cx="250" cy="60" r="36" fill="#FF4F8C" fill-opacity="0.15"/>
+  <rect x="200" y="120" width="80" height="40" rx="12" fill="#FF4F8C" fill-opacity="0.2"/>
+  <g>
+    <rect x="220" y="70" width="48" height="24" rx="8" fill="#FF4F8C"/>
+    <polygon points="260,82 280,74 280,98 260,90" fill="#fff"/>
+    <rect x="228" y="80" width="16" height="4" rx="2" fill="#fff"/>
+  </g>
+  <text x="60" y="110" font-size="24" font-family="Arial, sans-serif" fill="#FF4F8C" font-weight="bold">Advertising</text>
+</svg> 

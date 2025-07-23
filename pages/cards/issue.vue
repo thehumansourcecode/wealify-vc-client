@@ -187,36 +187,6 @@ watch(
         <div class="text-18-600-28 text-[#1C1D23]">
           {{ t('cards.issue.info.title') }}
         </div>
-        <div class="flex flex-col sm:flex-row gap-3 text-14-600-20 mt-5 items-start sm:items-center">
-          <div
-            @click="form.card_type = CardType.VIRTUAL"
-            class="px-5 py-4 bg-[#F0F2F5] hover:bg-[#F2F4F7] rounded-[16px] flex flex-row gap-3 items-center w-full sm:w-[250px] cursor-pointer"
-            :class="
-              form.card_type === CardType.VIRTUAL
-                ? 'text-[#1C1D23] border border-[#FF5524]'
-                : 'text-[#7A7D89] border border-[#F0F2F5]'
-            "
-          >
-            <img class="p-[10px] bg-[#FFF] rounded-full" :src="`/icons/cards/${CardType.VIRTUAL}.svg`" alt="" />
-            <div>{{ t(`cards.list.type.${CardType.VIRTUAL}`) }}</div>
-          </div>
-          <div
-            class="px-5 py-4 bg-[#F0F2F5] hover:bg-[#F2F4F7] rounded-[16px] flex flex-row gap-3 items-center w-full sm:w-[250px] cursor-not-allowed relative"
-            :class="
-              form.card_type === CardType.PHYSICAL
-                ? 'text-[#1C1D23] border border-[#FF5524]'
-                : 'text-[#7A7D89] border border-[#F0F2F5]'
-            "
-          >
-            <div
-              class="absolute right-5 -top-[10px] px-[6px] py-[2px] rounded-[10px] bg-[#5268E1] text-10-500-14 text-white"
-            >
-              Coming soon
-            </div>
-            <img class="p-[10px] bg-[#FFF] rounded-full" :src="`/icons/cards/${CardType.PHYSICAL}.svg`" alt="" />
-            <div>{{ t(`cards.list.type.${CardType.PHYSICAL}`) }}</div>
-          </div>
-        </div>
         <UForm :schema="issueCardSchema" :state="form">
           <UFormGroup
             name="card_name"

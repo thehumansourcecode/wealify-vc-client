@@ -16,6 +16,7 @@ export enum PanelTab {
 
 export enum PanelChildTab {
   CARD_ISSUE = 'CARD_ISSUE',
+  CARD_TYPE_SELECT = 'CARD_TYPE_SELECT',
 }
 
 export interface IPanelTab {
