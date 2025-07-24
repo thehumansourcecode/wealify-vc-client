@@ -347,7 +347,7 @@ onUnmounted(() =>
           </UButton>
           <UButton
             class="flex items-center justify-center rounded-[49px] bg-[#FF5524] hover:bg-[#EE4413] px-3 sm:px-4 py-2 sm:py-3 w-[120px] sm:w-[168px]"
-            @click="navigateTo('/cards/issue')"
+            @click="navigateTo('/cards/select-type')"
           >
             <div class="text-white text-14-600-20 sm:text-16-600-24">
               {{ t('cards.button.issue') }}

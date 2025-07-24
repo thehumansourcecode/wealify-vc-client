@@ -187,65 +187,50 @@ watch(
         <div class="text-18-600-28 text-[#1C1D23]">
           {{ t('cards.issue.info.title') }}
         </div>
-        <div class="flex flex-col sm:flex-row gap-3 text-14-600-20 mt-5 items-start sm:items-center">
-          <div
-            @click="form.card_type = CardType.VIRTUAL"
-            class="px-5 py-4 bg-[#F0F2F5] hover:bg-[#F2F4F7] rounded-[16px] flex flex-row gap-3 items-center w-full sm:w-[250px] cursor-pointer"
-            :class="
-              form.card_type === CardType.VIRTUAL
-                ? 'text-[#1C1D23] border border-[#FF5524]'
-                : 'text-[#7A7D89] border border-[#F0F2F5]'
-            "
-          >
-            <img class="p-[10px] bg-[#FFF] rounded-full" :src="`/icons/cards/${CardType.VIRTUAL}.svg`" alt="" />
-            <div>{{ t(`cards.list.type.${CardType.VIRTUAL}`) }}</div>
-          </div>
-          <div
-            class="px-5 py-4 bg-[#F0F2F5] hover:bg-[#F2F4F7] rounded-[16px] flex flex-row gap-3 items-center w-full sm:w-[250px] cursor-not-allowed relative"
-            :class="
-              form.card_type === CardType.PHYSICAL
-                ? 'text-[#1C1D23] border border-[#FF5524]'
-                : 'text-[#7A7D89] border border-[#F0F2F5]'
-            "
-          >
-            <div
-              class="absolute right-5 -top-[10px] px-[6px] py-[2px] rounded-[10px] bg-[#5268E1] text-10-500-14 text-white"
-            >
-              Coming soon
-            </div>
-            <img class="p-[10px] bg-[#FFF] rounded-full" :src="`/icons/cards/${CardType.PHYSICAL}.svg`" alt="" />
-            <div>{{ t(`cards.list.type.${CardType.PHYSICAL}`) }}</div>
-          </div>
-        </div>
         <UForm :schema="issueCardSchema" :state="form">
-          <UFormGroup
-            name="card_name"
-            class="mt-5"
-            :ui="{
-              error: 'ml-0 md:ml-[156px] mt-2 text-red-500 dark:text-red-400',
-            }"
-            v-slot="{ error }"
-          >
-            <div class="flex flex-row items-center">
-              <div class="text-14-500-20 mb-2 sm:mb-0" style="flex: 0 0 156px">
-                <span>{{ t('cards.issue.info.form.label.name') }}</span>
-                <span class="pl-1 text-[#ED2C38]">*</span>
+          <UTooltip
+                class="ml-1"
+                :text="`A card name helps identify your cards. The default name on the card is Wealify`"
+                :popper="{ arrow: true, placement: 'bottom' }"
+                :ui="{
+                 wrapper: 'w-full block',
+                  background: 'bg-[#1C1D23]',
+                  width: 'max-w-[252px]',
+                  color: 'text-[#FFF]',
+                  base: 'px-3 py-2 h-[max-content]  text-xs font-medium text-clip text-center',
+                  ring: 'ring-0',
+                  arrow: { background: 'before:bg-[#1C1D23]' },
+                }"
+              >
+            <UFormGroup
+              name="card_name"
+              class="mt-5"
+              :ui="{
+                error: 'ml-0 md:ml-[156px] mt-2 text-red-500 dark:text-red-400',
+              }"
+              v-slot="{ error }"
+            >
+              <div class="flex flex-row items-center">
+                <div class="text-14-500-20 mb-2 sm:mb-0" style="flex: 0 0 156px">
+                  <span>{{ t('cards.issue.info.form.label.name') }}</span>
+                  <span class="pl-1 text-[#ED2C38]">*</span>
+                </div>
+                <BaseInput
+                  id="name_input"
+                  @paste="handlePasteName"
+                  :error="error"
+                  v-model="form.card_name"
+                  :clearable="!!form.card_name"
+                  :limit="50"
+                  leading
+                  :leading-img="'/icons/cards/issue-card/name.svg'"
+                  :placeholder="$t('cards.issue.info.form.placeholder.name')"
+                  @clear="form.card_name = ''"
+                  class="w-full"
+                />
               </div>
-              <BaseInput
-                id="name_input"
-                @paste="handlePasteName"
-                :error="error"
-                v-model="form.card_name"
-                :clearable="!!form.card_name"
-                :limit="50"
-                leading
-                :leading-img="'/icons/cards/issue-card/name.svg'"
-                :placeholder="$t('cards.issue.info.form.placeholder.name')"
-                @clear="form.card_name = ''"
-                class="w-full"
-              />
-            </div>
-          </UFormGroup>
+            </UFormGroup>
+          </UTooltip>
           <UFormGroup
             name="email"
             class="mt-5"
@@ -555,11 +540,11 @@ watch(
         </div>
         <div class="mt-5">
           <div
-            class="w-full max-w-[399px] h-[219px] rounded-[21px] flex flex-col items-start overflow-hidden bg-[url(~/assets/img/cards/card-bg.svg)] bg-left pt-5 pb-6 pl-4 pr-6"
+            class="w-full max-w-[399px] h-[219px] rounded-[21px] flex flex-col items-start overflow-hidden bg-[url(~/assets/img/cards/ad_card.svg)] bg-left pt-5 pb-6 pl-4 pr-6"
           >
             <img src="~/assets/img/cards/card-logo.svg" alt="" />
             <div class="text-20-500-32 text-[#FFFFFF] mt-5 w-full max-w-[360px]" :class="{ uppercase: form.card_name }">
-              {{ form.card_name ? formattedCardName : t('cards.issue.preview.namePlaceholder') }}
+              Wealify
             </div>
             <img class="mt-auto" src="~/assets/img/cards/card-number.svg" alt="" />
           </div>
