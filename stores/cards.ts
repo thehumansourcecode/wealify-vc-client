@@ -5,6 +5,7 @@ import { otpService } from '~/services/otp.service'
 import {
   CardCategory,
   CardStatus,
+  CardUsageType,
   type IIssueCardParams,
   type IGetCardListParams,
   type ICardDetail,
@@ -139,6 +140,7 @@ export const useCardStore = defineStore('card', () => {
 
     isLoading.value.issueCard = true
     commonStore.toggleProcessingModal(true)
+    params.card_usage_type = CardUsageType.BUSINESS
     const response = await cardService.issueCard(params)
     commonStore.toggleProcessingModal(false)
     isLoading.value.issueCard = false
