@@ -34,6 +34,12 @@ export enum CardStatus {
   FROZEN = 'FROZEN',
   CANCELLED = 'CANCELLED',
 }
+
+export enum CardUsageType {
+  BUSINESS = 'BUSINESS',
+  INDIVIDUAL = 'INDIVIDUAL'
+}
+
 export interface ICardDetail {
   id: string
   email: string
@@ -66,6 +72,7 @@ export interface IIssueCardParams {
   card_purpose?: string
   card_type: string
   spend_limit: number
+  card_usage_type: string
 }
 
 export interface IEditCardParams {
