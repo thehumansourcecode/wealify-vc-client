@@ -74,7 +74,7 @@ const issueCardSchema = object({
     .required(t('common.validator.empty.issueCard.name'))
     .matches(onlyEnglishCharacters, t('common.validator.invalid.issueCard.name')),
   email: string()
-    .required(t('common.validator.empty.issueCard.email'))
+    // .required(t('common.validator.empty.issueCard.email'))
     .matches(emailRegex, t('common.validator.invalid.issueCard.email')),
   country_code: string().required(),
   phone_number: string().required(t('common.validator.empty.issueCard.phoneNumber')),
@@ -242,22 +242,6 @@ watch(
             <div class="flex flex-row items-center">
               <div class="text-14-500-20 flex flex-row items-center" style="flex: 0 0 156px">
                 <span>{{ t('cards.issue.info.form.label.email') }}</span>
-                <span class="pl-1 text-[#ED2C38]">*</span>
-                <UTooltip
-                  class="ml-1"
-                  text="An OTP will be sent to you when making a payment if it cannot be sent via email"
-                  :popper="{ arrow: true, placement: 'top' }"
-                  :ui="{
-                    background: 'bg-[#1C1D23]',
-                    width: 'max-w-[252px]',
-                    color: 'text-[#FFF]',
-                    base: 'px-3 py-2 h-[max-content]  text-xs font-medium text-clip text-center',
-                    ring: 'ring-0',
-                    arrow: { background: 'before:bg-[#1C1D23]' },
-                  }"
-                >
-                  <img src="~/assets/img/icons/tooltip.svg" alt="" />
-                </UTooltip>
               </div>
               <BaseInput
                 v-model.trim="form.email"
