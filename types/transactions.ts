@@ -31,7 +31,7 @@ export enum TransactionVCType {
 
 // Enum for TransactionStatus
 export enum TransactionVCStatus {
-  PROCESSING = 'PROCESSING',
+  PENDING = 'PENDING',
   SUCCESS = 'SUCCESS',
   FAILURE = 'FAILURE',
 }
