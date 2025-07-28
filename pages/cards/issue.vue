@@ -77,7 +77,7 @@ const issueCardSchema = object({
     // .required(t('common.validator.empty.issueCard.email'))
     .matches(emailRegex, t('common.validator.invalid.issueCard.email')),
   country_code: string().required(),
-  phone_number: string().required(t('common.validator.empty.issueCard.phoneNumber')),
+  // phone_number: string().required(t('common.validator.empty.issueCard.phoneNumber')),
   category: string().required(t('common.validator.empty.issueCard.category')),
   spend_limit: number()
     .test('max-threshold', t('common.validator.invalid.issueCard.insufficientBalance'), value => {
@@ -262,22 +262,22 @@ watch(
             <div class="text-14-500-20 mt-8" style="flex: 0 0 156px">
               <div class="flex flex-row items-center">
                 <span>{{ t('cards.issue.info.form.label.phoneNumber') }}</span>
-                <span class="pl-1 text-[#ED2C38]">*</span>
-                <UTooltip
-                  class="ml-1"
-                  text="An OTP will be sent to you when making a payment"
-                  :popper="{ arrow: true, placement: 'top' }"
-                  :ui="{
-                    width: 'max-w-[310px]',
-                    background: 'bg-[#1C1D23]',
-                    color: 'text-[#FFF]',
-                    base: 'px-3 py-2 h-[max-content] text-xs font-medium text-clip text-center',
-                    ring: 'ring-0',
-                    arrow: { background: 'before:bg-[#1C1D23]' },
-                  }"
-                >
-                  <img src="~/assets/img/icons/tooltip.svg" alt="" />
-                </UTooltip>
+<!--                <span class="pl-1 text-[#ED2C38]">*</span>-->
+<!--                <UTooltip-->
+<!--                  class="ml-1"-->
+<!--                  text="An OTP will be sent to you when making a payment"-->
+<!--                  :popper="{ arrow: true, placement: 'top' }"-->
+<!--                  :ui="{-->
+<!--                    width: 'max-w-[310px]',-->
+<!--                    background: 'bg-[#1C1D23]',-->
+<!--                    color: 'text-[#FFF]',-->
+<!--                    base: 'px-3 py-2 h-[max-content] text-xs font-medium text-clip text-center',-->
+<!--                    ring: 'ring-0',-->
+<!--                    arrow: { background: 'before:bg-[#1C1D23]' },-->
+<!--                  }"-->
+<!--                >-->
+<!--                  <img src="~/assets/img/icons/tooltip.svg" alt="" />-->
+<!--                </UTooltip>-->
               </div>
             </div>
             <div class="flex flex-row items-start w-full mt-5">
