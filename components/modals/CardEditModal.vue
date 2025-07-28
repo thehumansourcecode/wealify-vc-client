@@ -123,19 +123,31 @@ async function handleEdit() {
               <span>{{ t('cards.issue.info.form.label.name') }}</span>
               <span class="pl-1 text-[#ED2C38]">*</span>
             </div>
-            <BaseInput
-              @input="handleInputName"
-              @paste="handlePasteName"
-              disabled
-              :error="error"
-              v-model="form.card_name"
-              :limit="50"
-              leading
-              :leading-img="'/icons/cards/issue-card/name.svg'"
-              :placeholder="$t('cards.issue.info.form.placeholder.name')"
-              @clear="form.card_name = ''"
-              class="w-full"
-            />
+            <UTooltip
+                class="w-full"
+                text="A card name helps identify your cards. The default name on the card is Kanoha Limited"
+                :popper="{ arrow: true, placement: 'top' }"
+                :ui="{
+                  background: 'bg-[#1C1D23]',
+                  color: 'text-[#FFF]',
+                  base: 'px-3 py-2 h-[max-content] text-clip text-center',
+                  ring:   'ring-0',
+                  arrow: { background: 'before:bg-[#1C1D23]' },
+                }"
+              >
+                <BaseInput
+                  @input="handleInputName"
+                  @paste="handlePasteName"
+                  :error="error"
+                  v-model="form.card_name"
+                  :limit="50"
+                  leading
+                  :leading-img="'/icons/cards/issue-card/name.svg'"
+                  :placeholder="$t('cards.issue.info.form.placeholder.name')"
+                  @clear="form.card_name = ''"
+                  class="w-full"
+                  />
+              </UTooltip>
           </div>
         </UFormGroup>
         <UFormGroup
