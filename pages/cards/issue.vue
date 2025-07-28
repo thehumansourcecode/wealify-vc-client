@@ -62,7 +62,7 @@ const form = reactive<IIssueCardParams>({
   email: '', //req, max 128, chữ số ký tự, auto trim, chặn
   phone_number: '', // req, nếu có thì = sđt user đã add, nếu ko thì rỗng. Max 15, trim, chặn
   country_code: CommonCountry.VIETNAM,
-  category: CardCategory.TRAVEL, // req, default = Travel. Lấy từ API GET List Reporting fields,
+  category: CardCategory.MARKETING, // req, default = Travel. Lấy từ API GET List Reporting fields,
   card_purpose: '', // max = 128, chặn
   spend_limit: 0, // nhập số nguyên dương. nếu = 0 hiển inline msg
 })
@@ -390,7 +390,7 @@ watch(
               </div>
               <BaseSingleSelect
                 v-model="form.category"
-                :options="cardCategoryOptions"
+                :options="cardCategoryOptions.filter((item) => item == form.category)"
                 class="w-full"
                 :selected-icon="'i-selected'"
                 :error="error"
