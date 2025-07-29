@@ -62,9 +62,10 @@ const form = reactive<IIssueCardParams>({
   email: '', //req, max 128, chữ số ký tự, auto trim, chặn
   phone_number: '', // req, nếu có thì = sđt user đã add, nếu ko thì rỗng. Max 15, trim, chặn
   country_code: CommonCountry.VIETNAM,
-  category: CardCategory.TRAVEL, // req, default = Travel. Lấy từ API GET List Reporting fields,
+  category: CardCategory.MARKETING, // req, default = Travel. Lấy từ API GET List Reporting fields,
   card_purpose: '', // max = 128, chặn
   spend_limit: 0, // nhập số nguyên dương. nếu = 0 hiển inline msg
+  card_usage_type: '',
 })
 
 const threshold = computed(() => +(totalBalance.value || 0) - issueCardFees.value)
@@ -77,11 +78,11 @@ const issueCardSchema = object({
     .required(t('common.validator.empty.issueCard.email'))
     .matches(emailRegex, t('common.validator.invalid.issueCard.email')),
   country_code: string().required(),
-  phone_number: string().required(t('common.validator.empty.issueCard.phoneNumber')),
+  // phone_number: string().required(t('common.validator.empty.issueCard.phoneNumber')),
   category: string().required(t('common.validator.empty.issueCard.category')),
   spend_limit: number()
     .test('max-threshold', t('common.validator.invalid.issueCard.insufficientBalance'), value => {
-      return value <= +threshold.value
+      return (value ?? 0) <= +threshold.value
     }),
 })
 
@@ -147,7 +148,7 @@ const presetAmounts = computed(() => {
   }
 })
 
-const setAmount = amount => {
+const setAmount = (amount: number) => {
   form.spend_limit = amount > MAX_SPEND_LIMIT ? MAX_SPEND_LIMIT : amount
   if (currencyInputRef?.value) {
     setTimeout(() => {
@@ -190,12 +191,11 @@ watch(
         <UForm :schema="issueCardSchema" :state="form">
           <UTooltip
                 class="ml-1"
-                :text="`A card name helps identify your cards. The default name on the card is Wealify`"
+                :text="`A card name helps identify your cards. The default name on the card is Kanoha Limited`"
                 :popper="{ arrow: true, placement: 'bottom' }"
                 :ui="{
                  wrapper: 'w-full block',
                   background: 'bg-[#1C1D23]',
-                  width: 'max-w-[252px]',
                   color: 'text-[#FFF]',
                   base: 'px-3 py-2 h-[max-content]  text-xs font-medium text-clip text-center',
                   ring: 'ring-0',
@@ -245,7 +245,7 @@ watch(
                 <span class="pl-1 text-[#ED2C38]">*</span>
                 <UTooltip
                   class="ml-1"
-                  text="An OTP will be sent to you when making a payment if it cannot be sent via email"
+                  text="An OTP will be sent to you when making a payment"
                   :popper="{ arrow: true, placement: 'top' }"
                   :ui="{
                     background: 'bg-[#1C1D23]',
@@ -278,22 +278,22 @@ watch(
             <div class="text-14-500-20 mt-8" style="flex: 0 0 156px">
               <div class="flex flex-row items-center">
                 <span>{{ t('cards.issue.info.form.label.phoneNumber') }}</span>
-                <span class="pl-1 text-[#ED2C38]">*</span>
-                <UTooltip
-                  class="ml-1"
-                  text="An OTP will be sent to you when making a payment"
-                  :popper="{ arrow: true, placement: 'top' }"
-                  :ui="{
-                    width: 'max-w-[310px]',
-                    background: 'bg-[#1C1D23]',
-                    color: 'text-[#FFF]',
-                    base: 'px-3 py-2 h-[max-content] text-xs font-medium text-clip text-center',
-                    ring: 'ring-0',
-                    arrow: { background: 'before:bg-[#1C1D23]' },
-                  }"
-                >
-                  <img src="~/assets/img/icons/tooltip.svg" alt="" />
-                </UTooltip>
+<!--                <span class="pl-1 text-[#ED2C38]">*</span>-->
+<!--                <UTooltip-->
+<!--                  class="ml-1"-->
+<!--                  text="An OTP will be sent to you when making a payment"-->
+<!--                  :popper="{ arrow: true, placement: 'top' }"-->
+<!--                  :ui="{-->
+<!--                    width: 'max-w-[310px]',-->
+<!--                    background: 'bg-[#1C1D23]',-->
+<!--                    color: 'text-[#FFF]',-->
+<!--                    base: 'px-3 py-2 h-[max-content] text-xs font-medium text-clip text-center',-->
+<!--                    ring: 'ring-0',-->
+<!--                    arrow: { background: 'before:bg-[#1C1D23]' },-->
+<!--                  }"-->
+<!--                >-->
+<!--                  <img src="~/assets/img/icons/tooltip.svg" alt="" />-->
+<!--                </UTooltip>-->
               </div>
             </div>
             <div class="flex flex-row items-start w-full mt-5">
@@ -406,7 +406,7 @@ watch(
               </div>
               <BaseSingleSelect
                 v-model="form.category"
-                :options="cardCategoryOptions"
+                :options="cardCategoryOptions.filter((item) => item == form.category)"
                 class="w-full"
                 :selected-icon="'i-selected'"
                 :error="error"
@@ -543,8 +543,8 @@ watch(
             class="w-full max-w-[399px] h-[219px] rounded-[21px] flex flex-col items-start overflow-hidden bg-[url(~/assets/img/cards/ad_card.svg)] bg-left pt-5 pb-6 pl-4 pr-6"
           >
             <img src="~/assets/img/cards/card-logo.svg" alt="" />
-            <div class="text-20-500-32 text-[#FFFFFF] mt-5 w-full max-w-[360px]" :class="{ uppercase: form.card_name }">
-              Wealify
+            <div class="text-20-500-32 text-[#FFFFFF] mt-5 w-full max-w-[360px]">
+              Kanoha Limited
             </div>
             <img class="mt-auto" src="~/assets/img/cards/card-number.svg" alt="" />
           </div>

@@ -27,8 +27,8 @@ export default {
   list: {
     card_number: 'xxxx xxxx xxxx {value}',
     type: {
-      [CardType.VIRTUAL]: 'Virtual Card',
-      [CardType.PHYSICAL]: 'Physical Card',
+      [CardType.VIRTUAL]: 'Ads Card',
+      [CardType.PHYSICAL]: 'Purchase Card',
     },
 
     status: {
