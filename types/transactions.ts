@@ -27,10 +27,12 @@ export enum TransactionVCType {
   TOP_UP = 'TOP_UP',
   WITHDRAWAL = 'WITHDRAWAL',
   PAYMENT = 'PAYMENT',
+  REFUND = 'REFUND',
 }
 
 // Enum for TransactionStatus
 export enum TransactionVCStatus {
+  PROCESSING = 'PROCESSING',
   PENDING = 'PENDING',
   SUCCESS = 'SUCCESS',
   FAILURE = 'FAILURE',
