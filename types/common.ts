@@ -50,6 +50,7 @@ export enum CommonCountry {
   EAST_TIMOR = 'TL',
   BRUNEI = 'BN',
   SINGAPORE = 'SG',
+  RUSSIA = "RU"
 }
 
 export enum HTTP_STATUS_CODE {

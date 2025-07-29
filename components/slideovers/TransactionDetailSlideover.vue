@@ -145,7 +145,8 @@ const getTransactionLinkTo = async () =>{
               {{ formatMoney(transactionDetail.received_amount, CommonCurrency.USD) }}
             </div>
             <div class="text-12-500-20 text-[#7A7D89]">
-             to {{transactionDetail?.detailType === TransactionDetailType.CARD_PAYMENT ?
+              {{transactionDetail?.detailType === TransactionDetailType.CARD_REFUND ? 'from' : 'to' }}
+              {{transactionDetail?.detailType === TransactionDetailType.CARD_PAYMENT || transactionDetail?.detailType === TransactionDetailType.CARD_REFUND ?
                   transactionDetail.confirm_transaction?.raw_data?.merchant :
                   t(`transactions.detail.to.${transactionDetail.detailType}`) }}
             </div>
@@ -253,7 +254,7 @@ const getTransactionLinkTo = async () =>{
           </div>
 
           <div class="flex flex-row justify-between items-center pb-4" v-if="transactionDetail?.detailType !== TransactionDetailType.WALLET_TOP_UP
-          && transactionDetail?.detailType !== TransactionDetailType.CARD_PAYMENT && transactionDetail?.detailType !== TransactionDetailType.CARD_CRYPTO_TOP_UP">
+          && transactionDetail?.detailType !== TransactionDetailType.CARD_PAYMENT && transactionDetail?.detailType !== TransactionDetailType.CARD_CRYPTO_TOP_UP && transactionDetail?.detailType !== TransactionDetailType.CARD_REFUND">
             <div class="flex flex-row text-12-500-20 text-[#7A7D89] gap-[2px] cursor-pointer" @click="getTransactionLinkTo">
               {{ t(`transactions.detail.id2.${transactionDetail.detailType}`) }}
               <Icon name="heroicons:arrow-top-right-on-square" class="w-4 h-4 text-blue-500 opacity-50" />

@@ -304,6 +304,24 @@ onUnmounted(() =>
 <template>
   <!-- Note: Overflow-y-auto here if want to fit table data into 100vh -->
   <div class="flex flex-col px-4 sm:pl-10 sm:pr-[60px] flex-1 gap-6 mt-7">
+    <!-- Button group chỉ hiện trên mobile -->
+    <div class="flex flex-row gap-[10px] justify-between sm:hidden">
+      <UButton
+        class="flex items-center justify-center rounded-[49px] bg-[#F0F2F5] hover:bg-[#E1E3E6] px-3 py-2 w-[120px] cursor-not-allowed"
+      >
+        <div class="text-[#1C1D23] text-14-600-20">
+          {{ t('cards.button.withdraw') }}
+        </div>
+      </UButton>
+      <UButton
+        class="flex items-center justify-center rounded-[49px] bg-[#FF5524] hover:bg-[#EE4413] px-3 py-2 w-[120px]"
+        @click="navigateTo('/cards/issue')"
+      >
+        <div class="text-white text-14-600-20">
+          {{ t('cards.button.issue') }}
+        </div>
+      </UButton>
+    </div>
     <!-- Cards not selected -->
     <div v-if="!selectedCardList?.length" class="flex flex-col gap-3">
       <div class="flex flex-col sm:flex-row gap-4 sm:gap-[100px] justify-between">
@@ -318,7 +336,8 @@ onUnmounted(() =>
           :placeholder="t('cards.filter.placeholder.search')"
           autocomplete="off"
         />
-        <div class="flex flex-row gap-[10px] justify-between">
+        <!-- Button group chỉ hiện trên PC -->
+        <div class="flex flex-row gap-[10px] justify-between hidden sm:flex">
           <UButton
             class="flex items-center justify-center rounded-[49px] bg-[#F0F2F5] hover:bg-[#E1E3E6] px-3 sm:px-4 py-2 sm:py-3 w-[120px] sm:w-[168px] cursor-not-allowed"
           >
