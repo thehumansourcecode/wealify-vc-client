@@ -36,6 +36,7 @@ export default {
       [TransactionVCType.PAYMENT]: 'Spend',
       [TransactionVCType.TOP_UP]: 'Top-up',
       [TransactionVCType.WITHDRAWAL]: 'Withdraw',
+      [TransactionVCType.REFUND]: 'Refund',
     },
     status: {
       [TransactionVCStatus.PROCESSING]: 'Processing',
