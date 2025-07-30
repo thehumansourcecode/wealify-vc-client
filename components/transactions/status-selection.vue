@@ -22,6 +22,10 @@ const options = computed<Array<Option>>(() => [
     title: 'Failed',
     value: [TransactionVCStatus.FAILURE],
   },
+  {
+    title: 'Cancelled',
+    value: [TransactionVCStatus.CANCEL],
+  },
 ])
 
 const displayValue = computed<string>(() => {
@@ -61,7 +65,13 @@ const onSelect = (option: Option) => {
         class="transition-transform w-3 h-3 sm:w-auto sm:h-auto"
         :class="[open && 'transform rotate-180']"
       />
-      <img v-else @click="reset()" class="cursor-pointer w-3 h-3 sm:w-auto sm:h-auto" src="/assets/img/icons/clear.svg" alt="" />
+      <img
+        v-else
+        @click="reset()"
+        class="cursor-pointer w-3 h-3 sm:w-auto sm:h-auto"
+        src="/assets/img/icons/clear.svg"
+        alt=""
+      />
     </div>
     <template #panel>
       <div
@@ -76,7 +86,10 @@ const onSelect = (option: Option) => {
                 base: 'cursor-pointer',
               }"
             />
-            <div  @click="onSelect(option)" class="justify-center text-[#1b1c23] text-12 sm:text-14-500-20 font-semibold font-['Manrope'] leading-tight cursor-pointer">
+            <div
+              @click="onSelect(option)"
+              class="justify-center text-[#1b1c23] text-12 sm:text-14-500-20 font-semibold font-['Manrope'] leading-tight cursor-pointer"
+            >
               {{ option.title }}
             </div>
           </div>

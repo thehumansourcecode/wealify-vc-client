@@ -134,7 +134,7 @@ const getTransactionLinkTo = async () => {
         />
       </div>
       <div class="flex flex-col items-center slideover-content overflow-y-auto px-8 pb-20 lg:pb-0">
-        <img class="w-[180px]" src="/images/transactions/slideover-banner.svg" alt="" />
+        <img class="w-[180px]" :src="getBanner(transactionDetail?.transaction_vc_status)" alt="" />
         <div class="pt-5 flex flex-row justify-between items-end w-full">
           <div class="flex-col gap-[6px]">
             <div class="uppercase text-[#1C1D23] text-14-500-20">
@@ -154,10 +154,11 @@ const getTransactionLinkTo = async () => {
             </div>
           </div>
           <div
-            class="flex flex-row gap-[6px] items-center px-[14px] py-[6px] rounded-[8px]"
+            class="flex flex-row gap-[6px] items-center px-[14px] py-[6px] rounded-[8px] border"
             :style="{
-              color: getStatusColor(transactionDetail?.transaction_vc_status),
-              background: '#EBF6EE',
+              color: getStatusColor(transactionDetail?.transaction_vc_status)?.color,
+              borderColor: getStatusColor(transactionDetail?.transaction_vc_status)?.color,
+              background: getStatusColor(transactionDetail?.transaction_vc_status)?.background,
             }"
           >
             <div class="text-12-600-20">
@@ -165,7 +166,7 @@ const getTransactionLinkTo = async () => {
             </div>
             <div
               class="w-[6px] h-[6px] rounded-[1px]"
-              :style="{ background: getStatusColor(transactionDetail?.transaction_vc_status) }"
+              :style="{ background: getStatusColor(transactionDetail?.transaction_vc_status)?.color }"
             ></div>
           </div>
         </div>

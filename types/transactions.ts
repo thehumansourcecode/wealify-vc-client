@@ -36,6 +36,7 @@ export enum TransactionVCStatus {
   PENDING = 'PENDING',
   SUCCESS = 'SUCCESS',
   FAILURE = 'FAILURE',
+  CANCEL = 'CANCEL',
 }
 export interface Fee {
   type: string // e.g., "PERCENT"

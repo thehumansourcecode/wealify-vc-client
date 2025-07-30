@@ -39,9 +39,11 @@ export default {
       [TransactionVCType.REFUND]: 'Refund',
     },
     status: {
+      [TransactionVCStatus.PENDING]: 'Pending',
       [TransactionVCStatus.PROCESSING]: 'Processing',
       [TransactionVCStatus.SUCCESS]: 'Success',
       [TransactionVCStatus.FAILURE]: 'Failed',
+      [TransactionVCStatus.CANCEL]: 'Cancelled',
     },
     card: 'Card',
     wallet: 'Wallet',
@@ -169,6 +171,8 @@ export default {
       [TransactionVCStatus.PROCESSING]: 'Processing',
       [TransactionVCStatus.SUCCESS]: 'Success',
       [TransactionVCStatus.FAILURE]: 'Failed',
+      [TransactionVCStatus.PENDING]: 'Pending',
+      [TransactionVCStatus.CANCEL]: 'Cancelled',
     },
   },
 }
