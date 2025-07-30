@@ -73,7 +73,7 @@ function handleNewTransaction() {
 
 const transactionDestination = computed(() => {})
 
-const getLinkTxhash = (network, tx_id) => {
+const getLinkTxhash = (network: TransactionNetwork, tx_id: string) => {
   switch (network) {
     case TransactionNetwork.ETHEREUM:
       return `<a target='_blank' href="https://etherscan.io/tx/${tx_id}">etherscan.io</a>`
@@ -84,7 +84,7 @@ const getLinkTxhash = (network, tx_id) => {
   }
 }
 
-const getWallet = network => {
+const getWallet = (network: TransactionNetwork) => {
   switch (network) {
     case TransactionNetwork.ETHEREUM:
       return `Ethereum (ETH)`
@@ -151,6 +151,20 @@ const getTransactionLinkTo = async () => {
                   ? transactionDetail.confirm_transaction?.raw_data?.merchant?.name
                   : t(`transactions.detail.to.${transactionDetail.detailType}`)
               }}
+            </div>
+            <div
+              v-if="transactionDetail?.confirm_transaction?.raw_data?.failure_reason"
+              class="inline-flex items-center flex-start gap-[5px] mt-2"
+            >
+              <UIcon name="i-mdi-alert-circle" class="w-4 h-4 bg-[#ed2c38] text-white" />
+              <div class="text-[#7A7D89] text-12-500-20">
+                {{
+                  transactionDetail?.confirm_transaction?.raw_data?.failure_reason
+                    .toLowerCase()
+                    .replace(/_/g, ' ')
+                    .replace(/^\w/, c => c.toUpperCase())
+                }}
+              </div>
             </div>
           </div>
           <div
