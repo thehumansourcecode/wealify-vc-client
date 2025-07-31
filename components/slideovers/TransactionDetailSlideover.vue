@@ -326,7 +326,7 @@ const getTransactionLinkTo = async () => {
           </div>
           <div class="flex flex-row justify-between items-center mb-1">
             <div class="text-12-500-20 text-[#7A7D89]">
-              {{ t('transactions.detail.successAt') }}
+              {{ getStatusText(transactionDetail?.transaction_vc_status) }}
             </div>
             <div class="text-14-500-20 text-[#1C1D23]">
               {{ formatYYYYMMDDhmmA(dayjs.utc(transactionDetail?.updated_at).local()) }}

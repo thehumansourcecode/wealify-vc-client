@@ -51,3 +51,20 @@ export function getBanner(status: TransactionVCStatus) {
   }
 }
 
+export function getStatusText(status: TransactionVCStatus) {
+  if (status === TransactionVCStatus.FAILURE) {
+    return 'Failed at'
+  }
+  if (status === TransactionVCStatus.SUCCESS) {
+    return 'Success at'
+  }
+  if (status === TransactionVCStatus.PROCESSING) {
+    return 'Processing at'
+  }
+  if (status === TransactionVCStatus.PENDING) {
+    return 'Success at'
+  }
+  if (status === TransactionVCStatus.CANCEL) {
+    return 'Cancelled at'
+  }
+}
