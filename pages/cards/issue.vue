@@ -325,7 +325,6 @@ watch(
                       empty: 'text-sm',
                     },
                     empty: 'text-sm',
-                    arrow: {},
                     input: 'py-2.5 icon-search',
                   }"
                 >

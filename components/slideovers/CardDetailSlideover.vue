@@ -27,7 +27,7 @@ function handleCopy(index: number, value: string) {
 const cardStore = useCardStore()
 const { isPreventClose } = storeToRefs(cardStore)
 const transactionStore = useTransactionStore()
-const {isOpenCardDetailSlideover} =  storeToRefs(cardStore)
+const { isOpenCardDetailSlideover } = storeToRefs(cardStore)
 const cardDetail = computed(() => cardStore.selectedCardDetail)
 const isShowCardSensitiveDetail = computed(() => cardStore.isShowCardSensitiveDetail)
 const isShowCardSensitiveDetailOverlay = ref(false)
@@ -39,12 +39,12 @@ const cardSensitiveDetail = computed(() => cardStore.cardSensitiveDetail)
 const cardNumberArray = computed(() => cardSensitiveDetail.value?.card_number?.match(/.{1,4}/g))
 
 const balanceRate = computed(() => {
-if (!cardDetail.value?.total_withdraw){
-  return 0
-}
-return  cardDetail.value?.total_top_up
-      ? roundNumber(((cardDetail.value?.total_withdraw) / cardDetail.value?.total_top_up) * 100, 1)
-      : 0
+  if (!cardDetail.value?.total_withdraw) {
+    return 0
+  }
+  return cardDetail.value?.total_top_up
+    ? roundNumber((cardDetail.value?.total_withdraw / cardDetail.value?.total_top_up) * 100, 1)
+    : 0
 })
 
 const chartClass = computed(() => {
@@ -56,7 +56,7 @@ const isWithdrawTooltipVisible = ref(false)
 const isBalanceTooltipVisible = ref(false)
 
 //  mouse movement to detect hover over total_withdraw section
-const handleMouseMove = event => {
+const handleMouseMove = (event: MouseEvent) => {
   const rect = chartContainer.value?.getBoundingClientRect()
   const x = event.clientX - rect.left - 64
   const y = event.clientY - rect.top - 64
@@ -79,13 +79,12 @@ const handleMouseMove = event => {
   }
 }
 
-
-const styleTooltipWithDraw =  computed(() => {
-  let top,left
-  if (isWithdrawTooltipVisible.value){
+const styleTooltipWithDraw = computed(() => {
+  let top, left
+  if (isWithdrawTooltipVisible.value) {
     top = _y.value + 60
     left = _x.value + 75
-  }else{
+  } else {
     top = 64
     left = 64
   }
@@ -93,12 +92,12 @@ const styleTooltipWithDraw =  computed(() => {
   return `top:${top}px;left:${left}px;transition: all 0.1s ease-in-out;`
 })
 
-const styleTooltipBalance =  computed(() => {
-  let top,left
-  if (isBalanceTooltipVisible.value){
+const styleTooltipBalance = computed(() => {
+  let top, left
+  if (isBalanceTooltipVisible.value) {
     top = _y.value + 60
     left = _x.value + 80
-  }else{
+  } else {
     top = 64
     left = 64
   }
@@ -121,7 +120,7 @@ function handleViewTransaction() {
   navigateTo('/transactions')
 }
 
-const showCardSensitiveDetailOverlay = computed(()=>{
+const showCardSensitiveDetailOverlay = computed(() => {
   return cardDetail.value?.card_status !== CardStatus.FROZEN && cardDetail.value?.card_status !== CardStatus.CANCELLED
 })
 
@@ -153,10 +152,9 @@ function handleEdit() {
   cardStore.toggleCardEditModal(true)
 }
 
-const showIconCard = computed(()=>{
+const showIconCard = computed(() => {
   return cardDetail.value?.card_status !== CardStatus.CANCELLED
 })
-
 </script>
 
 <template>
@@ -191,25 +189,45 @@ const showIconCard = computed(()=>{
             <!-- Card -->
             <div
               class="w-[calc(100%-32px)] sm:w-[400px] h-[180px] sm:h-[220px] rounded-[21px] flex flex-none flex-col items-start bg-[url(~/assets/img/cards/card-bg.svg)] bg-right pt-3 sm:pt-[18px] pb-4 sm:pb-6 pl-3 sm:pl-5 pr-6 sm:pr-10 mx-4 sm:mx-8 mb-6 sm:mb-8"
-              :class="{'!bg-[url(~/assets/img/cards/card-bg-canceled.svg)]':cardDetail?.card_status === CardStatus.CANCELLED,'!bg-[url(~/assets/img/cards/card-bg-freeze.svg)]':cardDetail?.card_status === CardStatus.FROZEN,}"
+              :class="{
+                '!bg-[url(~/assets/img/cards/card-bg-canceled.svg)]': cardDetail?.card_status === CardStatus.CANCELLED,
+                '!bg-[url(~/assets/img/cards/card-bg-freeze.svg)]': cardDetail?.card_status === CardStatus.FROZEN,
+              }"
             >
               <div class="flex flex-row gap-2 sm:gap-3">
                 <img class="w-6 h-6 sm:w-auto sm:h-auto" src="~/assets/img/cards/card-logo.svg" alt="" />
                 <div
                   class="px-2 sm:px-3 py-[2px] flex items-center justify-center rounded-[5px] gap-1 border border-[#FFFFFF33] max-w-[150px] sm:max-w-[180px]"
                 >
-                  <div class="text-[#FFF] text-xs sm:text-12-500-20">{{ t(`cards.list.category.${cardDetail?.category}`) }}</div>
-                  <img class="w-4 h-4 sm:w-auto sm:h-auto" :src="`/icons/cards/category/${cardDetail?.category}.svg`" alt="" />
+                  <div class="text-[#FFF] text-xs sm:text-12-500-20">
+                    {{ t(`cards.list.category.${cardDetail?.category}`) }}
+                  </div>
+                  <img
+                    class="w-4 h-4 sm:w-auto sm:h-auto"
+                    :src="`/icons/cards/category/${cardDetail?.category}.svg`"
+                    alt=""
+                  />
                 </div>
               </div>
-              <div v-if="cardDetail?.card_status === CardStatus.CANCELLED" class="pull-left mt-auto ml-0 mb-2 sm:mb-3 w-[70px] sm:w-[76px] h-[20px] sm:h-[24px] gap-[6px] bg-[#FFE3EF] items-center justify-center mx-auto px-2 sm:px-3 py-[2px] rounded-[110px] flex flex-row">
+              <div
+                v-if="cardDetail?.card_status === CardStatus.CANCELLED"
+                class="pull-left mt-auto ml-0 mb-2 sm:mb-3 w-[70px] sm:w-[76px] h-[20px] sm:h-[24px] gap-[6px] bg-[#FFE3EF] items-center justify-center mx-auto px-2 sm:px-3 py-[2px] rounded-[110px] flex flex-row"
+              >
                 <div class="text-xs sm:text-12-500-20 text-[#ED2C38]">
                   {{ t(`cards.list.status.${cardDetail?.card_status}`) }}
                 </div>
                 <div class="w-[4px] sm:w-[6px] h-[4px] sm:h-[6px] rounded-[1px] bg-[#ED2C38]"></div>
               </div>
-              <div v-else-if="cardDetail?.card_status === CardStatus.FROZEN" class="pull-left mt-auto ml-0 mb-2 sm:mb-3 w-[70px] sm:w-[76px] h-[20px] sm:h-[24px]"></div>
-              <img v-else class="mt-auto mb-2 sm:mb-3 w-[90px] sm:w-[110px]" src="~/assets/img/cards/add-to-apple.png" alt="" />
+              <div
+                v-else-if="cardDetail?.card_status === CardStatus.FROZEN"
+                class="pull-left mt-auto ml-0 mb-2 sm:mb-3 w-[70px] sm:w-[76px] h-[20px] sm:h-[24px]"
+              ></div>
+              <img
+                v-else
+                class="mt-auto mb-2 sm:mb-3 w-[90px] sm:w-[110px]"
+                src="~/assets/img/cards/add-to-apple.png"
+                alt=""
+              />
               <div class="karla tracking-[2px] sm:tracking-[3px] text-lg sm:text-24-400 text-[#D7D9E5] w-full">
                 <div class="flex flex-row justify-between w-full" v-if="isShowCardSensitiveDetail">
                   <div v-for="(part, index) in cardNumberArray" :key="index">
@@ -232,7 +250,7 @@ const showIconCard = computed(()=>{
                   <img class="w-4 h-4 sm:w-auto sm:h-auto" src="~/assets/img/icons/mail.svg" alt="" />
                   <div class="text-[#7A7D89] text-xs sm:text-14-500-20">{{ cardDetail?.email }}</div>
                 </div>
-                <div class="flex flex-row gap-2">
+                <div v-if="cardDetail?.phone_number" class="flex flex-row gap-2">
                   <img class="w-4 h-4 sm:w-auto sm:h-auto" src="~/assets/img/icons/phone.svg" alt="" />
                   <div class="text-[#7A7D89] text-xs sm:text-14-500-20">{{ cardDetail?.phone_number }}</div>
                 </div>
@@ -259,7 +277,10 @@ const showIconCard = computed(()=>{
                   <div>{{ t(`cards.slideovers.detail.button.withdraw`) }}</div>
                 </div>
               </div>
-              <div v-if="cardDetail?.card_status === CardStatus.FROZEN" class="mt-7 flex flex-row w-full justify-center ">
+              <div
+                v-if="cardDetail?.card_status === CardStatus.FROZEN"
+                class="mt-7 flex flex-row w-full justify-center"
+              >
                 <!-- <div
                   @click="handleUnfreeze"
                   class="flex flex-col gap-3 w-[50%] items-center cursor-pointer hover:opacity-90"
@@ -267,7 +288,10 @@ const showIconCard = computed(()=>{
                   <img class="w-10" src="~/assets/img/cards/unfreeze.svg" alt="" />
                   <div>{{ t(`cards.slideovers.detail.button.unfreeze`) }}</div>
                 </div> -->
-                <div @click="handleCancel" class="flex flex-col gap-3 w-[50%] items-center cursor-pointer hover:opacity-90">
+                <div
+                  @click="handleCancel"
+                  class="flex flex-col gap-3 w-[50%] items-center cursor-pointer hover:opacity-90"
+                >
                   <img class="w-10" src="~/assets/img/cards/cancel.svg" alt="" />
                   <div>{{ t(`cards.slideovers.detail.button.cancel`) }}</div>
                 </div>
@@ -305,7 +329,9 @@ const showIconCard = computed(()=>{
                       class="cursor-pointer"
                       @click="handleCopy(0, cardSensitiveDetail?.card_number || '')"
                       :src="
-                        copied && copyIndex === 0 ? `/icons/common/copied-bordered.svg` : `/icons/common/copy-bordered.svg`
+                        copied && copyIndex === 0
+                          ? `/icons/common/copied-bordered.svg`
+                          : `/icons/common/copy-bordered.svg`
                       "
                       alt=""
                     />
@@ -320,7 +346,9 @@ const showIconCard = computed(()=>{
                       class="cursor-pointer"
                       @click="handleCopy(1, cardSensitiveDetail?.cvv || 'CVV')"
                       :src="
-                        copied && copyIndex === 1 ? `/icons/common/copied-bordered.svg` : `/icons/common/copy-bordered.svg`
+                        copied && copyIndex === 1
+                          ? `/icons/common/copied-bordered.svg`
+                          : `/icons/common/copy-bordered.svg`
                       "
                       alt=""
                     />
@@ -336,7 +364,9 @@ const showIconCard = computed(()=>{
                       class="cursor-pointer"
                       @click="handleCopy(2, cardDetail?.expiry_date)"
                       :src="
-                        copied && copyIndex === 2 ? `/icons/common/copied-bordered.svg` : `/icons/common/copy-bordered.svg`
+                        copied && copyIndex === 2
+                          ? `/icons/common/copied-bordered.svg`
+                          : `/icons/common/copy-bordered.svg`
                       "
                       alt=""
                     />
@@ -344,17 +374,19 @@ const showIconCard = computed(()=>{
                 </div>
                 <div class="flex flex-row justify-between text-14-500-20">
                   <div class="text-[#7A7D89]">{{ t(`cards.slideovers.detail.info.cardBalance`) }}</div>
-                  <div>{{ formatMoneyWithoutDecimals(roundTo(cardDetail?.balance,2), CommonCurrency.USD) }}</div>
+                  <div>{{ formatMoneyWithoutDecimals(roundTo(cardDetail?.balance, 2), CommonCurrency.USD) }}</div>
                 </div>
               </div>
               <!-- Analysis -->
-              <div class="text-[#1C1D23] font-semibold mt-8 text-[16px] leading-[24px]">{{ t(`cards.slideovers.detail.analysis.tilte`) }}</div>
+              <div class="text-[#1C1D23] font-semibold mt-8 text-[16px] leading-[24px]">
+                {{ t(`cards.slideovers.detail.analysis.tilte`) }}
+              </div>
               <div class="flex flex-row justify-between items-center mt-[14px] gap-8 mb-[30px]">
                 <div
                   class="w-[128px] h-[128px] relative flex-none"
                   ref="chartContainer"
                   @mousemove="handleMouseMove"
-                  @mouseleave="isWithdrawTooltipVisible = false;isBalanceTooltipVisible = false"
+                  @mouseleave="((isWithdrawTooltipVisible = false), (isBalanceTooltipVisible = false))"
                 >
                   <div class="chart flex items-center justify-center z-100" :style="chartClass">
                     <div class="balance-rate">{{ balanceRate }}%</div>
@@ -362,9 +394,11 @@ const showIconCard = computed(()=>{
                   <div
                     v-if="isWithdrawTooltipVisible && cardDetail?.total_withdraw"
                     :style="styleTooltipWithDraw"
-                    class="absolute -translate-y-1/2  bg-[#1C1D23] py-2 px-3 flex flex-row items-center gap-[6px] rounded-[8px]"
+                    class="absolute -translate-y-1/2 bg-[#1C1D23] py-2 px-3 flex flex-row items-center gap-[6px] rounded-[8px]"
                   >
-                    <div class="absolute top-1/2 left-[-5px] transform -translate-y-1/2 w-0 h-0 border-t-[5px] border-b-[5px] border-r-[5px] border-transparent border-r-black"></div>
+                    <div
+                      class="absolute top-1/2 left-[-5px] transform -translate-y-1/2 w-0 h-0 border-t-[5px] border-b-[5px] border-r-[5px] border-transparent border-r-black"
+                    ></div>
                     <div class="bg-[#FF5524] w-2 h-2 mx-[3px] rounded-full"></div>
                     <div class="w-[85px] text-[#A5A8B8] text-10-500-14">
                       {{ t(`cards.slideovers.detail.info.total_withdraw`) }}
@@ -377,9 +411,11 @@ const showIconCard = computed(()=>{
                   <div
                     v-if="isBalanceTooltipVisible"
                     :style="styleTooltipBalance"
-                    class="absolute  bg-[#1C1D23] py-2 px-3 flex flex-row items-center gap-[6px] rounded-[8px]"
+                    class="absolute bg-[#1C1D23] py-2 px-3 flex flex-row items-center gap-[6px] rounded-[8px]"
                   >
-                    <div class="absolute top-1/2 left-[-5px] transform -translate-y-1/2 w-0 h-0 border-t-[5px] border-b-[5px] border-r-[5px] border-transparent border-r-black"></div>
+                    <div
+                      class="absolute top-1/2 left-[-5px] transform -translate-y-1/2 w-0 h-0 border-t-[5px] border-b-[5px] border-r-[5px] border-transparent border-r-black"
+                    ></div>
                     <div class="bg-[#D7D9E5] w-2 h-2 mx-[3px] rounded-full"></div>
                     <div class="w-[85px] text-[#A5A8B8] text-10-500-14">
                       {{ t(`cards.slideovers.detail.info.balance`) }}
@@ -399,7 +435,7 @@ const showIconCard = computed(()=>{
                     <div class="bg-[#D7D9E5] w-2 h-2 mx-[3px] rounded-full"></div>
                     <div class="ml-1.5 w-[85px]">{{ t(`cards.slideovers.detail.info.total_top_up`) }}</div>
                     <div class="ml-auto text-[#1C1D23] text-14-500-20">
-                      ${{ formatMoneyWithoutDecimals(roundTo(cardDetail?.total_top_up,2)) }}
+                      ${{ formatMoneyWithoutDecimals(roundTo(cardDetail?.total_top_up, 2)) }}
                     </div>
                   </div>
                   <div class="flex flex-row items-center gap-4">
