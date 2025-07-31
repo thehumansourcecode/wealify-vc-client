@@ -2,7 +2,7 @@ import { CommonCountry } from '~/types/common'
 import { countryCodeOptions } from './constants'
 
 export function getCountryFlag(countryCode: CommonCountry) {
-  return countryCodeOptions.find(option => option.country === countryCode)?.flag
+  return countryCodeOptions.find(option => option.code === countryCode)?.image
 }
 
 export const getCountryCode = (country: CommonCountry) => {

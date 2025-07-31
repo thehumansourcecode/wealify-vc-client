@@ -234,7 +234,7 @@ async function handleEdit() {
                   searchable
                   searchable-placeholder="Search country"
                   option-attribute="name"
-                  value-attribute="country"
+                  value-attribute="code"
                   :ui-menu="{
                     select: 'cursor-pointer',
                     background: 'bg-white',
@@ -256,12 +256,12 @@ async function handleEdit() {
                 >
                   <template #option="{ option }">
                     <div class="flex flex-row gap-[10px]">
-                      <img :src="option.flag" alt="" />
+                      <img :src="option.image" class="w-[22px] h-[20px]" alt="" />
                       <div class="text-12-500-20">{{ option.name }}</div>
                     </div>
                   </template>
                   <div class="border border-r-0 py-[11px] rounded-l-[49px] pl-4 flex flex-row gap-[10px] w-[75px]">
-                    <img width="20" :src="getCountryFlag(form.country_code)" alt="" />
+                    <img class="w-[22px] h-[20px]" :src="getCountryFlag(form.country_code)" alt="" />
                     <img class="justify-self-end" src="assets/img/icons/dropdown.svg" alt="" />
                   </div>
                 </USelectMenu>
