@@ -5,7 +5,7 @@ definePageMeta({
 import { formatDDMMYYYY, formatDDMMYYYYHHMM, formatMoney } from '~/common/functions'
 import { CardCategory, CardStatus, CardType, type ICardDetail } from '~/types/cards'
 import { showToast, ToastType } from '~/common/functions'
-import {datetime} from '@/utils/datetime.utils'
+import { datetime } from '@/utils/datetime.utils'
 
 const { t } = useI18n()
 const dayjs = useDayjs()
@@ -26,8 +26,9 @@ const page = computed(() => payload.value.page)
 const limit = computed(() => payload.value.limit)
 const filterType = ref(undefined)
 const selected = ref(undefined)
-const { isVisibleConfirmFreeze,
-  isVisibleConfirmCancel, 
+const {
+  isVisibleConfirmFreeze,
+  isVisibleConfirmCancel,
   isVisibleConfirmUnfreeze,
   activeCardCount,
   isPreventClose,
@@ -151,7 +152,7 @@ async function onChangePage(page: number) {
   await getCardList()
 }
 
-async function handleClickCard(row) {
+async function handleClickCard(row: ICardDetail) {
   const id = row.id
   const selectedCardDetail = cardList.value.find((card: ICardDetail) => card.id === id)
   if (selectedCardDetail) {
@@ -181,8 +182,8 @@ watch(
 const dateRange = ref<[Date | undefined, Date | undefined]>([undefined, undefined])
 
 watch(dateRange, () => {
-  const start_date = dateRange.value[0] ? dateFormat(dateRange.value[0],'yyyy-MM-dd') : undefined
-  const end_date = dateRange.value[1] ? dateFormat(dateRange.value[1],'yyyy-MM-dd') : undefined
+  const start_date = dateRange.value[0] ? dateFormat(dateRange.value[0], 'yyyy-MM-dd') : undefined
+  const end_date = dateRange.value[1] ? dateFormat(dateRange.value[1], 'yyyy-MM-dd') : undefined
   if (payload.value.start_date == start_date && payload.value.end_date == end_date) {
     return
   }
@@ -213,7 +214,7 @@ watch(
   { deep: true },
 )
 
-watch(filterType, value => {
+watch(filterType, (value: { type: string } | undefined) => {
   if (value) {
     payload.value.card_type = value.type
     return
@@ -249,9 +250,9 @@ const handleFreeze = async () => {
   initPage()
 }
 
-const getIconCategory = ({ category }: any): string =>{
+const getIconCategory = ({ category }: any): string => {
   const name = category.replace(/[\/\s]/g, '-')
-  return `/icons/cards/category/${name}.svg`;
+  return `/icons/cards/category/${name}.svg`
 }
 
 const handleCancel = async () => {
@@ -477,10 +478,10 @@ onUnmounted(() =>
 
           <!-- Status -->
           <div class="col-span-1 sm:col-auto">
-            <BaseMultipleSelect 
-              class="w-full sm:w-[150px]" 
-              multiple 
-              :options="statusOptions" 
+            <BaseMultipleSelect
+              class="w-full sm:w-[150px]"
+              multiple
+              :options="statusOptions"
               v-model="payload.card_status"
             >
               <template #default="{ open: open }">
@@ -517,7 +518,7 @@ onUnmounted(() =>
               <template #option="{ option: status }">
                 <div class="flex flex-row gap-[9px]">
                   <UCheckbox
-                    @click.passive
+                    @click.prevent
                     :model-value="isStatusSelected(status)"
                     :ui="{
                       base: 'cursor-pointer',
@@ -610,179 +611,197 @@ onUnmounted(() =>
       <img @click="clearSelected" class="cursor-pointer hover:opacity-70" src="~/assets/img/common/close.svg" alt="" />
     </div>
     <div class="rounded-[12px] flex flex-col border border-[#D7D9E5] mb-8 w-full grow">
-        <!-- Table -->
-        <div v-if="!cardList?.length && !loading.cardTable"class="flex flex-col items-center justify-center gap-4 h-full grow">
-          <img src="~/assets/img/dashboard/no-transaction.svg" alt="" />
-          <div class="text-14-500-20 text-[#A5A8B8]">{{ t('cards.list.empty') }}</div>
-        </div>
-        <UTable
-          v-else
-          selectable
-          ref="tableRef"
-          :loading="loading.cardTable"
-          :loading-state="{ icon: 'i-heroicons-arrow-path-20-solid', label: 'Loading...' }"
-          v-model="selectedCardList"
-          :rows="cardList"
-          @select="handleClickCard"
-          :columns="cardTableColumns"
-          :ui="{
-            default: {
-              checkbox: {
-                color: '[#000000]',
-              },
-            },
-            divide: 'divide-y divide-[#D7D9E5]/0',
-            tbody: 'divide-y divide-[#D7D9E5]',
-            td: {
-              padding: 'px-2 sm:px-3 py-4',
-            },
+      <!-- Table -->
+      <div
+        v-if="!cardList?.length && !loading.cardTable"
+        class="flex flex-col items-center justify-center gap-4 h-full grow"
+      >
+        <img src="~/assets/img/dashboard/no-transaction.svg" alt="" />
+        <div class="text-14-500-20 text-[#A5A8B8]">{{ t('cards.list.empty') }}</div>
+      </div>
+      <UTable
+        v-else
+        selectable
+        ref="tableRef"
+        :loading="loading.cardTable"
+        :loading-state="{ icon: 'i-heroicons-arrow-path-20-solid', label: 'Loading...' }"
+        v-model="selectedCardList"
+        :rows="cardList"
+        @select="handleClickCard"
+        :columns="cardTableColumns"
+        :ui="{
+          default: {
             checkbox: {
-              padding: 'px-2 ps-2 sm:ps-4',
+              color: '[#000000]',
             },
-            tr: {
-              base: '',
-              padding: 'px-0 py-0',
-              selected: 'bg-[#F0F2F5]',
-            },
-            th: {
-              padding: 'px-2 sm:px-3 py-4',
-            },
-            thead: 'bg-[#FFEEE9]',
-            emptyState: {
-              label: 'text-md text-center',
-              icon: '',
-            },
-          }"
-          class="table-wrapper grow overflow-x-auto"
-        >
-          <template #card-data="{ row }">
-            <div class="flex flex-row items-center gap-2 sm:gap-[14px] min-w-[240px]">
-              <img src="/icons/dashboard/mastercard.svg" class="w-8 h-8 sm:w-auto sm:h-auto" alt="" />
-              <div class="flex flex-col gap-1">
-                <BaseTruncatedTooltip class="text-12 sm:text-14-600-20 text-[#1C1D23] max-w-[120px] sm:max-w-[180px]" :text="row?.card_name" />
-                <span class="text-11 sm:text-12-500-20 text-[#7A7D89]">
-                  {{ t(`cards.list.card_number`, { value: row?.last_four }) }}</span
-                >
-              </div>
-            </div>
-          </template>
-          <template #type-data="{ row }">
-            <div class="w-12 sm:w-16 flex justify-center">
-              <img :src="`/icons/cards/${row.card_type}.svg`" class="w-6 h-6 sm:w-auto sm:h-auto" alt="" />
-            </div>
-          </template>
-          <template #category-data="{ row }">
-            <div class="flex justify-center">
-              <div
-                class="px-3 sm:px-3 py-[2px] flex items-center justify-center rounded-[5px] gap-1 bg-[#F0F2F5] border border-[#D7D9E5]"
-                :style="{ background: isCardSelected(row) ? 'white' : '#F0F2F5' }"
+          },
+          divide: 'divide-y divide-[#D7D9E5]/0',
+          tbody: 'divide-y divide-[#D7D9E5]',
+          td: {
+            padding: 'px-2 sm:px-3 py-4',
+          },
+          checkbox: {
+            padding: 'px-2 ps-2 sm:ps-4',
+          },
+          tr: {
+            base: '',
+            padding: 'px-0 py-0',
+            selected: 'bg-[#F0F2F5]',
+          },
+          th: {
+            padding: 'px-2 sm:px-3 py-4',
+          },
+          thead: 'bg-[#FFEEE9]',
+          emptyState: {
+            label: 'text-md text-center',
+            icon: '',
+          },
+        }"
+        class="table-wrapper grow overflow-x-auto"
+      >
+        <template #card-data="{ row }">
+          <div class="flex flex-row items-center gap-2 sm:gap-[14px] min-w-[240px]">
+            <img src="/icons/dashboard/mastercard.svg" class="w-8 h-8 sm:w-auto sm:h-auto" alt="" />
+            <div class="flex flex-col gap-1">
+              <BaseTruncatedTooltip
+                class="text-12 sm:text-14-600-20 text-[#1C1D23] max-w-[120px] sm:max-w-[180px]"
+                :text="row?.card_name"
+              />
+              <span class="text-11 sm:text-12-500-20 text-[#7A7D89]">
+                {{ t(`cards.list.card_number`, { value: row?.last_four }) }}</span
               >
-                <div class="text-[#1C1D23] text-11 sm:text-12-500-20">{{ t(`cards.list.category.${row.category}`) }}</div>
-                <img :src="getIconCategory(row)" class="w-4 h-4 sm:w-auto sm:h-auto"/>
-              </div>
             </div>
-          </template>
-          <template #balance-data="{ row }">
-            <div class="text-14 sm:text-16-700-24 w-[120px] sm:w-[150px] text-[#1C1D23] text-center">${{ formatMoney(row.balance) }}</div>
-          </template>
-          <template #total_top_up-data="{ row }">
-            <div class="text-14 sm:text-16-700-24 w-[120px] sm:w-[150px] text-[#2EA518] text-center">
-              ${{ row.total_top_up ? formatMoney(row.total_top_up) : 0.00 }} 
-            </div>
-          </template>
-          <template #total_withdraw-data="{ row }">
-            <div class="text-14 sm:text-16-700-24 w-[120px] sm:w-[150px] text-[#ED2C38] text-center">${{ row.total_withdraw ? formatMoney(row.total_withdraw) : 0.00 }}</div>
-          </template>
-          <template #created_at-data="{ row }">
-            <div class="text-12 sm:text-14-500-20 w-[120px] sm:w-[150px] text-[#7A7D89] text-center">
-              {{ formatDDMMYYYY(dayjs.utc(row.created_at).local()) }}
-            </div>
-          </template>
-          <template #status-data="{ row }">
-            <div
-              class="flex flex-row gap-[6px] w-[90px] sm:w-[100px] items-center justify-center mx-auto px-2 sm:px-3 py-[2px] rounded-[110px]"
-              :style="{ color: getStatusColor(row?.card_status), background: isCardSelected(row) ? 'white' : '#F0F2F5' }"
-            >
-              <div class="text-11 sm:text-12-500-20">
-                {{ t(`cards.list.status.${row.card_status}`) }}
-              </div>
-              <div class="w-[4px] sm:w-[6px] h-[4px] sm:h-[6px] rounded-[1px]" :style="{ background: getStatusColor(row?.card_status) }"></div>
-            </div>
-          </template>
-          <template #action-data="{ row }">
-            <UButton
-              v-if="row.card_status === CardStatus.ACTIVE"
-              @click.stop="onClickTopup(row)"
-              class="flex items-center py-1 sm:py-[6px] px-2 sm:px-4 mx-2 sm:mx-4 bg-[#1C1D23] hover:bg-[#3D3E34] rounded-[6px]"
-            >
-              <div class="text-11 sm:text-12-600-20 text-white">
-                {{ t('cards.button.topup') }}
-              </div>
-            </UButton>
-            <div v-else class="w-[80px] sm:w-[104px]"></div>
-          </template>
-        </UTable>
-        <div class="flex flex-row justify-between sm:justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700 gap-3 sm:gap-10 items-center">
-          <USelectMenu
-            v-model="payload.limit"
-            :options="limitOptions"
-            class="hidden sm:block w-[150px] sm:w-auto"
-            :selected-icon="'i-selected'"
-          >
-            <template #option="{ option }">
-              <div class="text-14-500-20">{{ t(`cards.list.pagination.limit`, { limit: option }) }}</div>
-            </template>
-            <template #default="{ open: open }">
-              <div class="px-3 py-[6px] w-full rounded-[36px] border flex items-center justify-between">
-                <div class="text-14-500-20 text-[#1C1D23] w-[152px] px-2 py-1">
-                  {{ t(`cards.list.pagination.limit`, { limit: limit }) }}
-                </div>
-                <img
-                  src="/assets/img/icons/dropdown.svg"
-                  class="transition-transform"
-                  :class="[open && 'transform rotate-180']"
-                />
-              </div>
-            </template>
-          </USelectMenu>
-          <div class="flex-1 sm:flex-none flex justify-center sm:justify-end">
-            <BasePagination
-              @update:model-value="onChangePage"
-              :model-value="payload.page"
-              :limit="payload.limit"
-              :total="cardCount"
-            />
           </div>
+        </template>
+        <template #type-data="{ row }">
+          <div class="flex justify-center w-[100px] sm:w-[120px]">
+            <!-- <img :src="`/icons/cards/${row.card_type}.svg`" class="w-6 h-6 sm:w-auto sm:h-auto" alt="" /> -->
+            <div class="text-[#7A7D89]">
+              {{ t(`cards.list.type.${row.card_type}`) }}
+            </div>
+          </div>
+        </template>
+        <template #category-data="{ row }">
+          <div class="flex justify-center">
+            <div
+              class="px-3 sm:px-3 py-[2px] flex items-center justify-center rounded-[5px] gap-1 bg-[#F0F2F5] border border-[#D7D9E5]"
+              :style="{ background: isCardSelected(row) ? 'white' : '#F0F2F5' }"
+            >
+              <div class="text-[#1C1D23] text-11 sm:text-12-500-20">{{ t(`cards.list.category.${row.category}`) }}</div>
+              <img :src="getIconCategory(row)" class="w-4 h-4 sm:w-auto sm:h-auto" />
+            </div>
+          </div>
+        </template>
+        <template #balance-data="{ row }">
+          <div class="text-14 sm:text-16-700-24 w-[120px] sm:w-[150px] text-[#1C1D23] text-center">
+            ${{ formatMoney(row.balance) }}
+          </div>
+        </template>
+        <template #total_top_up-data="{ row }">
+          <div class="text-14 sm:text-16-700-24 w-[120px] sm:w-[150px] text-[#2EA518] text-center">
+            ${{ row.total_top_up ? formatMoney(row.total_top_up) : 0.0 }}
+          </div>
+        </template>
+        <template #total_withdraw-data="{ row }">
+          <div class="text-14 sm:text-16-700-24 w-[120px] sm:w-[150px] text-[#ED2C38] text-center">
+            ${{ row.total_withdraw ? formatMoney(row.total_withdraw) : 0.0 }}
+          </div>
+        </template>
+        <template #created_at-data="{ row }">
+          <div class="text-12 sm:text-14-500-20 w-[120px] sm:w-[150px] text-[#7A7D89] text-center">
+            {{ formatDDMMYYYY(dayjs.utc(row.created_at).local()) }}
+          </div>
+        </template>
+        <template #status-data="{ row }">
+          <div
+            class="flex flex-row gap-[6px] w-[90px] sm:w-[100px] items-center justify-center mx-auto px-2 sm:px-3 py-[2px] rounded-[110px]"
+            :style="{ color: getStatusColor(row?.card_status), background: isCardSelected(row) ? 'white' : '#F0F2F5' }"
+          >
+            <div class="text-11 sm:text-12-500-20">
+              {{ t(`cards.list.status.${row.card_status}`) }}
+            </div>
+            <div
+              class="w-[4px] sm:w-[6px] h-[4px] sm:h-[6px] rounded-[1px]"
+              :style="{ background: getStatusColor(row?.card_status) }"
+            ></div>
+          </div>
+        </template>
+        <template #action-data="{ row }">
+          <UButton
+            v-if="row.card_status === CardStatus.ACTIVE"
+            @click.stop="onClickTopup(row)"
+            class="flex items-center py-1 sm:py-[6px] px-2 sm:px-4 mx-2 sm:mx-4 bg-[#1C1D23] hover:bg-[#3D3E34] rounded-[6px]"
+          >
+            <div class="text-11 sm:text-12-600-20 text-white">
+              {{ t('cards.button.topup') }}
+            </div>
+          </UButton>
+          <div v-else class="w-[80px] sm:w-[104px]"></div>
+        </template>
+      </UTable>
+      <div
+        class="flex flex-row justify-between sm:justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700 gap-3 sm:gap-10 items-center"
+      >
+        <USelectMenu
+          v-model="payload.limit"
+          :options="limitOptions"
+          class="hidden sm:block w-[150px] sm:w-auto"
+          :selected-icon="'i-selected'"
+        >
+          <template #option="{ option }">
+            <div class="text-14-500-20">{{ t(`cards.list.pagination.limit`, { limit: option }) }}</div>
+          </template>
+          <template #default="{ open: open }">
+            <div class="px-3 py-[6px] w-full rounded-[36px] border flex items-center justify-between">
+              <div class="text-14-500-20 text-[#1C1D23] w-[152px] px-2 py-1">
+                {{ t(`cards.list.pagination.limit`, { limit: limit }) }}
+              </div>
+              <img
+                src="/assets/img/icons/dropdown.svg"
+                class="transition-transform"
+                :class="[open && 'transform rotate-180']"
+              />
+            </div>
+          </template>
+        </USelectMenu>
+        <div class="flex-1 sm:flex-none flex justify-center sm:justify-end">
+          <BasePagination
+            @update:model-value="onChangePage"
+            :model-value="payload.page"
+            :limit="payload.limit"
+            :total="cardCount"
+          />
         </div>
-        <ConfirmModal
-          v-model="isVisibleConfirmFreeze"
-          @confirm="handleFreeze"
-          :title="t('cards.modals.freeze.title')"
-          :message="t('cards.modals.freeze.message')"
-          :confirm-label="t('cards.modals.freeze.label.confirm')"
-          :cancel-label="t('cards.modals.freeze.label.cancel')"
-          :loading="cardStore.isLoading.freezeCard"
-        />
+      </div>
+      <ConfirmModal
+        v-model="isVisibleConfirmFreeze"
+        @confirm="handleFreeze"
+        :title="t('cards.modals.freeze.title')"
+        :message="t('cards.modals.freeze.message')"
+        :confirm-label="t('cards.modals.freeze.label.confirm')"
+        :cancel-label="t('cards.modals.freeze.label.cancel')"
+        :loading="cardStore.isLoading.freezeCard"
+      />
 
-        <ConfirmModal
-          v-model="isVisibleConfirmCancel"
-          @confirm="handleCancel"
-          :title="t('cards.modals.cancel.title')"
-          :message="t('cards.modals.cancel.message')"
-          :confirm-label="t('cards.modals.cancel.label.confirm')"
-          :cancel-label="t('cards.modals.cancel.label.cancel')"
-          :bg-confirm="`!bg-[#ED2C38] hover:bg-[#ED2C38]`"
-          :loading="cardStore.isLoading.cancelCard"
-        />
-        <ConfirmModal
-          v-model="isVisibleConfirmUnfreeze"
-          @confirm="handleUnfreeze"
-          :title="t('cards.modals.unfreeze.title')"
-          :message="t('cards.modals.unfreeze.message')"
-          :confirm-label="t('cards.modals.unfreeze.label.confirm')"
-          :cancel-label="t('cards.modals.unfreeze.label.cancel')"
-          :loading="cardStore.isLoading.unfreezeCard"
-        />
+      <ConfirmModal
+        v-model="isVisibleConfirmCancel"
+        @confirm="handleCancel"
+        :title="t('cards.modals.cancel.title')"
+        :message="t('cards.modals.cancel.message')"
+        :confirm-label="t('cards.modals.cancel.label.confirm')"
+        :cancel-label="t('cards.modals.cancel.label.cancel')"
+        :bg-confirm="`!bg-[#ED2C38] hover:bg-[#ED2C38]`"
+        :loading="cardStore.isLoading.cancelCard"
+      />
+      <ConfirmModal
+        v-model="isVisibleConfirmUnfreeze"
+        @confirm="handleUnfreeze"
+        :title="t('cards.modals.unfreeze.title')"
+        :message="t('cards.modals.unfreeze.message')"
+        :confirm-label="t('cards.modals.unfreeze.label.confirm')"
+        :cancel-label="t('cards.modals.unfreeze.label.cancel')"
+        :loading="cardStore.isLoading.unfreezeCard"
+      />
     </div>
   </div>
 </template>

@@ -60,7 +60,7 @@ function handleClickTransaction(row: ITransactionData) {
   transactionStore.toggleTransactionDetailSlideover(true)
 }
 
-const getTransactionWallet = (network, token) => {
+const getTransactionWallet = (network: TransactionNetwork, token: string) => {
   switch (network) {
     case TransactionNetwork.ETHEREUM:
       return `${token} (ETHEREUM)`
