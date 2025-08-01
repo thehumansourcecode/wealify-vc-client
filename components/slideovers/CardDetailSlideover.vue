@@ -188,7 +188,7 @@ const showIconCard = computed(() => {
           <div class="flex flex-col slideover-content w-full">
             <!-- Card -->
             <div
-              class="w-[calc(100%-32px)] sm:w-[400px] h-[180px] sm:h-[220px] rounded-[21px] flex flex-none flex-col items-start bg-[url(~/assets/img/cards/card-bg.svg)] bg-right pt-3 sm:pt-[18px] pb-4 sm:pb-6 pl-3 sm:pl-5 pr-6 sm:pr-10 mx-4 sm:mx-8 mb-6 sm:mb-8"
+              class="w-[calc(100%-32px)] sm:w-[400px] h-[180px] sm:h-[220px] rounded-[21px] flex flex-none flex-col items-start bg-[url(~/assets/img/cards/ad_card.svg)] bg-right pt-3 sm:pt-[18px] pb-4 sm:pb-6 pl-3 sm:pl-5 pr-6 sm:pr-10 mx-4 sm:mx-8 mb-6 sm:mb-8"
               :class="{
                 '!bg-[url(~/assets/img/cards/card-bg-canceled.svg)]': cardDetail?.card_status === CardStatus.CANCELLED,
                 '!bg-[url(~/assets/img/cards/card-bg-freeze.svg)]': cardDetail?.card_status === CardStatus.FROZEN,
@@ -209,7 +209,8 @@ const showIconCard = computed(() => {
                   />
                 </div>
               </div>
-              <div
+              <div class="text-20-500-32 text-[#FFFFFF] mt-3 w-full max-w-[360px]">Kanoha Limited</div>
+              <!-- <div
                 v-if="cardDetail?.card_status === CardStatus.CANCELLED"
                 class="pull-left mt-auto ml-0 mb-2 sm:mb-3 w-[70px] sm:w-[76px] h-[20px] sm:h-[24px] gap-[6px] bg-[#FFE3EF] items-center justify-center mx-auto px-2 sm:px-3 py-[2px] rounded-[110px] flex flex-row"
               >
@@ -227,8 +228,8 @@ const showIconCard = computed(() => {
                 class="mt-auto mb-2 sm:mb-3 w-[90px] sm:w-[110px]"
                 src="~/assets/img/cards/add-to-apple.png"
                 alt=""
-              />
-              <div class="karla tracking-[2px] sm:tracking-[3px] text-lg sm:text-24-400 text-[#D7D9E5] w-full">
+              /> -->
+              <div class="mt-auto karla tracking-[2px] sm:tracking-[3px] text-lg sm:text-24-400 text-[#D7D9E5] w-full">
                 <div class="flex flex-row justify-between w-full" v-if="isShowCardSensitiveDetail">
                   <div v-for="(part, index) in cardNumberArray" :key="index">
                     {{ part }}
