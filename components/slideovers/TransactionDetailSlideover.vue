@@ -195,12 +195,9 @@ const getTransactionLinkTo = async () => {
                 transactionDetail?.detailType === TransactionDetailType.CARD_PAYMENT
                   ? t(`transactions.detail.amount.${transactionDetail?.detailType}`, {
                       currency: transactionDetail.confirm_transaction?.raw_data?.destination_currency,
-                      amount: formatMoney(
-                        roundTo(
-                          transactionDetail.confirm_transaction?.raw_data?.fx_rate * transactionDetail?.amount,
-                          0,
-                        ),
-                      ),
+                      amount: parseFloat(
+                        transactionDetail.confirm_transaction?.raw_data?.fx_rate * transactionDetail?.amount,
+                      ).toFixed(2),
                     })
                   : t(`transactions.detail.amount.${transactionDetail?.detailType}`, {
                       currency:
@@ -236,7 +233,7 @@ const getTransactionLinkTo = async () => {
                     : transactionDetail?.detailType === TransactionDetailType.CARD_PAYMENT
                       ? t(`transactions.detail.rateValue`, {
                           currency: transactionDetail.confirm_transaction?.raw_data?.destination_currency,
-                          rateUSDT: formatAmount(roundTo(transactionDetail.confirm_transaction?.raw_data?.fx_rate, 0)),
+                          rateUSDT: parseFloat(transactionDetail.confirm_transaction?.raw_data?.fx_rate.toFixed(2)),
                           rateUSD: 1,
                         })
                       : t(`transactions.detail.rateValue`, {

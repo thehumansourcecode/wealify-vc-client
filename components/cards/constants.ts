@@ -103,13 +103,6 @@ export const countryCodeOptions = [
     "slug": "aruba"
   },
   {
-    "name": "Ascension Island",
-    "code": "AC",
-    "emoji": "🇦🇨",
-    "image": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ac.svg",
-    "slug": "ascension-island"
-  },
-  {
     "name": "Australia",
     "code": "AU",
     "emoji": "🇦🇺",
