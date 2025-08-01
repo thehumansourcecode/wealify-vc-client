@@ -219,7 +219,8 @@ const getTransactionLinkTo = async () => {
                 v-if="
                   transactionDetail?.detailType === TransactionDetailType.CARD_PAYMENT ||
                   transactionDetail?.detailType === TransactionDetailType.WALLET_TOP_UP ||
-                  transactionDetail?.detailType === TransactionDetailType.CARD_CRYPTO_TOP_UP
+                  transactionDetail?.detailType === TransactionDetailType.CARD_CRYPTO_TOP_UP ||
+                  transactionDetail?.detailType === TransactionDetailType.CARD_REFUND
                 "
               >
                 {{
@@ -230,7 +231,8 @@ const getTransactionLinkTo = async () => {
                         rateUSDT: formatAmount(transactionDetail?.rate.value),
                         rateUSD: 1,
                       })
-                    : transactionDetail?.detailType === TransactionDetailType.CARD_PAYMENT
+                    : transactionDetail?.detailType === TransactionDetailType.CARD_PAYMENT ||
+                        transactionDetail?.detailType === TransactionDetailType.CARD_REFUND
                       ? t(`transactions.detail.rateValue`, {
                           currency: transactionDetail.confirm_transaction?.raw_data?.destination_currency,
                           rateUSDT: parseFloat(transactionDetail.confirm_transaction?.raw_data?.fx_rate?.toFixed(2)),
