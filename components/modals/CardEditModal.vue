@@ -38,11 +38,16 @@ const form = reactive<IEditCardParams>({
 })
 
 const formatPhoneNumber = (target: HTMLInputElement) => {
-  const rawValue = Number(target.value)
-  if (Number.isNaN(Number(rawValue))) {
+  let rawValue = target.value.trim()
+
+  const phoneRegex = /^\+?\d*$/
+
+  if (!phoneRegex.test(rawValue)) {
     target.value = ''
     return
   }
+
+  target.value = rawValue.replace(/[^\d+]/g, '')
 }
 
 const handleInputPhoneNumber = async (event: InputEvent) => {

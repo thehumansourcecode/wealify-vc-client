@@ -38,12 +38,16 @@ const closeModal = () => {
 }
 
 const formatPhoneNumber = (target: HTMLInputElement) => {
-  target.value = target.value.replace(/\s+/g, '')
-  const rawValue = Number(target.value)
-  if (Number.isNaN(Number(rawValue))) {
-    target.value = target.value.replace(/\D/g, '')
+  let rawValue = target.value.trim()
+
+  const phoneRegex = /^\+?\d*$/
+
+  if (!phoneRegex.test(rawValue)) {
+    target.value = ''
     return
   }
+
+  target.value = rawValue.replace(/[^\d+]/g, '')
 }
 
 const handleInputPhoneNumber = async (event: InputEvent) => {

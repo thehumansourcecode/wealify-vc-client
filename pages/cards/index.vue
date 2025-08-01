@@ -661,7 +661,7 @@ onUnmounted(() =>
       >
         <template #card-data="{ row }">
           <div class="flex flex-row items-center gap-2 sm:gap-[14px] min-w-[240px]">
-            <img src="/icons/dashboard/mastercard.svg" class="w-8 h-8 sm:w-auto sm:h-auto" alt="" />
+            <img :src="`/images/cards/${row.card_type}.png`" class="w-8 h-8 sm:w-auto sm:h-auto" alt="" />
             <div class="flex flex-col gap-1">
               <BaseTruncatedTooltip
                 class="text-12 sm:text-14-600-20 text-[#1C1D23] max-w-[120px] sm:max-w-[180px]"
