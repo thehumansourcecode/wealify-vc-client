@@ -188,10 +188,10 @@ const showIconCard = computed(() => {
           <div class="flex flex-col slideover-content w-full">
             <!-- Card -->
             <div
-              class="w-[calc(100%-32px)] sm:w-[400px] h-[180px] sm:h-[220px] rounded-[21px] flex flex-none flex-col items-start bg-[url(~/assets/img/cards/ad_card.svg)] bg-right pt-3 sm:pt-[18px] pb-4 sm:pb-6 pl-3 sm:pl-5 pr-6 sm:pr-10 mx-4 sm:mx-8 mb-6 sm:mb-8"
+              class="w-[calc(100%-32px)] sm:w-[400px] h-[180px] sm:h-[220px] rounded-[21px] flex flex-none flex-col items-start bg-[url(~/assets/img/cards/active-card.png)] bg-right pt-3 sm:pt-[18px] pb-4 sm:pb-6 pl-3 sm:pl-5 pr-6 sm:pr-10 mx-4 sm:mx-8 mb-6 sm:mb-8"
               :class="{
-                '!bg-[url(~/assets/img/cards/card-bg-canceled.svg)]': cardDetail?.card_status === CardStatus.CANCELLED,
-                '!bg-[url(~/assets/img/cards/card-bg-freeze.svg)]': cardDetail?.card_status === CardStatus.FROZEN,
+                '!bg-[url(~/assets/img/cards/cancel-card.png)]': cardDetail?.card_status === CardStatus.CANCELLED,
+                '!bg-[url(~/assets/img/cards/freeze-card.png)]': cardDetail?.card_status === CardStatus.FROZEN,
               }"
             >
               <div class="flex flex-row gap-2 sm:gap-3">
