@@ -21,8 +21,8 @@ export function getStatusColor(status: TransactionVCStatus) {
   }
   if (status === TransactionVCStatus.PENDING) {
     return {
-      color: '#7A7D89',
-      background: '#E6E8ED',
+      color: '#FDA707',
+      background: '#FFEFD0',
     }
   }
   if (status === TransactionVCStatus.CANCEL) {
