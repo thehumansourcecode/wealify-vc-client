@@ -92,7 +92,7 @@ export default {
       [TransactionDetailType.CARD_CRYPTO_TOP_UP]: 'Top up amount',
       [TransactionDetailType.CARD_ISSUE_TOPUP]: 'Top up amount',
       [TransactionDetailType.CARD_WITHDRAW]: 'Withdraw amount',
-      [TransactionDetailType.CARD_REFUND]: 'Refund amount',
+      [TransactionDetailType.CARD_REFUND]: 'Merchant refunded',
       [TransactionDetailType.WALLET_TOP_UP]: 'Top up amount',
       [TransactionDetailType.WALLET_WITHDRAW]: 'Withdraw amount',
       [TransactionDetailType.WALLET_ISSUE_WITHDRAW]: 'Withdraw amount',

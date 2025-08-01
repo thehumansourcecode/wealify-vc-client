@@ -141,7 +141,7 @@ const getTransactionLinkTo = async () => {
               {{ t(`transactions.detail.label.${transactionDetail?.detailType}`) }}
             </div>
             <div class="text-32-700-44 text-[#FF5524]">
-              {{ formatMoney(transactionDetail.received_amount, CommonCurrency.USD) }}
+              {{ formatMoney(Math.abs(transactionDetail?.received_amount), CommonCurrency.USD) }}
             </div>
             <div class="text-12-500-20 text-[#7A7D89]">
               {{ transactionDetail?.detailType === TransactionDetailType.CARD_REFUND ? 'from' : 'to' }}
@@ -197,7 +197,7 @@ const getTransactionLinkTo = async () => {
                   ? t(`transactions.detail.amount.${transactionDetail?.detailType}`, {
                       currency: transactionDetail.confirm_transaction?.raw_data?.destination_currency,
                       amount: parseFloat(
-                        transactionDetail.confirm_transaction?.raw_data?.fx_rate * transactionDetail?.amount,
+                        transactionDetail.confirm_transaction?.raw_data?.fx_rate * Math.abs(transactionDetail?.amount),
                       )?.toFixed(2),
                     })
                   : t(`transactions.detail.amount.${transactionDetail?.detailType}`, {
@@ -290,7 +290,8 @@ const getTransactionLinkTo = async () => {
             v-if="
               transactionDetail?.detailType !== TransactionDetailType.WALLET_TOP_UP &&
               transactionDetail?.detailType !== TransactionDetailType.CARD_PAYMENT &&
-              transactionDetail?.detailType !== TransactionDetailType.CARD_CRYPTO_TOP_UP
+              transactionDetail?.detailType !== TransactionDetailType.CARD_CRYPTO_TOP_UP &&
+              transactionDetail?.transaction_linked_id
             "
           >
             <div
