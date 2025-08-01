@@ -359,7 +359,7 @@ onUnmounted(() =>
       <!-- Filters -->
       <div class="flex flex-col sm:flex-row gap-3 sm:gap-5 items-start sm:items-center">
         <!-- Grid container for mobile -->
-        <div class="grid grid-cols-2 sm:flex sm:flex-row sm:flex-wrap gap-3 sm:gap-5 w-full">
+        <div class="grid grid-cols-2 sm:flex sm:flex-row sm:flex-wrap gap-3 sm:gap-5 w-full items-center">
           <!-- Date Picker -->
           <div class="col-span-1 sm:col-auto">
             <DatePicker v-model="dateRange" class="w-full sm:w-auto" />

@@ -192,7 +192,8 @@ const getTransactionLinkTo = async () => {
             </div>
             <div class="text-16-700-24 text-[#1C1D23]">
               {{
-                transactionDetail?.detailType === TransactionDetailType.CARD_PAYMENT
+                transactionDetail?.detailType === TransactionDetailType.CARD_PAYMENT ||
+                transactionDetail?.detailType === TransactionDetailType.CARD_REFUND
                   ? t(`transactions.detail.amount.${transactionDetail?.detailType}`, {
                       currency: transactionDetail.confirm_transaction?.raw_data?.destination_currency,
                       amount: parseFloat(
@@ -289,15 +290,14 @@ const getTransactionLinkTo = async () => {
             v-if="
               transactionDetail?.detailType !== TransactionDetailType.WALLET_TOP_UP &&
               transactionDetail?.detailType !== TransactionDetailType.CARD_PAYMENT &&
-              transactionDetail?.detailType !== TransactionDetailType.CARD_CRYPTO_TOP_UP &&
-              transactionDetail?.detailType !== TransactionDetailType.CARD_REFUND
+              transactionDetail?.detailType !== TransactionDetailType.CARD_CRYPTO_TOP_UP
             "
           >
             <div
               class="flex flex-row text-12-500-20 text-[#7A7D89] gap-[2px] cursor-pointer"
               @click="getTransactionLinkTo"
             >
-              {{ t(`transactions.detail.id2.${transactionDetail.detailType}`) }}
+              {{ t(`transactions.detail.id2.${transactionDetail.detailType}`) }}&nbsp;
               <Icon name="heroicons:arrow-top-right-on-square" class="w-4 h-4 text-blue-500 opacity-50" />
             </div>
             <div class="flex flex-row gap-2 items-center">

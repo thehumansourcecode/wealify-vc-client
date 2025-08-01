@@ -137,6 +137,7 @@ export default {
       [TransactionDetailType.CARD_TOP_UP]: 'Wallet Withdraw ID',
       [TransactionDetailType.CARD_ISSUE_TOPUP]:'Wallet Withdraw ID',
       [TransactionDetailType.CARD_WITHDRAW]: 'Wallet Top up ID',
+      [TransactionDetailType.CARD_REFUND]: 'Card payment ID',
       [TransactionDetailType.WALLET_TOP_UP]: 'Card Withdraw ID',
       [TransactionDetailType.WALLET_WITHDRAW]: 'Card Top up ID',
       [TransactionDetailType.WALLET_ISSUE_WITHDRAW]: 'Card Top up ID',
