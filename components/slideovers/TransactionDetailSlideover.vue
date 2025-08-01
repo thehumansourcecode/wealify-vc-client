@@ -197,7 +197,7 @@ const getTransactionLinkTo = async () => {
                       currency: transactionDetail.confirm_transaction?.raw_data?.destination_currency,
                       amount: parseFloat(
                         transactionDetail.confirm_transaction?.raw_data?.fx_rate * transactionDetail?.amount,
-                      ).toFixed(2),
+                      )?.toFixed(2),
                     })
                   : t(`transactions.detail.amount.${transactionDetail?.detailType}`, {
                       currency:
@@ -233,7 +233,7 @@ const getTransactionLinkTo = async () => {
                     : transactionDetail?.detailType === TransactionDetailType.CARD_PAYMENT
                       ? t(`transactions.detail.rateValue`, {
                           currency: transactionDetail.confirm_transaction?.raw_data?.destination_currency,
-                          rateUSDT: parseFloat(transactionDetail.confirm_transaction?.raw_data?.fx_rate.toFixed(2)),
+                          rateUSDT: parseFloat(transactionDetail.confirm_transaction?.raw_data?.fx_rate?.toFixed(2)),
                           rateUSD: 1,
                         })
                       : t(`transactions.detail.rateValue`, {

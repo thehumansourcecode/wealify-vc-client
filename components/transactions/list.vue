@@ -93,6 +93,7 @@ const getCoinLogo = (network: string, token: string) => {
     :loading-state="{ icon: 'i-heroicons-arrow-path-20-solid', label: 'Loading...' }"
     :rows="transactionList"
     :columns="transactionTableColumns"
+    @select="handleClickTransaction"
     :ui="{
       default: {
         checkbox: {

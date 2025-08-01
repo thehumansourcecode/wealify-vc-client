@@ -338,7 +338,7 @@ onUnmounted(() =>
           autocomplete="off"
         />
         <!-- Button group chỉ hiện trên PC -->
-        <div class="flex flex-row gap-[10px] justify-between hidden sm:flex">
+        <div class="flex-row gap-[10px] justify-between hidden sm:flex">
           <UButton
             class="flex items-center justify-center rounded-[49px] bg-[#F0F2F5] hover:bg-[#E1E3E6] px-3 sm:px-4 py-2 sm:py-3 w-[120px] sm:w-[168px] cursor-not-allowed"
           >
