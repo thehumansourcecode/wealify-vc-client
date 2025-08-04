@@ -538,7 +538,7 @@ watch(
         </div>
         <div class="mt-5">
           <div
-            class="w-full max-w-[399px] h-[219px] rounded-[21px] flex flex-col items-start overflow-hidden bg-[url(~/assets/img/cards/ad_card.svg)] bg-left pt-5 pb-6 pl-4 pr-6"
+            class="w-full max-w-[399px] h-[219px] rounded-[21px] flex flex-col items-start overflow-hidden bg-[url(~/assets/img/cards/active-card.png)] bg-left pt-5 pb-6 pl-4 pr-6"
           >
             <img src="~/assets/img/cards/card-logo.svg" alt="" />
             <div class="text-20-500-32 text-[#FFFFFF] mt-5 w-full max-w-[360px]">Kanoha Limited</div>
