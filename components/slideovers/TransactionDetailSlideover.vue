@@ -1,113 +1,3 @@
-<script setup lang="ts">
-import { formatMoney, shortenAddress } from '~/common/functions'
-import { formatYYYYMMDDhmmA } from '~/common/functions'
-import { CommonCurrency, FeeAmountType } from '~/types/common'
-import { TransactionDetailType, TransactionVCType } from '~/types/transactions'
-import { formatAmount } from '~/utils/amount.util'
-import { TransactionNetwork } from '~/types/dashboard'
-
-const { copy, copied } = useClipboard()
-const { t } = useI18n()
-const toast = useToast()
-
-const dashboardStore = useDashboardStore()
-
-const dayjs = useDayjs()
-
-const copyIndex = ref(0)
-
-const isShowFullCardNumber = ref(false)
-
-const transactionStore = useTransactionStore()
-const isOpenTransactionDetailSlideover = computed(() => transactionStore.isOpenTransactionDetailSlideover)
-const transactionDetail = computed(() => transactionStore.selectedTransactionDetail)
-
-const cardNumberArray = computed(() => transactionDetail.value?.virtual_card?.card_number?.match(/.{1,4}/g).join(' '))
-
-function copyTransactionId() {
-  if (!transactionDetail.value) return
-  copy(transactionDetail.value.transaction_id)
-  copyIndex.value = 0
-
-  toast.clear()
-  toast.add({
-    title: t('common.toast.copy'),
-    avatar: { src: '/icons/common/toast-success.svg' },
-    timeout: 5000,
-  })
-}
-
-function copyTransactionLinkId() {
-  if (!transactionDetail.value) return
-  copy(transactionDetail.value.transaction_linked?.transaction_id)
-  copyIndex.value = 2
-
-  toast.clear()
-  toast.add({
-    title: t('common.toast.copy'),
-    avatar: { src: '/icons/common/toast-success.svg' },
-    timeout: 5000,
-  })
-}
-
-function copyTransactionAddress() {
-  copy(transactionDetail.value.crypto_wallet.address)
-  copyIndex.value = 1
-
-  toast.clear()
-  toast.add({
-    title: t('common.toast.copy'),
-    avatar: { src: '/icons/common/toast-success.svg' },
-    timeout: 5000,
-  })
-}
-
-function onClosePrevented() {
-  transactionStore.toggleTransactionDetailSlideover(false)
-}
-
-function handleNewTransaction() {
-  transactionStore.toggleTransactionDetailSlideover(false)
-  dashboardStore.toggleWalletTopupModal(true)
-}
-
-const transactionDestination = computed(() => {})
-
-const getLinkTxhash = (network: TransactionNetwork, tx_id: string) => {
-  switch (network) {
-    case TransactionNetwork.ETHEREUM:
-      return `<a target='_blank' href="https://etherscan.io/tx/${tx_id}">etherscan.io</a>`
-    case TransactionNetwork.SOLANA:
-      return `<a target='_blank' href="https://solscan.io/tx/${tx_id}">solscan.io</a>`
-    case TransactionNetwork.TRON:
-      return `<a target='_blank' href="https://tronscan.org/#/searcherror/${tx_id}">tronscan.org</a>`
-  }
-}
-
-const getWallet = (network: TransactionNetwork) => {
-  switch (network) {
-    case TransactionNetwork.ETHEREUM:
-      return `Ethereum (ETH)`
-    case TransactionNetwork.SOLANA:
-      return `Solana (SOL)`
-    case TransactionNetwork.TRON:
-      return `Tron (TRX)`
-  }
-}
-
-const getTransactionLinkTo = async () => {
-  const id = transactionDetail.value?.transaction_linked?.id
-  if (!id) {
-    return
-  }
-  const result = await transactionStore.getTransaction(id)
-  if (result.success) {
-    transactionStore.setSelectedTransactionDetail(result.transaction)
-    return
-  }
-}
-</script>
-
 <template>
   <USlideover
     v-if="transactionDetail"
@@ -139,6 +29,16 @@ const getTransactionLinkTo = async () => {
           <div class="flex-col gap-[6px]">
             <div class="uppercase text-[#1C1D23] text-14-500-20">
               {{ t(`transactions.detail.label.${transactionDetail?.detailType}`) }}
+              <UBadge
+                v-if="
+                  transactionDetail?.detailType === TransactionDetailType.CARD_PAYMENT &&
+                  transactionDetail?.transaction_linked_id
+                "
+                color="gray"
+                variant="solid"
+                class="normal-case ml-2 px-3"
+                >Refund</UBadge
+              >
             </div>
             <div class="text-32-700-44 text-[#FF5524]">
               {{ formatMoney(Math.abs(transactionDetail?.received_amount), CommonCurrency.USD) }}
@@ -286,20 +186,22 @@ const getTransactionLinkTo = async () => {
           </div>
 
           <div
-            class="flex flex-row justify-between items-center pb-4"
+            class="flex flex-row justify-between items-center pb-4 relative"
             v-if="
               transactionDetail?.detailType !== TransactionDetailType.WALLET_TOP_UP &&
-              transactionDetail?.detailType !== TransactionDetailType.CARD_PAYMENT &&
               transactionDetail?.detailType !== TransactionDetailType.CARD_CRYPTO_TOP_UP &&
               transactionDetail?.transaction_linked_id
             "
           >
-            <div
-              class="flex flex-row text-12-500-20 text-[#7A7D89] gap-[2px] cursor-pointer"
-              @click="getTransactionLinkTo"
-            >
-              {{ t(`transactions.detail.id2.${transactionDetail.detailType}`) }}&nbsp;
-              <Icon name="heroicons:arrow-top-right-on-square" class="w-4 h-4 text-blue-500 opacity-50" />
+            <div class="flex flex-row text-12-500-20" @click="getTransactionLinkTo">
+              <div class="flex absolute flex-col items-center space-y-[3px] bottom-[25px]">
+                <div v-for="n in 4" :key="n" class="w-[2px] h-[5px] bg-gray-400 rounded-full"></div>
+                <div class="w-[6px] h-[6px] bg-gray-400 rounded-full"></div>
+              </div>
+              <span class="text-[#5268E1] underline cursor-pointer ml-3 flex items-center gap-1">
+                {{ t(`transactions.detail.id2.${transactionDetail.detailType}`) }}
+                <Icon name="mdi:arrow-top-right" class="w-4 h-4 text-[#5268E1]" />
+              </span>
             </div>
             <div class="flex flex-row gap-2 items-center">
               <div class="text-14-500-20 text-[#1C1D23]">
@@ -498,7 +400,115 @@ const getTransactionLinkTo = async () => {
     </div>
   </USlideover>
 </template>
+<script setup lang="ts">
+import { formatMoney, shortenAddress } from '~/common/functions'
+import { formatYYYYMMDDhmmA } from '~/common/functions'
+import { CommonCurrency, FeeAmountType } from '~/types/common'
+import { TransactionDetailType, TransactionVCType } from '~/types/transactions'
+import { formatAmount } from '~/utils/amount.util'
+import { TransactionNetwork } from '~/types/dashboard'
 
+const { copy, copied } = useClipboard()
+const { t } = useI18n()
+const toast = useToast()
+
+const dashboardStore = useDashboardStore()
+
+const dayjs = useDayjs()
+
+const copyIndex = ref(0)
+
+const isShowFullCardNumber = ref(false)
+
+const transactionStore = useTransactionStore()
+const isOpenTransactionDetailSlideover = computed(() => transactionStore.isOpenTransactionDetailSlideover)
+const transactionDetail = computed(() => transactionStore.selectedTransactionDetail)
+
+const cardNumberArray = computed(() => transactionDetail.value?.virtual_card?.card_number?.match(/.{1,4}/g).join(' '))
+
+function copyTransactionId() {
+  if (!transactionDetail.value) return
+  copy(transactionDetail.value.transaction_id)
+  copyIndex.value = 0
+
+  toast.clear()
+  toast.add({
+    title: t('common.toast.copy'),
+    avatar: { src: '/icons/common/toast-success.svg' },
+    timeout: 5000,
+  })
+}
+
+function copyTransactionLinkId() {
+  if (!transactionDetail.value) return
+  copy(transactionDetail.value.transaction_linked?.transaction_id)
+  copyIndex.value = 2
+
+  toast.clear()
+  toast.add({
+    title: t('common.toast.copy'),
+    avatar: { src: '/icons/common/toast-success.svg' },
+    timeout: 5000,
+  })
+}
+
+function copyTransactionAddress() {
+  copy(transactionDetail.value.crypto_wallet.address)
+  copyIndex.value = 1
+
+  toast.clear()
+  toast.add({
+    title: t('common.toast.copy'),
+    avatar: { src: '/icons/common/toast-success.svg' },
+    timeout: 5000,
+  })
+}
+
+function onClosePrevented() {
+  transactionStore.toggleTransactionDetailSlideover(false)
+}
+
+function handleNewTransaction() {
+  transactionStore.toggleTransactionDetailSlideover(false)
+  dashboardStore.toggleWalletTopupModal(true)
+}
+
+const transactionDestination = computed(() => {})
+
+const getLinkTxhash = (network: TransactionNetwork, tx_id: string) => {
+  switch (network) {
+    case TransactionNetwork.ETHEREUM:
+      return `<a target='_blank' href="https://etherscan.io/tx/${tx_id}">etherscan.io</a>`
+    case TransactionNetwork.SOLANA:
+      return `<a target='_blank' href="https://solscan.io/tx/${tx_id}">solscan.io</a>`
+    case TransactionNetwork.TRON:
+      return `<a target='_blank' href="https://tronscan.org/#/searcherror/${tx_id}">tronscan.org</a>`
+  }
+}
+
+const getWallet = (network: TransactionNetwork) => {
+  switch (network) {
+    case TransactionNetwork.ETHEREUM:
+      return `Ethereum (ETH)`
+    case TransactionNetwork.SOLANA:
+      return `Solana (SOL)`
+    case TransactionNetwork.TRON:
+      return `Tron (TRX)`
+  }
+}
+
+const getTransactionLinkTo = async () => {
+  const id = transactionDetail.value?.transaction_linked?.id
+  if (!id) {
+    return
+  }
+  const result = await transactionStore.getTransaction(id)
+  if (result.success) {
+    transactionStore.setSelectedTransactionDetail(result.transaction)
+    return
+  }
+}
+</script>
 <style lang="scss" scoped>
 .slideover-content {
   max-height: calc(100vh - 80px);
