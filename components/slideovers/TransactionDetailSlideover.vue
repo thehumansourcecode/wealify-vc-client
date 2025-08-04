@@ -23,7 +23,7 @@
           @click="onClosePrevented()"
         />
       </div>
-      <div class="flex flex-col items-center slideover-content overflow-y-auto px-8 pb-20 lg:pb-0">
+      <div class="flex flex-col items-center slideover-content overflow-y-auto px-8 pb-20 lg:pb-0 w-full">
         <img class="w-[180px]" :src="getBanner(transactionDetail?.transaction_vc_status)" alt="" />
         <div class="pt-5 flex flex-row justify-between items-end w-full">
           <div class="flex-col gap-[6px]">
