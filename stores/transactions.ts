@@ -47,9 +47,9 @@ export const useTransactionStore = defineStore('transaction', () => {
       if (transaction.is_issue){
         detailType = TransactionDetailType.CARD_ISSUE_TOPUP
       }else{
-        if (transactionType == TransactionDetailType.WALLET_REFUND){
+        if (transactionType == TransactionDetailType.WALLET_REFUND){          
           detailType = TransactionDetailType.WALLET_REFUND
-        }if(transactionType == TransactionDetailType.CARD_CRYPTO_TOP_UP){
+        }else if(transactionType == TransactionDetailType.CARD_CRYPTO_TOP_UP){
           detailType = TransactionDetailType.CARD_CRYPTO_TOP_UP
         }else{
           detailType = TransactionDetailType.CARD_TOP_UP
