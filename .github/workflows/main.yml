@@ -17,7 +17,7 @@ jobs:
       ECR_REPOSITORY: wealify/vc-client
       EKS_CLUSTER_NAME: wealify-api
       IMAGE_TAG: ${{ github.sha }}
-      K8S_NAMESPACE: wealify 
+      K8S_NAMESPACE: production
 
     steps:
       - name: Checkout code
