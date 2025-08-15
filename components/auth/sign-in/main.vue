@@ -11,7 +11,7 @@ const router = useRouter()
       <div></div>
       <!-- DON'T DELETE THE DIV -->
       <div class="">
-        <img class="w-[30%] min-w-[250px]" src="/images/auth/logo.png" />
+        <img class="w-[30%] min-w-[250px]" src="/images/auth/logo.svg" />
       </div>
       <div class="justify-start text-[#1b1c23] text-5xl font-bold leading-[60px]">
         Make your spending<br />Smarter & Faster.
@@ -30,7 +30,7 @@ const router = useRouter()
     <div class="w-full lg:w-5/12 flex flex-col justify-between items-center p-4 lg:p-5">
       <!-- Logo for mobile -->
       <div class="lg:hidden w-full flex justify-center mb-8">
-        <img class="w-[200px]" src="/images/auth/logo.png" />
+        <img class="w-[200px]" src="/images/auth/logo.svg" />
       </div>
       <!-- DON'T DELETE DIV -->
       <div></div>
@@ -72,7 +72,7 @@ const router = useRouter()
           </div>
         </div>
       </div>
-      <div class="w-full max-w-[400px] flex flex-col mt-4 lg:mt-0">
+      <div class="w-full max-w-[400px] flex flex-col gap-2">
         <AuthSubmitButton
           :title="'Log In'"
           :loading="isLoading"

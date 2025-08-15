@@ -29,8 +29,6 @@ export const getCountryCode = (country: CommonCountry) => {
       return '+673'
     case CommonCountry.SINGAPORE:
       return '+65'
-    case CommonCountry.RUSSIA:
-      return '+7'
     default:
       return ''
   }

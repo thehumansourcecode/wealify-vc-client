@@ -11,12 +11,12 @@ const model = defineModel<Array<TransactionVCStatus>>({ default: [] })
 const open = ref<boolean>(false)
 const options = computed<Array<Option>>(() => [
   {
-    title: 'Process',
-    value: [TransactionVCStatus.PROCESSING],
-  },
-  {
     title: 'Success',
     value: [TransactionVCStatus.SUCCESS],
+  },
+  {
+    title: 'Pending',
+    value: [TransactionVCStatus.PENDING],
   },
   {
     title: 'Failed',
