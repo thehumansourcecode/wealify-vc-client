@@ -36,6 +36,7 @@ export enum TransactionVCStatus {
   PENDING = 'PENDING',
   SUCCESS = 'SUCCESS',
   FAILURE = 'FAILURE',
+  CANCEL = 'CANCEL',
 }
 export interface Fee {
   type: string // e.g., "PERCENT"
@@ -99,6 +100,7 @@ export enum TransactionDetailType {
   CARD_WITHDRAW = 'CARD_WITHDRAW',
   CARD_CRYPTO_TOP_UP = 'CARD_TOP_UP_CRYPTO',
   CARD_PAYMENT = 'CARD_PAYMENT',
+  CARD_REFUND = 'CARD_REFUND',
   WALLET_TOP_UP = 'WALLET_TOP_UP',
   WALLET_WITHDRAW = 'WALLET_WITHDRAW',
   WALLET_ISSUE_WITHDRAW = 'WALLET_ISSUE_WITHDRAW',

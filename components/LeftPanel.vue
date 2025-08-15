@@ -76,7 +76,7 @@ onMounted(() => {
 <template>
   <div class="hidden lg:block px-4 w-[24%] max-w-[250px] min-w-[250px]">
     <div class="pt-5 pb-8">
-      <ULink to="/"><img src="~/assets/img/logo/logo.svg" alt="" /></ULink>
+      <ULink to="/"><img src="~/assets/img/logo/logo.png" alt="" class="w-[136px]" /></ULink>
     </div>
     <div class="flex flex-col gap-1">
       <div
@@ -108,7 +108,7 @@ onMounted(() => {
          :class="isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'">
       <div class="px-4">
         <div class="pt-5 pb-8 flex justify-between items-center">
-          <ULink to="/"><img src="~/assets/img/logo/logo.svg" alt="" /></ULink>
+          <ULink to="/"><img src="~/assets/img/logo/logo.png" alt="" class="w-[136px]" /></ULink>
           <button @click="commonStore.toggleMobileMenu(false)" class="p-2">
             <img src="~/assets/img/common/close.svg" alt="Close" />
           </button>

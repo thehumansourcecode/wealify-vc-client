@@ -26,7 +26,6 @@ const loading = computed(() => cardStore.isLoading)
 
 const issueCardFees = computed(() => {
   if (!commonStore.feeList?.ISSUE_CARD) return 0
-  
   const feeAmountType = commonStore.feeList.ISSUE_CARD.type
   const feeValue = commonStore.feeList.ISSUE_CARD.value
   if (feeAmountType === FeeAmountType.FIXED) {
@@ -79,6 +78,9 @@ const issueCardSchema = object({
   country_code: string().required(),
   phone_number: string().required(t('common.validator.empty.issueCard.phoneNumber')),
   category: string().required(t('common.validator.empty.issueCard.category')),
+  spend_limit: number().test('max-threshold', t('common.validator.invalid.issueCard.insufficientBalance'), value => {
+    return (value ?? 0) <= +threshold.value
+  }),
   spend_limit: number()
     .test('max-threshold', t('common.validator.invalid.issueCard.insufficientBalance'), value => {
       return value <= +threshold.value
@@ -86,12 +88,16 @@ const issueCardSchema = object({
 })
 
 const formatPhoneNumber = (target: HTMLInputElement) => {
-  target.value = target.value.replace(/\s+/g, '')
-  const rawValue = Number(target.value)
-  if (Number.isNaN(Number(rawValue))) {
-    target.value = target.value.replace(/\D/g, '')
+  let rawValue = target.value.trim()
+
+  const phoneRegex = /^\+?\d*$/
+
+  if (!phoneRegex.test(rawValue)) {
+    target.value = ''
     return
   }
+
+  target.value = rawValue.replace(/[^\d+]/g, '')
 }
 
 const handleInputPhoneNumber = async (event: InputEvent) => {
@@ -111,7 +117,6 @@ const formattedCardName = computed(() => {
     .toLocaleUpperCase()
     .trim()
 })
-
 
 const handlePasteName = event => {
   // const input = document.getElementById('name_input')
@@ -218,34 +223,48 @@ watch(
           </div>
         </div>
         <UForm :schema="issueCardSchema" :state="form">
-          <UFormGroup
-            name="card_name"
-            class="mt-5"
+          <UTooltip
+            class="ml-1"
+            :text="`A card name helps identify your cards. The default name on the card is Kanoha Limited`"
+            :popper="{ arrow: true, placement: 'top' }"
             :ui="{
-              error: 'ml-0 md:ml-[156px] mt-2 text-red-500 dark:text-red-400',
+              wrapper: 'w-full block',
+              background: 'bg-[#1C1D23]',
+              color: 'text-[#FFF]',
+              base: 'px-3 py-2 h-[max-content]  text-xs font-medium text-clip text-center',
+              ring: 'ring-0',
+              arrow: { background: 'before:bg-[#1C1D23]' },
             }"
-            v-slot="{ error }"
           >
-            <div class="flex flex-row items-center">
-              <div class="text-14-500-20 mb-2 sm:mb-0" style="flex: 0 0 156px">
-                <span>{{ t('cards.issue.info.form.label.name') }}</span>
-                <span class="pl-1 text-[#ED2C38]">*</span>
+            <UFormGroup
+              name="card_name"
+              class="mt-5"
+              :ui="{
+                error: 'ml-0 md:ml-[156px] mt-2 text-red-500 dark:text-red-400',
+              }"
+              v-slot="{ error }"
+            >
+              <div class="flex flex-row items-center">
+                <div class="text-14-500-20 mb-2 sm:mb-0" style="flex: 0 0 156px">
+                  <span>{{ t('cards.issue.info.form.label.name') }}</span>
+                  <span class="pl-1 text-[#ED2C38]">*</span>
+                </div>
+                <BaseInput
+                  id="name_input"
+                  @paste="handlePasteName"
+                  :error="error"
+                  v-model="form.card_name"
+                  :clearable="!!form.card_name"
+                  :limit="50"
+                  leading
+                  :leading-img="'/icons/cards/issue-card/name.svg'"
+                  :placeholder="$t('cards.issue.info.form.placeholder.name')"
+                  @clear="form.card_name = ''"
+                  class="w-full"
+                />
               </div>
-              <BaseInput
-                id="name_input"
-                @paste="handlePasteName"
-                :error="error"
-                v-model="form.card_name"
-                :clearable="!!form.card_name"
-                :limit="50"
-                leading
-                :leading-img="'/icons/cards/issue-card/name.svg'"
-                :placeholder="$t('cards.issue.info.form.placeholder.name')"
-                @clear="form.card_name = ''"
-                class="w-full"
-              />
-            </div>
-          </UFormGroup>
+            </UFormGroup>
+          </UTooltip>
           <UFormGroup
             name="email"
             class="mt-5"
@@ -293,22 +312,22 @@ watch(
             <div class="text-14-500-20 mt-8" style="flex: 0 0 156px">
               <div class="flex flex-row items-center">
                 <span>{{ t('cards.issue.info.form.label.phoneNumber') }}</span>
-                <span class="pl-1 text-[#ED2C38]">*</span>
-                <UTooltip
-                  class="ml-1"
-                  text="An OTP will be sent to you when making a payment"
-                  :popper="{ arrow: true, placement: 'top' }"
-                  :ui="{
-                    width: 'max-w-[310px]',
-                    background: 'bg-[#1C1D23]',
-                    color: 'text-[#FFF]',
-                    base: 'px-3 py-2 h-[max-content] text-xs font-medium text-clip text-center',
-                    ring: 'ring-0',
-                    arrow: { background: 'before:bg-[#1C1D23]' },
-                  }"
-                >
-                  <img src="~/assets/img/icons/tooltip.svg" alt="" />
-                </UTooltip>
+                <!--                <span class="pl-1 text-[#ED2C38]">*</span>-->
+                <!--                <UTooltip-->
+                <!--                  class="ml-1"-->
+                <!--                  text="An OTP will be sent to you when making a payment"-->
+                <!--                  :popper="{ arrow: true, placement: 'top' }"-->
+                <!--                  :ui="{-->
+                <!--                    width: 'max-w-[310px]',-->
+                <!--                    background: 'bg-[#1C1D23]',-->
+                <!--                    color: 'text-[#FFF]',-->
+                <!--                    base: 'px-3 py-2 h-[max-content] text-xs font-medium text-clip text-center',-->
+                <!--                    ring: 'ring-0',-->
+                <!--                    arrow: { background: 'before:bg-[#1C1D23]' },-->
+                <!--                  }"-->
+                <!--                >-->
+                <!--                  <img src="~/assets/img/icons/tooltip.svg" alt="" />-->
+                <!--                </UTooltip>-->
               </div>
             </div>
             <div class="flex flex-row items-start w-full mt-5">
@@ -322,14 +341,15 @@ watch(
               >
                 <USelectMenu
                   v-model="form.country_code"
-                  value-attribute="country"
                   :options="countryCodeOptions"
-                  class=""
+                  searchable
+                  searchable-placeholder="Search country"
+                  option-attribute="name"
+                  value-attribute="code"
                   :ui-menu="{
                     select: 'cursor-pointer',
                     background: 'bg-white',
-                    base: 'relative focus:outline-none overflow-y-auto scroll-py-1',
-
+                    base: 'absolute md:min-w-[350px] max-md:min-w-[250px] overflow-x-hidden focus:outline-none overflow-y-auto scroll-py-1',
                     padding: 'p-0',
                     option: {
                       base: 'cursor-pointer text-14-500-20 bg-[#F0F2F5]',
@@ -342,21 +362,17 @@ watch(
                       empty: 'text-sm',
                     },
                     empty: 'text-sm',
+                    input: 'py-2.5 icon-search',
                   }"
                 >
                   <template #option="{ option }">
                     <div class="flex flex-row gap-[10px]">
-                      <img :src="option.flag" alt="" />
-                      <div class="text-12-500-20">{{ getCountryCode(option.country) }}</div>
+                      <img :src="option.image" alt="" class="w-[22px] h-[20px]" />
+                      <div class="text-12-500-20">{{ option.name }}</div>
                     </div>
                   </template>
-                  <div
-                    class="border border-r-0 py-[11px] rounded-l-[49px] pl-4 pr-3 flex flex-row gap-[10px] w-[120px]"
-                  >
-                    <img width="20" :src="getCountryFlag(form.country_code)" alt="" />
-                    <div class="text-14-500-20 text-[#1C1D23] grow">
-                      {{ form.country_code ? getCountryCode(form.country_code) : '' }}
-                    </div>
+                  <div class="border border-r-0 py-[11px] rounded-l-[49px] pl-4 flex flex-row gap-[10px] w-[75px]">
+                    <img class="w-[22px] h-[20px]" :src="getCountryFlag(form.country_code)" alt="" />
                     <img class="justify-self-end" src="assets/img/icons/dropdown.svg" alt="" />
                   </div>
                 </USelectMenu>
@@ -421,7 +437,7 @@ watch(
               </div>
               <BaseSingleSelect
                 v-model="form.category"
-                :options="cardCategoryOptions"
+                :options="cardCategoryOptions.filter(item => item == form.category)"
                 class="w-full"
                 :selected-icon="'i-selected'"
                 :error="error"
@@ -555,12 +571,10 @@ watch(
         </div>
         <div class="mt-5">
           <div
-            class="w-full max-w-[399px] h-[219px] rounded-[21px] flex flex-col items-start overflow-hidden bg-[url(~/assets/img/cards/card-bg.svg)] bg-left pt-5 pb-6 pl-4 pr-6"
+            class="w-full max-w-[399px] h-[219px] rounded-[21px] flex flex-col items-start overflow-hidden bg-[url(~/assets/img/cards/active-card.png)] bg-left pt-5 pb-6 pl-4 pr-6"
           >
             <img src="~/assets/img/cards/card-logo.svg" alt="" />
-            <div class="text-20-500-32 text-[#FFFFFF] mt-5 w-full max-w-[360px]" :class="{ uppercase: form.card_name }">
-              {{ form.card_name ? formattedCardName : t('cards.issue.preview.namePlaceholder') }}
-            </div>
+            <div class="text-20-500-32 text-[#FFFFFF] mt-5 w-full max-w-[360px]">Kanoha Limited</div>
             <img class="mt-auto" src="~/assets/img/cards/card-number.svg" alt="" />
           </div>
         </div>
@@ -570,7 +584,7 @@ watch(
               {{ t('cards.issue.preview.starting') }}
             </div>
             <div class="text-14-600-20 text-[#1C1D23]">
-              {{formatMoneyWithoutDecimals(form.spend_limit, CommonCurrency.USD)}}
+              {{ formatMoneyWithoutDecimals(form.spend_limit, CommonCurrency.USD) }}
             </div>
           </div>
           <div class="flex flex-row justify-between mt-6">

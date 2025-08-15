@@ -2,7 +2,7 @@ import { CommonCountry } from '~/types/common'
 import { countryCodeOptions } from './constants'
 
 export function getCountryFlag(countryCode: CommonCountry) {
-  return countryCodeOptions.find(option => option.country === countryCode)?.flag
+  return countryCodeOptions.find(option => option.code === countryCode)?.image
 }
 
 export const getCountryCode = (country: CommonCountry) => {
@@ -29,6 +29,8 @@ export const getCountryCode = (country: CommonCountry) => {
       return '+673'
     case CommonCountry.SINGAPORE:
       return '+65'
+    case CommonCountry.RUSSIA:
+      return '+7'
     default:
       return ''
   }

@@ -10,7 +10,6 @@ import { defineProps, defineEmits, ref, watch } from 'vue'
 const emit = defineEmits(['update:modelValue'])
 
 function onChangePage(value: number) {
-  console.log(value)
   emit('update:modelValue', value)
 }
 </script>

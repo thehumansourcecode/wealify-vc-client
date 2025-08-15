@@ -5,7 +5,7 @@
  */
 export const isObject = (val) => {
   switch (typeof val) {
-    case 'null':
+    case null:
       return false
     case 'object':
       return true

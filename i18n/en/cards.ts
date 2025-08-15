@@ -103,7 +103,7 @@ export default {
         placeholder: {
           name: 'Enter your card name',
           email: `Enter cardholder's email`,
-          phoneNumber: `Enter cardholder's phone number`,
+          phoneNumber: `E.g. 0901234567 or +84901234567`,
           category: 'Choose card category',
           purpose: 'Enter your card purpose',
         },

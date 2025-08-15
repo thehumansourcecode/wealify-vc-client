@@ -43,6 +43,10 @@ const groups = ref<Array<OptionGroup>>([
         title: 'Spend',
         value: TransactionVCType.PAYMENT,
       },
+      {
+        title: 'Refund',
+        value: TransactionVCType.REFUND,
+      },
     ],
   },
 ])
@@ -67,7 +71,7 @@ const isVCCardEnabled = computed<boolean>(() => {
 const onSelect = (value: WalletType | TransactionVCType) => {
   if (model.value.includes(value)) {
     model.value = model.value.filter(val => {
-      if (value == WalletType.VC) return val != TransactionVCType.PAYMENT && val != value
+      if (value == WalletType.VC) return val != TransactionVCType.PAYMENT && val != TransactionVCType.REFUND && val != value
       return val != value
     })
   } else {
@@ -112,7 +116,7 @@ const onSelect = (value: WalletType | TransactionVCType) => {
                 >
                   <UCheckbox
                     @click="onSelect(option.value)"
-                    :disabled="!isVCCardEnabled && option.value == TransactionVCType.PAYMENT"
+                    :disabled="!isVCCardEnabled && (option.value == TransactionVCType.PAYMENT || option.value == TransactionVCType.REFUND)"
                     :model-value="model.includes(option.value)"
                     :ui="{
                       base: 'cursor-pointer',
@@ -121,7 +125,7 @@ const onSelect = (value: WalletType | TransactionVCType) => {
                   <div
                     @click="onSelect(option.value)"
                     class="justify-center text-[#1b1c23] text-12 sm:text-14-500-20 font-semibold font-['Manrope'] leading-tight cursor-pointer"
-                    :class="!isVCCardEnabled && option.value == TransactionVCType.PAYMENT ? 'opacity-50' : ''"
+                    :class="!isVCCardEnabled && (option.value == TransactionVCType.PAYMENT || option.value == TransactionVCType.REFUND) ? 'opacity-50' : ''"
                   >
                     {{ option.title }}
                   </div>
